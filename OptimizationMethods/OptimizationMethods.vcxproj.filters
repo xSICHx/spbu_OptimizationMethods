@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Functions">
+      <UniqueIdentifier>{ed30d48e-5969-4905-b4b5-34eda8ae226b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Functions">
+      <UniqueIdentifier>{9ceafa16-03fd-4e4a-8f68-613bf5a3ac6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\StopCriterions">
+      <UniqueIdentifier>{ef3e95d1-b762-44ab-90cd-225d18c6b809}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\OptMethods">
+      <UniqueIdentifier>{aeedaf77-06d3-4741-88aa-96594d8e5d2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\OptMethods">
+      <UniqueIdentifier>{bb7b4a3d-26ba-4380-a519-ed2c2c1ee6c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="OptimizationMethods.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="FucntionTest.cpp">
+      <Filter>Source Files\Functions</Filter>
+    </ClCompile>
+    <ClCompile Include="OptMethodNewton.cpp">
+      <Filter>Source Files\OptMethods</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="FucntionTest.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="Area.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StopCriterion.h">
+      <Filter>Header Files\StopCriterions</Filter>
+    </ClInclude>
+    <ClInclude Include="StopCriterionEps.h">
+      <Filter>Header Files\StopCriterions</Filter>
+    </ClInclude>
+    <ClInclude Include="StopCriterionFEps.h">
+      <Filter>Header Files\StopCriterions</Filter>
+    </ClInclude>
+    <ClInclude Include="TransferData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OptMethod.h">
+      <Filter>Header Files\OptMethods</Filter>
+    </ClInclude>
+    <ClInclude Include="OptMethodNewton.h">
+      <Filter>Header Files\OptMethods</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
