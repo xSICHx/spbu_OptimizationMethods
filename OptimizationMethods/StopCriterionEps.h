@@ -3,7 +3,7 @@
 
 
 class StopCriterionEps :
-    public StopCriterion
+    public virtual StopCriterion //virtual для предотвращения постоянной инициализации n_max
 {
 protected:
     double eps;

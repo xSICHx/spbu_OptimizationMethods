@@ -74,6 +74,9 @@
     <ClInclude Include="OptMethodNewton.h">
       <Filter>Header Files\OptMethods</Filter>
     </ClInclude>
+    <ClInclude Include="StopCriterionArea.h">
+      <Filter>Header Files\StopCriterions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

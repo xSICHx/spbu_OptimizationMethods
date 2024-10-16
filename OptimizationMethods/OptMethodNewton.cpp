@@ -31,11 +31,18 @@ void setupData(TransferData& data, const Area& area, const Function& func) {
 	VectorXd grad(area.getAreaDim());
 	data.setCurrGradient(grad);
 
+	bool flag_in_bounds = true;
+	data.setFlagInBound(flag_in_bounds);
+
 }
 
 
-void OptMethodNewton::doStep(const Area& area, const Function& func,
-	const StopCriterion& crit, TransferData& data) const {
+void OptMethodNewton::doStep(
+	const Area& area,
+	const Function& func,
+	const StopCriterion& crit,
+	TransferData& data) const {
+
 	std::shared_ptr<VectorXd> curr_point = data.getCurrPoint();
 	std::shared_ptr<VectorXd> prev_point = data.getPrevPoint();
 	std::shared_ptr<VectorXd> curr_grad = data.getCurrGradient();
@@ -43,6 +50,7 @@ void OptMethodNewton::doStep(const Area& area, const Function& func,
 	std::shared_ptr<double> curr_f_val = data.getCurrFVal();
 	std::shared_ptr<double> prev_f_val = data.getPrevFVal();
 	std::shared_ptr<double> alpha = data.getAlpha();
+	shared_ptr<bool> flag_in_bounds = data.getFlagInBound();
 
 	
 	*curr_grad = func.getGradient(*prev_point);
@@ -54,6 +62,23 @@ void OptMethodNewton::doStep(const Area& area, const Function& func,
 	VectorXd dir = -(func.getGoesseMatrix(*prev_point).inverse() * (*curr_grad));
 	*prev_point = *curr_point;
 	*curr_point = *prev_point + *data.getAlpha() * dir;
+	if (!area.checkPointInArea(*curr_point)) {
+		*flag_in_bounds = false;
+
+		double alpha_curr = 
+			max((area.getILeftBound(0) - (*prev_point)[0])/dir[0],
+				(area.getIRightBound(0) - (*prev_point)[0]) / dir[0]);
+		double alpha_min = alpha_curr;
+		for (size_t i = 1; i < area.getAreaDim(); ++i)
+		{
+			alpha_curr = 
+				max((area.getILeftBound(i) - (*prev_point)[i]) / dir[i],
+					(area.getIRightBound(i) - (*prev_point)[i]) / dir[i]);
+			alpha_min = min(alpha_min, alpha_curr);
+		}
+		*curr_point = *prev_point + alpha_min * dir;
+
+	}
 	
 	*prev_f_val = *curr_f_val;
 	*curr_f_val = func(*curr_point);

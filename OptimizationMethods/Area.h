@@ -17,14 +17,22 @@ public:
 		return bounds;
 	}
 
-	double getILeftBound(size_t i) const {
+	double getILeftBound(const size_t i) const {
 		return bounds(i, 0);
 	}
-	double getIRightBound(size_t i) const {
+	double getIRightBound(const size_t i) const {
 		return bounds(i, 1);
 	}
 	int getAreaDim() const {
 		return bounds.rows();
+	}
+	// true if in area
+	bool checkPointInArea(const VectorXd& point) const{
+		bool flag = 1;
+		for (size_t i = 0; i < getAreaDim(); ++i) {
+			flag *= bounds(i, 0) < point[i] && point[i] < bounds(i, 1);
+		}
+		return flag;
 	}
 };
 

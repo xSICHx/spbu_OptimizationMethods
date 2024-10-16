@@ -12,6 +12,7 @@ private:
     std::shared_ptr<double> curr_f_val = nullptr;
     std::shared_ptr<double> prev_f_val = nullptr;
     std::shared_ptr<double> alpha = nullptr;
+    shared_ptr<bool> flag_in_bound = nullptr; // if overstepped = false
 
 public:
     // getters
@@ -42,6 +43,9 @@ public:
     shared_ptr<double> getAlpha() const {
         return alpha;
     }
+    shared_ptr<bool> getFlagInBound() const {
+        return flag_in_bound;
+    }
 
     // setters
     void setCurrPoint(const VectorXd& point) {
@@ -71,6 +75,9 @@ public:
     void setAlpha(const double& alpha_val) {
         alpha = std::make_shared<double>(alpha_val);
     }
+    void setFlagInBound(const bool& flag) {
+        flag_in_bound = make_shared<bool>(flag);
+    }
 
     void print_vec(VectorXd& vec) {
         for (int i = 0; i < vec.size(); ++i)
@@ -91,4 +98,6 @@ public:
 
         cout << endl;
     }
+
+
 };
