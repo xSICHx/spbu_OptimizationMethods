@@ -90,11 +90,15 @@ public:
         
         cout << "Curr_point: "; print_vec(*curr_point);
         cout << "Prev_point: "; print_vec(*prev_point);
-        cout << "Grad: "; print_vec(*curr_gradient);
+        if (curr_gradient != nullptr) {
+            cout << "Grad: "; print_vec(*curr_gradient);
+        }
         cout << "Iter: " << *curr_iter << endl;
         cout << "Curr F: " << *curr_f_val << endl;
         cout << "Prev F: " << *prev_f_val << endl;
-        cout << "Alpha: " << *alpha << endl;
+        if (alpha != nullptr) {
+            cout << "Alpha: " << *alpha << endl;
+        }
 
         cout << endl;
     }

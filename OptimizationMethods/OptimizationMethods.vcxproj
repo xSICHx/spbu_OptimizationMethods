@@ -146,12 +146,15 @@
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="OptimizationMethods.cpp" />
     <ClCompile Include="OptMethodNewton.cpp" />
+    <ClCompile Include="OptMethodRandomSearch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Area.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="OptMethodNewton.h" />
+    <ClInclude Include="OptMethodRandomSearch.h" />
     <ClInclude Include="StopCriterionArea.h" />
+    <ClInclude Include="StopCriterionFEpsUnnormalized.h" />
     <ClInclude Include="TransferData.h" />
     <ClInclude Include="FucntionTest.h" />
     <ClInclude Include="Function.h" />

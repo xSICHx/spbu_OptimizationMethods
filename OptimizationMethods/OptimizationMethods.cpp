@@ -3,11 +3,20 @@
 #include "FucntionTest.h"
 #include "Area.h"
 #include "StopCriterionFEps.h"
+#include "StopCriterionFEpsUnnormalized.h"
 #include "OptMethodNewton.h"
+#include "OptMethodRandomSearch.h"
 
+
+void initializeRandomGenerator(unsigned int seed) {
+	gen.seed(seed); // Инициализация seed
+}
 
 // Function class tests
-void testFunctionGreatConditions() {
+void testFunctionGreatConditionsNewton() {
+	cout << "------------------------------" << endl;
+	cout << "Newton test with great conditions" << endl;
+
 	cout << "Function: x^2 + y^4" << endl;
 	FucntionTest f1;
 
@@ -46,10 +55,14 @@ void testFunctionGreatConditions() {
 	StopCriterionFEps stop(10000, 1e-5);
 	OptMethodNewton opt;
 	opt.optimize(area, f, stop);
+	cout << "------------------------------" << endl << endl;
 }
 
 
-void testFunctionOptNotInArea() {
+void testFunctionOptNotInAreaNewton() {
+	cout << "------------------------------" << endl;
+	cout << "Newton test not in area" << endl;
+
 	cout << "Function: x^2 + y^4" << endl;
 	FucntionTest f1;
 
@@ -86,18 +99,48 @@ void testFunctionOptNotInArea() {
 	FucntionTest f;
 
 	StopCriterionFEps stop(10000, 1e-5);
-	OptMethodNewton opt;
+	OptMethodNewton opt(1e-2);
 	opt.optimize(area, f, stop);
+	cout << "------------------------------" << endl << endl;
 }
 
+
+void testFunctionRandomSearch() {
+	cout << "------------------------------" << endl;
+	cout << "Random search test" << endl;
+
+	cout << "Function: x^2 + y^4" << endl;
+	FucntionTest f1;
+
+	VectorXd point(2);
+	point[0] = 2; point[1] = 1;
+	cout << "Point: " << point[0] << " " << point[1] << endl;
+
+	point_type f1_point = f1(point);
+	cout << "Function in point: " << f1_point << endl;
+
+
+	MatrixXd ar(2, 2);
+	ar(0, 0) = -3; ar(0, 1) = 2; ar(1, 0) = -5; ar(1, 1) = 8;
+	Area area(ar);
+	FucntionTest f;
+
+	StopCriterionFEpsUnnormalized stop(10000, 1e-5);
+	OptMethodRandomSearch opt(0.5, 0.8);
+	opt.optimize(area, f, stop);
+
+	cout << "------------------------------" << endl << endl;
+}
 
 
 
 int main()
 {
-	//testFunctionGreatConditions();
-	
-	testFunctionOptNotInArea();
+	initializeRandomGenerator(100);
+
+	testFunctionGreatConditionsNewton();
+	testFunctionOptNotInAreaNewton();
+	testFunctionRandomSearch();
 
 	return 0;
 

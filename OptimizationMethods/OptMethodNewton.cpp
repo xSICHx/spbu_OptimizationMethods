@@ -1,23 +1,13 @@
 #include "OptMethodNewton.h"
 
-VectorXd getMiddleAreaPoint(const Area& area) {
-	
-	VectorXd res_point(area.getAreaDim());
-	for (size_t i = 0; i < res_point.size(); ++i)
-	{
-		res_point[i] = (area.getILeftBound(i) + area.getIRightBound(i)) / 2;
-	}
-	return res_point;
-}
 
-void setupData(TransferData& data, const Area& area, const Function& func) {
-	double alpha = 1e-2;
+void OptMethodNewton::setupData(TransferData& data, const Area& area, const Function& func) const {
 	data.setAlpha(alpha);
 
 	size_t curr_iter = 0;
 	data.setCurrIter(curr_iter);
 
-	VectorXd curr_point = getMiddleAreaPoint(area);
+	VectorXd curr_point = area.getMiddleAreaPoint();
 	data.setCurrPoint(curr_point);
 
 	VectorXd prev_point = curr_point;
@@ -83,7 +73,6 @@ void OptMethodNewton::doStep(
 	*prev_f_val = *curr_f_val;
 	*curr_f_val = func(*curr_point);
 	++(*curr_iter);
-	data.printData();
 }
 
 
@@ -92,10 +81,12 @@ void OptMethodNewton::optimize(const Area& area, const Function& func, const Sto
 	setupData(data, area, func);
 
 	doStep(area, func, crit, data); // init step
+	data.printData();
 	
 	while (crit.check(data)) {
 		doStep(area, func, crit, data);
 	}
+	data.printData();
 
 	/*VectorXd res_x = *data.getCurrPoint();
 	for (int i = 0; i < res_x.size(); ++i)

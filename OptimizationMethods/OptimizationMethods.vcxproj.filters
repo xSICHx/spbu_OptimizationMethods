@@ -42,6 +42,9 @@
     <ClCompile Include="OptMethodNewton.cpp">
       <Filter>Source Files\OptMethods</Filter>
     </ClCompile>
+    <ClCompile Include="OptMethodRandomSearch.cpp">
+      <Filter>Source Files\OptMethods</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -75,6 +78,12 @@
       <Filter>Header Files\OptMethods</Filter>
     </ClInclude>
     <ClInclude Include="StopCriterionArea.h">
+      <Filter>Header Files\StopCriterions</Filter>
+    </ClInclude>
+    <ClInclude Include="OptMethodRandomSearch.h">
+      <Filter>Header Files\OptMethods</Filter>
+    </ClInclude>
+    <ClInclude Include="StopCriterionFEpsUnnormalized.h">
       <Filter>Header Files\StopCriterions</Filter>
     </ClInclude>
   </ItemGroup>

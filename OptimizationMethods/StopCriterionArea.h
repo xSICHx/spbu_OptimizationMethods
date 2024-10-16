@@ -8,6 +8,8 @@ class StopCriterionArea :
 public:
     StopCriterionArea(size_t _n_max) : StopCriterion(_n_max) {};
     bool check(TransferData& data) const override {
+        if (data.getFlagInBound() == nullptr)
+            return true;
         bool flag_in_area = *data.getFlagInBound();
         return flag_in_area;
     }
