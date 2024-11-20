@@ -36,6 +36,7 @@ void OptMethodRandomSearch::doStep(
 	const StopCriterion& crit,
 	TransferData& data, Area& ball, double& delta) const 
 {
+	// TODO: std::optional
 	std::shared_ptr<VectorXd> curr_point = data.getCurrPoint();
 	std::shared_ptr<VectorXd> prev_point = data.getPrevPoint();
 	std::shared_ptr<size_t> curr_iter = data.getCurrIter();

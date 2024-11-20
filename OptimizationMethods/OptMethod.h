@@ -7,7 +7,7 @@ class OptMethod
 {
 
 public:
-	// гей 
+	
 	virtual ~OptMethod() = default;
 	virtual void optimize(const Area& area, const Function& func, const StopCriterion& crit) const = 0;
 private:

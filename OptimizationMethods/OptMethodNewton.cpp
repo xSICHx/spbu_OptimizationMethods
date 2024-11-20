@@ -27,6 +27,25 @@ void OptMethodNewton::setupData(TransferData& data, const Area& area, const Func
 }
 
 
+double backtrackingAlpha(
+	const Function& func,
+	std::shared_ptr<VectorXd> prev_point,
+	VectorXd& dir,
+	std::shared_ptr<double> curr_f_val
+	) {
+	double alpha_tmp = 1;
+	VectorXd x_prev = *prev_point;
+	VectorXd x_new = *prev_point + alpha_tmp * dir;
+	double f_prev = *curr_f_val, f_new = func(x_new);
+	while (f_prev < f_new) {
+		alpha_tmp /= 2;
+		x_new = x_prev + alpha_tmp * dir;
+		f_new = func(x_new);
+	}
+	return alpha_tmp;
+}
+
+
 void OptMethodNewton::doStep(
 	const Area& area,
 	const Function& func,
@@ -45,13 +64,17 @@ void OptMethodNewton::doStep(
 	
 	*curr_grad = func.getGradient(*prev_point);
 
-	//
+	// TMP: найти, как решать систему линейных уравнений (выполнено)
 	MatrixXd mat = func.getGoesseMatrix(*prev_point);
-	MatrixXd mat_inv = mat.inverse();
+	//MatrixXd mat_inv = mat.inverse();
 	//
-	VectorXd dir = -(func.getGoesseMatrix(*prev_point).inverse() * (*curr_grad));
+	//VectorXd dir = -(func.getGoesseMatrix(*prev_point).inverse() * (*curr_grad));
+	VectorXd dir = -(mat.colPivHouseholderQr().solve(*curr_grad));
 	*prev_point = *curr_point;
-	*curr_point = *prev_point + *data.getAlpha() * dir;
+	// TMP: backtracking тут, можно было бы переписать отдельной функцией
+	*alpha = backtrackingAlpha(func, prev_point, dir, curr_f_val);
+	*curr_point = *prev_point + *alpha * dir;
+
 	if (!area.checkPointInArea(*curr_point)) {
 		*flag_in_bounds = false;
 
