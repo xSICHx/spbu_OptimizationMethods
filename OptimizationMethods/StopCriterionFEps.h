@@ -21,5 +21,8 @@ public:
         bool cond3 = StopCriterionArea::check(data);
         return cond1 && cond2 && cond3;
     }
+    string getName() override {
+        return "|f_curr - f_prev|/|f_curr| >= eps";
+    }
 };
 

@@ -86,6 +86,18 @@
     <ClInclude Include="StopCriterionFEpsUnnormalized.h">
       <Filter>Header Files\StopCriterions</Filter>
     </ClInclude>
+    <ClInclude Include="FunctionDefault.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionAbs.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionRosenbrock.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="FunctionHarmonic.h">
+      <Filter>Header Files\Functions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

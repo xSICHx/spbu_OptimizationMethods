@@ -15,5 +15,9 @@ public:
 		if (iter > n_max) return false;
 		return true;
 	};
+
+	virtual string getName() {
+		return "max iteration";
+	}
 };
 

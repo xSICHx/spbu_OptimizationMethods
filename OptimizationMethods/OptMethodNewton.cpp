@@ -31,16 +31,25 @@ double backtrackingAlpha(
 	const Function& func,
 	std::shared_ptr<VectorXd> prev_point,
 	VectorXd& dir,
-	std::shared_ptr<double> curr_f_val
+	std::shared_ptr<double> curr_f_val,
+	const Area& area
 	) {
 	double alpha_tmp = 1;
 	VectorXd x_prev = *prev_point;
 	VectorXd x_new = *prev_point + alpha_tmp * dir;
 	double f_prev = *curr_f_val, f_new = func(x_new);
-	while (f_prev < f_new) {
+	//while (f_prev < f_new) {
+	while (true){
 		alpha_tmp /= 2;
 		x_new = x_prev + alpha_tmp * dir;
 		f_new = func(x_new);
+		if (!area.checkPointInArea(x_new))
+			continue;
+		if (f_prev < f_new) {
+			continue;
+		}
+		else
+			break;
 	}
 	return alpha_tmp;
 }
@@ -69,10 +78,21 @@ void OptMethodNewton::doStep(
 	//MatrixXd mat_inv = mat.inverse();
 	//
 	//VectorXd dir = -(func.getGoesseMatrix(*prev_point).inverse() * (*curr_grad));
-	VectorXd dir = -(mat.colPivHouseholderQr().solve(*curr_grad));
+	VectorXd dir;
+	/*cout << mat.determinant() << endl;*/
+	if (-1e-3 <= abs(mat.determinant()) && abs(mat.determinant()) <= 1e-3) {
+		dir = -(*curr_grad);
+		//cout << dir << endl << endl;
+	}
+	else
+		dir = -(mat.colPivHouseholderQr().solve(*curr_grad));
+		//dir = -(*curr_grad);
+	
+
 	*prev_point = *curr_point;
 	// TMP: backtracking тут, можно было бы переписать отдельной функцией
-	*alpha = backtrackingAlpha(func, prev_point, dir, curr_f_val);
+	*alpha = backtrackingAlpha(func, prev_point, dir, curr_f_val, area);
+	//*alpha = 1e-2;
 	*curr_point = *prev_point + *alpha * dir;
 
 	if (!area.checkPointInArea(*curr_point)) {

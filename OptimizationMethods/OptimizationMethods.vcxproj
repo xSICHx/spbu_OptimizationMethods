@@ -151,6 +151,10 @@
   <ItemGroup>
     <ClInclude Include="Area.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="FunctionAbs.h" />
+    <ClInclude Include="FunctionDefault.h" />
+    <ClInclude Include="FunctionHarmonic.h" />
+    <ClInclude Include="FunctionRosenbrock.h" />
     <ClInclude Include="OptMethodNewton.h" />
     <ClInclude Include="OptMethodRandomSearch.h" />
     <ClInclude Include="StopCriterionArea.h" />

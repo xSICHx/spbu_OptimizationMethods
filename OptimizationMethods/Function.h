@@ -11,6 +11,7 @@ public:
 	virtual ~Function() = default;
 
 	virtual size_t getDim() const = 0;
+	virtual string getName() const = 0;
 
 	virtual point_type operator()(const VectorXd& point) const = 0;
 
