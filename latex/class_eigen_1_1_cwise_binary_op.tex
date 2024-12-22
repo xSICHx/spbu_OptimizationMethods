@@ -1,0 +1,141 @@
+\doxysection{Eigen\+::Cwise\+Binary\+Op\texorpdfstring{$<$}{<} Binary\+Op, Lhs, Rhs \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_eigen_1_1_cwise_binary_op}{}\label{class_eigen_1_1_cwise_binary_op}\index{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$@{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$}}
+
+
+Generic expression where a coefficient-\/wise binary operator is applied to two expressions.  
+
+
+
+
+{\ttfamily \#include $<$Cwise\+Binary\+Op.\+h$>$}
+
+Inheritance diagram for Eigen\+::Cwise\+Binary\+Op\texorpdfstring{$<$}{<} Binary\+Op, Lhs, Rhs \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=0.734266cm]{class_eigen_1_1_cwise_binary_op}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a634d737174e7379875cfe4fde41b00d5}\label{class_eigen_1_1_cwise_binary_op_a634d737174e7379875cfe4fde41b00d5} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1remove__all}{internal\+::remove\+\_\+all}}$<$ Binary\+Op $>$\+::type {\bfseries Functor}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a5adc27ab4d0ea7c24d8249330aad5d72}\label{class_eigen_1_1_cwise_binary_op_a5adc27ab4d0ea7c24d8249330aad5d72} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1remove__all}{internal\+::remove\+\_\+all}}$<$ Lhs\+Type $>$\+::type {\bfseries Lhs}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a9e2d536075ee4c216bf7479cb9523bf0}\label{class_eigen_1_1_cwise_binary_op_a9e2d536075ee4c216bf7479cb9523bf0} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1remove__all}{internal\+::remove\+\_\+all}}$<$ Rhs\+Type $>$\+::type {\bfseries Rhs}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_ae842740e697a9a155bbadae395eef019}\label{class_eigen_1_1_cwise_binary_op_ae842740e697a9a155bbadae395eef019} 
+typedef \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op_impl}{Cwise\+Binary\+Op\+Impl}}$<$ Binary\+Op, Lhs\+Type, Rhs\+Type, typenameinternal\+::cwise\+\_\+promote\+\_\+storage\+\_\+type$<$ typenameinternal\+::traits$<$ Lhs\+Type $>$\+::\+Storage\+Kind, typenameinternal\+::traits$<$ Rhs $>$\+::\+Storage\+Kind, Binary\+Op $>$\+::ret $>$\+::\+Base {\bfseries Base}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a712a61bcd9f43daa9c83ffadea0297a0}\label{class_eigen_1_1_cwise_binary_op_a712a61bcd9f43daa9c83ffadea0297a0} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1ref__selector}{internal\+::ref\+\_\+selector}}$<$ Lhs\+Type $>$\+::type {\bfseries Lhs\+Nested}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a5f5042d81f90665bab85deab9b6b360d}\label{class_eigen_1_1_cwise_binary_op_a5f5042d81f90665bab85deab9b6b360d} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1ref__selector}{internal\+::ref\+\_\+selector}}$<$ Rhs\+Type $>$\+::type {\bfseries Rhs\+Nested}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a6efa62aaf0a6b2fe68abe79bf3d7d37a}\label{class_eigen_1_1_cwise_binary_op_a6efa62aaf0a6b2fe68abe79bf3d7d37a} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1remove__reference}{internal\+::remove\+\_\+reference}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Lhs\+Nested}} $>$\+::type {\bfseries \+\_\+\+Lhs\+Nested}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_aa942695d2bc32d72cd41cea2f1b337b3}\label{class_eigen_1_1_cwise_binary_op_aa942695d2bc32d72cd41cea2f1b337b3} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1remove__reference}{internal\+::remove\+\_\+reference}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Rhs\+Nested}} $>$\+::type {\bfseries \+\_\+\+Rhs\+Nested}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op_impl}{Eigen\+::\+Cwise\+Binary\+Op\+Impl$<$ Binary\+Op, Lhs\+Type, Rhs\+Type, internal\+::cwise\+\_\+promote\+\_\+storage\+\_\+type$<$ internal\+::traits$<$ Lhs\+Type $>$\+::\+Storage\+Kind, internal\+::traits$<$ Rhs\+Type $>$\+::\+Storage\+Kind, Binary\+Op $>$\+::ret $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__xpr__base}{internal\+::generic\+\_\+xpr\+\_\+base}}$<$ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Cwise\+Binary\+Op}}$<$ Binary\+Op, Lhs\+Type, Rhs\+Type $>$ $>$\+::type {\bfseries Base}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_ae9d8b2409c774e3092fd0c91b9466f2d}\label{class_eigen_1_1_cwise_binary_op_ae9d8b2409c774e3092fd0c91b9466f2d} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE {\bfseries Cwise\+Binary\+Op} (const Lhs \&a\+Lhs, const Rhs \&a\+Rhs, const Binary\+Op \&func=Binary\+Op())
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a50d5ea7e424b772f4d8fa6f91adfefe1}\label{class_eigen_1_1_cwise_binary_op_a50d5ea7e424b772f4d8fa6f91adfefe1} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Index {\bfseries rows} () const
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_af40005c3e6d097eef6d9ace55109ee7d}\label{class_eigen_1_1_cwise_binary_op_af40005c3e6d097eef6d9ace55109ee7d} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Index {\bfseries cols} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \+\_\+\+Lhs\+Nested \& \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op_aab000c36c856a1e9d273a2dfc6750cf5}{lhs}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \+\_\+\+Rhs\+Nested \& \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op_adafabbc7256cc9f01262e6e1830e8e3b}{rhs}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Binary\+Op \& \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op_a44b7a3d56bfb21289610589357ddd546}{functor}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a4cfefb1c4cb3400768bbedc0b8e1df38}\label{class_eigen_1_1_cwise_binary_op_a4cfefb1c4cb3400768bbedc0b8e1df38} 
+\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Lhs\+Nested}} {\bfseries m\+\_\+lhs}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a84828626941184a31082055939ad1f0d}\label{class_eigen_1_1_cwise_binary_op_a84828626941184a31082055939ad1f0d} 
+\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Rhs\+Nested}} {\bfseries m\+\_\+rhs}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a593530139af18ebc8a626820356b83e8}\label{class_eigen_1_1_cwise_binary_op_a593530139af18ebc8a626820356b83e8} 
+const Binary\+Op {\bfseries m\+\_\+functor}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Binary\+Op, typename Lhs, typename Rhs$>$\newline
+class Eigen\+::\+Cwise\+Binary\+Op$<$ Binary\+Op, Lhs, Rhs $>$}
+Generic expression where a coefficient-\/wise binary operator is applied to two expressions. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Binary\+Op} & template functor implementing the operator \\
+\hline
+{\em Lhs\+Type} & the type of the left-\/hand side \\
+\hline
+{\em Rhs\+Type} & the type of the right-\/hand side\\
+\hline
+\end{DoxyTemplParams}
+This class represents an expression where a coefficient-\/wise binary operator is applied to two expressions. It is the return type of binary operators, by which we mean only those binary operators where both the left-\/hand side and the right-\/hand side are Eigen expressions. For example, the return type of matrix1+matrix2 is a \doxylink{class_eigen_1_1_cwise_binary_op}{Cwise\+Binary\+Op}.
+
+Most of the time, this is the only way that it is used, so you typically don\textquotesingle{}t have to name \doxylink{class_eigen_1_1_cwise_binary_op}{Cwise\+Binary\+Op} types explicitly.
+
+\begin{DoxySeeAlso}{See also}
+Matrix\+Base\+::binary\+Expr(const Matrix\+Base$<$\+Other\+Derived$>$ \&,const Custom\+Binary\+Op \&) const, class \doxylink{class_eigen_1_1_cwise_unary_op}{Cwise\+Unary\+Op}, class \doxylink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_eigen_1_1_cwise_binary_op_a44b7a3d56bfb21289610589357ddd546}\index{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$@{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$}!functor@{functor}}
+\index{functor@{functor}!Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$@{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$}}
+\doxysubsubsection{\texorpdfstring{functor()}{functor()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_cwise_binary_op_a44b7a3d56bfb21289610589357ddd546} 
+template$<$typename Binary\+Op , typename Lhs , typename Rhs $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Binary\+Op \& \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Eigen\+::\+Cwise\+Binary\+Op}}$<$ Binary\+Op, Lhs, Rhs $>$\+::functor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the functor representing the binary operation 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_cwise_binary_op_aab000c36c856a1e9d273a2dfc6750cf5}\index{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$@{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$}!lhs@{lhs}}
+\index{lhs@{lhs}!Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$@{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$}}
+\doxysubsubsection{\texorpdfstring{lhs()}{lhs()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_cwise_binary_op_aab000c36c856a1e9d273a2dfc6750cf5} 
+template$<$typename Binary\+Op , typename Lhs , typename Rhs $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \+\_\+\+Lhs\+Nested \& \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Eigen\+::\+Cwise\+Binary\+Op}}$<$ Binary\+Op, Lhs, Rhs $>$\+::lhs (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the left hand side nested expression 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_cwise_binary_op_adafabbc7256cc9f01262e6e1830e8e3b}\index{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$@{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$}!rhs@{rhs}}
+\index{rhs@{rhs}!Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$@{Eigen::CwiseBinaryOp$<$ BinaryOp, Lhs, Rhs $>$}}
+\doxysubsubsection{\texorpdfstring{rhs()}{rhs()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_cwise_binary_op_adafabbc7256cc9f01262e6e1830e8e3b} 
+template$<$typename Binary\+Op , typename Lhs , typename Rhs $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \+\_\+\+Rhs\+Nested \& \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Eigen\+::\+Cwise\+Binary\+Op}}$<$ Binary\+Op, Lhs, Rhs $>$\+::rhs (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the right hand side nested expression 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/Cwise\+Binary\+Op.\+h\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/util/Forward\+Declarations.\+h\end{DoxyCompactItemize}

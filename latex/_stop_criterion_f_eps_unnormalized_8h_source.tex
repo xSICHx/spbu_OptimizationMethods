@@ -1,0 +1,35 @@
+\doxysection{Stop\+Criterion\+FEps\+Unnormalized.\+h}
+\hypertarget{_stop_criterion_f_eps_unnormalized_8h_source}{}\label{_stop_criterion_f_eps_unnormalized_8h_source}\index{OptimizationMethods/StopCriterionFEpsUnnormalized.h@{OptimizationMethods/StopCriterionFEpsUnnormalized.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}StopCriterionEps.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}StopCriterionArea.h"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_stop_criterion_f_eps_unnormalized}{StopCriterionFEpsUnnormalized}}\ :}
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_stop_criterion_eps}{StopCriterionEps}},}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_stop_criterion_area}{StopCriterionArea}}}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{class_stop_criterion_f_eps_unnormalized}{StopCriterionFEpsUnnormalized}}(\textcolor{keywordtype}{size\_t}\ \_n\_max,\ \textcolor{keywordtype}{double}\ \_eps)}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}(\_n\_max),}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_stop_criterion_eps}{StopCriterionEps}}(\_n\_max,\ \_eps),}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_stop_criterion_area}{StopCriterionArea}}(\_n\_max)\ \{\};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{bool}\ check(\mbox{\hyperlink{class_transfer_data}{TransferData}}\&\ data)\textcolor{keyword}{\ const\ override\ }\{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ f\_xn\ =\ *data.getCurrFVal();}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ f\_x\_prev\ =\ *data.getPrevFVal();}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ cond1\ =\ StopCriterion::check(data);}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ cond2\ =\ abs((f\_xn\ -\/\ f\_x\_prev))\ >=\ eps;}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ cond3\ =\ StopCriterionArea::check(data);}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{comment}{//cout\ <<\ cond1\ <<\ "{}\ "{}\ <<\ cond2\ <<\ "{}\ "{}\ <<\ cond3\ <<\ "{}\ "{}\ <<\ endl;}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cond1\ \&\&\ cond2\ \&\&\ cond3;}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{string}\ getName()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}|f\_curr\ -\/\ f\_prev|\ >=\ eps"{}};}
+\DoxyCodeLine{00036\ \ \ \ \ \}}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+
+\end{DoxyCode}

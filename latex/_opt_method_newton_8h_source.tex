@@ -1,0 +1,28 @@
+\doxysection{Opt\+Method\+Newton.\+h}
+\hypertarget{_opt_method_newton_8h_source}{}\label{_opt_method_newton_8h_source}\index{OptimizationMethods/OptMethodNewton.h@{OptimizationMethods/OptMethodNewton.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}OptMethod.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_opt_method_newton}{OptMethodNewton}}\ :}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_opt_method}{OptMethod}}}
+\DoxyCodeLine{00059\ \{}
+\DoxyCodeLine{00060\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{double}\ alpha;}
+\DoxyCodeLine{00062\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00063\ \ \ \ \ \mbox{\hyperlink{class_opt_method_newton_aa7959959567cd6467423248b89538918}{OptMethodNewton}}(\textcolor{keywordtype}{double}\ \_alpha\ =\ 1e-\/2)\ :\ alpha(\_alpha)\ \{\}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_opt_method_newton_a8dcab419fc89ffe60a9b6e2d9605b1ea}{optimize}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ area,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_function}{Function}}\&\ func,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}\&\ crit)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_opt_method_newton_a8dcab419fc89ffe60a9b6e2d9605b1ea}{optimize}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ area,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_function}{Function}}\&\ func,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}\&\ crit,}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ VectorXd\&\ initPoint)\ \textcolor{keyword}{const\ override};}
+\DoxyCodeLine{00068\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{void}\ doStep(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ area,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_function}{Function}}\&\ func,}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}\&\ crit,\ \mbox{\hyperlink{class_transfer_data}{TransferData}}\&\ data)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ setupData(\mbox{\hyperlink{class_transfer_data}{TransferData}}\&\ data,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ area,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_function}{Function}}\&\ func)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ setupData(\mbox{\hyperlink{class_transfer_data}{TransferData}}\&\ data,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ area,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_function}{Function}}\&\ func,\ \textcolor{keyword}{const}\ VectorXd\&\ initPoint)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00073\ \};}
+\DoxyCodeLine{00074\ }
+
+\end{DoxyCode}

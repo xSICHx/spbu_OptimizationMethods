@@ -1,0 +1,95 @@
+\doxysection{Matrix\+Base\+Eigenvalues.\+h}
+\hypertarget{_matrix_base_eigenvalues_8h_source}{}\label{_matrix_base_eigenvalues_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2010\ Jitse\ Niesen\ <jitse@maths.leeds.ac.uk>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_MATRIXBASEEIGENVALUES\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_MATRIXBASEEIGENVALUES\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived,\ \textcolor{keywordtype}{bool}\ IsComplex>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1eigenvalues__selector}{eigenvalues\_selector}}}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{comment}{//\ this\ is\ the\ implementation\ for\ the\ case\ IsComplex\ =\ true}}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{MatrixBase<Derived>::EigenvaluesReturnType}}\ \textcolor{keyword}{const}}
+\DoxyCodeLine{00023\ \ \ run(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>}}\&\ m)}
+\DoxyCodeLine{00024\ \ \ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Derived::PlainObject\ PlainObject;}
+\DoxyCodeLine{00026\ \ \ \ \ PlainObject\ m\_eval(m);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_complex_eigen_solver}{ComplexEigenSolver<PlainObject>}}(m\_eval,\ \textcolor{keyword}{false}).\mbox{\hyperlink{class_eigen_1_1_complex_eigen_solver_a021de3dc1f37d4426a639eea39f9caae}{eigenvalues}}();}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00032\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1eigenvalues__selector}{eigenvalues\_selector}}<Derived,\ false>}
+\DoxyCodeLine{00033\ \{}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{MatrixBase<Derived>::EigenvaluesReturnType}}\ \textcolor{keyword}{const}}
+\DoxyCodeLine{00035\ \ \ run(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>}}\&\ m)}
+\DoxyCodeLine{00036\ \ \ \{}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Derived::PlainObject\ PlainObject;}
+\DoxyCodeLine{00038\ \ \ \ \ PlainObject\ m\_eval(m);}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_eigen_solver}{EigenSolver<PlainObject>}}(m\_eval,\ \textcolor{keyword}{false}).\mbox{\hyperlink{class_eigen_1_1_eigen_solver_ae33fb99005024f07005ab1e409413c5f}{eigenvalues}}();}
+\DoxyCodeLine{00040\ \ \ \}}
+\DoxyCodeLine{00041\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00065\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00066\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{MatrixBase<Derived>::EigenvaluesReturnType}}}
+\DoxyCodeLine{00067\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a30430fa3d5b4e74d312fd4f502ac984d}{MatrixBase<Derived>::eigenvalues}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00068\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Scalar}}\ Scalar;}
+\DoxyCodeLine{00070\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1eigenvalues__selector}{internal::eigenvalues\_selector<Derived,\ NumTraits<Scalar>::IsComplex}}>::run(derived());}
+\DoxyCodeLine{00071\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00087\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ UpLo>\ }
+\DoxyCodeLine{00088\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{SelfAdjointView<MatrixType,\ UpLo>::EigenvaluesReturnType}}}
+\DoxyCodeLine{00089\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_view_ad4f34424b4ea12de9bbc5623cb938b4f}{SelfAdjointView<MatrixType,\ UpLo>::eigenvalues}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00090\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SelfAdjointView<MatrixType,\ UpLo>::PlainObject\ PlainObject;}
+\DoxyCodeLine{00092\ \ \ PlainObject\ thisAsMatrix(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00093\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver<PlainObject>}}(thisAsMatrix,\ \textcolor{keyword}{false}).\mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_aea708eb6ecf37fcaa7d415fec2892d60}{eigenvalues}}();}
+\DoxyCodeLine{00094\ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00120\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00121\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ MatrixBase<Derived>::RealScalar}
+\DoxyCodeLine{00122\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a0ff9bc0b9bea2d0822a2bf3192783102}{MatrixBase<Derived>::operatorNorm}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00123\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00125\ \ \ \textcolor{keyword}{typename}\ Derived::PlainObject\ m\_eval(derived());}
+\DoxyCodeLine{00126\ \ \ \textcolor{comment}{//\ FIXME\ if\ it\ is\ really\ guaranteed\ that\ the\ eigenvalues\ are\ already\ sorted,}}
+\DoxyCodeLine{00127\ \ \ \textcolor{comment}{//\ then\ we\ don't\ need\ to\ compute\ a\ maxCoeff()\ here,\ comparing\ the\ 1st\ and\ last\ ones\ is\ enough.}}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordflow}{return}\ sqrt((m\_eval*m\_eval.adjoint())}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .eval()}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ .template\ selfadjointView<Lower>()}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ .eigenvalues()}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ .maxCoeff()}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ );}
+\DoxyCodeLine{00134\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00151\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ UpLo>}
+\DoxyCodeLine{00152\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_view_a6b2b2f0e39da5d083687ce19e577d291}{SelfAdjointView<MatrixType,\ UpLo>::RealScalar}}}
+\DoxyCodeLine{00153\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_view_a12a7da482e31ec9c517dca92dd7bae61}{SelfAdjointView<MatrixType,\ UpLo>::operatorNorm}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00154\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordflow}{return}\ eigenvalues().cwiseAbs().maxCoeff();}
+\DoxyCodeLine{00156\ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

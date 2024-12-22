@@ -1,0 +1,158 @@
+\doxysection{Global\+Functions.\+h}
+\hypertarget{_global_functions_8h_source}{}\label{_global_functions_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/GlobalFunctions.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/GlobalFunctions.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2010-\/2016\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2010\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_GLOBAL\_FUNCTIONS\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_GLOBAL\_FUNCTIONS\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(NAME,FUNCTOR,DOC\_OP,DOC\_DETAILS)\ \(\backslash\)}}
+\DoxyCodeLine{00017\ \textcolor{preprocessor}{}}
+\DoxyCodeLine{00022\ \ \(\backslash\)}
+\DoxyCodeLine{00023\ \ \ template<typename\ Derived>\ \(\backslash\)}
+\DoxyCodeLine{00024\ \ \ inline\ const\ Eigen::CwiseUnaryOp<Eigen::internal::FUNCTOR<typename\ Derived::Scalar>,\ const\ Derived>\ \(\backslash\)}
+\DoxyCodeLine{00025\ \ \ NAME(const\ Eigen::ArrayBase<Derived>\&\ x);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(NAME,FUNCTOR,DOC\_OP,DOC\_DETAILS)\ \(\backslash\)}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\ \ template<typename\ Derived>\ \(\backslash\)}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\ \ inline\ const\ Eigen::CwiseUnaryOp<Eigen::internal::FUNCTOR<typename\ Derived::Scalar>,\ const\ Derived>\ \(\backslash\)}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\ \ (NAME)(const\ Eigen::ArrayBase<Derived>\&\ x)\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\ \ \ \ return\ Eigen::CwiseUnaryOp<Eigen::internal::FUNCTOR<typename\ Derived::Scalar>,\ const\ Derived>(x.derived());\ \(\backslash\)}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\ \ \}}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_EIGEN\_UNARY(NAME,FUNCTOR)\ \(\backslash\)}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\ \ \(\backslash\)}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\ \ template<typename\ Derived>\ \(\backslash\)}}
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\ \ struct\ NAME\#\#\_retval<ArrayBase<Derived>\ >\ \(\backslash\)}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\ \ \{\ \(\backslash\)}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\ \ \ \ typedef\ const\ Eigen::CwiseUnaryOp<Eigen::internal::FUNCTOR<typename\ Derived::Scalar>,\ const\ Derived>\ type;\ \(\backslash\)}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\ \ \};\ \(\backslash\)}}
+\DoxyCodeLine{00045\ \textcolor{preprocessor}{\ \ template<typename\ Derived>\ \(\backslash\)}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\ \ struct\ NAME\#\#\_impl<ArrayBase<Derived>\ >\ \(\backslash\)}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\ \ \{\ \(\backslash\)}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\ \ \ \ static\ inline\ typename\ NAME\#\#\_retval<ArrayBase<Derived>\ >::type\ run(const\ Eigen::ArrayBase<Derived>\&\ x)\ \(\backslash\)}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\ \ \ \ \{\ \(\backslash\)}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\ \ \ \ \ \ return\ typename\ NAME\#\#\_retval<ArrayBase<Derived>\ >::type(x.derived());\ \(\backslash\)}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\ \ \ \ \}\ \(\backslash\)}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\ \ \};}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{namespace\ }Eigen}
+\DoxyCodeLine{00055\ \{}
+\DoxyCodeLine{00056\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(real,scalar\_real\_op,real\ part,\(\backslash\)sa\ ArrayBase::real)}
+\DoxyCodeLine{00057\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(imag,scalar\_imag\_op,imaginary\ part,\(\backslash\)sa\ ArrayBase::imag)}
+\DoxyCodeLine{00058\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(conj,scalar\_conjugate\_op,complex\ conjugate,\(\backslash\)sa\ ArrayBase::conjugate)}
+\DoxyCodeLine{00059\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(inverse,scalar\_inverse\_op,inverse,\(\backslash\)sa\ ArrayBase::inverse)}
+\DoxyCodeLine{00060\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(sin,scalar\_sin\_op,sine,\(\backslash\)sa\ ArrayBase::sin)}
+\DoxyCodeLine{00061\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(cos,scalar\_cos\_op,cosine,\(\backslash\)sa\ ArrayBase::cos)}
+\DoxyCodeLine{00062\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(tan,scalar\_tan\_op,tangent,\(\backslash\)sa\ ArrayBase::tan)}
+\DoxyCodeLine{00063\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(atan,scalar\_atan\_op,arc-\/tangent,\(\backslash\)sa\ ArrayBase::atan)}
+\DoxyCodeLine{00064\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(asin,scalar\_asin\_op,arc-\/sine,\(\backslash\)sa\ ArrayBase::asin)}
+\DoxyCodeLine{00065\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(acos,scalar\_acos\_op,arc-\/consine,\(\backslash\)sa\ ArrayBase::acos)}
+\DoxyCodeLine{00066\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(sinh,scalar\_sinh\_op,hyperbolic\ sine,\(\backslash\)sa\ ArrayBase::sinh)}
+\DoxyCodeLine{00067\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(cosh,scalar\_cosh\_op,hyperbolic\ cosine,\(\backslash\)sa\ ArrayBase::cosh)}
+\DoxyCodeLine{00068\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(tanh,scalar\_tanh\_op,hyperbolic\ tangent,\(\backslash\)sa\ ArrayBase::tanh)}
+\DoxyCodeLine{00069\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(lgamma,scalar\_lgamma\_op,natural\ logarithm\ of\ the\ gamma\ function,\(\backslash\)sa\ ArrayBase::lgamma)}
+\DoxyCodeLine{00070\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(digamma,scalar\_digamma\_op,derivative\ of\ lgamma,\(\backslash\)sa\ ArrayBase::digamma)}
+\DoxyCodeLine{00071\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(erf,scalar\_erf\_op,error\ function,\(\backslash\)sa\ ArrayBase::erf)}
+\DoxyCodeLine{00072\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(erfc,scalar\_erfc\_op,complement\ error\ function,\(\backslash\)sa\ ArrayBase::erfc)}
+\DoxyCodeLine{00073\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(exp,scalar\_exp\_op,exponential,\(\backslash\)sa\ ArrayBase::exp)}
+\DoxyCodeLine{00074\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(log,scalar\_log\_op,natural\ logarithm,\(\backslash\)sa\ Eigen::log10\ DOXCOMMA\ ArrayBase::log)}
+\DoxyCodeLine{00075\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(log1p,scalar\_log1p\_op,natural\ logarithm\ of\ 1\ plus\ the\ value,\(\backslash\)sa\ ArrayBase::log1p)}
+\DoxyCodeLine{00076\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(log10,scalar\_log10\_op,base\ 10\ logarithm,\(\backslash\)sa\ Eigen::log\ DOXCOMMA\ ArrayBase::log)}
+\DoxyCodeLine{00077\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(abs,scalar\_abs\_op,absolute\ value,\(\backslash\)sa\ ArrayBase::abs\ DOXCOMMA\ MatrixBase::cwiseAbs)}
+\DoxyCodeLine{00078\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(abs2,scalar\_abs2\_op,squared\ absolute\ value,\(\backslash\)sa\ ArrayBase::abs2\ DOXCOMMA\ MatrixBase::cwiseAbs2)}
+\DoxyCodeLine{00079\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(arg,scalar\_arg\_op,complex\ argument,\(\backslash\)sa\ ArrayBase::arg)}
+\DoxyCodeLine{00080\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(sqrt,scalar\_sqrt\_op,square\ root,\(\backslash\)sa\ ArrayBase::sqrt\ DOXCOMMA\ MatrixBase::cwiseSqrt)}
+\DoxyCodeLine{00081\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(rsqrt,scalar\_rsqrt\_op,reciprocal\ square\ root,\(\backslash\)sa\ ArrayBase::rsqrt)}
+\DoxyCodeLine{00082\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(square,scalar\_square\_op,square\ (power\ 2),\(\backslash\)sa\ Eigen::abs2\ DOXCOMMA\ Eigen::pow\ DOXCOMMA\ ArrayBase::square)}
+\DoxyCodeLine{00083\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(cube,scalar\_cube\_op,cube\ (power\ 3),\(\backslash\)sa\ Eigen::pow\ DOXCOMMA\ ArrayBase::cube)}
+\DoxyCodeLine{00084\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(round,scalar\_round\_op,nearest\ integer,\(\backslash\)sa\ Eigen::floor\ DOXCOMMA\ Eigen::ceil\ DOXCOMMA\ ArrayBase::round)}
+\DoxyCodeLine{00085\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(floor,scalar\_floor\_op,nearest\ integer\ not\ greater\ than\ the\ giben\ value,\(\backslash\)sa\ Eigen::ceil\ DOXCOMMA\ ArrayBase::floor)}
+\DoxyCodeLine{00086\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(ceil,scalar\_ceil\_op,nearest\ integer\ not\ less\ than\ the\ giben\ value,\(\backslash\)sa\ Eigen::floor\ DOXCOMMA\ ArrayBase::ceil)}
+\DoxyCodeLine{00087\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(isnan,scalar\_isnan\_op,not-\/a-\/number\ test,\(\backslash\)sa\ Eigen::isinf\ DOXCOMMA\ Eigen::isfinite\ DOXCOMMA\ ArrayBase::isnan)}
+\DoxyCodeLine{00088\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(isinf,scalar\_isinf\_op,infinite\ value\ test,\(\backslash\)sa\ Eigen::isnan\ DOXCOMMA\ Eigen::isfinite\ DOXCOMMA\ ArrayBase::isinf)}
+\DoxyCodeLine{00089\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(isfinite,scalar\_isfinite\_op,finite\ value\ test,\(\backslash\)sa\ Eigen::isinf\ DOXCOMMA\ Eigen::isnan\ DOXCOMMA\ ArrayBase::isfinite)}
+\DoxyCodeLine{00090\ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_UNARY(sign,scalar\_sign\_op,sign\ (or\ 0),\(\backslash\)sa\ ArrayBase::sign)}
+\DoxyCodeLine{00091\ \ \ }
+\DoxyCodeLine{00092\ \ \ }
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived,\textcolor{keyword}{typename}\ ScalarExponent>}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ CwiseBinaryOp<internal::scalar\_pow\_op<Derived::Scalar,ScalarExponent>,Derived,Constant<ScalarExponent>\ >}
+\DoxyCodeLine{00103\ \ \ pow(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<Derived>}}\&\ x,\ \textcolor{keyword}{const}\ ScalarExponent\&\ exponent);}
+\DoxyCodeLine{00104\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00105\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived,\textcolor{keyword}{typename}\ ScalarExponent>}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ internal::enable\_if<\ \ \ !(internal::is\_same<typename\ Derived::Scalar,ScalarExponent>::value)\ \&\&\ EIGEN\_SCALAR\_BINARY\_SUPPORTED(pow,\textcolor{keyword}{typename}\ Derived::Scalar,ScalarExponent),}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ EIGEN\_EXPR\_BINARYOP\_SCALAR\_RETURN\_TYPE(Derived,ScalarExponent,pow)\ >::type}
+\DoxyCodeLine{00108\ \ \ \mbox{\hyperlink{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}{pow}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<Derived>}}\&\ x,\ \textcolor{keyword}{const}\ ScalarExponent\&\ exponent)\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keywordflow}{return}\ x.derived().\mbox{\hyperlink{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}{pow}}(exponent);}
+\DoxyCodeLine{00110\ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ EIGEN\_EXPR\_BINARYOP\_SCALAR\_RETURN\_TYPE(Derived,\textcolor{keyword}{typename}\ Derived::Scalar,pow)}
+\DoxyCodeLine{00114\ \ \ pow(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<Derived>}}\&\ x,\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ Derived::Scalar\&\ exponent)\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keywordflow}{return}\ x.derived().\mbox{\hyperlink{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}{pow}}(exponent);}
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived,\textcolor{keyword}{typename}\ ExponentDerived>}
+\DoxyCodeLine{00131\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Eigen::CwiseBinaryOp<Eigen::internal::scalar\_pow\_op<typename\ Derived::Scalar,\ typename\ ExponentDerived::Scalar>}},\ \textcolor{keyword}{const}\ Derived,\ \textcolor{keyword}{const}\ ExponentDerived>}
+\DoxyCodeLine{00132\ \ \ \mbox{\hyperlink{class_eigen_1_1_array_base_acb769e1ab1d809abb77c7ab98021ad81}{pow}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<Derived>}}\&\ x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<ExponentDerived>}}\&\ exponents)\ }
+\DoxyCodeLine{00133\ \ \ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Eigen::CwiseBinaryOp<Eigen::internal::scalar\_pow\_op<typename\ Derived::Scalar,\ typename\ ExponentDerived::Scalar>}},\ \textcolor{keyword}{const}\ Derived,\ \textcolor{keyword}{const}\ ExponentDerived>(}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ x.derived(),}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ exponents.derived()}
+\DoxyCodeLine{00137\ \ \ \ \ );}
+\DoxyCodeLine{00138\ \ \ \}}
+\DoxyCodeLine{00139\ \ \ }
+\DoxyCodeLine{00153\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00155\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{CwiseBinaryOp<internal::scalar\_pow\_op<Scalar,Derived::Scalar>}},Constant<Scalar>,Derived>}
+\DoxyCodeLine{00156\ \ \ pow(\textcolor{keyword}{const}\ Scalar\&\ x,\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<Derived>}}\&\ x);}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if}{internal::enable\_if}}<\ \ \ !(\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal::is\_same<typename\ Derived::Scalar,Scalar>::value}})\ \&\&\ EIGEN\_SCALAR\_BINARY\_SUPPORTED(pow,Scalar,\textcolor{keyword}{typename}\ Derived::Scalar),}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ EIGEN\_SCALAR\_BINARYOP\_EXPR\_RETURN\_TYPE(Scalar,Derived,pow)\ >::type}
+\DoxyCodeLine{00161\ \ \ \mbox{\hyperlink{class_eigen_1_1_array_base_ac3088e463d75051e771e756f004a1fc4}{pow}}(\textcolor{keyword}{const}\ Scalar\&\ x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<Derived>}}\&\ exponents)}
+\DoxyCodeLine{00162\ \ \ \{}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keywordflow}{return}\ EIGEN\_SCALAR\_BINARYOP\_EXPR\_RETURN\_TYPE(Scalar,Derived,pow)(}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{internal::plain\_constant\_type<Derived,Scalar>::type}}(exponents.rows(),\ exponents.cols(),\ x),\ exponents.derived()\ );}
+\DoxyCodeLine{00165\ \ \ \}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ EIGEN\_SCALAR\_BINARYOP\_EXPR\_RETURN\_TYPE(\textcolor{keyword}{typename}\ Derived::Scalar,Derived,pow)}
+\DoxyCodeLine{00169\ \ \ pow(\textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ Derived::Scalar\&\ x,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen::ArrayBase<Derived>}}\&\ exponents)}
+\DoxyCodeLine{00170\ \ \ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keywordflow}{return}\ EIGEN\_SCALAR\_BINARYOP\_EXPR\_RETURN\_TYPE(\textcolor{keyword}{typename}\ Derived::Scalar,Derived,pow)(}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{internal::plain\_constant\_type<Derived,typename\ Derived::Scalar>::type}}(exponents.rows(),\ exponents.cols(),\ x),\ exponents.derived()\ );}
+\DoxyCodeLine{00173\ \ \ \}}
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{namespace\ }internal}
+\DoxyCodeLine{00178\ \ \ \{}
+\DoxyCodeLine{00179\ \ \ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_EIGEN\_UNARY(real,scalar\_real\_op)}
+\DoxyCodeLine{00180\ \ \ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_EIGEN\_UNARY(imag,scalar\_imag\_op)}
+\DoxyCodeLine{00181\ \ \ \ \ EIGEN\_ARRAY\_DECLARE\_GLOBAL\_EIGEN\_UNARY(abs2,scalar\_abs2\_op)}
+\DoxyCodeLine{00182\ \ \ \}}
+\DoxyCodeLine{00183\ \}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \textcolor{comment}{//\ TODO:\ cleanly\ disable\ those\ functions\ that\ are\ not\ supported\ on\ Array\ (numext::real\_ref,\ internal::random,\ internal::isApprox...)}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_GLOBAL\_FUNCTIONS\_H}}
+
+\end{DoxyCode}

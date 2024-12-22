@@ -1,0 +1,291 @@
+\doxysection{Householder\+QR.\+h}
+\hypertarget{_householder_q_r_8h_source}{}\label{_householder_q_r_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/QR/HouseholderQR.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/QR/HouseholderQR.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ Copyright\ (C)\ 2010\ Vincent\ Lejeune}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_QR\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ EIGEN\_QR\_H}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_householder_q_r}{HouseholderQR}}}
+\DoxyCodeLine{00045\ \{}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{typedef}\ \_MatrixType\ MatrixType;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ RowsAtCompileTime\ =\ MatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ ColsAtCompileTime\ =\ MatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ MaxRowsAtCompileTime\ =\ MatrixType::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ MatrixType::MaxColsAtCompileTime}
+\DoxyCodeLine{00054\ \ \ \ \ \};}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ Scalar;}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ RealScalar;}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{comment}{//\ FIXME\ should\ be\ int}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}<Scalar,\ RowsAtCompileTime,\ RowsAtCompileTime,\ (MatrixType::Flags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}})\ ?\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}}\ :\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{ColMajor}},\ MaxRowsAtCompileTime,\ MaxRowsAtCompileTime>\ \mbox{\hyperlink{class_eigen_1_1_matrix}{MatrixQType}};}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::plain\_diag\_type<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{HCoeffsType}};}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::plain\_row\_type<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RowVectorType}};}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence<MatrixType,typename\ internal::remove\_all<typename\ HCoeffsType::ConjugateReturnType>::type}}>\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequenceType}};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a974adb10a0e066057aeb3b360df68380}{HouseholderQR}}()\ :\ m\_qr(),\ m\_hCoeffs(),\ m\_temp(),\ m\_isInitialized(false)\ \{\}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00078\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a1087457610c53e1574de521a51de0cd3}{HouseholderQR}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ :\ m\_qr(rows,\ cols),}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ m\_hCoeffs((std::min)(rows,cols)),}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \ \ m\_temp(cols),}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ m\_isInitialized(false)\ \{\}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_afa7cfb4faa89195c4dc8d196924c8230}{HouseholderQR}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ :\ m\_qr(matrix.rows(),\ matrix.cols()),}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ m\_hCoeffs((std::min)(matrix.rows(),matrix.cols())),}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ m\_temp(matrix.cols()),}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00102\ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ compute(matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a95a53f8479ee147d7b0ccab71c13e45d}{HouseholderQR}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ :\ m\_qr(matrix.derived()),}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ m\_hCoeffs((std::min)(matrix.rows(),matrix.cols())),}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ m\_temp(matrix.cols()),}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00120\ \ \ \ \ \{}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a3a16530338a734971fc45efb0ef9ac94}{computeInPlace}}();}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<HouseholderQR,\ Rhs>}}}
+\DoxyCodeLine{00140\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a78648a7de3c47bda4985fbaf25ad4502}{solve}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Rhs>}}\&\ b)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00141\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}HouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<HouseholderQR,\ Rhs>}}(*\textcolor{keyword}{this},\ b.derived());}
+\DoxyCodeLine{00144\ \ \ \ \ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00154\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequenceType}}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_affd506c10ef2d25f56e7b1f9f25ff885}{householderQ}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00155\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}HouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequenceType}}(m\_qr,\ m\_hCoeffs.conjugate());}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{const}\ MatrixType\&\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a42552dd4708954432161da95af4442ba}{matrixQR}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00164\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}HouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_qr;}
+\DoxyCodeLine{00167\ \ \ \ \ \}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00170\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_q_r}{HouseholderQR}}\&\ compute(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)\ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ m\_qr\ =\ matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a3a16530338a734971fc45efb0ef9ac94}{computeInPlace}}();}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00189\ \ \ \ \ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_aaf4ef26c0b7affc91431ec59c92d64c3}{absDeterminant}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_af61b6dbef34fc51c825182b16dc43ca1}{logAbsDeterminant}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_qr.rows();\ \}}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_qr.cols();\ \}}
+\DoxyCodeLine{00207\ \ \ \ \ }
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{HCoeffsType}}\&\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a0e140bdf5fb504220cafe78e2fab96f6}{hCoeffs}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_hCoeffs;\ \}}
+\DoxyCodeLine{00213\ \ \ \ \ }
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00216\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keywordtype}{void}\ \_solve\_impl(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00221\ \ \ \ \ }
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ check\_template\_parameters()}
+\DoxyCodeLine{00223\ \ \ \ \ \{}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_NON\_INTEGER(Scalar);}
+\DoxyCodeLine{00225\ \ \ \ \ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a3a16530338a734971fc45efb0ef9ac94}{computeInPlace}}();}
+\DoxyCodeLine{00228\ \ \ \ \ }
+\DoxyCodeLine{00229\ \ \ \ \ MatrixType\ m\_qr;}
+\DoxyCodeLine{00230\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{HCoeffsType}}\ m\_hCoeffs;}
+\DoxyCodeLine{00231\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RowVectorType}}\ m\_temp;}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_isInitialized;}
+\DoxyCodeLine{00233\ \};}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00236\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_aaf4ef26c0b7affc91431ec59c92d64c3}{HouseholderQR<MatrixType>::absDeterminant}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00237\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00239\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}HouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00240\ \ \ eigen\_assert(m\_qr.rows()\ ==\ m\_qr.cols()\ \&\&\ \textcolor{stringliteral}{"{}You\ can't\ take\ the\ determinant\ of\ a\ non-\/square\ matrix!"{}});}
+\DoxyCodeLine{00241\ \ \ \textcolor{keywordflow}{return}\ abs(m\_qr.diagonal().prod());}
+\DoxyCodeLine{00242\ \}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00245\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_af61b6dbef34fc51c825182b16dc43ca1}{HouseholderQR<MatrixType>::logAbsDeterminant}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00246\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00247\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}HouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00248\ \ \ eigen\_assert(m\_qr.rows()\ ==\ m\_qr.cols()\ \&\&\ \textcolor{stringliteral}{"{}You\ can't\ take\ the\ determinant\ of\ a\ non-\/square\ matrix!"{}});}
+\DoxyCodeLine{00249\ \ \ \textcolor{keywordflow}{return}\ m\_qr.diagonal().cwiseAbs().array().log().sum();}
+\DoxyCodeLine{00250\ \}}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00255\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixQR,\ \textcolor{keyword}{typename}\ HCoeffs>}
+\DoxyCodeLine{00256\ \textcolor{keywordtype}{void}\ householder\_qr\_inplace\_unblocked(MatrixQR\&\ mat,\ HCoeffs\&\ hCoeffs,\ \textcolor{keyword}{typename}\ MatrixQR::Scalar*\ tempData\ =\ 0)}
+\DoxyCodeLine{00257\ \{}
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixQR::Scalar\ Scalar;}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixQR::RealScalar\ RealScalar;}
+\DoxyCodeLine{00260\ \ \ Index\ rows\ =\ mat.rows();}
+\DoxyCodeLine{00261\ \ \ Index\ cols\ =\ mat.cols();}
+\DoxyCodeLine{00262\ \ \ Index\ size\ =\ (std::min)(rows,cols);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ eigen\_assert(hCoeffs.size()\ ==\ size);}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,MatrixQR::ColsAtCompileTime,1>}}\ TempType;}
+\DoxyCodeLine{00267\ \ \ TempType\ tempVector;}
+\DoxyCodeLine{00268\ \ \ \textcolor{keywordflow}{if}(tempData==0)}
+\DoxyCodeLine{00269\ \ \ \{}
+\DoxyCodeLine{00270\ \ \ \ \ tempVector.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a99d9054ee2d5a40c6e00ded0265e9cea}{resize}}(cols);}
+\DoxyCodeLine{00271\ \ \ \ \ tempData\ =\ tempVector.data();}
+\DoxyCodeLine{00272\ \ \ \}}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \ \ \textcolor{keywordflow}{for}(Index\ k\ =\ 0;\ k\ <\ size;\ ++k)}
+\DoxyCodeLine{00275\ \ \ \{}
+\DoxyCodeLine{00276\ \ \ \ \ Index\ remainingRows\ =\ rows\ -\/\ k;}
+\DoxyCodeLine{00277\ \ \ \ \ Index\ remainingCols\ =\ cols\ -\/\ k\ -\/\ 1;}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \ \ RealScalar\ beta;}
+\DoxyCodeLine{00280\ \ \ \ \ mat.col(k).tail(remainingRows).makeHouseholderInPlace(hCoeffs.coeffRef(k),\ beta);}
+\DoxyCodeLine{00281\ \ \ \ \ mat.coeffRef(k,k)\ =\ beta;}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \ \ \textcolor{comment}{//\ apply\ H\ to\ remaining\ part\ of\ m\_qr\ from\ the\ left}}
+\DoxyCodeLine{00284\ \ \ \ \ mat.bottomRightCorner(remainingRows,\ remainingCols)}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ .applyHouseholderOnTheLeft(mat.col(k).tail(remainingRows-\/1),\ hCoeffs.coeffRef(k),\ tempData+k+1);}
+\DoxyCodeLine{00286\ \ \ \}}
+\DoxyCodeLine{00287\ \}}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00290\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixQR,\ \textcolor{keyword}{typename}\ HCoeffs,}
+\DoxyCodeLine{00291\ \ \ \textcolor{keyword}{typename}\ MatrixQRScalar\ =\ \textcolor{keyword}{typename}\ MatrixQR::Scalar,}
+\DoxyCodeLine{00292\ \ \ \textcolor{keywordtype}{bool}\ InnerStrideIsOne\ =\ (MatrixQR::InnerStrideAtCompileTime\ ==\ 1\ \&\&\ HCoeffs::InnerStrideAtCompileTime\ ==\ 1)>}
+\DoxyCodeLine{00293\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1householder__qr__inplace__blocked}{householder\_qr\_inplace\_blocked}}}
+\DoxyCodeLine{00294\ \{}
+\DoxyCodeLine{00295\ \ \ \textcolor{comment}{//\ This\ is\ specialized\ for\ MKL-\/supported\ Scalar\ types\ in\ HouseholderQR\_MKL.h}}
+\DoxyCodeLine{00296\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(MatrixQR\&\ mat,\ HCoeffs\&\ hCoeffs,\ Index\ maxBlockSize=32,}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ MatrixQR::Scalar*\ tempData\ =\ 0)}
+\DoxyCodeLine{00298\ \ \ \{}
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixQR::Scalar\ Scalar;}
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixQR,Dynamic,Dynamic>}}\ BlockType;}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \ \ \ \ Index\ rows\ =\ mat.rows();}
+\DoxyCodeLine{00303\ \ \ \ \ Index\ cols\ =\ mat.cols();}
+\DoxyCodeLine{00304\ \ \ \ \ Index\ size\ =\ (std::min)(rows,\ cols);}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,Dynamic,1,ColMajor,MatrixQR::MaxColsAtCompileTime,1>}}\ TempType;}
+\DoxyCodeLine{00307\ \ \ \ \ TempType\ tempVector;}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{if}(tempData==0)}
+\DoxyCodeLine{00309\ \ \ \ \ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ tempVector.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a99d9054ee2d5a40c6e00ded0265e9cea}{resize}}(cols);}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ tempData\ =\ tempVector.data();}
+\DoxyCodeLine{00312\ \ \ \ \ \}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \ \ Index\ blockSize\ =\ (std::min)(maxBlockSize,size);}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \ \ \ \ Index\ k\ =\ 0;}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keywordflow}{for}\ (k\ =\ 0;\ k\ <\ size;\ k\ +=\ blockSize)}
+\DoxyCodeLine{00318\ \ \ \ \ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ Index\ bs\ =\ (std::min)(size-\/k,blockSize);\ \ \textcolor{comment}{//\ actual\ size\ of\ the\ block}}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ Index\ tcols\ =\ cols\ -\/\ k\ -\/\ bs;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ trailing\ columns}}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ Index\ brows\ =\ rows-\/k;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ rows\ of\ the\ block}}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \textcolor{comment}{//\ partition\ the\ matrix:}}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ A00\ |\ A01\ |\ A02}}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{comment}{//\ mat\ \ =\ A10\ |\ A11\ |\ A12}}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ A20\ |\ A21\ |\ A22}}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \textcolor{comment}{//\ and\ performs\ the\ qr\ dec\ of\ [A11\string^T\ A12\string^T]\string^T}}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \textcolor{comment}{//\ and\ update\ [A21\string^T\ A22\string^T]\string^T\ using\ level\ 3\ operations.}}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \textcolor{comment}{//\ Finally,\ the\ algorithm\ continue\ on\ A22}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \ \ \ \ \ \ BlockType\ A11\_21\ =\ mat.block(k,k,brows,bs);}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{Block<HCoeffs,Dynamic,1>}}\ hCoeffsSegment\ =\ hCoeffs.segment(k,bs);}
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ \ \ \ \ \ \ householder\_qr\_inplace\_unblocked(A11\_21,\ hCoeffsSegment,\ tempData);}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(tcols)}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ BlockType\ A21\_22\ =\ mat.block(k,k+bs,brows,tcols);}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ apply\_block\_householder\_on\_the\_left(A21\_22,A11\_21,hCoeffsSegment,\ \textcolor{keyword}{false});\ \textcolor{comment}{//\ false\ ==\ backward}}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00341\ \ \ \ \ \}}
+\DoxyCodeLine{00342\ \ \ \}}
+\DoxyCodeLine{00343\ \};}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00348\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>}
+\DoxyCodeLine{00349\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00350\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r}{HouseholderQR<\_MatrixType>::\_solve\_impl}}(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00351\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00352\ \ \ \textcolor{keyword}{const}\ Index\ rank\ =\ (std::min)(rows(),\ cols());}
+\DoxyCodeLine{00353\ \ \ eigen\_assert(rhs.rows()\ ==\ rows());}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{typename}\ RhsType::PlainObject\ c(rhs);}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \ \ \textcolor{comment}{//\ Note\ that\ the\ matrix\ Q\ =\ H\_0\string^*\ H\_1\string^*...\ so\ its\ inverse\ is\ Q\string^*\ =\ (H\_0\ H\_1\ ...)\string^T}}
+\DoxyCodeLine{00358\ \ \ c.applyOnTheLeft(householderSequence(}
+\DoxyCodeLine{00359\ \ \ \ \ m\_qr.leftCols(rank),}
+\DoxyCodeLine{00360\ \ \ \ \ m\_hCoeffs.head(rank)).transpose()}
+\DoxyCodeLine{00361\ \ \ );}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \ \ m\_qr.topLeftCorner(rank,\ rank)}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ .template\ triangularView<Upper>()}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ .solveInPlace(c.topRows(rank));}
+\DoxyCodeLine{00366\ }
+\DoxyCodeLine{00367\ \ \ dst.topRows(rank)\ =\ c.topRows(rank);}
+\DoxyCodeLine{00368\ \ \ dst.bottomRows(cols()-\/rank).setZero();}
+\DoxyCodeLine{00369\ \}}
+\DoxyCodeLine{00370\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00371\ }
+\DoxyCodeLine{00378\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00379\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r_a3a16530338a734971fc45efb0ef9ac94}{HouseholderQR<MatrixType>::computeInPlace}}()}
+\DoxyCodeLine{00380\ \{}
+\DoxyCodeLine{00381\ \ \ check\_template\_parameters();}
+\DoxyCodeLine{00382\ \ \ }
+\DoxyCodeLine{00383\ \ \ Index\ rows\ =\ m\_qr.rows();}
+\DoxyCodeLine{00384\ \ \ Index\ cols\ =\ m\_qr.cols();}
+\DoxyCodeLine{00385\ \ \ Index\ size\ =\ (std::min)(rows,cols);}
+\DoxyCodeLine{00386\ }
+\DoxyCodeLine{00387\ \ \ m\_hCoeffs.resize(size);}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00389\ \ \ m\_temp.resize(cols);}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1householder__qr__inplace__blocked}{internal::householder\_qr\_inplace\_blocked<MatrixType,\ HCoeffsType>::run}}(m\_qr,\ m\_hCoeffs,\ 48,\ m\_temp.data());}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00394\ \}}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00400\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00401\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r}{HouseholderQR<typename\ MatrixBase<Derived>::PlainObject}}>}
+\DoxyCodeLine{00402\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a9a9377aab1cea26db5f25bab7e682f8f}{MatrixBase<Derived>::householderQr}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00403\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00404\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_householder_q_r}{HouseholderQR<PlainObject>}}(eval());}
+\DoxyCodeLine{00405\ \}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_QR\_H}}
+
+\end{DoxyCode}

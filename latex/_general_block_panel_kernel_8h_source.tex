@@ -1,0 +1,2124 @@
+\doxysection{General\+Block\+Panel\+Kernel.\+h}
+\hypertarget{_general_block_panel_kernel_8h_source}{}\label{_general_block_panel_kernel_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/products/GeneralBlockPanelKernel.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/products/GeneralBlockPanelKernel.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_GENERAL\_BLOCK\_PANEL\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_GENERAL\_BLOCK\_PANEL\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_LhsScalar,\ \textcolor{keyword}{typename}\ \_RhsScalar,\ \textcolor{keywordtype}{bool}\ \_ConjLhs=false,\ \textcolor{keywordtype}{bool}\ \_ConjRhs=false>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }gebp\_traits;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{inline}\ std::ptrdiff\_t\ manage\_caching\_sizes\_helper(std::ptrdiff\_t\ a,\ std::ptrdiff\_t\ b)}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ \textcolor{keywordflow}{return}\ a<=0\ ?\ b\ :\ a;}
+\DoxyCodeLine{00026\ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#if\ EIGEN\_ARCH\_i386\_OR\_x86\_64}}
+\DoxyCodeLine{00029\ \textcolor{keyword}{const}\ std::ptrdiff\_t\ defaultL1CacheSize\ =\ 32*1024;}
+\DoxyCodeLine{00030\ \textcolor{keyword}{const}\ std::ptrdiff\_t\ defaultL2CacheSize\ =\ 256*1024;}
+\DoxyCodeLine{00031\ \textcolor{keyword}{const}\ std::ptrdiff\_t\ defaultL3CacheSize\ =\ 2*1024*1024;}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00033\ \textcolor{keyword}{const}\ std::ptrdiff\_t\ defaultL1CacheSize\ =\ 16*1024;}
+\DoxyCodeLine{00034\ \textcolor{keyword}{const}\ std::ptrdiff\_t\ defaultL2CacheSize\ =\ 512*1024;}
+\DoxyCodeLine{00035\ \textcolor{keyword}{const}\ std::ptrdiff\_t\ defaultL3CacheSize\ =\ 512*1024;}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_cache_sizes}{CacheSizes}}\ \{}
+\DoxyCodeLine{00040\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_cache_sizes}{CacheSizes}}():\ m\_l1(-\/1),m\_l2(-\/1),m\_l3(-\/1)\ \{}
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{int}\ l1CacheSize,\ l2CacheSize,\ l3CacheSize;}
+\DoxyCodeLine{00042\ \ \ \ \ queryCacheSizes(l1CacheSize,\ l2CacheSize,\ l3CacheSize);}
+\DoxyCodeLine{00043\ \ \ \ \ m\_l1\ =\ manage\_caching\_sizes\_helper(l1CacheSize,\ defaultL1CacheSize);}
+\DoxyCodeLine{00044\ \ \ \ \ m\_l2\ =\ manage\_caching\_sizes\_helper(l2CacheSize,\ defaultL2CacheSize);}
+\DoxyCodeLine{00045\ \ \ \ \ m\_l3\ =\ manage\_caching\_sizes\_helper(l3CacheSize,\ defaultL3CacheSize);}
+\DoxyCodeLine{00046\ \ \ \}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \ \ std::ptrdiff\_t\ m\_l1;}
+\DoxyCodeLine{00049\ \ \ std::ptrdiff\_t\ m\_l2;}
+\DoxyCodeLine{00050\ \ \ std::ptrdiff\_t\ m\_l3;}
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ manage\_caching\_sizes(Action\ action,\ std::ptrdiff\_t*\ l1,\ std::ptrdiff\_t*\ l2,\ std::ptrdiff\_t*\ l3)}
+\DoxyCodeLine{00056\ \{}
+\DoxyCodeLine{00057\ \ \ \textcolor{keyword}{static}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_cache_sizes}{CacheSizes}}\ m\_cacheSizes;}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \textcolor{keywordflow}{if}(action==SetAction)}
+\DoxyCodeLine{00060\ \ \ \{}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{comment}{//\ set\ the\ cpu\ cache\ size\ and\ cache\ all\ block\ sizes\ from\ a\ global\ cache\ size\ in\ byte}}
+\DoxyCodeLine{00062\ \ \ \ \ eigen\_internal\_assert(l1!=0\ \&\&\ l2!=0);}
+\DoxyCodeLine{00063\ \ \ \ \ m\_cacheSizes.m\_l1\ =\ *l1;}
+\DoxyCodeLine{00064\ \ \ \ \ m\_cacheSizes.m\_l2\ =\ *l2;}
+\DoxyCodeLine{00065\ \ \ \ \ m\_cacheSizes.m\_l3\ =\ *l3;}
+\DoxyCodeLine{00066\ \ \ \}}
+\DoxyCodeLine{00067\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(action==GetAction)}
+\DoxyCodeLine{00068\ \ \ \{}
+\DoxyCodeLine{00069\ \ \ \ \ eigen\_internal\_assert(l1!=0\ \&\&\ l2!=0);}
+\DoxyCodeLine{00070\ \ \ \ \ *l1\ =\ m\_cacheSizes.m\_l1;}
+\DoxyCodeLine{00071\ \ \ \ \ *l2\ =\ m\_cacheSizes.m\_l2;}
+\DoxyCodeLine{00072\ \ \ \ \ *l3\ =\ m\_cacheSizes.m\_l3;}
+\DoxyCodeLine{00073\ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00075\ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ eigen\_internal\_assert(\textcolor{keyword}{false});}
+\DoxyCodeLine{00077\ \ \ \}}
+\DoxyCodeLine{00078\ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \textcolor{comment}{/*\ Helper\ for\ computeProductBlockingSizes.}}
+\DoxyCodeLine{00081\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00082\ \textcolor{comment}{\ *\ Given\ a\ m\ x\ k\ times\ k\ x\ n\ matrix\ product\ of\ scalar\ types\ \(\backslash\)c\ LhsScalar\ and\ \(\backslash\)c\ RhsScalar,}}
+\DoxyCodeLine{00083\ \textcolor{comment}{\ *\ this\ function\ computes\ the\ blocking\ size\ parameters\ along\ the\ respective\ dimensions}}
+\DoxyCodeLine{00084\ \textcolor{comment}{\ *\ for\ matrix\ products\ and\ related\ algorithms.\ The\ blocking\ sizes\ depends\ on\ various}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ *\ parameters:}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ *\ -\/\ the\ L1\ and\ L2\ cache\ sizes,}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ *\ -\/\ the\ register\ level\ blocking\ sizes\ defined\ by\ gebp\_traits,}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ *\ -\/\ the\ number\ of\ scalars\ that\ fit\ into\ a\ packet\ (when\ vectorization\ is\ enabled).}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ *\ \(\backslash\)sa\ setCpuCacheSizes\ */}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsScalar,\ \textcolor{keyword}{typename}\ RhsScalar,\ \textcolor{keywordtype}{int}\ KcFactor,\ \textcolor{keyword}{typename}\ Index>}
+\DoxyCodeLine{00093\ \textcolor{keywordtype}{void}\ evaluateProductBlockingSizesHeuristic(Index\&\ k,\ Index\&\ m,\ Index\&\ n,\ Index\ num\_threads\ =\ 1)}
+\DoxyCodeLine{00094\ \{}
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{typedef}\ gebp\_traits<LhsScalar,RhsScalar>\ Traits;}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \ \ \textcolor{comment}{//\ Explanations:}}
+\DoxyCodeLine{00098\ \ \ \textcolor{comment}{//\ Let's\ recall\ that\ the\ product\ algorithms\ form\ mc\ x\ kc\ vertical\ panels\ A'\ on\ the\ lhs\ and}}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//\ kc\ x\ nc\ blocks\ B'\ on\ the\ rhs.\ B'\ has\ to\ fit\ into\ L2/L3\ cache.\ Moreover,\ A'\ is\ processed}}
+\DoxyCodeLine{00100\ \ \ \textcolor{comment}{//\ per\ mr\ x\ kc\ horizontal\ small\ panels\ where\ mr\ is\ the\ blocking\ size\ along\ the\ m\ dimension}}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ at\ the\ register\ level.\ This\ small\ horizontal\ panel\ has\ to\ stay\ within\ L1\ cache.}}
+\DoxyCodeLine{00102\ \ \ std::ptrdiff\_t\ l1,\ l2,\ l3;}
+\DoxyCodeLine{00103\ \ \ manage\_caching\_sizes(GetAction,\ \&l1,\ \&l2,\ \&l3);}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00105\ \ \ \textcolor{keywordflow}{if}\ (num\_threads\ >\ 1)\ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::ResScalar\ ResScalar;}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ kdiv\ =\ KcFactor\ *\ (Traits::mr\ *\ \textcolor{keyword}{sizeof}(LhsScalar)\ +\ Traits::nr\ *\ \textcolor{keyword}{sizeof}(RhsScalar)),}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ ksub\ =\ Traits::mr\ *\ Traits::nr\ *\ \textcolor{keyword}{sizeof}(ResScalar),}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ kr\ =\ 8,}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ mr\ =\ Traits::mr,}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ nr\ =\ Traits::nr}
+\DoxyCodeLine{00113\ \ \ \ \ \};}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{comment}{//\ Increasing\ k\ gives\ us\ more\ time\ to\ prefetch\ the\ content\ of\ the\ "{}C"{}}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//\ registers.\ However\ once\ the\ latency\ is\ hidden\ there\ is\ no\ point\ in}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{comment}{//\ increasing\ the\ value\ of\ k,\ so\ we'll\ cap\ it\ at\ 320\ (value\ determined}}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{comment}{//\ experimentally).}}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{const}\ Index\ k\_cache\ =\ (numext::mini<Index>)((l1-\/ksub)/kdiv,\ 320);}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordflow}{if}\ (k\_cache\ <\ k)\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ k\ =\ k\_cache\ -\/\ (k\_cache\ \%\ kr);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ eigen\_internal\_assert(k\ >\ 0);}
+\DoxyCodeLine{00122\ \ \ \ \ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{const}\ Index\ n\_cache\ =\ (l2-\/l1)\ /\ (nr\ *\ \textcolor{keyword}{sizeof}(RhsScalar)\ *\ k);}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{const}\ Index\ n\_per\_thread\ =\ numext::div\_ceil(n,\ num\_threads);}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordflow}{if}\ (n\_cache\ <=\ n\_per\_thread)\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{comment}{//\ Don't\ exceed\ the\ capacity\ of\ the\ l2\ cache.}}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ eigen\_internal\_assert(n\_cache\ >=\ \textcolor{keyword}{static\_cast<}Index\textcolor{keyword}{>}(nr));}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ n\ =\ n\_cache\ -\/\ (n\_cache\ \%\ nr);}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ eigen\_internal\_assert(n\ >\ 0);}
+\DoxyCodeLine{00131\ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ n\ =\ (numext::mini<Index>)(n,\ (n\_per\_thread\ +\ nr\ -\/\ 1)\ -\/\ ((n\_per\_thread\ +\ nr\ -\/\ 1)\ \%\ nr));}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{keywordflow}{if}\ (l3\ >\ l2)\ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{comment}{//\ l3\ is\ shared\ between\ all\ cores,\ so\ we'll\ give\ each\ thread\ its\ own\ chunk\ of\ l3.}}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ m\_cache\ =\ (l3-\/l2)\ /\ (\textcolor{keyword}{sizeof}(LhsScalar)\ *\ k\ *\ num\_threads);}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ m\_per\_thread\ =\ numext::div\_ceil(m,\ num\_threads);}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(m\_cache\ <\ m\_per\_thread\ \&\&\ m\_cache\ >=\ \textcolor{keyword}{static\_cast<}Index\textcolor{keyword}{>}(mr))\ \{}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ m\ =\ m\_cache\ -\/\ (m\_cache\ \%\ mr);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ eigen\_internal\_assert(m\ >\ 0);}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ m\ =\ (numext::mini<Index>)(m,\ (m\_per\_thread\ +\ mr\ -\/\ 1)\ -\/\ ((m\_per\_thread\ +\ mr\ -\/\ 1)\ \%\ mr));}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{comment}{//\ In\ unit\ tests\ we\ do\ not\ want\ to\ use\ extra\ large\ matrices,}}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{comment}{//\ so\ we\ reduce\ the\ cache\ size\ to\ check\ the\ blocking\ strategy\ is\ not\ flawed}}
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_DEBUG\_SMALL\_PRODUCT\_BLOCKS}}
+\DoxyCodeLine{00151\ \ \ \ \ l1\ =\ 9*1024;}
+\DoxyCodeLine{00152\ \ \ \ \ l2\ =\ 32*1024;}
+\DoxyCodeLine{00153\ \ \ \ \ l3\ =\ 512*1024;}
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{comment}{//\ Early\ return\ for\ small\ problems\ because\ the\ computation\ below\ are\ time\ consuming\ for\ small\ problems.}}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{comment}{//\ Perhaps\ it\ would\ make\ more\ sense\ to\ consider\ k*n*m??}}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{comment}{//\ Note\ that\ for\ very\ tiny\ problem,\ this\ function\ should\ be\ bypassed\ anyway}}
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{comment}{//\ because\ we\ use\ the\ coefficient-\/based\ implementation\ for\ them.}}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keywordflow}{if}((numext::maxi)(k,(numext::maxi)(m,n))<48)}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::ResScalar\ ResScalar;}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ k\_peeling\ =\ 8,}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ k\_div\ =\ KcFactor\ *\ (Traits::mr\ *\ \textcolor{keyword}{sizeof}(LhsScalar)\ +\ Traits::nr\ *\ \textcolor{keyword}{sizeof}(RhsScalar)),}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ k\_sub\ =\ Traits::mr\ *\ Traits::nr\ *\ \textcolor{keyword}{sizeof}(ResScalar)}
+\DoxyCodeLine{00168\ \ \ \ \ \};}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 1st\ level\ of\ blocking\ on\ L1,\ yields\ kc\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{comment}{//\ Blocking\ on\ the\ third\ dimension\ (i.e.,\ k)\ is\ chosen\ so\ that\ an\ horizontal\ panel}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{comment}{//\ of\ size\ mr\ x\ kc\ of\ the\ lhs\ plus\ a\ vertical\ panel\ of\ kc\ x\ nr\ of\ the\ rhs\ both\ fits\ within\ L1\ cache.}}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{comment}{//\ We\ also\ include\ a\ register-\/level\ block\ of\ the\ result\ (mx\ x\ nr).}}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{comment}{//\ (In\ an\ ideal\ world\ only\ the\ lhs\ panel\ would\ stay\ in\ L1)}}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{comment}{//\ Moreover,\ kc\ has\ to\ be\ a\ multiple\ of\ 8\ to\ be\ compatible\ with\ loop\ peeling,\ leading\ to\ a\ maximum\ blocking\ size\ of:}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{const}\ Index\ max\_kc\ =\ numext::maxi<Index>(((l1-\/k\_sub)/k\_div)\ \&\ (\string~(k\_peeling-\/1)),1);}
+\DoxyCodeLine{00178\ \ \ \ \ \textcolor{keyword}{const}\ Index\ old\_k\ =\ k;}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{if}(k>max\_kc)}
+\DoxyCodeLine{00180\ \ \ \ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \textcolor{comment}{//\ We\ are\ really\ blocking\ on\ the\ third\ dimension:}}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \textcolor{comment}{//\ -\/>\ reduce\ blocking\ size\ to\ make\ sure\ the\ last\ block\ is\ as\ large\ as\ possible}}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ while\ keeping\ the\ same\ number\ of\ sweeps\ over\ the\ result.}}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ k\ =\ (k\%max\_kc)==0\ ?\ max\_kc}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ max\_kc\ -\/\ k\_peeling\ *\ ((max\_kc-\/1-\/(k\%max\_kc))/(k\_peeling*(k/max\_kc+1)));}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ \ \ \ \ eigen\_internal\_assert(((old\_k/k)\ ==\ (old\_k/max\_kc))\ \&\&\ \textcolor{stringliteral}{"{}the\ number\ of\ sweeps\ has\ to\ remain\ the\ same"{}});}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/\ 2nd\ level\ of\ blocking\ on\ max(L2,L3),\ yields\ nc\ -\/-\/-\/-\/}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \ \ \textcolor{comment}{//\ TODO\ find\ a\ reliable\ way\ to\ get\ the\ actual\ amount\ of\ cache\ per\ core\ to\ use\ for\ 2nd\ level\ blocking,\ that\ is:}}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ actual\_l2\ =\ max(l2,\ l3/nb\_core\_sharing\_l3)}}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{comment}{//\ The\ number\ below\ is\ quite\ conservative:\ it\ is\ better\ to\ underestimate\ the\ cache\ size\ rather\ than\ overestimating\ it)}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{comment}{//\ For\ instance,\ it\ corresponds\ to\ 6MB\ of\ L3\ shared\ among\ 4\ cores.}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ EIGEN\_DEBUG\_SMALL\_PRODUCT\_BLOCKS}}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keyword}{const}\ Index\ actual\_l2\ =\ l3;}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{const}\ Index\ actual\_l2\ =\ 1572864;\ \textcolor{comment}{//\ ==\ 1.5\ MB}}
+\DoxyCodeLine{00200\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{comment}{//\ Here,\ nc\ is\ chosen\ such\ that\ a\ block\ of\ kc\ x\ nc\ of\ the\ rhs\ fit\ within\ half\ of\ L2.}}
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{comment}{//\ The\ second\ half\ is\ implicitly\ reserved\ to\ access\ the\ result\ and\ lhs\ coefficients.}}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{comment}{//\ When\ k<max\_kc,\ then\ nc\ can\ arbitrarily\ growth.\ In\ practice,\ it\ seems\ to\ be\ fruitful}}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{comment}{//\ to\ limit\ this\ growth:\ we\ bound\ nc\ to\ growth\ by\ a\ factor\ x1.5.}}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{comment}{//\ However,\ if\ the\ entire\ lhs\ block\ fit\ within\ L1,\ then\ we\ are\ not\ going\ to\ block\ on\ the\ rows\ at\ all,}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{comment}{//\ and\ it\ becomes\ fruitful\ to\ keep\ the\ packed\ rhs\ blocks\ in\ L1\ if\ there\ is\ enough\ remaining\ space.}}
+\DoxyCodeLine{00208\ \ \ \ \ Index\ max\_nc;}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{const}\ Index\ lhs\_bytes\ =\ m\ *\ k\ *\ \textcolor{keyword}{sizeof}(LhsScalar);}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{const}\ Index\ remaining\_l1\ =\ l1-\/\ k\_sub\ -\/\ lhs\_bytes;}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordflow}{if}(remaining\_l1\ >=\ Index(Traits::nr*\textcolor{keyword}{sizeof}(RhsScalar))*k)}
+\DoxyCodeLine{00212\ \ \ \ \ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{comment}{//\ L1\ blocking}}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ max\_nc\ =\ remaining\_l1\ /\ (k*\textcolor{keyword}{sizeof}(RhsScalar));}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00217\ \ \ \ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \textcolor{comment}{//\ L2\ blocking}}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ max\_nc\ =\ (3*actual\_l2)/(2*2*max\_kc*\textcolor{keyword}{sizeof}(RhsScalar));}
+\DoxyCodeLine{00220\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{comment}{//\ WARNING\ Below,\ we\ assume\ that\ Traits::nr\ is\ a\ power\ of\ two.}}
+\DoxyCodeLine{00222\ \ \ \ \ Index\ nc\ =\ numext::mini<Index>(actual\_l2/(2*k*\textcolor{keyword}{sizeof}(RhsScalar)),\ max\_nc)\ \&\ (\string~(Traits::nr-\/1));}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keywordflow}{if}(n>nc)}
+\DoxyCodeLine{00224\ \ \ \ \ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \textcolor{comment}{//\ We\ are\ really\ blocking\ over\ the\ columns:}}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{comment}{//\ -\/>\ reduce\ blocking\ size\ to\ make\ sure\ the\ last\ block\ is\ as\ large\ as\ possible}}
+\DoxyCodeLine{00227\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ while\ keeping\ the\ same\ number\ of\ sweeps\ over\ the\ packed\ lhs.}}
+\DoxyCodeLine{00228\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ Here\ we\ allow\ one\ more\ sweep\ if\ this\ gives\ us\ a\ perfect\ match,\ thus\ the\ commented\ "{}-\/1"{}}}
+\DoxyCodeLine{00229\ \ \ \ \ \ \ n\ =\ (n\%nc)==0\ ?\ nc}
+\DoxyCodeLine{00230\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ (nc\ -\/\ Traits::nr\ *\ ((nc\textcolor{comment}{/*-\/1*/}-\/(n\%nc))/(Traits::nr*(n/nc+1))));}
+\DoxyCodeLine{00231\ \ \ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(old\_k==k)}
+\DoxyCodeLine{00233\ \ \ \ \ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ \textcolor{comment}{//\ So\ far,\ no\ blocking\ at\ all,\ i.e.,\ kc==k,\ and\ nc==n.}}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \textcolor{comment}{//\ In\ this\ case,\ let's\ perform\ a\ blocking\ over\ the\ rows\ such\ that\ the\ packed\ lhs\ data\ is\ kept\ in\ cache\ L1/L2}}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \textcolor{comment}{//\ TODO:\ part\ of\ this\ blocking\ strategy\ is\ now\ implemented\ within\ the\ kernel\ itself,\ so\ the\ L1-\/based\ heuristic\ here\ should\ be\ obsolete.}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ Index\ problem\_size\ =\ k*n*\textcolor{keyword}{sizeof}(LhsScalar);}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ Index\ actual\_lm\ =\ actual\_l2;}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ Index\ max\_mc\ =\ m;}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(problem\_size<=1024)}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ problem\ is\ small\ enough\ to\ keep\ in\ L1}}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Let's\ choose\ m\ such\ that\ lhs's\ block\ fit\ in\ 1/3\ of\ L1}}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ actual\_lm\ =\ l1;}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(l3!=0\ \&\&\ problem\_size<=32768)}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ have\ both\ L2\ and\ L3,\ and\ problem\ is\ small\ enough\ to\ be\ kept\ in\ L2}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Let's\ choose\ m\ such\ that\ lhs's\ block\ fit\ in\ 1/3\ of\ L2}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ actual\_lm\ =\ l2;}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ max\_mc\ =\ (numext::mini<Index>)(576,max\_mc);}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ Index\ mc\ =\ (numext::mini<Index>)(actual\_lm/(3*k*\textcolor{keyword}{sizeof}(LhsScalar)),\ max\_mc);}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mc\ >\ Traits::mr)\ mc\ -\/=\ mc\ \%\ Traits::mr;}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (mc==0)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ m\ =\ (m\%mc)==0\ ?\ mc}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ (mc\ -\/\ Traits::mr\ *\ ((mc\textcolor{comment}{/*-\/1*/}-\/(m\%mc))/(Traits::mr*(m/mc+1))));}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ \ \ \}}
+\DoxyCodeLine{00260\ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Index>}
+\DoxyCodeLine{00263\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ useSpecificBlockingSizes(Index\&\ k,\ Index\&\ m,\ Index\&\ n)}
+\DoxyCodeLine{00264\ \{}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_TEST\_SPECIFIC\_BLOCKING\_SIZES}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordflow}{if}\ (EIGEN\_TEST\_SPECIFIC\_BLOCKING\_SIZES)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ k\ =\ numext::mini<Index>(k,\ EIGEN\_TEST\_SPECIFIC\_BLOCKING\_SIZE\_K);}
+\DoxyCodeLine{00268\ \ \ \ \ m\ =\ numext::mini<Index>(m,\ EIGEN\_TEST\_SPECIFIC\_BLOCKING\_SIZE\_M);}
+\DoxyCodeLine{00269\ \ \ \ \ n\ =\ numext::mini<Index>(n,\ EIGEN\_TEST\_SPECIFIC\_BLOCKING\_SIZE\_N);}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00271\ \ \ \}}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00273\ \ \ EIGEN\_UNUSED\_VARIABLE(k)}
+\DoxyCodeLine{00274\ \ \ EIGEN\_UNUSED\_VARIABLE(m)}
+\DoxyCodeLine{00275\ \ \ EIGEN\_UNUSED\_VARIABLE(n)}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00277\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00278\ \}}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00296\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsScalar,\ \textcolor{keyword}{typename}\ RhsScalar,\ \textcolor{keywordtype}{int}\ KcFactor,\ \textcolor{keyword}{typename}\ Index>}
+\DoxyCodeLine{00297\ \textcolor{keywordtype}{void}\ computeProductBlockingSizes(Index\&\ k,\ Index\&\ m,\ Index\&\ n,\ Index\ num\_threads\ =\ 1)}
+\DoxyCodeLine{00298\ \{}
+\DoxyCodeLine{00299\ \ \ \textcolor{keywordflow}{if}\ (!useSpecificBlockingSizes(k,\ m,\ n))\ \{}
+\DoxyCodeLine{00300\ \ \ \ \ evaluateProductBlockingSizesHeuristic<LhsScalar,\ RhsScalar,\ KcFactor,\ Index>(k,\ m,\ n,\ num\_threads);}
+\DoxyCodeLine{00301\ \ \ \}}
+\DoxyCodeLine{00302\ \}}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsScalar,\ \textcolor{keyword}{typename}\ RhsScalar,\ \textcolor{keyword}{typename}\ Index>}
+\DoxyCodeLine{00305\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ computeProductBlockingSizes(Index\&\ k,\ Index\&\ m,\ Index\&\ n,\ Index\ num\_threads\ =\ 1)}
+\DoxyCodeLine{00306\ \{}
+\DoxyCodeLine{00307\ \ \ computeProductBlockingSizes<LhsScalar,RhsScalar,1,Index>(k,\ m,\ n,\ num\_threads);}
+\DoxyCodeLine{00308\ \}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_HAS\_SINGLE\_INSTRUCTION\_CJMADD}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{\ \ \#define\ CJMADD(CJ,A,B,C,T)\ \ C\ =\ CJ.pmadd(A,B,C);}}
+\DoxyCodeLine{00312\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \textcolor{comment}{//\ FIXME\ (a\ bit\ overkill\ maybe\ ?)}}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ CJ,\ \textcolor{keyword}{typename}\ A,\ \textcolor{keyword}{typename}\ B,\ \textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1gebp__madd__selector}{gebp\_madd\_selector}}\ \{}
+\DoxyCodeLine{00317\ \ \ \ \ EIGEN\_ALWAYS\_INLINE\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(\textcolor{keyword}{const}\ CJ\&\ cj,\ A\&\ a,\ B\&\ b,\ C\&\ c,\ T\&\ \textcolor{comment}{/*t*/})}
+\DoxyCodeLine{00318\ \ \ \ \ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ c\ =\ cj.pmadd(a,b,c);}
+\DoxyCodeLine{00320\ \ \ \ \ \}}
+\DoxyCodeLine{00321\ \ \ \};}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ CJ,\ \textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1gebp__madd__selector}{gebp\_madd\_selector}}<CJ,T,T,T,T>\ \{}
+\DoxyCodeLine{00324\ \ \ \ \ EIGEN\_ALWAYS\_INLINE\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(\textcolor{keyword}{const}\ CJ\&\ cj,\ T\&\ a,\ T\&\ b,\ T\&\ c,\ T\&\ t)}
+\DoxyCodeLine{00325\ \ \ \ \ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ t\ =\ b;\ t\ =\ cj.pmul(a,t);\ c\ =\ padd(c,t);}
+\DoxyCodeLine{00327\ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \};}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ CJ,\ \textcolor{keyword}{typename}\ A,\ \textcolor{keyword}{typename}\ B,\ \textcolor{keyword}{typename}\ C,\ \textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00331\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ gebp\_madd(\textcolor{keyword}{const}\ CJ\&\ cj,\ A\&\ a,\ B\&\ b,\ C\&\ c,\ T\&\ t)}
+\DoxyCodeLine{00332\ \ \ \{}
+\DoxyCodeLine{00333\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gebp__madd__selector}{gebp\_madd\_selector<CJ,A,B,C,T>::run}}(cj,a,b,c,t);}
+\DoxyCodeLine{00334\ \ \ \}}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\ \ \#define\ CJMADD(CJ,A,B,C,T)\ \ gebp\_madd(CJ,A,B,C,T);}}
+\DoxyCodeLine{00337\ \textcolor{comment}{//\ \ \ \#define\ CJMADD(CJ,A,B,C,T)\ \ T\ =\ B;\ T\ =\ CJ.pmul(A,T);\ C\ =\ padd(C,T);}}
+\DoxyCodeLine{00338\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \textcolor{comment}{/*\ Vectorization\ logic}}
+\DoxyCodeLine{00341\ \textcolor{comment}{\ *\ \ real*real:\ unpack\ rhs\ to\ constant\ packets,\ ...}}
+\DoxyCodeLine{00342\ \textcolor{comment}{\ *\ }}
+\DoxyCodeLine{00343\ \textcolor{comment}{\ *\ \ cd*cd\ :\ unpack\ rhs\ to\ (b\_r,b\_r),\ (b\_i,b\_i),\ mul\ to\ get\ (a\_r\ b\_r,a\_i\ b\_r)\ (a\_r\ b\_i,a\_i\ b\_i),}}
+\DoxyCodeLine{00344\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ storing\ each\ res\ packet\ into\ two\ packets\ (2x2),}}
+\DoxyCodeLine{00345\ \textcolor{comment}{\ *\ \ \ \ \ \ \ \ \ \ at\ the\ end\ combine\ them:\ swap\ the\ second\ and\ addsub\ them\ }}
+\DoxyCodeLine{00346\ \textcolor{comment}{\ *\ \ cf*cf\ :\ same\ but\ with\ 2x4\ blocks}}
+\DoxyCodeLine{00347\ \textcolor{comment}{\ *\ \ cplx*real\ :\ unpack\ rhs\ to\ constant\ packets,\ ...}}
+\DoxyCodeLine{00348\ \textcolor{comment}{\ *\ \ real*cplx\ :\ load\ lhs\ as\ (a0,a0,a1,a1),\ and\ mul\ as\ usual}}
+\DoxyCodeLine{00349\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00350\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_LhsScalar,\ \textcolor{keyword}{typename}\ \_RhsScalar,\ \textcolor{keywordtype}{bool}\ \_ConjLhs,\ \textcolor{keywordtype}{bool}\ \_ConjRhs>}
+\DoxyCodeLine{00351\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1gebp__traits}{gebp\_traits}}}
+\DoxyCodeLine{00352\ \{}
+\DoxyCodeLine{00353\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00354\ \ \ \textcolor{keyword}{typedef}\ \_LhsScalar\ LhsScalar;}
+\DoxyCodeLine{00355\ \ \ \textcolor{keyword}{typedef}\ \_RhsScalar\ RhsScalar;}
+\DoxyCodeLine{00356\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1_scalar_binary_op_traits}{ScalarBinaryOpTraits<LhsScalar,\ RhsScalar>::ReturnType}}\ ResScalar;}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00358\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00359\ \ \ \ \ ConjLhs\ =\ \_ConjLhs,}
+\DoxyCodeLine{00360\ \ \ \ \ ConjRhs\ =\ \_ConjRhs,}
+\DoxyCodeLine{00361\ \ \ \ \ Vectorizable\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<LhsScalar>::Vectorizable}}\ \&\&\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RhsScalar>::Vectorizable}},}
+\DoxyCodeLine{00362\ \ \ \ \ LhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<LhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00363\ \ \ \ \ RhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00364\ \ \ \ \ ResPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<ResScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00365\ \ \ \ \ }
+\DoxyCodeLine{00366\ \ \ \ \ NumberOfRegisters\ =\ EIGEN\_ARCH\_DEFAULT\_NUMBER\_OF\_REGISTERS,}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{comment}{//\ register\ block\ size\ along\ the\ N\ direction\ must\ be\ 1\ or\ 4}}
+\DoxyCodeLine{00369\ \ \ \ \ nr\ =\ 4,}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{comment}{//\ register\ block\ size\ along\ the\ M\ direction\ (currently,\ this\ one\ cannot\ be\ modified)}}
+\DoxyCodeLine{00372\ \ \ \ \ default\_mr\ =\ (EIGEN\_PLAIN\_ENUM\_MIN(16,NumberOfRegisters)/2/nr)*LhsPacketSize,}
+\DoxyCodeLine{00373\ \#\textcolor{keywordflow}{if}\ defined(EIGEN\_HAS\_SINGLE\_INSTRUCTION\_MADD)\ \&\&\ !defined(EIGEN\_VECTORIZE\_ALTIVEC)\ \&\&\ !defined(EIGEN\_VECTORIZE\_VSX)}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{comment}{//\ we\ assume\ 16\ registers}}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{comment}{//\ See\ bug\ 992,\ if\ the\ scalar\ type\ is\ not\ vectorizable\ but\ that\ EIGEN\_HAS\_SINGLE\_INSTRUCTION\_MADD\ is\ defined,}}
+\DoxyCodeLine{00376\ \ \ \ \ \textcolor{comment}{//\ then\ using\ 3*LhsPacketSize\ triggers\ non-\/implemented\ paths\ in\ syrk.}}
+\DoxyCodeLine{00377\ \ \ \ \ mr\ =\ Vectorizable\ ?\ 3*LhsPacketSize\ :\ default\_mr,}
+\DoxyCodeLine{00378\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00379\ \ \ \ \ mr\ =\ default\_mr,}
+\DoxyCodeLine{00380\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00381\ \ \ \ \ }
+\DoxyCodeLine{00382\ \ \ \ \ LhsProgress\ =\ LhsPacketSize,}
+\DoxyCodeLine{00383\ \ \ \ \ RhsProgress\ =\ 1}
+\DoxyCodeLine{00384\ \ \ \};}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<LhsScalar>::type\ \ \_LhsPacket;}
+\DoxyCodeLine{00387\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<RhsScalar>::type\ \ \_RhsPacket;}
+\DoxyCodeLine{00388\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<ResScalar>::type\ \ \_ResPacket;}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_LhsPacket,LhsScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}};}
+\DoxyCodeLine{00391\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_RhsPacket,RhsScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}};}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_ResPacket,ResScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}};}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}};}
+\DoxyCodeLine{00395\ \ \ }
+\DoxyCodeLine{00396\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ initAcc(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ p)}
+\DoxyCodeLine{00397\ \ \ \{}
+\DoxyCodeLine{00398\ \ \ \ \ p\ =\ pset1<ResPacket>(ResScalar(0));}
+\DoxyCodeLine{00399\ \ \ \}}
+\DoxyCodeLine{00400\ \ \ }
+\DoxyCodeLine{00401\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ broadcastRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b0,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b1,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b2,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b3)}
+\DoxyCodeLine{00402\ \ \ \{}
+\DoxyCodeLine{00403\ \ \ \ \ pbroadcast4(b,\ b0,\ b1,\ b2,\ b3);}
+\DoxyCodeLine{00404\ \ \ \}}
+\DoxyCodeLine{00405\ \ \ }
+\DoxyCodeLine{00406\ \textcolor{comment}{//\ \ \ EIGEN\_STRONG\_INLINE\ void\ broadcastRhs(const\ RhsScalar*\ b,\ RhsPacket\&\ b0,\ RhsPacket\&\ b1)}}
+\DoxyCodeLine{00407\ \textcolor{comment}{//\ \ \ \{}}
+\DoxyCodeLine{00408\ \textcolor{comment}{//\ \ \ \ \ pbroadcast2(b,\ b0,\ b1);}}
+\DoxyCodeLine{00409\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00410\ \ \ }
+\DoxyCodeLine{00411\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsPacketType>}
+\DoxyCodeLine{00412\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ RhsPacketType\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00413\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00414\ \ \ \ \ dest\ =\ pset1<RhsPacketType>(*b);}
+\DoxyCodeLine{00415\ \ \ \}}
+\DoxyCodeLine{00416\ \ \ }
+\DoxyCodeLine{00417\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhsQuad(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00418\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00419\ \ \ \ \ dest\ =\ ploadquad<RhsPacket>(b);}
+\DoxyCodeLine{00420\ \ \ \}}
+\DoxyCodeLine{00421\ }
+\DoxyCodeLine{00422\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsPacketType>}
+\DoxyCodeLine{00423\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhs(\textcolor{keyword}{const}\ LhsScalar*\ a,\ LhsPacketType\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00424\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00425\ \ \ \ \ dest\ =\ pload<LhsPacketType>(a);}
+\DoxyCodeLine{00426\ \ \ \}}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00428\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsPacketType>}
+\DoxyCodeLine{00429\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhsUnaligned(\textcolor{keyword}{const}\ LhsScalar*\ a,\ LhsPacketType\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00430\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00431\ \ \ \ \ dest\ =\ ploadu<LhsPacketType>(a);}
+\DoxyCodeLine{00432\ \ \ \}}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsPacketType,\ \textcolor{keyword}{typename}\ RhsPacketType,\ \textcolor{keyword}{typename}\ AccPacketType>}
+\DoxyCodeLine{00435\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd(\textcolor{keyword}{const}\ LhsPacketType\&\ a,\ \textcolor{keyword}{const}\ RhsPacketType\&\ b,\ AccPacketType\&\ c,\ AccPacketType\&\ tmp)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00436\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00437\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conj__helper}{conj\_helper<LhsPacketType,RhsPacketType,ConjLhs,ConjRhs>}}\ cj;}
+\DoxyCodeLine{00438\ \ \ \ \ \textcolor{comment}{//\ It\ would\ be\ a\ lot\ cleaner\ to\ call\ pmadd\ all\ the\ time.\ Unfortunately\ if\ we}}
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{comment}{//\ let\ gcc\ allocate\ the\ register\ in\ which\ to\ store\ the\ result\ of\ the\ pmul}}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{comment}{//\ (in\ the\ case\ where\ there\ is\ no\ FMA)\ gcc\ fails\ to\ figure\ out\ how\ to\ avoid}}
+\DoxyCodeLine{00441\ \ \ \ \ \textcolor{comment}{//\ spilling\ register.}}
+\DoxyCodeLine{00442\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_HAS\_SINGLE\_INSTRUCTION\_MADD}}
+\DoxyCodeLine{00443\ \ \ \ \ EIGEN\_UNUSED\_VARIABLE(tmp);}
+\DoxyCodeLine{00444\ \ \ \ \ c\ =\ cj.pmadd(a,b,c);}
+\DoxyCodeLine{00445\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00446\ \ \ \ \ tmp\ =\ b;\ tmp\ =\ cj.pmul(a,tmp);\ c\ =\ padd(c,tmp);}
+\DoxyCodeLine{00447\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00448\ \ \ \}}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00450\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ acc(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ c,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ alpha,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ r)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00451\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00452\ \ \ \ \ r\ =\ pmadd(c,alpha,r);}
+\DoxyCodeLine{00453\ \ \ \}}
+\DoxyCodeLine{00454\ \ \ }
+\DoxyCodeLine{00455\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ResPacketHalf>}
+\DoxyCodeLine{00456\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ acc(\textcolor{keyword}{const}\ ResPacketHalf\&\ c,\ \textcolor{keyword}{const}\ ResPacketHalf\&\ alpha,\ ResPacketHalf\&\ r)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00457\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00458\ \ \ \ \ r\ =\ pmadd(c,alpha,r);}
+\DoxyCodeLine{00459\ \ \ \}}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \};}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RealScalar,\ \textcolor{keywordtype}{bool}\ \_ConjLhs>}
+\DoxyCodeLine{00464\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1gebp__traits}{gebp\_traits}}<std::complex<RealScalar>,\ RealScalar,\ \_ConjLhs,\ false>}
+\DoxyCodeLine{00465\ \{}
+\DoxyCodeLine{00466\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00467\ \ \ \textcolor{keyword}{typedef}\ std::complex<RealScalar>\ LhsScalar;}
+\DoxyCodeLine{00468\ \ \ \textcolor{keyword}{typedef}\ RealScalar\ RhsScalar;}
+\DoxyCodeLine{00469\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1_scalar_binary_op_traits}{ScalarBinaryOpTraits<LhsScalar,\ RhsScalar>::ReturnType}}\ ResScalar;}
+\DoxyCodeLine{00470\ }
+\DoxyCodeLine{00471\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00472\ \ \ \ \ ConjLhs\ =\ \_ConjLhs,}
+\DoxyCodeLine{00473\ \ \ \ \ ConjRhs\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00474\ \ \ \ \ Vectorizable\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<LhsScalar>::Vectorizable}}\ \&\&\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RhsScalar>::Vectorizable}},}
+\DoxyCodeLine{00475\ \ \ \ \ LhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<LhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00476\ \ \ \ \ RhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00477\ \ \ \ \ ResPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<ResScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00478\ \ \ \ \ }
+\DoxyCodeLine{00479\ \ \ \ \ NumberOfRegisters\ =\ EIGEN\_ARCH\_DEFAULT\_NUMBER\_OF\_REGISTERS,}
+\DoxyCodeLine{00480\ \ \ \ \ nr\ =\ 4,}
+\DoxyCodeLine{00481\ \textcolor{preprocessor}{\#if\ defined(EIGEN\_HAS\_SINGLE\_INSTRUCTION\_MADD)\ \&\&\ !defined(EIGEN\_VECTORIZE\_ALTIVEC)\ \&\&\ !defined(EIGEN\_VECTORIZE\_VSX)}}
+\DoxyCodeLine{00482\ \ \ \ \ \textcolor{comment}{//\ we\ assume\ 16\ registers}}
+\DoxyCodeLine{00483\ \ \ \ \ mr\ =\ 3*LhsPacketSize,}
+\DoxyCodeLine{00484\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00485\ \ \ \ \ mr\ =\ (EIGEN\_PLAIN\_ENUM\_MIN(16,NumberOfRegisters)/2/nr)*LhsPacketSize,}
+\DoxyCodeLine{00486\ \#endif}
+\DoxyCodeLine{00487\ }
+\DoxyCodeLine{00488\ \ \ \ \ LhsProgress\ =\ LhsPacketSize,}
+\DoxyCodeLine{00489\ \ \ \ \ RhsProgress\ =\ 1}
+\DoxyCodeLine{00490\ \ \ \};}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<LhsScalar>::type\ \ \_LhsPacket;}
+\DoxyCodeLine{00493\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<RhsScalar>::type\ \ \_RhsPacket;}
+\DoxyCodeLine{00494\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<ResScalar>::type\ \ \_ResPacket;}
+\DoxyCodeLine{00495\ }
+\DoxyCodeLine{00496\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_LhsPacket,LhsScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}};}
+\DoxyCodeLine{00497\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_RhsPacket,RhsScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}};}
+\DoxyCodeLine{00498\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_ResPacket,ResScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}};}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00500\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}};}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00502\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ initAcc(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ p)}
+\DoxyCodeLine{00503\ \ \ \{}
+\DoxyCodeLine{00504\ \ \ \ \ p\ =\ pset1<ResPacket>(ResScalar(0));}
+\DoxyCodeLine{00505\ \ \ \}}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00508\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00509\ \ \ \ \ dest\ =\ pset1<RhsPacket>(*b);}
+\DoxyCodeLine{00510\ \ \ \}}
+\DoxyCodeLine{00511\ \ \ }
+\DoxyCodeLine{00512\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhsQuad(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00513\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00514\ \ \ \ \ dest\ =\ pset1<RhsPacket>(*b);}
+\DoxyCodeLine{00515\ \ \ \}}
+\DoxyCodeLine{00516\ }
+\DoxyCodeLine{00517\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhs(\textcolor{keyword}{const}\ LhsScalar*\ a,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00518\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00519\ \ \ \ \ dest\ =\ pload<LhsPacket>(a);}
+\DoxyCodeLine{00520\ \ \ \}}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhsUnaligned(\textcolor{keyword}{const}\ LhsScalar*\ a,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00523\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00524\ \ \ \ \ dest\ =\ ploadu<LhsPacket>(a);}
+\DoxyCodeLine{00525\ \ \ \}}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ broadcastRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b0,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b1,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b2,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b3)}
+\DoxyCodeLine{00528\ \ \ \{}
+\DoxyCodeLine{00529\ \ \ \ \ pbroadcast4(b,\ b0,\ b1,\ b2,\ b3);}
+\DoxyCodeLine{00530\ \ \ \}}
+\DoxyCodeLine{00531\ \ \ }
+\DoxyCodeLine{00532\ \textcolor{comment}{//\ \ \ EIGEN\_STRONG\_INLINE\ void\ broadcastRhs(const\ RhsScalar*\ b,\ RhsPacket\&\ b0,\ RhsPacket\&\ b1)}}
+\DoxyCodeLine{00533\ \textcolor{comment}{//\ \ \ \{}}
+\DoxyCodeLine{00534\ \textcolor{comment}{//\ \ \ \ \ pbroadcast2(b,\ b0,\ b1);}}
+\DoxyCodeLine{00535\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00536\ }
+\DoxyCodeLine{00537\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ c,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ tmp)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00538\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00539\ \ \ \ \ madd\_impl(a,\ b,\ c,\ tmp,\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,true\_type,false\_type>::type}}());}
+\DoxyCodeLine{00540\ \ \ \}}
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00542\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd\_impl(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ c,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ tmp,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{true\_type}}\&)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00543\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00544\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_HAS\_SINGLE\_INSTRUCTION\_MADD}}
+\DoxyCodeLine{00545\ \ \ \ \ EIGEN\_UNUSED\_VARIABLE(tmp);}
+\DoxyCodeLine{00546\ \ \ \ \ c.v\ =\ pmadd(a.v,b,c.v);}
+\DoxyCodeLine{00547\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00548\ \ \ \ \ tmp\ =\ b;\ tmp\ =\ pmul(a.v,tmp);\ c.v\ =\ padd(c.v,tmp);}
+\DoxyCodeLine{00549\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00550\ \ \ \}}
+\DoxyCodeLine{00551\ }
+\DoxyCodeLine{00552\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd\_impl(\textcolor{keyword}{const}\ LhsScalar\&\ a,\ \textcolor{keyword}{const}\ RhsScalar\&\ b,\ ResScalar\&\ c,\ RhsScalar\&\ \textcolor{comment}{/*tmp*/},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1false__type}{false\_type}}\&)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00553\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00554\ \ \ \ \ c\ +=\ a\ *\ b;}
+\DoxyCodeLine{00555\ \ \ \}}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00557\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ acc(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ c,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ alpha,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ r)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00558\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00559\ \ \ \ \ r\ =\ cj.pmadd(c,alpha,r);}
+\DoxyCodeLine{00560\ \ \ \}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00563\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conj__helper}{conj\_helper<ResPacket,ResPacket,ConjLhs,false>}}\ cj;}
+\DoxyCodeLine{00564\ \};}
+\DoxyCodeLine{00565\ }
+\DoxyCodeLine{00566\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Packet>}
+\DoxyCodeLine{00567\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket}}}
+\DoxyCodeLine{00568\ \{}
+\DoxyCodeLine{00569\ \ \ \mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{Packet}}\ first;}
+\DoxyCodeLine{00570\ \ \ \mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{Packet}}\ second;}
+\DoxyCodeLine{00571\ \};}
+\DoxyCodeLine{00572\ }
+\DoxyCodeLine{00573\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Packet>}
+\DoxyCodeLine{00574\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket<Packet>}}\ padd(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket<Packet>}}\ \&a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket<Packet>}}\ \&b)}
+\DoxyCodeLine{00575\ \{}
+\DoxyCodeLine{00576\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket<Packet>}}\ res;}
+\DoxyCodeLine{00577\ \ \ res.first\ \ =\ padd(a.first,\ b.first);}
+\DoxyCodeLine{00578\ \ \ res.second\ =\ padd(a.second,b.second);}
+\DoxyCodeLine{00579\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00580\ \}}
+\DoxyCodeLine{00581\ }
+\DoxyCodeLine{00582\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Packet>}
+\DoxyCodeLine{00583\ \textcolor{keyword}{const}\ DoublePacket<Packet>\&\ predux\_downto4(\textcolor{keyword}{const}\ DoublePacket<Packet>\ \&a)}
+\DoxyCodeLine{00584\ \{}
+\DoxyCodeLine{00585\ \ \ \textcolor{keywordflow}{return}\ a;}
+\DoxyCodeLine{00586\ \}}
+\DoxyCodeLine{00587\ }
+\DoxyCodeLine{00588\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Packet>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits}}<\mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket}}<\mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{Packet}}>\ >\ \{\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket<Packet>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{half}};\ \};}
+\DoxyCodeLine{00589\ \textcolor{comment}{//\ template<typename\ Packet>}}
+\DoxyCodeLine{00590\ \textcolor{comment}{//\ DoublePacket<Packet>\ pmadd(const\ DoublePacket<Packet>\ \&a,\ const\ DoublePacket<Packet>\ \&b)}}
+\DoxyCodeLine{00591\ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{00592\ \textcolor{comment}{//\ \ \ DoublePacket<Packet>\ res;}}
+\DoxyCodeLine{00593\ \textcolor{comment}{//\ \ \ res.first\ \ =\ padd(a.first,\ b.first);}}
+\DoxyCodeLine{00594\ \textcolor{comment}{//\ \ \ res.second\ =\ padd(a.second,b.second);}}
+\DoxyCodeLine{00595\ \textcolor{comment}{//\ \ \ return\ res;}}
+\DoxyCodeLine{00596\ \textcolor{comment}{//\ \}}}
+\DoxyCodeLine{00597\ }
+\DoxyCodeLine{00598\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RealScalar,\ \textcolor{keywordtype}{bool}\ \_ConjLhs,\ \textcolor{keywordtype}{bool}\ \_ConjRhs>}
+\DoxyCodeLine{00599\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1gebp__traits}{gebp\_traits}}<std::complex<RealScalar>,\ std::complex<RealScalar>,\ \_ConjLhs,\ \_ConjRhs\ >}
+\DoxyCodeLine{00600\ \{}
+\DoxyCodeLine{00601\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00602\ \ \ \textcolor{keyword}{typedef}\ std::complex<RealScalar>\ \ Scalar;}
+\DoxyCodeLine{00603\ \ \ \textcolor{keyword}{typedef}\ std::complex<RealScalar>\ \ LhsScalar;}
+\DoxyCodeLine{00604\ \ \ \textcolor{keyword}{typedef}\ std::complex<RealScalar>\ \ RhsScalar;}
+\DoxyCodeLine{00605\ \ \ \textcolor{keyword}{typedef}\ std::complex<RealScalar>\ \ ResScalar;}
+\DoxyCodeLine{00606\ \ \ }
+\DoxyCodeLine{00607\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00608\ \ \ \ \ ConjLhs\ =\ \_ConjLhs,}
+\DoxyCodeLine{00609\ \ \ \ \ ConjRhs\ =\ \_ConjRhs,}
+\DoxyCodeLine{00610\ \ \ \ \ Vectorizable\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RealScalar>::Vectorizable}}}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::Vectorizable}},}
+\DoxyCodeLine{00612\ \ \ \ \ RealPacketSize\ \ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RealScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00613\ \ \ \ \ ResPacketSize\ \ \ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<ResScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00614\ \ \ \ \ LhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<LhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00615\ \ \ \ \ RhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00616\ }
+\DoxyCodeLine{00617\ \ \ \ \ \textcolor{comment}{//\ FIXME:\ should\ depend\ on\ NumberOfRegisters}}
+\DoxyCodeLine{00618\ \ \ \ \ nr\ =\ 4,}
+\DoxyCodeLine{00619\ \ \ \ \ mr\ =\ ResPacketSize,}
+\DoxyCodeLine{00620\ }
+\DoxyCodeLine{00621\ \ \ \ \ LhsProgress\ =\ ResPacketSize,}
+\DoxyCodeLine{00622\ \ \ \ \ RhsProgress\ =\ 1}
+\DoxyCodeLine{00623\ \ \ \};}
+\DoxyCodeLine{00624\ \ \ }
+\DoxyCodeLine{00625\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<RealScalar>::type\ RealPacket;}
+\DoxyCodeLine{00626\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<Scalar>::type\ \ \ \ \ ScalarPacket;}
+\DoxyCodeLine{00627\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacket<RealPacket>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}};}
+\DoxyCodeLine{00628\ }
+\DoxyCodeLine{00629\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,RealPacket,\ \ Scalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}};}
+\DoxyCodeLine{00630\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,DoublePacketType,Scalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}};}
+\DoxyCodeLine{00631\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,ScalarPacket,Scalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}};}
+\DoxyCodeLine{00632\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,DoublePacketType,Scalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}};}
+\DoxyCodeLine{00633\ \ \ }
+\DoxyCodeLine{00634\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ initAcc(Scalar\&\ p)\ \{\ p\ =\ Scalar(0);\ \}}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00636\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ initAcc(\mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}}\&\ p)}
+\DoxyCodeLine{00637\ \ \ \{}
+\DoxyCodeLine{00638\ \ \ \ \ p.first\ \ \ =\ pset1<RealPacket>(RealScalar(0));}
+\DoxyCodeLine{00639\ \ \ \ \ p.second\ \ =\ pset1<RealPacket>(RealScalar(0));}
+\DoxyCodeLine{00640\ \ \ \}}
+\DoxyCodeLine{00641\ }
+\DoxyCodeLine{00642\ \ \ \textcolor{comment}{//\ Scalar\ path}}
+\DoxyCodeLine{00643\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00644\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00645\ \ \ \ \ dest\ =\ pset1<ResPacket>(*b);}
+\DoxyCodeLine{00646\ \ \ \}}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00648\ \ \ \textcolor{comment}{//\ Vectorized\ path}}
+\DoxyCodeLine{00649\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00650\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00651\ \ \ \ \ dest.first\ \ =\ pset1<RealPacket>(real(*b));}
+\DoxyCodeLine{00652\ \ \ \ \ dest.second\ =\ pset1<RealPacket>(imag(*b));}
+\DoxyCodeLine{00653\ \ \ \}}
+\DoxyCodeLine{00654\ \ \ }
+\DoxyCodeLine{00655\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhsQuad(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00656\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00657\ \ \ \ \ loadRhs(b,dest);}
+\DoxyCodeLine{00658\ \ \ \}}
+\DoxyCodeLine{00659\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhsQuad(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00660\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00661\ \ \ \ \ eigen\_internal\_assert(\mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<ScalarPacket>::size}}<=4);}
+\DoxyCodeLine{00662\ \ \ \ \ loadRhs(b,dest);}
+\DoxyCodeLine{00663\ \ \ \}}
+\DoxyCodeLine{00664\ \ \ }
+\DoxyCodeLine{00665\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ broadcastRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b0,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b1,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b2,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b3)}
+\DoxyCodeLine{00666\ \ \ \{}
+\DoxyCodeLine{00667\ \ \ \ \ \textcolor{comment}{//\ FIXME\ not\ sure\ that's\ the\ best\ way\ to\ implement\ it!}}
+\DoxyCodeLine{00668\ \ \ \ \ loadRhs(b+0,\ b0);}
+\DoxyCodeLine{00669\ \ \ \ \ loadRhs(b+1,\ b1);}
+\DoxyCodeLine{00670\ \ \ \ \ loadRhs(b+2,\ b2);}
+\DoxyCodeLine{00671\ \ \ \ \ loadRhs(b+3,\ b3);}
+\DoxyCodeLine{00672\ \ \ \}}
+\DoxyCodeLine{00673\ \ \ }
+\DoxyCodeLine{00674\ \ \ \textcolor{comment}{//\ Vectorized\ path}}
+\DoxyCodeLine{00675\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ broadcastRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}}\&\ b0,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}}\&\ b1)}
+\DoxyCodeLine{00676\ \ \ \{}
+\DoxyCodeLine{00677\ \ \ \ \ \textcolor{comment}{//\ FIXME\ not\ sure\ that's\ the\ best\ way\ to\ implement\ it!}}
+\DoxyCodeLine{00678\ \ \ \ \ loadRhs(b+0,\ b0);}
+\DoxyCodeLine{00679\ \ \ \ \ loadRhs(b+1,\ b1);}
+\DoxyCodeLine{00680\ \ \ \}}
+\DoxyCodeLine{00681\ \ \ }
+\DoxyCodeLine{00682\ \ \ \textcolor{comment}{//\ Scalar\ path}}
+\DoxyCodeLine{00683\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ broadcastRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ RhsScalar\&\ b0,\ RhsScalar\&\ b1)}
+\DoxyCodeLine{00684\ \ \ \{}
+\DoxyCodeLine{00685\ \ \ \ \ \textcolor{comment}{//\ FIXME\ not\ sure\ that's\ the\ best\ way\ to\ implement\ it!}}
+\DoxyCodeLine{00686\ \ \ \ \ loadRhs(b+0,\ b0);}
+\DoxyCodeLine{00687\ \ \ \ \ loadRhs(b+1,\ b1);}
+\DoxyCodeLine{00688\ \ \ \}}
+\DoxyCodeLine{00689\ }
+\DoxyCodeLine{00690\ \ \ \textcolor{comment}{//\ nothing\ special\ here}}
+\DoxyCodeLine{00691\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhs(\textcolor{keyword}{const}\ LhsScalar*\ a,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00692\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00693\ \ \ \ \ dest\ =\ pload<LhsPacket>((\textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{unpacket\_traits<LhsPacket>::type}}*)(a));}
+\DoxyCodeLine{00694\ \ \ \}}
+\DoxyCodeLine{00695\ }
+\DoxyCodeLine{00696\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhsUnaligned(\textcolor{keyword}{const}\ LhsScalar*\ a,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00697\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00698\ \ \ \ \ dest\ =\ ploadu<LhsPacket>((\textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{unpacket\_traits<LhsPacket>::type}}*)(a));}
+\DoxyCodeLine{00699\ \ \ \}}
+\DoxyCodeLine{00700\ }
+\DoxyCodeLine{00701\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}}\&\ c,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ \textcolor{comment}{/*tmp*/})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00702\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00703\ \ \ \ \ c.first\ \ \ =\ padd(pmul(a,b.first),\ c.first);}
+\DoxyCodeLine{00704\ \ \ \ \ c.second\ \ =\ padd(pmul(a,b.second),c.second);}
+\DoxyCodeLine{00705\ \ \ \}}
+\DoxyCodeLine{00706\ }
+\DoxyCodeLine{00707\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ c,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ \textcolor{comment}{/*tmp*/})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00708\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00709\ \ \ \ \ c\ =\ cj.pmadd(a,b,c);}
+\DoxyCodeLine{00710\ \ \ \}}
+\DoxyCodeLine{00711\ \ \ }
+\DoxyCodeLine{00712\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ acc(\textcolor{keyword}{const}\ Scalar\&\ c,\ \textcolor{keyword}{const}\ Scalar\&\ alpha,\ Scalar\&\ r)\textcolor{keyword}{\ const\ }\{\ r\ +=\ alpha\ *\ c;\ \}}
+\DoxyCodeLine{00713\ \ \ }
+\DoxyCodeLine{00714\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ acc(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_double_packet}{DoublePacketType}}\&\ c,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ alpha,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ r)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00715\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00716\ \ \ \ \ \textcolor{comment}{//\ assemble\ c}}
+\DoxyCodeLine{00717\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\ tmp;}
+\DoxyCodeLine{00718\ \ \ \ \ \textcolor{keywordflow}{if}((!ConjLhs)\&\&(!ConjRhs))}
+\DoxyCodeLine{00719\ \ \ \ \ \{}
+\DoxyCodeLine{00720\ \ \ \ \ \ \ tmp\ =\ pcplxflip(pconj(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.second)));}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ tmp\ =\ padd(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.first),tmp);}
+\DoxyCodeLine{00722\ \ \ \ \ \}}
+\DoxyCodeLine{00723\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}((!ConjLhs)\&\&(ConjRhs))}
+\DoxyCodeLine{00724\ \ \ \ \ \{}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ tmp\ =\ pconj(pcplxflip(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.second)));}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ tmp\ =\ padd(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.first),tmp);}
+\DoxyCodeLine{00727\ \ \ \ \ \}}
+\DoxyCodeLine{00728\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}((ConjLhs)\&\&(!ConjRhs))}
+\DoxyCodeLine{00729\ \ \ \ \ \{}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ tmp\ =\ pcplxflip(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.second));}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ tmp\ =\ padd(pconj(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.first)),tmp);}
+\DoxyCodeLine{00732\ \ \ \ \ \}}
+\DoxyCodeLine{00733\ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}((ConjLhs)\&\&(ConjRhs))}
+\DoxyCodeLine{00734\ \ \ \ \ \{}
+\DoxyCodeLine{00735\ \ \ \ \ \ \ tmp\ =\ pcplxflip(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.second));}
+\DoxyCodeLine{00736\ \ \ \ \ \ \ tmp\ =\ psub(pconj(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}(c.first)),tmp);}
+\DoxyCodeLine{00737\ \ \ \ \ \}}
+\DoxyCodeLine{00738\ \ \ \ \ }
+\DoxyCodeLine{00739\ \ \ \ \ r\ =\ pmadd(tmp,alpha,r);}
+\DoxyCodeLine{00740\ \ \ \}}
+\DoxyCodeLine{00741\ }
+\DoxyCodeLine{00742\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00743\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conj__helper}{conj\_helper<LhsScalar,RhsScalar,ConjLhs,ConjRhs>}}\ cj;}
+\DoxyCodeLine{00744\ \};}
+\DoxyCodeLine{00745\ }
+\DoxyCodeLine{00746\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RealScalar,\ \textcolor{keywordtype}{bool}\ \_ConjRhs>}
+\DoxyCodeLine{00747\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1gebp__traits}{gebp\_traits}}<RealScalar,\ std::complex<RealScalar>,\ false,\ \_ConjRhs\ >}
+\DoxyCodeLine{00748\ \{}
+\DoxyCodeLine{00749\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00750\ \ \ \textcolor{keyword}{typedef}\ std::complex<RealScalar>\ \ Scalar;}
+\DoxyCodeLine{00751\ \ \ \textcolor{keyword}{typedef}\ RealScalar\ \ LhsScalar;}
+\DoxyCodeLine{00752\ \ \ \textcolor{keyword}{typedef}\ Scalar\ \ \ \ \ \ RhsScalar;}
+\DoxyCodeLine{00753\ \ \ \textcolor{keyword}{typedef}\ Scalar\ \ \ \ \ \ ResScalar;}
+\DoxyCodeLine{00754\ }
+\DoxyCodeLine{00755\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00756\ \ \ \ \ ConjLhs\ =\ \textcolor{keyword}{false},}
+\DoxyCodeLine{00757\ \ \ \ \ ConjRhs\ =\ \_ConjRhs,}
+\DoxyCodeLine{00758\ \ \ \ \ Vectorizable\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RealScalar>::Vectorizable}}}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::Vectorizable}},}
+\DoxyCodeLine{00760\ \ \ \ \ LhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<LhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00761\ \ \ \ \ RhsPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<RhsScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00762\ \ \ \ \ ResPacketSize\ =\ Vectorizable\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<ResScalar>::size}}\ :\ 1,}
+\DoxyCodeLine{00763\ \ \ \ \ }
+\DoxyCodeLine{00764\ \ \ \ \ NumberOfRegisters\ =\ EIGEN\_ARCH\_DEFAULT\_NUMBER\_OF\_REGISTERS,}
+\DoxyCodeLine{00765\ \ \ \ \ \textcolor{comment}{//\ FIXME:\ should\ depend\ on\ NumberOfRegisters}}
+\DoxyCodeLine{00766\ \ \ \ \ nr\ =\ 4,}
+\DoxyCodeLine{00767\ \ \ \ \ mr\ =\ (EIGEN\_PLAIN\_ENUM\_MIN(16,NumberOfRegisters)/2/nr)*ResPacketSize,}
+\DoxyCodeLine{00768\ }
+\DoxyCodeLine{00769\ \ \ \ \ LhsProgress\ =\ ResPacketSize,}
+\DoxyCodeLine{00770\ \ \ \ \ RhsProgress\ =\ 1}
+\DoxyCodeLine{00771\ \ \ \};}
+\DoxyCodeLine{00772\ }
+\DoxyCodeLine{00773\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<LhsScalar>::type\ \ \_LhsPacket;}
+\DoxyCodeLine{00774\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<RhsScalar>::type\ \ \_RhsPacket;}
+\DoxyCodeLine{00775\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<ResScalar>::type\ \ \_ResPacket;}
+\DoxyCodeLine{00776\ }
+\DoxyCodeLine{00777\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_LhsPacket,LhsScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}};}
+\DoxyCodeLine{00778\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_RhsPacket,RhsScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}};}
+\DoxyCodeLine{00779\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,\_ResPacket,ResScalar>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}};}
+\DoxyCodeLine{00780\ }
+\DoxyCodeLine{00781\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}};}
+\DoxyCodeLine{00782\ }
+\DoxyCodeLine{00783\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ initAcc(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ p)}
+\DoxyCodeLine{00784\ \ \ \{}
+\DoxyCodeLine{00785\ \ \ \ \ p\ =\ pset1<ResPacket>(ResScalar(0));}
+\DoxyCodeLine{00786\ \ \ \}}
+\DoxyCodeLine{00787\ }
+\DoxyCodeLine{00788\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00789\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00790\ \ \ \ \ dest\ =\ pset1<RhsPacket>(*b);}
+\DoxyCodeLine{00791\ \ \ \}}
+\DoxyCodeLine{00792\ \ \ }
+\DoxyCodeLine{00793\ \ \ \textcolor{keywordtype}{void}\ broadcastRhs(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b0,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b1,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b2,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b3)}
+\DoxyCodeLine{00794\ \ \ \{}
+\DoxyCodeLine{00795\ \ \ \ \ pbroadcast4(b,\ b0,\ b1,\ b2,\ b3);}
+\DoxyCodeLine{00796\ \ \ \}}
+\DoxyCodeLine{00797\ \ \ }
+\DoxyCodeLine{00798\ \textcolor{comment}{//\ \ \ EIGEN\_STRONG\_INLINE\ void\ broadcastRhs(const\ RhsScalar*\ b,\ RhsPacket\&\ b0,\ RhsPacket\&\ b1)}}
+\DoxyCodeLine{00799\ \textcolor{comment}{//\ \ \ \{}}
+\DoxyCodeLine{00800\ \textcolor{comment}{//\ \ \ \ \ //\ FIXME\ not\ sure\ that's\ the\ best\ way\ to\ implement\ it!}}
+\DoxyCodeLine{00801\ \textcolor{comment}{//\ \ \ \ \ b0\ =\ pload1<RhsPacket>(b+0);}}
+\DoxyCodeLine{00802\ \textcolor{comment}{//\ \ \ \ \ b1\ =\ pload1<RhsPacket>(b+1);}}
+\DoxyCodeLine{00803\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{00804\ }
+\DoxyCodeLine{00805\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhs(\textcolor{keyword}{const}\ LhsScalar*\ a,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00806\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00807\ \ \ \ \ dest\ =\ ploaddup<LhsPacket>(a);}
+\DoxyCodeLine{00808\ \ \ \}}
+\DoxyCodeLine{00809\ \ \ }
+\DoxyCodeLine{00810\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadRhsQuad(\textcolor{keyword}{const}\ RhsScalar*\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00811\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00812\ \ \ \ \ eigen\_internal\_assert(\mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<RhsPacket>::size}}<=4);}
+\DoxyCodeLine{00813\ \ \ \ \ loadRhs(b,dest);}
+\DoxyCodeLine{00814\ \ \ \}}
+\DoxyCodeLine{00815\ }
+\DoxyCodeLine{00816\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ loadLhsUnaligned(\textcolor{keyword}{const}\ LhsScalar*\ a,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ dest)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00817\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00818\ \ \ \ \ dest\ =\ ploaddup<LhsPacket>(a);}
+\DoxyCodeLine{00819\ \ \ \}}
+\DoxyCodeLine{00820\ }
+\DoxyCodeLine{00821\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ c,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ tmp)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00822\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00823\ \ \ \ \ madd\_impl(a,\ b,\ c,\ tmp,\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{conditional<Vectorizable,true\_type,false\_type>::type}}());}
+\DoxyCodeLine{00824\ \ \ \}}
+\DoxyCodeLine{00825\ }
+\DoxyCodeLine{00826\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd\_impl(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{LhsPacket}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ b,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ c,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RhsPacket}}\&\ tmp,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{true\_type}}\&)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00827\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00828\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_HAS\_SINGLE\_INSTRUCTION\_MADD}}
+\DoxyCodeLine{00829\ \ \ \ \ EIGEN\_UNUSED\_VARIABLE(tmp);}
+\DoxyCodeLine{00830\ \ \ \ \ c.v\ =\ pmadd(a,b.v,c.v);}
+\DoxyCodeLine{00831\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00832\ \ \ \ \ tmp\ =\ b;\ tmp.v\ =\ pmul(a,tmp.v);\ c\ =\ padd(c,tmp);}
+\DoxyCodeLine{00833\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00834\ \ \ \ \ }
+\DoxyCodeLine{00835\ \ \ \}}
+\DoxyCodeLine{00836\ }
+\DoxyCodeLine{00837\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ madd\_impl(\textcolor{keyword}{const}\ LhsScalar\&\ a,\ \textcolor{keyword}{const}\ RhsScalar\&\ b,\ ResScalar\&\ c,\ RhsScalar\&\ \textcolor{comment}{/*tmp*/},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1false__type}{false\_type}}\&)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00838\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00839\ \ \ \ \ c\ +=\ a\ *\ b;}
+\DoxyCodeLine{00840\ \ \ \}}
+\DoxyCodeLine{00841\ }
+\DoxyCodeLine{00842\ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ acc(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AccPacket}}\&\ c,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ alpha,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ResPacket}}\&\ r)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00843\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00844\ \ \ \ \ r\ =\ cj.pmadd(alpha,c,r);}
+\DoxyCodeLine{00845\ \ \ \}}
+\DoxyCodeLine{00846\ }
+\DoxyCodeLine{00847\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00848\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conj__helper}{conj\_helper<ResPacket,ResPacket,false,ConjRhs>}}\ cj;}
+\DoxyCodeLine{00849\ \};}
+\DoxyCodeLine{00850\ }
+\DoxyCodeLine{00851\ \textcolor{comment}{/*\ optimized\ GEneral\ packed\ Block\ *\ packed\ Panel\ product\ kernel}}
+\DoxyCodeLine{00852\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00853\ \textcolor{comment}{\ *\ Mixing\ type\ logic:\ C\ +=\ A\ *\ B}}
+\DoxyCodeLine{00854\ \textcolor{comment}{\ *\ \ |\ \ A\ \ |\ \ B\ \ |\ comments}}
+\DoxyCodeLine{00855\ \textcolor{comment}{\ *\ \ |real\ |cplx\ |\ no\ vectorization\ yet,\ would\ require\ to\ pack\ A\ with\ duplication}}
+\DoxyCodeLine{00856\ \textcolor{comment}{\ *\ \ |cplx\ |real\ |\ easy\ vectorization}}
+\DoxyCodeLine{00857\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00858\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsScalar,\ \textcolor{keyword}{typename}\ RhsScalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ mr,\ \textcolor{keywordtype}{int}\ nr,\ \textcolor{keywordtype}{bool}\ ConjugateLhs,\ \textcolor{keywordtype}{bool}\ ConjugateRhs>}
+\DoxyCodeLine{00859\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1gebp__kernel}{gebp\_kernel}}}
+\DoxyCodeLine{00860\ \{}
+\DoxyCodeLine{00861\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1gebp__traits}{gebp\_traits<LhsScalar,RhsScalar,ConjugateLhs,ConjugateRhs>}}\ Traits;}
+\DoxyCodeLine{00862\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::ResScalar\ ResScalar;}
+\DoxyCodeLine{00863\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::LhsPacket\ LhsPacket;}
+\DoxyCodeLine{00864\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::RhsPacket\ RhsPacket;}
+\DoxyCodeLine{00865\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::ResPacket\ ResPacket;}
+\DoxyCodeLine{00866\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::AccPacket\ AccPacket;}
+\DoxyCodeLine{00867\ }
+\DoxyCodeLine{00868\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1gebp__traits}{gebp\_traits<RhsScalar,LhsScalar,ConjugateRhs,ConjugateLhs>}}\ SwappedTraits;}
+\DoxyCodeLine{00869\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SwappedTraits::ResScalar\ SResScalar;}
+\DoxyCodeLine{00870\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SwappedTraits::LhsPacket\ SLhsPacket;}
+\DoxyCodeLine{00871\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SwappedTraits::RhsPacket\ SRhsPacket;}
+\DoxyCodeLine{00872\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SwappedTraits::ResPacket\ SResPacket;}
+\DoxyCodeLine{00873\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SwappedTraits::AccPacket\ SAccPacket;}
+\DoxyCodeLine{00874\ }
+\DoxyCodeLine{00875\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DataMapper::LinearMapper\ LinearMapper;}
+\DoxyCodeLine{00876\ }
+\DoxyCodeLine{00877\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00878\ \ \ \ \ Vectorizable\ \ =\ Traits::Vectorizable,}
+\DoxyCodeLine{00879\ \ \ \ \ LhsProgress\ \ \ =\ Traits::LhsProgress,}
+\DoxyCodeLine{00880\ \ \ \ \ RhsProgress\ \ \ =\ Traits::RhsProgress,}
+\DoxyCodeLine{00881\ \ \ \ \ ResPacketSize\ =\ Traits::ResPacketSize}
+\DoxyCodeLine{00882\ \ \ \};}
+\DoxyCodeLine{00883\ }
+\DoxyCodeLine{00884\ \ \ EIGEN\_DONT\_INLINE}
+\DoxyCodeLine{00885\ \ \ \textcolor{keywordtype}{void}\ operator()(\textcolor{keyword}{const}\ DataMapper\&\ res,\ \textcolor{keyword}{const}\ LhsScalar*\ blockA,\ \textcolor{keyword}{const}\ RhsScalar*\ blockB,}
+\DoxyCodeLine{00886\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ rows,\ Index\ depth,\ Index\ cols,\ ResScalar\ alpha,}
+\DoxyCodeLine{00887\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ strideA=-\/1,\ Index\ strideB=-\/1,\ Index\ offsetA=0,\ Index\ offsetB=0);}
+\DoxyCodeLine{00888\ \};}
+\DoxyCodeLine{00889\ }
+\DoxyCodeLine{00890\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsScalar,\ \textcolor{keyword}{typename}\ RhsScalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ mr,\ \textcolor{keywordtype}{int}\ nr,\ \textcolor{keywordtype}{bool}\ ConjugateLhs,\ \textcolor{keywordtype}{bool}\ ConjugateRhs>}
+\DoxyCodeLine{00891\ EIGEN\_DONT\_INLINE}
+\DoxyCodeLine{00892\ \textcolor{keywordtype}{void}\ gebp\_kernel<LhsScalar,RhsScalar,Index,DataMapper,mr,nr,ConjugateLhs,ConjugateRhs>}
+\DoxyCodeLine{00893\ \ \ ::operator()(\textcolor{keyword}{const}\ DataMapper\&\ res,\ \textcolor{keyword}{const}\ LhsScalar*\ blockA,\ \textcolor{keyword}{const}\ RhsScalar*\ blockB,}
+\DoxyCodeLine{00894\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ rows,\ Index\ depth,\ Index\ cols,\ ResScalar\ alpha,}
+\DoxyCodeLine{00895\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ strideA,\ Index\ strideB,\ Index\ offsetA,\ Index\ offsetB)}
+\DoxyCodeLine{00896\ \ \ \{}
+\DoxyCodeLine{00897\ \ \ \ \ Traits\ traits;}
+\DoxyCodeLine{00898\ \ \ \ \ SwappedTraits\ straits;}
+\DoxyCodeLine{00899\ \ \ \ \ }
+\DoxyCodeLine{00900\ \ \ \ \ \textcolor{keywordflow}{if}(strideA==-\/1)\ strideA\ =\ depth;}
+\DoxyCodeLine{00901\ \ \ \ \ \textcolor{keywordflow}{if}(strideB==-\/1)\ strideB\ =\ depth;}
+\DoxyCodeLine{00902\ \ \ \ \ conj\_helper<LhsScalar,RhsScalar,ConjugateLhs,ConjugateRhs>\ cj;}
+\DoxyCodeLine{00903\ \ \ \ \ Index\ packet\_cols4\ =\ nr>=4\ ?\ (cols/4)\ *\ 4\ :\ 0;}
+\DoxyCodeLine{00904\ \ \ \ \ \textcolor{keyword}{const}\ Index\ peeled\_mc3\ =\ mr>=3*Traits::LhsProgress\ ?\ (rows/(3*LhsProgress))*(3*LhsProgress)\ :\ 0;}
+\DoxyCodeLine{00905\ \ \ \ \ \textcolor{keyword}{const}\ Index\ peeled\_mc2\ =\ mr>=2*Traits::LhsProgress\ ?\ peeled\_mc3+((rows-\/peeled\_mc3)/(2*LhsProgress))*(2*LhsProgress)\ :\ 0;}
+\DoxyCodeLine{00906\ \ \ \ \ \textcolor{keyword}{const}\ Index\ peeled\_mc1\ =\ mr>=1*Traits::LhsProgress\ ?\ (rows/(1*LhsProgress))*(1*LhsProgress)\ :\ 0;}
+\DoxyCodeLine{00907\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ pk\ =\ 8\ \};\ \textcolor{comment}{//\ NOTE\ Such\ a\ large\ peeling\ factor\ is\ important\ for\ large\ matrices\ (\string~\ +5\%\ when\ >1000\ on\ Haswell)}}
+\DoxyCodeLine{00908\ \ \ \ \ \textcolor{keyword}{const}\ Index\ peeled\_kc\ \ =\ depth\ \&\ \string~(pk-\/1);}
+\DoxyCodeLine{00909\ \ \ \ \ \textcolor{keyword}{const}\ Index\ prefetch\_res\_offset\ =\ 32/\textcolor{keyword}{sizeof}(ResScalar);\ \ \ \ }
+\DoxyCodeLine{00910\ \textcolor{comment}{//\ \ \ \ \ const\ Index\ depth2\ \ \ \ \ =\ depth\ \&\ \string~1;}}
+\DoxyCodeLine{00911\ }
+\DoxyCodeLine{00912\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Process\ 3\ *\ LhsProgress\ rows\ at\ once\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00913\ \ \ \ \ \textcolor{comment}{//\ This\ corresponds\ to\ 3*LhsProgress\ x\ nr\ register\ blocks.}}
+\DoxyCodeLine{00914\ \ \ \ \ \textcolor{comment}{//\ Usually,\ make\ sense\ only\ with\ FMA}}
+\DoxyCodeLine{00915\ \ \ \ \ \textcolor{keywordflow}{if}(mr>=3*Traits::LhsProgress)}
+\DoxyCodeLine{00916\ \ \ \ \ \{}
+\DoxyCodeLine{00917\ \ \ \ \ \ \ \textcolor{comment}{//\ Here,\ the\ general\ idea\ is\ to\ loop\ on\ each\ largest\ micro\ horizontal\ panel\ of\ the\ lhs\ (3*Traits::LhsProgress\ x\ depth)}}
+\DoxyCodeLine{00918\ \ \ \ \ \ \ \textcolor{comment}{//\ and\ on\ each\ largest\ micro\ vertical\ panel\ of\ the\ rhs\ (depth\ *\ nr).}}
+\DoxyCodeLine{00919\ \ \ \ \ \ \ \textcolor{comment}{//\ Blocking\ sizes,\ i.e.,\ 'depth'\ has\ been\ computed\ so\ that\ the\ micro\ horizontal\ panel\ of\ the\ lhs\ fit\ in\ L1.}}
+\DoxyCodeLine{00920\ \ \ \ \ \ \ \textcolor{comment}{//\ However,\ if\ depth\ is\ too\ small,\ we\ can\ extend\ the\ number\ of\ rows\ of\ these\ horizontal\ panels.}}
+\DoxyCodeLine{00921\ \ \ \ \ \ \ \textcolor{comment}{//\ This\ actual\ number\ of\ rows\ is\ computed\ as\ follow:}}
+\DoxyCodeLine{00922\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ l1\ =\ defaultL1CacheSize;\ \textcolor{comment}{//\ in\ Bytes,\ TODO,\ l1\ should\ be\ passed\ to\ this\ function.}}
+\DoxyCodeLine{00923\ \ \ \ \ \ \ \textcolor{comment}{//\ The\ max(1,\ ...)\ here\ is\ needed\ because\ we\ may\ be\ using\ blocking\ params\ larger\ than\ what\ our\ known\ l1\ cache\ size}}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ \textcolor{comment}{//\ suggests\ we\ should\ be\ using:\ either\ because\ our\ known\ l1\ cache\ size\ is\ inaccurate\ (e.g.\ on\ Android,\ we\ can\ only\ guess),}}
+\DoxyCodeLine{00925\ \ \ \ \ \ \ \textcolor{comment}{//\ or\ because\ we\ are\ testing\ specific\ blocking\ sizes.}}
+\DoxyCodeLine{00926\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ actual\_panel\_rows\ =\ (3*LhsProgress)\ *\ std::max<Index>(1,(\ (l1\ -\/\ \textcolor{keyword}{sizeof}(ResScalar)*mr*nr\ -\/\ depth*nr*\textcolor{keyword}{sizeof}(RhsScalar))\ /\ (depth\ *\ \textcolor{keyword}{sizeof}(LhsScalar)\ *\ 3*LhsProgress)\ ));}
+\DoxyCodeLine{00927\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i1=0;\ i1<peeled\_mc3;\ i1+=actual\_panel\_rows)}
+\DoxyCodeLine{00928\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00929\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ actual\_panel\_end\ =\ (std::min)(i1+actual\_panel\_rows,\ peeled\_mc3);}
+\DoxyCodeLine{00930\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=0;\ j2<packet\_cols4;\ j2+=nr)}
+\DoxyCodeLine{00931\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00932\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=i1;\ i<actual\_panel\_end;\ i+=3*LhsProgress)}
+\DoxyCodeLine{00933\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00934\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00935\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ selected\ a\ 3*Traits::LhsProgress\ x\ nr\ micro\ block\ of\ res\ which\ is\ entirely}}
+\DoxyCodeLine{00936\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ stored\ into\ 3\ x\ nr\ registers.}}
+\DoxyCodeLine{00937\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00938\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA*(3*LhsProgress)];}
+\DoxyCodeLine{00939\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{00940\ }
+\DoxyCodeLine{00941\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ res\ block\ as\ register}}
+\DoxyCodeLine{00942\ \ \ \ \ \ \ \ \ \ \ AccPacket\ C0,\ C1,\ C2,\ \ C3,}
+\DoxyCodeLine{00943\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ C4,\ C5,\ C6,\ \ C7,}
+\DoxyCodeLine{00944\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ C8,\ C9,\ C10,\ C11;}
+\DoxyCodeLine{00945\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C0);\ \ traits.initAcc(C1);\ \ traits.initAcc(C2);\ \ traits.initAcc(C3);}
+\DoxyCodeLine{00946\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C4);\ \ traits.initAcc(C5);\ \ traits.initAcc(C6);\ \ traits.initAcc(C7);}
+\DoxyCodeLine{00947\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C8);\ \ traits.initAcc(C9);\ \ traits.initAcc(C10);\ traits.initAcc(C11);}
+\DoxyCodeLine{00948\ }
+\DoxyCodeLine{00949\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r0\ =\ res.getLinearMapper(i,\ j2\ +\ 0);}
+\DoxyCodeLine{00950\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r1\ =\ res.getLinearMapper(i,\ j2\ +\ 1);}
+\DoxyCodeLine{00951\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r2\ =\ res.getLinearMapper(i,\ j2\ +\ 2);}
+\DoxyCodeLine{00952\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r3\ =\ res.getLinearMapper(i,\ j2\ +\ 3);}
+\DoxyCodeLine{00953\ }
+\DoxyCodeLine{00954\ \ \ \ \ \ \ \ \ \ \ r0.prefetch(0);}
+\DoxyCodeLine{00955\ \ \ \ \ \ \ \ \ \ \ r1.prefetch(0);}
+\DoxyCodeLine{00956\ \ \ \ \ \ \ \ \ \ \ r2.prefetch(0);}
+\DoxyCodeLine{00957\ \ \ \ \ \ \ \ \ \ \ r3.prefetch(0);}
+\DoxyCodeLine{00958\ }
+\DoxyCodeLine{00959\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ performs\ "{}inner"{}\ products}}
+\DoxyCodeLine{00960\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB*nr];}
+\DoxyCodeLine{00961\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blB[0]);}
+\DoxyCodeLine{00962\ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A0,\ A1;}
+\DoxyCodeLine{00963\ }
+\DoxyCodeLine{00964\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<peeled\_kc;\ k+=pk)}
+\DoxyCodeLine{00965\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00966\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}begin\ gebp\ micro\ kernel\ 3pX4"{}});}
+\DoxyCodeLine{00967\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ T0;}
+\DoxyCodeLine{00968\ \ \ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A2;}
+\DoxyCodeLine{00969\ }
+\DoxyCodeLine{00970\ \textcolor{preprocessor}{\#define\ EIGEN\_GEBP\_ONESTEP(K)\ \(\backslash\)}}
+\DoxyCodeLine{00971\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ do\ \{\ \(\backslash\)}}
+\DoxyCodeLine{00972\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}begin\ step\ of\ gebp\ micro\ kernel\ 3pX4"{});\ \(\backslash\)}}
+\DoxyCodeLine{00973\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}Note:\ these\ asm\ comments\ work\ around\ bug\ 935!"{});\ \(\backslash\)}}
+\DoxyCodeLine{00974\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ internal::prefetch(blA+(3*K+16)*LhsProgress);\ \(\backslash\)}}
+\DoxyCodeLine{00975\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ if\ (EIGEN\_ARCH\_ARM)\ \{\ internal::prefetch(blB+(4*K+16)*RhsProgress);\ \}\ }\textcolor{comment}{/*\ Bug\ 953\ */}\textcolor{preprocessor}{\ \(\backslash\)}}
+\DoxyCodeLine{00976\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(0+3*K)*LhsProgress],\ A0);\ \ \(\backslash\)}}
+\DoxyCodeLine{00977\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(1+3*K)*LhsProgress],\ A1);\ \ \(\backslash\)}}
+\DoxyCodeLine{00978\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(2+3*K)*LhsProgress],\ A2);\ \ \(\backslash\)}}
+\DoxyCodeLine{00979\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadRhs(blB\ +\ (0+4*K)*Traits::RhsProgress,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00980\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C0,\ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00981\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B\_0,\ C4,\ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00982\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A2,\ B\_0,\ C8,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00983\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadRhs(blB\ +\ (1+4*K)*Traits::RhsProgress,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00984\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C1,\ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00985\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B\_0,\ C5,\ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00986\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A2,\ B\_0,\ C9,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00987\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadRhs(blB\ +\ (2+4*K)*Traits::RhsProgress,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00988\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C2,\ \ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00989\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B\_0,\ C6,\ \ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00990\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A2,\ B\_0,\ C10,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00991\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadRhs(blB\ +\ (3+4*K)*Traits::RhsProgress,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00992\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C3\ ,\ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00993\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B\_0,\ C7,\ \ T0);\ \(\backslash\)}}
+\DoxyCodeLine{00994\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A2,\ B\_0,\ C11,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{00995\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}end\ step\ of\ gebp\ micro\ kernel\ 3pX4"{});\ \(\backslash\)}}
+\DoxyCodeLine{00996\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \}\ while(false)}}
+\DoxyCodeLine{00997\ }
+\DoxyCodeLine{00998\ \ \ \ \ \ \ \ \ \ \ \ \ internal::prefetch(blB);}
+\DoxyCodeLine{00999\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(0);}
+\DoxyCodeLine{01000\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(1);}
+\DoxyCodeLine{01001\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(2);}
+\DoxyCodeLine{01002\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(3);}
+\DoxyCodeLine{01003\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(4);}
+\DoxyCodeLine{01004\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(5);}
+\DoxyCodeLine{01005\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(6);}
+\DoxyCodeLine{01006\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(7);}
+\DoxyCodeLine{01007\ }
+\DoxyCodeLine{01008\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ pk*4*RhsProgress;}
+\DoxyCodeLine{01009\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ pk*3*Traits::LhsProgress;}
+\DoxyCodeLine{01010\ }
+\DoxyCodeLine{01011\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}end\ gebp\ micro\ kernel\ 3pX4"{}});}
+\DoxyCodeLine{01012\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01013\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ process\ remaining\ peeled\ loop}}
+\DoxyCodeLine{01014\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=peeled\_kc;\ k<depth;\ k++)}
+\DoxyCodeLine{01015\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01016\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ T0;}
+\DoxyCodeLine{01017\ \ \ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A2;}
+\DoxyCodeLine{01018\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBP\_ONESTEP(0);}
+\DoxyCodeLine{01019\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ 4*RhsProgress;}
+\DoxyCodeLine{01020\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ 3*Traits::LhsProgress;}
+\DoxyCodeLine{01021\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01022\ }
+\DoxyCodeLine{01023\ \textcolor{preprocessor}{\#undef\ EIGEN\_GEBP\_ONESTEP}}
+\DoxyCodeLine{01024\ }
+\DoxyCodeLine{01025\ \ \ \ \ \ \ \ \ \ \ ResPacket\ R0,\ R1,\ R2;}
+\DoxyCodeLine{01026\ \ \ \ \ \ \ \ \ \ \ ResPacket\ alphav\ =\ pset1<ResPacket>(alpha);}
+\DoxyCodeLine{01027\ }
+\DoxyCodeLine{01028\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r0.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01029\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r0.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01030\ \ \ \ \ \ \ \ \ \ \ R2\ =\ r0.loadPacket(2\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01031\ \ \ \ \ \ \ \ \ \ \ traits.acc(C0,\ alphav,\ R0);}
+\DoxyCodeLine{01032\ \ \ \ \ \ \ \ \ \ \ traits.acc(C4,\ alphav,\ R1);}
+\DoxyCodeLine{01033\ \ \ \ \ \ \ \ \ \ \ traits.acc(C8,\ alphav,\ R2);}
+\DoxyCodeLine{01034\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01035\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01036\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(2\ *\ Traits::ResPacketSize,\ R2);}
+\DoxyCodeLine{01037\ }
+\DoxyCodeLine{01038\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r1.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01039\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r1.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01040\ \ \ \ \ \ \ \ \ \ \ R2\ =\ r1.loadPacket(2\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01041\ \ \ \ \ \ \ \ \ \ \ traits.acc(C1,\ alphav,\ R0);}
+\DoxyCodeLine{01042\ \ \ \ \ \ \ \ \ \ \ traits.acc(C5,\ alphav,\ R1);}
+\DoxyCodeLine{01043\ \ \ \ \ \ \ \ \ \ \ traits.acc(C9,\ alphav,\ R2);}
+\DoxyCodeLine{01044\ \ \ \ \ \ \ \ \ \ \ r1.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01045\ \ \ \ \ \ \ \ \ \ \ r1.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01046\ \ \ \ \ \ \ \ \ \ \ r1.storePacket(2\ *\ Traits::ResPacketSize,\ R2);}
+\DoxyCodeLine{01047\ }
+\DoxyCodeLine{01048\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r2.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01049\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r2.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01050\ \ \ \ \ \ \ \ \ \ \ R2\ =\ r2.loadPacket(2\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01051\ \ \ \ \ \ \ \ \ \ \ traits.acc(C2,\ alphav,\ R0);}
+\DoxyCodeLine{01052\ \ \ \ \ \ \ \ \ \ \ traits.acc(C6,\ alphav,\ R1);}
+\DoxyCodeLine{01053\ \ \ \ \ \ \ \ \ \ \ traits.acc(C10,\ alphav,\ R2);}
+\DoxyCodeLine{01054\ \ \ \ \ \ \ \ \ \ \ r2.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01055\ \ \ \ \ \ \ \ \ \ \ r2.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01056\ \ \ \ \ \ \ \ \ \ \ r2.storePacket(2\ *\ Traits::ResPacketSize,\ R2);}
+\DoxyCodeLine{01057\ }
+\DoxyCodeLine{01058\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r3.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01059\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r3.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01060\ \ \ \ \ \ \ \ \ \ \ R2\ =\ r3.loadPacket(2\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01061\ \ \ \ \ \ \ \ \ \ \ traits.acc(C3,\ alphav,\ R0);}
+\DoxyCodeLine{01062\ \ \ \ \ \ \ \ \ \ \ traits.acc(C7,\ alphav,\ R1);}
+\DoxyCodeLine{01063\ \ \ \ \ \ \ \ \ \ \ traits.acc(C11,\ alphav,\ R2);}
+\DoxyCodeLine{01064\ \ \ \ \ \ \ \ \ \ \ r3.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01065\ \ \ \ \ \ \ \ \ \ \ r3.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01066\ \ \ \ \ \ \ \ \ \ \ r3.storePacket(2\ *\ Traits::ResPacketSize,\ R2);\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01067\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01068\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01069\ }
+\DoxyCodeLine{01070\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Deal\ with\ remaining\ columns\ of\ the\ rhs}}
+\DoxyCodeLine{01071\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols4;\ j2<cols;\ j2++)}
+\DoxyCodeLine{01072\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01073\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=i1;\ i<actual\_panel\_end;\ i+=3*LhsProgress)}
+\DoxyCodeLine{01074\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01075\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ One\ column\ at\ a\ time}}
+\DoxyCodeLine{01076\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA*(3*Traits::LhsProgress)];}
+\DoxyCodeLine{01077\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{01078\ }
+\DoxyCodeLine{01079\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ res\ block\ as\ register}}
+\DoxyCodeLine{01080\ \ \ \ \ \ \ \ \ \ \ AccPacket\ C0,\ C4,\ C8;}
+\DoxyCodeLine{01081\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C0);}
+\DoxyCodeLine{01082\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C4);}
+\DoxyCodeLine{01083\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C8);}
+\DoxyCodeLine{01084\ }
+\DoxyCodeLine{01085\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r0\ =\ res.getLinearMapper(i,\ j2);}
+\DoxyCodeLine{01086\ \ \ \ \ \ \ \ \ \ \ r0.prefetch(0);}
+\DoxyCodeLine{01087\ }
+\DoxyCodeLine{01088\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ performs\ "{}inner"{}\ products}}
+\DoxyCodeLine{01089\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB];}
+\DoxyCodeLine{01090\ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A0,\ A1,\ A2;}
+\DoxyCodeLine{01091\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01092\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<peeled\_kc;\ k+=pk)}
+\DoxyCodeLine{01093\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01094\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}begin\ gebp\ micro\ kernel\ 3pX1"{}});}
+\DoxyCodeLine{01095\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0;}
+\DoxyCodeLine{01096\ \textcolor{preprocessor}{\#define\ EIGEN\_GEBGP\_ONESTEP(K)\ \(\backslash\)}}
+\DoxyCodeLine{01097\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ do\ \{\ \(\backslash\)}}
+\DoxyCodeLine{01098\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}begin\ step\ of\ gebp\ micro\ kernel\ 3pX1"{});\ \(\backslash\)}}
+\DoxyCodeLine{01099\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}Note:\ these\ asm\ comments\ work\ around\ bug\ 935!"{});\ \(\backslash\)}}
+\DoxyCodeLine{01100\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(0+3*K)*LhsProgress],\ A0);\ \ \(\backslash\)}}
+\DoxyCodeLine{01101\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(1+3*K)*LhsProgress],\ A1);\ \ \(\backslash\)}}
+\DoxyCodeLine{01102\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(2+3*K)*LhsProgress],\ A2);\ \ \(\backslash\)}}
+\DoxyCodeLine{01103\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadRhs(\&blB[(0+K)*RhsProgress],\ B\_0);\ \ \ \(\backslash\)}}
+\DoxyCodeLine{01104\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C0,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{01105\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B\_0,\ C4,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{01106\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A2,\ B\_0,\ C8,\ B\_0);\ \(\backslash\)}}
+\DoxyCodeLine{01107\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}end\ step\ of\ gebp\ micro\ kernel\ 3pX1"{});\ \(\backslash\)}}
+\DoxyCodeLine{01108\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \}\ while(false)}}
+\DoxyCodeLine{01109\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01110\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01111\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(1);}
+\DoxyCodeLine{01112\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(2);}
+\DoxyCodeLine{01113\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(3);}
+\DoxyCodeLine{01114\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(4);}
+\DoxyCodeLine{01115\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(5);}
+\DoxyCodeLine{01116\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(6);}
+\DoxyCodeLine{01117\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(7);}
+\DoxyCodeLine{01118\ }
+\DoxyCodeLine{01119\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ pk*RhsProgress;}
+\DoxyCodeLine{01120\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ pk*3*Traits::LhsProgress;}
+\DoxyCodeLine{01121\ }
+\DoxyCodeLine{01122\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}end\ gebp\ micro\ kernel\ 3pX1"{}});}
+\DoxyCodeLine{01123\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01124\ }
+\DoxyCodeLine{01125\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ process\ remaining\ peeled\ loop}}
+\DoxyCodeLine{01126\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=peeled\_kc;\ k<depth;\ k++)}
+\DoxyCodeLine{01127\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01128\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0;}
+\DoxyCodeLine{01129\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01130\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ RhsProgress;}
+\DoxyCodeLine{01131\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ 3*Traits::LhsProgress;}
+\DoxyCodeLine{01132\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01133\ \textcolor{preprocessor}{\#undef\ EIGEN\_GEBGP\_ONESTEP}}
+\DoxyCodeLine{01134\ \ \ \ \ \ \ \ \ \ \ ResPacket\ R0,\ R1,\ R2;}
+\DoxyCodeLine{01135\ \ \ \ \ \ \ \ \ \ \ ResPacket\ alphav\ =\ pset1<ResPacket>(alpha);}
+\DoxyCodeLine{01136\ }
+\DoxyCodeLine{01137\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r0.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01138\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r0.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01139\ \ \ \ \ \ \ \ \ \ \ R2\ =\ r0.loadPacket(2\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01140\ \ \ \ \ \ \ \ \ \ \ traits.acc(C0,\ alphav,\ R0);}
+\DoxyCodeLine{01141\ \ \ \ \ \ \ \ \ \ \ traits.acc(C4,\ alphav,\ R1);}
+\DoxyCodeLine{01142\ \ \ \ \ \ \ \ \ \ \ traits.acc(C8,\ alphav,\ R2);}
+\DoxyCodeLine{01143\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01144\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01145\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(2\ *\ Traits::ResPacketSize,\ R2);\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01146\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01147\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01148\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01149\ \ \ \ \ \}}
+\DoxyCodeLine{01150\ }
+\DoxyCodeLine{01151\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Process\ 2\ *\ LhsProgress\ rows\ at\ once\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01152\ \ \ \ \ \textcolor{keywordflow}{if}(mr>=2*Traits::LhsProgress)}
+\DoxyCodeLine{01153\ \ \ \ \ \{}
+\DoxyCodeLine{01154\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ l1\ =\ defaultL1CacheSize;\ \textcolor{comment}{//\ in\ Bytes,\ TODO,\ l1\ should\ be\ passed\ to\ this\ function.}}
+\DoxyCodeLine{01155\ \ \ \ \ \ \ \textcolor{comment}{//\ The\ max(1,\ ...)\ here\ is\ needed\ because\ we\ may\ be\ using\ blocking\ params\ larger\ than\ what\ our\ known\ l1\ cache\ size}}
+\DoxyCodeLine{01156\ \ \ \ \ \ \ \textcolor{comment}{//\ suggests\ we\ should\ be\ using:\ either\ because\ our\ known\ l1\ cache\ size\ is\ inaccurate\ (e.g.\ on\ Android,\ we\ can\ only\ guess),}}
+\DoxyCodeLine{01157\ \ \ \ \ \ \ \textcolor{comment}{//\ or\ because\ we\ are\ testing\ specific\ blocking\ sizes.}}
+\DoxyCodeLine{01158\ \ \ \ \ \ \ Index\ actual\_panel\_rows\ =\ (2*LhsProgress)\ *\ std::max<Index>(1,(\ (l1\ -\/\ \textcolor{keyword}{sizeof}(ResScalar)*mr*nr\ -\/\ depth*nr*\textcolor{keyword}{sizeof}(RhsScalar))\ /\ (depth\ *\ \textcolor{keyword}{sizeof}(LhsScalar)\ *\ 2*LhsProgress)\ ));}
+\DoxyCodeLine{01159\ }
+\DoxyCodeLine{01160\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i1=peeled\_mc3;\ i1<peeled\_mc2;\ i1+=actual\_panel\_rows)}
+\DoxyCodeLine{01161\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01162\ \ \ \ \ \ \ \ \ Index\ actual\_panel\_end\ =\ (std::min)(i1+actual\_panel\_rows,\ peeled\_mc2);}
+\DoxyCodeLine{01163\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=0;\ j2<packet\_cols4;\ j2+=nr)}
+\DoxyCodeLine{01164\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01165\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=i1;\ i<actual\_panel\_end;\ i+=2*LhsProgress)}
+\DoxyCodeLine{01166\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01167\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01168\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ selected\ a\ 2*Traits::LhsProgress\ x\ nr\ micro\ block\ of\ res\ which\ is\ entirely}}
+\DoxyCodeLine{01169\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ stored\ into\ 2\ x\ nr\ registers.}}
+\DoxyCodeLine{01170\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01171\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA*(2*Traits::LhsProgress)];}
+\DoxyCodeLine{01172\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{01173\ }
+\DoxyCodeLine{01174\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ res\ block\ as\ register}}
+\DoxyCodeLine{01175\ \ \ \ \ \ \ \ \ \ \ AccPacket\ C0,\ C1,\ C2,\ C3,}
+\DoxyCodeLine{01176\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ C4,\ C5,\ C6,\ C7;}
+\DoxyCodeLine{01177\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C0);\ traits.initAcc(C1);\ traits.initAcc(C2);\ traits.initAcc(C3);}
+\DoxyCodeLine{01178\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C4);\ traits.initAcc(C5);\ traits.initAcc(C6);\ traits.initAcc(C7);}
+\DoxyCodeLine{01179\ }
+\DoxyCodeLine{01180\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r0\ =\ res.getLinearMapper(i,\ j2\ +\ 0);}
+\DoxyCodeLine{01181\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r1\ =\ res.getLinearMapper(i,\ j2\ +\ 1);}
+\DoxyCodeLine{01182\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r2\ =\ res.getLinearMapper(i,\ j2\ +\ 2);}
+\DoxyCodeLine{01183\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r3\ =\ res.getLinearMapper(i,\ j2\ +\ 3);}
+\DoxyCodeLine{01184\ }
+\DoxyCodeLine{01185\ \ \ \ \ \ \ \ \ \ \ r0.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01186\ \ \ \ \ \ \ \ \ \ \ r1.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01187\ \ \ \ \ \ \ \ \ \ \ r2.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01188\ \ \ \ \ \ \ \ \ \ \ r3.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01189\ }
+\DoxyCodeLine{01190\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ performs\ "{}inner"{}\ products}}
+\DoxyCodeLine{01191\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB*nr];}
+\DoxyCodeLine{01192\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blB[0]);}
+\DoxyCodeLine{01193\ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A0,\ A1;}
+\DoxyCodeLine{01194\ }
+\DoxyCodeLine{01195\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<peeled\_kc;\ k+=pk)}
+\DoxyCodeLine{01196\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01197\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}begin\ gebp\ micro\ kernel\ 2pX4"{}});}
+\DoxyCodeLine{01198\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ B1,\ B2,\ B3,\ T0;}
+\DoxyCodeLine{01199\ }
+\DoxyCodeLine{01200\ \textcolor{preprocessor}{\ \ \ \#define\ EIGEN\_GEBGP\_ONESTEP(K)\ \(\backslash\)}}
+\DoxyCodeLine{01201\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ do\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01202\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}begin\ step\ of\ gebp\ micro\ kernel\ 2pX4"{});\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01203\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}Note:\ these\ asm\ comments\ work\ around\ bug\ 935!"{});\ \(\backslash\)}}
+\DoxyCodeLine{01204\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(0+2*K)*LhsProgress],\ A0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01205\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(1+2*K)*LhsProgress],\ A1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01206\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.broadcastRhs(\&blB[(0+4*K)*RhsProgress],\ B\_0,\ B1,\ B2,\ B3);\ \ \(\backslash\)}}
+\DoxyCodeLine{01207\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C0,\ T0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01208\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B\_0,\ C4,\ B\_0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01209\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B1,\ \ C1,\ T0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01210\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B1,\ \ C5,\ B1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01211\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B2,\ \ C2,\ T0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01212\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B2,\ \ C6,\ B2);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01213\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B3,\ \ C3,\ T0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01214\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B3,\ \ C7,\ B3);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01215\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}end\ step\ of\ gebp\ micro\ kernel\ 2pX4"{});\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01216\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \}\ while(false)}}
+\DoxyCodeLine{01217\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01218\ \ \ \ \ \ \ \ \ \ \ \ \ internal::prefetch(blB+(48+0));}
+\DoxyCodeLine{01219\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01220\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(1);}
+\DoxyCodeLine{01221\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(2);}
+\DoxyCodeLine{01222\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(3);}
+\DoxyCodeLine{01223\ \ \ \ \ \ \ \ \ \ \ \ \ internal::prefetch(blB+(48+16));}
+\DoxyCodeLine{01224\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(4);}
+\DoxyCodeLine{01225\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(5);}
+\DoxyCodeLine{01226\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(6);}
+\DoxyCodeLine{01227\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(7);}
+\DoxyCodeLine{01228\ }
+\DoxyCodeLine{01229\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ pk*4*RhsProgress;}
+\DoxyCodeLine{01230\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ pk*(2*Traits::LhsProgress);}
+\DoxyCodeLine{01231\ }
+\DoxyCodeLine{01232\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}end\ gebp\ micro\ kernel\ 2pX4"{}});}
+\DoxyCodeLine{01233\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01234\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ process\ remaining\ peeled\ loop}}
+\DoxyCodeLine{01235\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=peeled\_kc;\ k<depth;\ k++)}
+\DoxyCodeLine{01236\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01237\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ B1,\ B2,\ B3,\ T0;}
+\DoxyCodeLine{01238\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01239\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ 4*RhsProgress;}
+\DoxyCodeLine{01240\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ 2*Traits::LhsProgress;}
+\DoxyCodeLine{01241\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01242\ \textcolor{preprocessor}{\#undef\ EIGEN\_GEBGP\_ONESTEP}}
+\DoxyCodeLine{01243\ }
+\DoxyCodeLine{01244\ \ \ \ \ \ \ \ \ \ \ ResPacket\ R0,\ R1,\ R2,\ R3;}
+\DoxyCodeLine{01245\ \ \ \ \ \ \ \ \ \ \ ResPacket\ alphav\ =\ pset1<ResPacket>(alpha);}
+\DoxyCodeLine{01246\ }
+\DoxyCodeLine{01247\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r0.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01248\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r0.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01249\ \ \ \ \ \ \ \ \ \ \ R2\ =\ r1.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01250\ \ \ \ \ \ \ \ \ \ \ R3\ =\ r1.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01251\ \ \ \ \ \ \ \ \ \ \ traits.acc(C0,\ alphav,\ R0);}
+\DoxyCodeLine{01252\ \ \ \ \ \ \ \ \ \ \ traits.acc(C4,\ alphav,\ R1);}
+\DoxyCodeLine{01253\ \ \ \ \ \ \ \ \ \ \ traits.acc(C1,\ alphav,\ R2);}
+\DoxyCodeLine{01254\ \ \ \ \ \ \ \ \ \ \ traits.acc(C5,\ alphav,\ R3);}
+\DoxyCodeLine{01255\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01256\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01257\ \ \ \ \ \ \ \ \ \ \ r1.storePacket(0\ *\ Traits::ResPacketSize,\ R2);}
+\DoxyCodeLine{01258\ \ \ \ \ \ \ \ \ \ \ r1.storePacket(1\ *\ Traits::ResPacketSize,\ R3);}
+\DoxyCodeLine{01259\ }
+\DoxyCodeLine{01260\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r2.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01261\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r2.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01262\ \ \ \ \ \ \ \ \ \ \ R2\ =\ r3.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01263\ \ \ \ \ \ \ \ \ \ \ R3\ =\ r3.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01264\ \ \ \ \ \ \ \ \ \ \ traits.acc(C2,\ \ alphav,\ R0);}
+\DoxyCodeLine{01265\ \ \ \ \ \ \ \ \ \ \ traits.acc(C6,\ \ alphav,\ R1);}
+\DoxyCodeLine{01266\ \ \ \ \ \ \ \ \ \ \ traits.acc(C3,\ \ alphav,\ R2);}
+\DoxyCodeLine{01267\ \ \ \ \ \ \ \ \ \ \ traits.acc(C7,\ \ alphav,\ R3);}
+\DoxyCodeLine{01268\ \ \ \ \ \ \ \ \ \ \ r2.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01269\ \ \ \ \ \ \ \ \ \ \ r2.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01270\ \ \ \ \ \ \ \ \ \ \ r3.storePacket(0\ *\ Traits::ResPacketSize,\ R2);}
+\DoxyCodeLine{01271\ \ \ \ \ \ \ \ \ \ \ r3.storePacket(1\ *\ Traits::ResPacketSize,\ R3);}
+\DoxyCodeLine{01272\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01273\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01274\ \ \ \ \ \ \ }
+\DoxyCodeLine{01275\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Deal\ with\ remaining\ columns\ of\ the\ rhs}}
+\DoxyCodeLine{01276\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols4;\ j2<cols;\ j2++)}
+\DoxyCodeLine{01277\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01278\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=i1;\ i<actual\_panel\_end;\ i+=2*LhsProgress)}
+\DoxyCodeLine{01279\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01280\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ One\ column\ at\ a\ time}}
+\DoxyCodeLine{01281\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA*(2*Traits::LhsProgress)];}
+\DoxyCodeLine{01282\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{01283\ }
+\DoxyCodeLine{01284\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ res\ block\ as\ register}}
+\DoxyCodeLine{01285\ \ \ \ \ \ \ \ \ \ \ AccPacket\ C0,\ C4;}
+\DoxyCodeLine{01286\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C0);}
+\DoxyCodeLine{01287\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C4);}
+\DoxyCodeLine{01288\ }
+\DoxyCodeLine{01289\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r0\ =\ res.getLinearMapper(i,\ j2);}
+\DoxyCodeLine{01290\ \ \ \ \ \ \ \ \ \ \ r0.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01291\ }
+\DoxyCodeLine{01292\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ performs\ "{}inner"{}\ products}}
+\DoxyCodeLine{01293\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB];}
+\DoxyCodeLine{01294\ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A0,\ A1;}
+\DoxyCodeLine{01295\ }
+\DoxyCodeLine{01296\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<peeled\_kc;\ k+=pk)}
+\DoxyCodeLine{01297\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01298\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}begin\ gebp\ micro\ kernel\ 2pX1"{}});}
+\DoxyCodeLine{01299\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ B1;}
+\DoxyCodeLine{01300\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01301\ \textcolor{preprocessor}{\#define\ EIGEN\_GEBGP\_ONESTEP(K)\ \(\backslash\)}}
+\DoxyCodeLine{01302\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ do\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01303\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}begin\ step\ of\ gebp\ micro\ kernel\ 2pX1"{});\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01304\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}Note:\ these\ asm\ comments\ work\ around\ bug\ 935!"{});\ \(\backslash\)}}
+\DoxyCodeLine{01305\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(0+2*K)*LhsProgress],\ A0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01306\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(1+2*K)*LhsProgress],\ A1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01307\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadRhs(\&blB[(0+K)*RhsProgress],\ B\_0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01308\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C0,\ B1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01309\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A1,\ B\_0,\ C4,\ B\_0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01310\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}end\ step\ of\ gebp\ micro\ kernel\ 2pX1"{});\ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01311\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \}\ while(false)}}
+\DoxyCodeLine{01312\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01313\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01314\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(1);}
+\DoxyCodeLine{01315\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(2);}
+\DoxyCodeLine{01316\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(3);}
+\DoxyCodeLine{01317\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(4);}
+\DoxyCodeLine{01318\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(5);}
+\DoxyCodeLine{01319\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(6);}
+\DoxyCodeLine{01320\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(7);}
+\DoxyCodeLine{01321\ }
+\DoxyCodeLine{01322\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ pk*RhsProgress;}
+\DoxyCodeLine{01323\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ pk*2*Traits::LhsProgress;}
+\DoxyCodeLine{01324\ }
+\DoxyCodeLine{01325\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}end\ gebp\ micro\ kernel\ 2pX1"{}});}
+\DoxyCodeLine{01326\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01327\ }
+\DoxyCodeLine{01328\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ process\ remaining\ peeled\ loop}}
+\DoxyCodeLine{01329\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=peeled\_kc;\ k<depth;\ k++)}
+\DoxyCodeLine{01330\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01331\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ B1;}
+\DoxyCodeLine{01332\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01333\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ RhsProgress;}
+\DoxyCodeLine{01334\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ 2*Traits::LhsProgress;}
+\DoxyCodeLine{01335\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01336\ \textcolor{preprocessor}{\#undef\ EIGEN\_GEBGP\_ONESTEP}}
+\DoxyCodeLine{01337\ \ \ \ \ \ \ \ \ \ \ ResPacket\ R0,\ R1;}
+\DoxyCodeLine{01338\ \ \ \ \ \ \ \ \ \ \ ResPacket\ alphav\ =\ pset1<ResPacket>(alpha);}
+\DoxyCodeLine{01339\ }
+\DoxyCodeLine{01340\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r0.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01341\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r0.loadPacket(1\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01342\ \ \ \ \ \ \ \ \ \ \ traits.acc(C0,\ alphav,\ R0);}
+\DoxyCodeLine{01343\ \ \ \ \ \ \ \ \ \ \ traits.acc(C4,\ alphav,\ R1);}
+\DoxyCodeLine{01344\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01345\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(1\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01346\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01347\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01348\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01349\ \ \ \ \ \}}
+\DoxyCodeLine{01350\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Process\ 1\ *\ LhsProgress\ rows\ at\ once\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01351\ \ \ \ \ \textcolor{keywordflow}{if}(mr>=1*Traits::LhsProgress)}
+\DoxyCodeLine{01352\ \ \ \ \ \{}
+\DoxyCodeLine{01353\ \ \ \ \ \ \ \textcolor{comment}{//\ loops\ on\ each\ largest\ micro\ horizontal\ panel\ of\ lhs\ (1*LhsProgress\ x\ depth)}}
+\DoxyCodeLine{01354\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=peeled\_mc2;\ i<peeled\_mc1;\ i+=1*LhsProgress)}
+\DoxyCodeLine{01355\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01356\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ loops\ on\ each\ largest\ micro\ vertical\ panel\ of\ rhs\ (depth\ *\ nr)}}
+\DoxyCodeLine{01357\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=0;\ j2<packet\_cols4;\ j2+=nr)}
+\DoxyCodeLine{01358\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01359\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ select\ a\ 1*Traits::LhsProgress\ x\ nr\ micro\ block\ of\ res\ which\ is\ entirely}}
+\DoxyCodeLine{01360\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ stored\ into\ 1\ x\ nr\ registers.}}
+\DoxyCodeLine{01361\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01362\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA*(1*Traits::LhsProgress)];}
+\DoxyCodeLine{01363\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{01364\ }
+\DoxyCodeLine{01365\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ res\ block\ as\ register}}
+\DoxyCodeLine{01366\ \ \ \ \ \ \ \ \ \ \ AccPacket\ C0,\ C1,\ C2,\ C3;}
+\DoxyCodeLine{01367\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C0);}
+\DoxyCodeLine{01368\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C1);}
+\DoxyCodeLine{01369\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C2);}
+\DoxyCodeLine{01370\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C3);}
+\DoxyCodeLine{01371\ }
+\DoxyCodeLine{01372\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r0\ =\ res.getLinearMapper(i,\ j2\ +\ 0);}
+\DoxyCodeLine{01373\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r1\ =\ res.getLinearMapper(i,\ j2\ +\ 1);}
+\DoxyCodeLine{01374\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r2\ =\ res.getLinearMapper(i,\ j2\ +\ 2);}
+\DoxyCodeLine{01375\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r3\ =\ res.getLinearMapper(i,\ j2\ +\ 3);}
+\DoxyCodeLine{01376\ }
+\DoxyCodeLine{01377\ \ \ \ \ \ \ \ \ \ \ r0.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01378\ \ \ \ \ \ \ \ \ \ \ r1.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01379\ \ \ \ \ \ \ \ \ \ \ r2.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01380\ \ \ \ \ \ \ \ \ \ \ r3.prefetch(prefetch\_res\_offset);}
+\DoxyCodeLine{01381\ }
+\DoxyCodeLine{01382\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ performs\ "{}inner"{}\ products}}
+\DoxyCodeLine{01383\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB*nr];}
+\DoxyCodeLine{01384\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blB[0]);}
+\DoxyCodeLine{01385\ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A0;}
+\DoxyCodeLine{01386\ }
+\DoxyCodeLine{01387\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<peeled\_kc;\ k+=pk)}
+\DoxyCodeLine{01388\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01389\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}begin\ gebp\ micro\ kernel\ 1pX4"{}});}
+\DoxyCodeLine{01390\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ B1,\ B2,\ B3;}
+\DoxyCodeLine{01391\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01392\ \textcolor{preprocessor}{\#define\ EIGEN\_GEBGP\_ONESTEP(K)\ \(\backslash\)}}
+\DoxyCodeLine{01393\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ do\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01394\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}begin\ step\ of\ gebp\ micro\ kernel\ 1pX4"{});\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01395\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}Note:\ these\ asm\ comments\ work\ around\ bug\ 935!"{});\ \(\backslash\)}}
+\DoxyCodeLine{01396\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(0+1*K)*LhsProgress],\ A0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01397\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.broadcastRhs(\&blB[(0+4*K)*RhsProgress],\ B\_0,\ B1,\ B2,\ B3);\ \ \(\backslash\)}}
+\DoxyCodeLine{01398\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C0,\ B\_0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01399\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B1,\ \ C1,\ B1);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01400\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B2,\ \ C2,\ B2);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01401\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B3,\ \ C3,\ B3);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01402\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}end\ step\ of\ gebp\ micro\ kernel\ 1pX4"{});\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01403\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \}\ while(false)}}
+\DoxyCodeLine{01404\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01405\ \ \ \ \ \ \ \ \ \ \ \ \ internal::prefetch(blB+(48+0));}
+\DoxyCodeLine{01406\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01407\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(1);}
+\DoxyCodeLine{01408\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(2);}
+\DoxyCodeLine{01409\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(3);}
+\DoxyCodeLine{01410\ \ \ \ \ \ \ \ \ \ \ \ \ internal::prefetch(blB+(48+16));}
+\DoxyCodeLine{01411\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(4);}
+\DoxyCodeLine{01412\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(5);}
+\DoxyCodeLine{01413\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(6);}
+\DoxyCodeLine{01414\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(7);}
+\DoxyCodeLine{01415\ }
+\DoxyCodeLine{01416\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ pk*4*RhsProgress;}
+\DoxyCodeLine{01417\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ pk*1*LhsProgress;}
+\DoxyCodeLine{01418\ }
+\DoxyCodeLine{01419\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}end\ gebp\ micro\ kernel\ 1pX4"{}});}
+\DoxyCodeLine{01420\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01421\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ process\ remaining\ peeled\ loop}}
+\DoxyCodeLine{01422\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=peeled\_kc;\ k<depth;\ k++)}
+\DoxyCodeLine{01423\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01424\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0,\ B1,\ B2,\ B3;}
+\DoxyCodeLine{01425\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01426\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ 4*RhsProgress;}
+\DoxyCodeLine{01427\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ 1*LhsProgress;}
+\DoxyCodeLine{01428\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01429\ \textcolor{preprocessor}{\#undef\ EIGEN\_GEBGP\_ONESTEP}}
+\DoxyCodeLine{01430\ }
+\DoxyCodeLine{01431\ \ \ \ \ \ \ \ \ \ \ ResPacket\ R0,\ R1;}
+\DoxyCodeLine{01432\ \ \ \ \ \ \ \ \ \ \ ResPacket\ alphav\ =\ pset1<ResPacket>(alpha);}
+\DoxyCodeLine{01433\ }
+\DoxyCodeLine{01434\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r0.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01435\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r1.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01436\ \ \ \ \ \ \ \ \ \ \ traits.acc(C0,\ alphav,\ R0);}
+\DoxyCodeLine{01437\ \ \ \ \ \ \ \ \ \ \ traits.acc(C1,\ \ alphav,\ R1);}
+\DoxyCodeLine{01438\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01439\ \ \ \ \ \ \ \ \ \ \ r1.storePacket(0\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01440\ }
+\DoxyCodeLine{01441\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r2.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01442\ \ \ \ \ \ \ \ \ \ \ R1\ =\ r3.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01443\ \ \ \ \ \ \ \ \ \ \ traits.acc(C2,\ \ alphav,\ R0);}
+\DoxyCodeLine{01444\ \ \ \ \ \ \ \ \ \ \ traits.acc(C3,\ \ alphav,\ R1);}
+\DoxyCodeLine{01445\ \ \ \ \ \ \ \ \ \ \ r2.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01446\ \ \ \ \ \ \ \ \ \ \ r3.storePacket(0\ *\ Traits::ResPacketSize,\ R1);}
+\DoxyCodeLine{01447\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01448\ }
+\DoxyCodeLine{01449\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Deal\ with\ remaining\ columns\ of\ the\ rhs}}
+\DoxyCodeLine{01450\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols4;\ j2<cols;\ j2++)}
+\DoxyCodeLine{01451\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01452\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ One\ column\ at\ a\ time}}
+\DoxyCodeLine{01453\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA*(1*Traits::LhsProgress)];}
+\DoxyCodeLine{01454\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{01455\ }
+\DoxyCodeLine{01456\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ res\ block\ as\ register}}
+\DoxyCodeLine{01457\ \ \ \ \ \ \ \ \ \ \ AccPacket\ C0;}
+\DoxyCodeLine{01458\ \ \ \ \ \ \ \ \ \ \ traits.initAcc(C0);}
+\DoxyCodeLine{01459\ }
+\DoxyCodeLine{01460\ \ \ \ \ \ \ \ \ \ \ LinearMapper\ r0\ =\ res.getLinearMapper(i,\ j2);}
+\DoxyCodeLine{01461\ }
+\DoxyCodeLine{01462\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ performs\ "{}inner"{}\ products}}
+\DoxyCodeLine{01463\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB];}
+\DoxyCodeLine{01464\ \ \ \ \ \ \ \ \ \ \ LhsPacket\ A0;}
+\DoxyCodeLine{01465\ }
+\DoxyCodeLine{01466\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<peeled\_kc;\ k+=pk)}
+\DoxyCodeLine{01467\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01468\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}begin\ gebp\ micro\ kernel\ 1pX1"{}});}
+\DoxyCodeLine{01469\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0;}
+\DoxyCodeLine{01470\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01471\ \textcolor{preprocessor}{\#define\ EIGEN\_GEBGP\_ONESTEP(K)\ \(\backslash\)}}
+\DoxyCodeLine{01472\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ do\ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01473\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}begin\ step\ of\ gebp\ micro\ kernel\ 1pX1"{});\ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01474\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}Note:\ these\ asm\ comments\ work\ around\ bug\ 935!"{});\ \(\backslash\)}}
+\DoxyCodeLine{01475\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadLhs(\&blA[(0+1*K)*LhsProgress],\ A0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01476\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.loadRhs(\&blB[(0+K)*RhsProgress],\ B\_0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01477\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ traits.madd(A0,\ B\_0,\ C0,\ B\_0);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01478\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT("{}end\ step\ of\ gebp\ micro\ kernel\ 1pX1"{});\ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{01479\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \}\ while(false);}}
+\DoxyCodeLine{01480\ }
+\DoxyCodeLine{01481\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01482\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(1);}
+\DoxyCodeLine{01483\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(2);}
+\DoxyCodeLine{01484\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(3);}
+\DoxyCodeLine{01485\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(4);}
+\DoxyCodeLine{01486\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(5);}
+\DoxyCodeLine{01487\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(6);}
+\DoxyCodeLine{01488\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(7);}
+\DoxyCodeLine{01489\ }
+\DoxyCodeLine{01490\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ pk*RhsProgress;}
+\DoxyCodeLine{01491\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ pk*1*Traits::LhsProgress;}
+\DoxyCodeLine{01492\ }
+\DoxyCodeLine{01493\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}end\ gebp\ micro\ kernel\ 1pX1"{}});}
+\DoxyCodeLine{01494\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01495\ }
+\DoxyCodeLine{01496\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ process\ remaining\ peeled\ loop}}
+\DoxyCodeLine{01497\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=peeled\_kc;\ k<depth;\ k++)}
+\DoxyCodeLine{01498\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01499\ \ \ \ \ \ \ \ \ \ \ \ \ RhsPacket\ B\_0;}
+\DoxyCodeLine{01500\ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_GEBGP\_ONESTEP(0);}
+\DoxyCodeLine{01501\ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ RhsProgress;}
+\DoxyCodeLine{01502\ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ 1*Traits::LhsProgress;}
+\DoxyCodeLine{01503\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01504\ \textcolor{preprocessor}{\#undef\ EIGEN\_GEBGP\_ONESTEP}}
+\DoxyCodeLine{01505\ \ \ \ \ \ \ \ \ \ \ ResPacket\ R0;}
+\DoxyCodeLine{01506\ \ \ \ \ \ \ \ \ \ \ ResPacket\ alphav\ =\ pset1<ResPacket>(alpha);}
+\DoxyCodeLine{01507\ \ \ \ \ \ \ \ \ \ \ R0\ =\ r0.loadPacket(0\ *\ Traits::ResPacketSize);}
+\DoxyCodeLine{01508\ \ \ \ \ \ \ \ \ \ \ traits.acc(C0,\ alphav,\ R0);}
+\DoxyCodeLine{01509\ \ \ \ \ \ \ \ \ \ \ r0.storePacket(0\ *\ Traits::ResPacketSize,\ R0);}
+\DoxyCodeLine{01510\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01511\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01512\ \ \ \ \ \}}
+\DoxyCodeLine{01513\ \ \ \ \ \textcolor{comment}{//-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/\ Process\ remaining\ rows,\ 1\ at\ once\ -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}}
+\DoxyCodeLine{01514\ \ \ \ \ \textcolor{keywordflow}{if}(peeled\_mc1<rows)}
+\DoxyCodeLine{01515\ \ \ \ \ \{}
+\DoxyCodeLine{01516\ \ \ \ \ \ \ \textcolor{comment}{//\ loop\ on\ each\ panel\ of\ the\ rhs}}
+\DoxyCodeLine{01517\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=0;\ j2<packet\_cols4;\ j2+=nr)}
+\DoxyCodeLine{01518\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01519\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ loop\ on\ each\ row\ of\ the\ lhs\ (1*LhsProgress\ x\ depth)}}
+\DoxyCodeLine{01520\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=peeled\_mc1;\ i<rows;\ i+=1)}
+\DoxyCodeLine{01521\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01522\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA];}
+\DoxyCodeLine{01523\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{01524\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB*nr];}
+\DoxyCodeLine{01525\ }
+\DoxyCodeLine{01526\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ following\ piece\ of\ code\ wont\ work\ for\ 512\ bit\ registers}}
+\DoxyCodeLine{01527\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Moreover,\ if\ LhsProgress==8\ it\ assumes\ that\ there\ is\ a\ half\ packet\ of\ the\ same\ size}}
+\DoxyCodeLine{01528\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ as\ nr\ (which\ is\ currently\ 4)\ for\ the\ return\ type.}}
+\DoxyCodeLine{01529\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ unpacket\_traits<SResPacket>::half\ SResPacketHalf;}
+\DoxyCodeLine{01530\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((SwappedTraits::LhsProgress\ \%\ 4)\ ==\ 0\ \&\&}
+\DoxyCodeLine{01531\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (SwappedTraits::LhsProgress\ <=\ 8)\ \&\&}
+\DoxyCodeLine{01532\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (SwappedTraits::LhsProgress!=8\ ||\ unpacket\_traits<SResPacketHalf>::size==nr))}
+\DoxyCodeLine{01533\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01534\ \ \ \ \ \ \ \ \ \ \ \ \ SAccPacket\ C0,\ C1,\ C2,\ C3;}
+\DoxyCodeLine{01535\ \ \ \ \ \ \ \ \ \ \ \ \ straits.initAcc(C0);}
+\DoxyCodeLine{01536\ \ \ \ \ \ \ \ \ \ \ \ \ straits.initAcc(C1);}
+\DoxyCodeLine{01537\ \ \ \ \ \ \ \ \ \ \ \ \ straits.initAcc(C2);}
+\DoxyCodeLine{01538\ \ \ \ \ \ \ \ \ \ \ \ \ straits.initAcc(C3);}
+\DoxyCodeLine{01539\ }
+\DoxyCodeLine{01540\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ spk\ \ \ =\ (std::max)(1,SwappedTraits::LhsProgress/4);}
+\DoxyCodeLine{01541\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ endk\ \ =\ (depth/spk)*spk;}
+\DoxyCodeLine{01542\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ endk4\ =\ (depth/(spk*4))*(spk*4);}
+\DoxyCodeLine{01543\ }
+\DoxyCodeLine{01544\ \ \ \ \ \ \ \ \ \ \ \ \ Index\ k=0;}
+\DoxyCodeLine{01545\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;\ k<endk4;\ k+=4*spk)}
+\DoxyCodeLine{01546\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01547\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SLhsPacket\ A0,A1;}
+\DoxyCodeLine{01548\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SRhsPacket\ B\_0,B\_1;}
+\DoxyCodeLine{01549\ }
+\DoxyCodeLine{01550\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadLhsUnaligned(blB+0*SwappedTraits::LhsProgress,\ A0);}
+\DoxyCodeLine{01551\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadLhsUnaligned(blB+1*SwappedTraits::LhsProgress,\ A1);}
+\DoxyCodeLine{01552\ }
+\DoxyCodeLine{01553\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadRhsQuad(blA+0*spk,\ B\_0);}
+\DoxyCodeLine{01554\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadRhsQuad(blA+1*spk,\ B\_1);}
+\DoxyCodeLine{01555\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.madd(A0,B\_0,C0,B\_0);}
+\DoxyCodeLine{01556\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.madd(A1,B\_1,C1,B\_1);}
+\DoxyCodeLine{01557\ }
+\DoxyCodeLine{01558\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadLhsUnaligned(blB+2*SwappedTraits::LhsProgress,\ A0);}
+\DoxyCodeLine{01559\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadLhsUnaligned(blB+3*SwappedTraits::LhsProgress,\ A1);}
+\DoxyCodeLine{01560\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadRhsQuad(blA+2*spk,\ B\_0);}
+\DoxyCodeLine{01561\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadRhsQuad(blA+3*spk,\ B\_1);}
+\DoxyCodeLine{01562\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.madd(A0,B\_0,C2,B\_0);}
+\DoxyCodeLine{01563\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.madd(A1,B\_1,C3,B\_1);}
+\DoxyCodeLine{01564\ }
+\DoxyCodeLine{01565\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ 4*SwappedTraits::LhsProgress;}
+\DoxyCodeLine{01566\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ 4*spk;}
+\DoxyCodeLine{01567\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01568\ \ \ \ \ \ \ \ \ \ \ \ \ C0\ =\ padd(padd(C0,C1),padd(C2,C3));}
+\DoxyCodeLine{01569\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;\ k<endk;\ k+=spk)}
+\DoxyCodeLine{01570\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01571\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SLhsPacket\ A0;}
+\DoxyCodeLine{01572\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SRhsPacket\ B\_0;}
+\DoxyCodeLine{01573\ }
+\DoxyCodeLine{01574\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadLhsUnaligned(blB,\ A0);}
+\DoxyCodeLine{01575\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadRhsQuad(blA,\ B\_0);}
+\DoxyCodeLine{01576\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.madd(A0,B\_0,C0,B\_0);}
+\DoxyCodeLine{01577\ }
+\DoxyCodeLine{01578\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ SwappedTraits::LhsProgress;}
+\DoxyCodeLine{01579\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ blA\ +=\ spk;}
+\DoxyCodeLine{01580\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01581\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(SwappedTraits::LhsProgress==8)}
+\DoxyCodeLine{01582\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01583\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Special\ case\ where\ we\ have\ to\ first\ reduce\ the\ accumulation\ register\ C0}}
+\DoxyCodeLine{01584\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ conditional<SwappedTraits::LhsProgress>=8,\textcolor{keyword}{typename}\ unpacket\_traits<SResPacket>::half,SResPacket>::type\ SResPacketHalf;}
+\DoxyCodeLine{01585\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ conditional<SwappedTraits::LhsProgress>=8,\textcolor{keyword}{typename}\ unpacket\_traits<SLhsPacket>::half,SLhsPacket>::type\ SLhsPacketHalf;}
+\DoxyCodeLine{01586\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ conditional<SwappedTraits::LhsProgress>=8,\textcolor{keyword}{typename}\ unpacket\_traits<SLhsPacket>::half,SRhsPacket>::type\ SRhsPacketHalf;}
+\DoxyCodeLine{01587\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ conditional<SwappedTraits::LhsProgress>=8,\textcolor{keyword}{typename}\ unpacket\_traits<SAccPacket>::half,SAccPacket>::type\ SAccPacketHalf;}
+\DoxyCodeLine{01588\ }
+\DoxyCodeLine{01589\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SResPacketHalf\ R\ =\ res.template\ gatherPacket<SResPacketHalf>(i,\ j2);}
+\DoxyCodeLine{01590\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SResPacketHalf\ alphav\ =\ pset1<SResPacketHalf>(alpha);}
+\DoxyCodeLine{01591\ }
+\DoxyCodeLine{01592\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(depth-\/endk>0)}
+\DoxyCodeLine{01593\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01594\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ We\ have\ to\ handle\ the\ last\ row\ of\ the\ rhs\ which\ corresponds\ to\ a\ half-\/packet}}
+\DoxyCodeLine{01595\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SLhsPacketHalf\ a0;}
+\DoxyCodeLine{01596\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SRhsPacketHalf\ b0;}
+\DoxyCodeLine{01597\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadLhsUnaligned(blB,\ a0);}
+\DoxyCodeLine{01598\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.loadRhs(blA,\ b0);}
+\DoxyCodeLine{01599\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SAccPacketHalf\ c0\ =\ predux\_downto4(C0);}
+\DoxyCodeLine{01600\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.madd(a0,b0,c0,b0);}
+\DoxyCodeLine{01601\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.acc(c0,\ alphav,\ R);}
+\DoxyCodeLine{01602\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01603\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{01604\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01605\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.acc(predux\_downto4(C0),\ alphav,\ R);}
+\DoxyCodeLine{01606\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01607\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ res.scatterPacket(i,\ j2,\ R);}
+\DoxyCodeLine{01608\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01609\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{01610\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01611\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SResPacket\ R\ =\ res.template\ gatherPacket<SResPacket>(i,\ j2);}
+\DoxyCodeLine{01612\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ SResPacket\ alphav\ =\ pset1<SResPacket>(alpha);}
+\DoxyCodeLine{01613\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ straits.acc(C0,\ alphav,\ R);}
+\DoxyCodeLine{01614\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ res.scatterPacket(i,\ j2,\ R);}
+\DoxyCodeLine{01615\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01616\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01617\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{comment}{//\ scalar\ path}}
+\DoxyCodeLine{01618\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01619\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ get\ a\ 1\ x\ 4\ res\ block\ as\ registers}}
+\DoxyCodeLine{01620\ \ \ \ \ \ \ \ \ \ \ \ \ ResScalar\ C0(0),\ C1(0),\ C2(0),\ C3(0);}
+\DoxyCodeLine{01621\ }
+\DoxyCodeLine{01622\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01623\ \ \ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01624\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LhsScalar\ A0;}
+\DoxyCodeLine{01625\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ RhsScalar\ B\_0,\ B\_1;}
+\DoxyCodeLine{01626\ }
+\DoxyCodeLine{01627\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ A0\ =\ blA[k];}
+\DoxyCodeLine{01628\ }
+\DoxyCodeLine{01629\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B\_0\ =\ blB[0];}
+\DoxyCodeLine{01630\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B\_1\ =\ blB[1];}
+\DoxyCodeLine{01631\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CJMADD(cj,A0,B\_0,C0,\ \ B\_0);}
+\DoxyCodeLine{01632\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CJMADD(cj,A0,B\_1,C1,\ \ B\_1);}
+\DoxyCodeLine{01633\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01634\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B\_0\ =\ blB[2];}
+\DoxyCodeLine{01635\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ B\_1\ =\ blB[3];}
+\DoxyCodeLine{01636\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CJMADD(cj,A0,B\_0,C2,\ \ B\_0);}
+\DoxyCodeLine{01637\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ CJMADD(cj,A0,B\_1,C3,\ \ B\_1);}
+\DoxyCodeLine{01638\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{01639\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ blB\ +=\ 4;}
+\DoxyCodeLine{01640\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01641\ \ \ \ \ \ \ \ \ \ \ \ \ res(i,\ j2\ +\ 0)\ +=\ alpha\ *\ C0;}
+\DoxyCodeLine{01642\ \ \ \ \ \ \ \ \ \ \ \ \ res(i,\ j2\ +\ 1)\ +=\ alpha\ *\ C1;}
+\DoxyCodeLine{01643\ \ \ \ \ \ \ \ \ \ \ \ \ res(i,\ j2\ +\ 2)\ +=\ alpha\ *\ C2;}
+\DoxyCodeLine{01644\ \ \ \ \ \ \ \ \ \ \ \ \ res(i,\ j2\ +\ 3)\ +=\ alpha\ *\ C3;}
+\DoxyCodeLine{01645\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01646\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01647\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01648\ \ \ \ \ \ \ \textcolor{comment}{//\ remaining\ columns}}
+\DoxyCodeLine{01649\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols4;\ j2<cols;\ j2++)}
+\DoxyCodeLine{01650\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01651\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ loop\ on\ each\ row\ of\ the\ lhs\ (1*LhsProgress\ x\ depth)}}
+\DoxyCodeLine{01652\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=peeled\_mc1;\ i<rows;\ i+=1)}
+\DoxyCodeLine{01653\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01654\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LhsScalar*\ blA\ =\ \&blockA[i*strideA+offsetA];}
+\DoxyCodeLine{01655\ \ \ \ \ \ \ \ \ \ \ prefetch(\&blA[0]);}
+\DoxyCodeLine{01656\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ gets\ a\ 1\ x\ 1\ res\ block\ as\ registers}}
+\DoxyCodeLine{01657\ \ \ \ \ \ \ \ \ \ \ ResScalar\ C0(0);}
+\DoxyCodeLine{01658\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ RhsScalar*\ blB\ =\ \&blockB[j2*strideB+offsetB];}
+\DoxyCodeLine{01659\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01660\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01661\ \ \ \ \ \ \ \ \ \ \ \ \ LhsScalar\ A0\ =\ blA[k];}
+\DoxyCodeLine{01662\ \ \ \ \ \ \ \ \ \ \ \ \ RhsScalar\ B\_0\ =\ blB[k];}
+\DoxyCodeLine{01663\ \ \ \ \ \ \ \ \ \ \ \ \ CJMADD(cj,\ A0,\ B\_0,\ C0,\ B\_0);}
+\DoxyCodeLine{01664\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01665\ \ \ \ \ \ \ \ \ \ \ res(i,\ j2)\ +=\ alpha\ *\ C0;}
+\DoxyCodeLine{01666\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01667\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01668\ \ \ \ \ \}}
+\DoxyCodeLine{01669\ \ \ \}}
+\DoxyCodeLine{01670\ }
+\DoxyCodeLine{01671\ }
+\DoxyCodeLine{01672\ \textcolor{preprocessor}{\#undef\ CJMADD}}
+\DoxyCodeLine{01673\ }
+\DoxyCodeLine{01674\ \textcolor{comment}{//\ pack\ a\ block\ of\ the\ lhs}}
+\DoxyCodeLine{01675\ \textcolor{comment}{//\ The\ traversal\ is\ as\ follow\ (mr==4):}}
+\DoxyCodeLine{01676\ \textcolor{comment}{//\ \ \ 0\ \ 4\ \ 8\ 12\ ...}}
+\DoxyCodeLine{01677\ \textcolor{comment}{//\ \ \ 1\ \ 5\ \ 9\ 13\ ...}}
+\DoxyCodeLine{01678\ \textcolor{comment}{//\ \ \ 2\ \ 6\ 10\ 14\ ...}}
+\DoxyCodeLine{01679\ \textcolor{comment}{//\ \ \ 3\ \ 7\ 11\ 15\ ...}}
+\DoxyCodeLine{01680\ \textcolor{comment}{//}}
+\DoxyCodeLine{01681\ \textcolor{comment}{//\ \ 16\ 20\ 24\ 28\ ...}}
+\DoxyCodeLine{01682\ \textcolor{comment}{//\ \ 17\ 21\ 25\ 29\ ...}}
+\DoxyCodeLine{01683\ \textcolor{comment}{//\ \ 18\ 22\ 26\ 30\ ...}}
+\DoxyCodeLine{01684\ \textcolor{comment}{//\ \ 19\ 23\ 27\ 31\ ...}}
+\DoxyCodeLine{01685\ \textcolor{comment}{//}}
+\DoxyCodeLine{01686\ \textcolor{comment}{//\ \ 32\ 33\ 34\ 35\ ...}}
+\DoxyCodeLine{01687\ \textcolor{comment}{//\ \ 36\ 36\ 38\ 39\ ...}}
+\DoxyCodeLine{01688\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ Pack1,\ \textcolor{keywordtype}{int}\ Pack2,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{01689\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__lhs}{gemm\_pack\_lhs}}<Scalar,\ Index,\ DataMapper,\ Pack1,\ Pack2,\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{ColMajor}},\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}},\ PanelMode>}
+\DoxyCodeLine{01690\ \{}
+\DoxyCodeLine{01691\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DataMapper::LinearMapper\ LinearMapper;}
+\DoxyCodeLine{01692\ \ \ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ operator()(Scalar*\ blockA,\ \textcolor{keyword}{const}\ DataMapper\&\ lhs,\ Index\ depth,\ Index\ rows,\ Index\ stride=0,\ Index\ offset=0);}
+\DoxyCodeLine{01693\ \};}
+\DoxyCodeLine{01694\ }
+\DoxyCodeLine{01695\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ Pack1,\ \textcolor{keywordtype}{int}\ Pack2,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{01696\ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__lhs}{gemm\_pack\_lhs<Scalar,\ Index,\ DataMapper,\ Pack1,\ Pack2,\ ColMajor,\ Conjugate,\ PanelMode>}}}
+\DoxyCodeLine{01697\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__lhs}{\ \ ::operator()}}(Scalar*\ blockA,\ \textcolor{keyword}{const}\ DataMapper\&\ lhs,\ Index\ depth,\ Index\ rows,\ Index\ stride,\ Index\ offset)}
+\DoxyCodeLine{01698\ \{}
+\DoxyCodeLine{01699\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<Scalar>::type\ \mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{Packet}};}
+\DoxyCodeLine{01700\ \ \ \textcolor{keyword}{enum}\ \{\ PacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::size}}\ \};}
+\DoxyCodeLine{01701\ }
+\DoxyCodeLine{01702\ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}EIGEN\ PRODUCT\ PACK\ LHS"{}});}
+\DoxyCodeLine{01703\ \ \ EIGEN\_UNUSED\_VARIABLE(stride);}
+\DoxyCodeLine{01704\ \ \ EIGEN\_UNUSED\_VARIABLE(offset);}
+\DoxyCodeLine{01705\ \ \ eigen\_assert(((!PanelMode)\ \&\&\ stride==0\ \&\&\ offset==0)\ ||\ (PanelMode\ \&\&\ stride>=depth\ \&\&\ offset<=stride));}
+\DoxyCodeLine{01706\ \ \ eigen\_assert(\ ((Pack1\%PacketSize)==0\ \&\&\ Pack1<=4*PacketSize)\ ||\ (Pack1<=4)\ );}
+\DoxyCodeLine{01707\ \ \ conj\_if<NumTraits<Scalar>::IsComplex\ \&\&\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}}>\ cj;}
+\DoxyCodeLine{01708\ \ \ Index\ count\ =\ 0;}
+\DoxyCodeLine{01709\ }
+\DoxyCodeLine{01710\ \ \ \textcolor{keyword}{const}\ Index\ peeled\_mc3\ =\ Pack1>=3*PacketSize\ ?\ (rows/(3*PacketSize))*(3*PacketSize)\ :\ 0;}
+\DoxyCodeLine{01711\ \ \ \textcolor{keyword}{const}\ Index\ peeled\_mc2\ =\ Pack1>=2*PacketSize\ ?\ peeled\_mc3+((rows-\/peeled\_mc3)/(2*PacketSize))*(2*PacketSize)\ :\ 0;}
+\DoxyCodeLine{01712\ \ \ \textcolor{keyword}{const}\ Index\ peeled\_mc1\ =\ Pack1>=1*PacketSize\ ?\ (rows/(1*PacketSize))*(1*PacketSize)\ :\ 0;}
+\DoxyCodeLine{01713\ \ \ \textcolor{keyword}{const}\ Index\ peeled\_mc0\ =\ Pack2>=1*PacketSize\ ?\ peeled\_mc1}
+\DoxyCodeLine{01714\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ Pack2>1\ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (rows/Pack2)*Pack2\ :\ 0;}
+\DoxyCodeLine{01715\ }
+\DoxyCodeLine{01716\ \ \ Index\ i=0;}
+\DoxyCodeLine{01717\ }
+\DoxyCodeLine{01718\ \ \ \textcolor{comment}{//\ Pack\ 3\ packets}}
+\DoxyCodeLine{01719\ \ \ \textcolor{keywordflow}{if}(Pack1>=3*PacketSize)}
+\DoxyCodeLine{01720\ \ \ \{}
+\DoxyCodeLine{01721\ \ \ \ \ \textcolor{keywordflow}{for}(;\ i<peeled\_mc3;\ i+=3*PacketSize)}
+\DoxyCodeLine{01722\ \ \ \ \ \{}
+\DoxyCodeLine{01723\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (3*PacketSize)\ *\ offset;}
+\DoxyCodeLine{01724\ }
+\DoxyCodeLine{01725\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01726\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01727\ \ \ \ \ \ \ \ \ Packet\ A,\ B,\ C;}
+\DoxyCodeLine{01728\ \ \ \ \ \ \ \ \ A\ =\ lhs.loadPacket(i+0*PacketSize,\ k);}
+\DoxyCodeLine{01729\ \ \ \ \ \ \ \ \ B\ =\ lhs.loadPacket(i+1*PacketSize,\ k);}
+\DoxyCodeLine{01730\ \ \ \ \ \ \ \ \ C\ =\ lhs.loadPacket(i+2*PacketSize,\ k);}
+\DoxyCodeLine{01731\ \ \ \ \ \ \ \ \ pstore(blockA+count,\ cj.pconj(A));\ count+=PacketSize;}
+\DoxyCodeLine{01732\ \ \ \ \ \ \ \ \ pstore(blockA+count,\ cj.pconj(B));\ count+=PacketSize;}
+\DoxyCodeLine{01733\ \ \ \ \ \ \ \ \ pstore(blockA+count,\ cj.pconj(C));\ count+=PacketSize;}
+\DoxyCodeLine{01734\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01735\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (3*PacketSize)\ *\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01736\ \ \ \ \ \}}
+\DoxyCodeLine{01737\ \ \ \}}
+\DoxyCodeLine{01738\ \ \ \textcolor{comment}{//\ Pack\ 2\ packets}}
+\DoxyCodeLine{01739\ \ \ \textcolor{keywordflow}{if}(Pack1>=2*PacketSize)}
+\DoxyCodeLine{01740\ \ \ \{}
+\DoxyCodeLine{01741\ \ \ \ \ \textcolor{keywordflow}{for}(;\ i<peeled\_mc2;\ i+=2*PacketSize)}
+\DoxyCodeLine{01742\ \ \ \ \ \{}
+\DoxyCodeLine{01743\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (2*PacketSize)\ *\ offset;}
+\DoxyCodeLine{01744\ }
+\DoxyCodeLine{01745\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01746\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01747\ \ \ \ \ \ \ \ \ Packet\ A,\ B;}
+\DoxyCodeLine{01748\ \ \ \ \ \ \ \ \ A\ =\ lhs.loadPacket(i+0*PacketSize,\ k);}
+\DoxyCodeLine{01749\ \ \ \ \ \ \ \ \ B\ =\ lhs.loadPacket(i+1*PacketSize,\ k);}
+\DoxyCodeLine{01750\ \ \ \ \ \ \ \ \ pstore(blockA+count,\ cj.pconj(A));\ count+=PacketSize;}
+\DoxyCodeLine{01751\ \ \ \ \ \ \ \ \ pstore(blockA+count,\ cj.pconj(B));\ count+=PacketSize;}
+\DoxyCodeLine{01752\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01753\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (2*PacketSize)\ *\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01754\ \ \ \ \ \}}
+\DoxyCodeLine{01755\ \ \ \}}
+\DoxyCodeLine{01756\ \ \ \textcolor{comment}{//\ Pack\ 1\ packets}}
+\DoxyCodeLine{01757\ \ \ \textcolor{keywordflow}{if}(Pack1>=1*PacketSize)}
+\DoxyCodeLine{01758\ \ \ \{}
+\DoxyCodeLine{01759\ \ \ \ \ \textcolor{keywordflow}{for}(;\ i<peeled\_mc1;\ i+=1*PacketSize)}
+\DoxyCodeLine{01760\ \ \ \ \ \{}
+\DoxyCodeLine{01761\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (1*PacketSize)\ *\ offset;}
+\DoxyCodeLine{01762\ }
+\DoxyCodeLine{01763\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01764\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01765\ \ \ \ \ \ \ \ \ Packet\ A;}
+\DoxyCodeLine{01766\ \ \ \ \ \ \ \ \ A\ =\ lhs.loadPacket(i+0*PacketSize,\ k);}
+\DoxyCodeLine{01767\ \ \ \ \ \ \ \ \ pstore(blockA+count,\ cj.pconj(A));}
+\DoxyCodeLine{01768\ \ \ \ \ \ \ \ \ count+=PacketSize;}
+\DoxyCodeLine{01769\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01770\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (1*PacketSize)\ *\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01771\ \ \ \ \ \}}
+\DoxyCodeLine{01772\ \ \ \}}
+\DoxyCodeLine{01773\ \ \ \textcolor{comment}{//\ Pack\ scalars}}
+\DoxyCodeLine{01774\ \ \ \textcolor{keywordflow}{if}(Pack2<PacketSize\ \&\&\ Pack2>1)}
+\DoxyCodeLine{01775\ \ \ \{}
+\DoxyCodeLine{01776\ \ \ \ \ \textcolor{keywordflow}{for}(;\ i<peeled\_mc0;\ i+=Pack2)}
+\DoxyCodeLine{01777\ \ \ \ \ \{}
+\DoxyCodeLine{01778\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ Pack2\ *\ offset;}
+\DoxyCodeLine{01779\ }
+\DoxyCodeLine{01780\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01781\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ w=0;\ w<Pack2;\ w++)}
+\DoxyCodeLine{01782\ \ \ \ \ \ \ \ \ \ \ blockA[count++]\ =\ cj(lhs(i+w,\ k));}
+\DoxyCodeLine{01783\ }
+\DoxyCodeLine{01784\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ Pack2\ *\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01785\ \ \ \ \ \}}
+\DoxyCodeLine{01786\ \ \ \}}
+\DoxyCodeLine{01787\ \ \ \textcolor{keywordflow}{for}(;\ i<rows;\ i++)}
+\DoxyCodeLine{01788\ \ \ \{}
+\DoxyCodeLine{01789\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ offset;}
+\DoxyCodeLine{01790\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01791\ \ \ \ \ \ \ blockA[count++]\ =\ cj(lhs(i,\ k));}
+\DoxyCodeLine{01792\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01793\ \ \ \}}
+\DoxyCodeLine{01794\ \}}
+\DoxyCodeLine{01795\ }
+\DoxyCodeLine{01796\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ Pack1,\ \textcolor{keywordtype}{int}\ Pack2,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{01797\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__lhs}{gemm\_pack\_lhs}}<Scalar,\ Index,\ DataMapper,\ Pack1,\ Pack2,\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}},\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}},\ PanelMode>}
+\DoxyCodeLine{01798\ \{}
+\DoxyCodeLine{01799\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DataMapper::LinearMapper\ LinearMapper;}
+\DoxyCodeLine{01800\ \ \ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ operator()(Scalar*\ blockA,\ \textcolor{keyword}{const}\ DataMapper\&\ lhs,\ Index\ depth,\ Index\ rows,\ Index\ stride=0,\ Index\ offset=0);}
+\DoxyCodeLine{01801\ \};}
+\DoxyCodeLine{01802\ }
+\DoxyCodeLine{01803\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ Pack1,\ \textcolor{keywordtype}{int}\ Pack2,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{01804\ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__lhs}{gemm\_pack\_lhs<Scalar,\ Index,\ DataMapper,\ Pack1,\ Pack2,\ RowMajor,\ Conjugate,\ PanelMode>}}}
+\DoxyCodeLine{01805\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__lhs}{\ \ ::operator()}}(Scalar*\ blockA,\ \textcolor{keyword}{const}\ DataMapper\&\ lhs,\ Index\ depth,\ Index\ rows,\ Index\ stride,\ Index\ offset)}
+\DoxyCodeLine{01806\ \{}
+\DoxyCodeLine{01807\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<Scalar>::type\ \mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{Packet}};}
+\DoxyCodeLine{01808\ \ \ \textcolor{keyword}{enum}\ \{\ PacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::size}}\ \};}
+\DoxyCodeLine{01809\ }
+\DoxyCodeLine{01810\ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}EIGEN\ PRODUCT\ PACK\ LHS"{}});}
+\DoxyCodeLine{01811\ \ \ EIGEN\_UNUSED\_VARIABLE(stride);}
+\DoxyCodeLine{01812\ \ \ EIGEN\_UNUSED\_VARIABLE(offset);}
+\DoxyCodeLine{01813\ \ \ eigen\_assert(((!PanelMode)\ \&\&\ stride==0\ \&\&\ offset==0)\ ||\ (PanelMode\ \&\&\ stride>=depth\ \&\&\ offset<=stride));}
+\DoxyCodeLine{01814\ \ \ conj\_if<NumTraits<Scalar>::IsComplex\ \&\&\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}}>\ cj;}
+\DoxyCodeLine{01815\ \ \ Index\ count\ =\ 0;}
+\DoxyCodeLine{01816\ }
+\DoxyCodeLine{01817\ \textcolor{comment}{//\ \ \ const\ Index\ peeled\_mc3\ =\ Pack1>=3*PacketSize\ ?\ (rows/(3*PacketSize))*(3*PacketSize)\ :\ 0;}}
+\DoxyCodeLine{01818\ \textcolor{comment}{//\ \ \ const\ Index\ peeled\_mc2\ =\ Pack1>=2*PacketSize\ ?\ peeled\_mc3+((rows-\/peeled\_mc3)/(2*PacketSize))*(2*PacketSize)\ :\ 0;}}
+\DoxyCodeLine{01819\ \textcolor{comment}{//\ \ \ const\ Index\ peeled\_mc1\ =\ Pack1>=1*PacketSize\ ?\ (rows/(1*PacketSize))*(1*PacketSize)\ :\ 0;}}
+\DoxyCodeLine{01820\ }
+\DoxyCodeLine{01821\ \ \ \textcolor{keywordtype}{int}\ pack\ =\ Pack1;}
+\DoxyCodeLine{01822\ \ \ Index\ i\ =\ 0;}
+\DoxyCodeLine{01823\ \ \ \textcolor{keywordflow}{while}(pack>0)}
+\DoxyCodeLine{01824\ \ \ \{}
+\DoxyCodeLine{01825\ \ \ \ \ Index\ remaining\_rows\ =\ rows-\/i;}
+\DoxyCodeLine{01826\ \ \ \ \ Index\ peeled\_mc\ =\ i+(remaining\_rows/pack)*pack;}
+\DoxyCodeLine{01827\ \ \ \ \ \textcolor{keywordflow}{for}(;\ i<peeled\_mc;\ i+=pack)}
+\DoxyCodeLine{01828\ \ \ \ \ \{}
+\DoxyCodeLine{01829\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ pack\ *\ offset;}
+\DoxyCodeLine{01830\ }
+\DoxyCodeLine{01831\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ peeled\_k\ =\ (depth/PacketSize)*PacketSize;}
+\DoxyCodeLine{01832\ \ \ \ \ \ \ Index\ k=0;}
+\DoxyCodeLine{01833\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(pack>=PacketSize)}
+\DoxyCodeLine{01834\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01835\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;\ k<peeled\_k;\ k+=PacketSize)}
+\DoxyCodeLine{01836\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01837\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ m\ =\ 0;\ m\ <\ pack;\ m\ +=\ PacketSize)}
+\DoxyCodeLine{01838\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01839\ \ \ \ \ \ \ \ \ \ \ \ \ PacketBlock<Packet>\ kernel;}
+\DoxyCodeLine{01840\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ PacketSize;\ ++p)\ kernel.packet[p]\ =\ lhs.loadPacket(i+p+m,\ k);}
+\DoxyCodeLine{01841\ \ \ \ \ \ \ \ \ \ \ \ \ ptranspose(kernel);}
+\DoxyCodeLine{01842\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ p\ =\ 0;\ p\ <\ PacketSize;\ ++p)\ pstore(blockA+count+m+(pack)*p,\ cj.pconj(kernel.packet[p]));}
+\DoxyCodeLine{01843\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01844\ \ \ \ \ \ \ \ \ \ \ count\ +=\ PacketSize*pack;}
+\DoxyCodeLine{01845\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01846\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01847\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;\ k<depth;\ k++)}
+\DoxyCodeLine{01848\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01849\ \ \ \ \ \ \ \ \ Index\ w=0;}
+\DoxyCodeLine{01850\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;\ w<pack-\/3;\ w+=4)}
+\DoxyCodeLine{01851\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01852\ \ \ \ \ \ \ \ \ \ \ Scalar\ a(cj(lhs(i+w+0,\ k))),}
+\DoxyCodeLine{01853\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ b(cj(lhs(i+w+1,\ k))),}
+\DoxyCodeLine{01854\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ c(cj(lhs(i+w+2,\ k))),}
+\DoxyCodeLine{01855\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d(cj(lhs(i+w+3,\ k)));}
+\DoxyCodeLine{01856\ \ \ \ \ \ \ \ \ \ \ blockA[count++]\ =\ a;}
+\DoxyCodeLine{01857\ \ \ \ \ \ \ \ \ \ \ blockA[count++]\ =\ b;}
+\DoxyCodeLine{01858\ \ \ \ \ \ \ \ \ \ \ blockA[count++]\ =\ c;}
+\DoxyCodeLine{01859\ \ \ \ \ \ \ \ \ \ \ blockA[count++]\ =\ d;}
+\DoxyCodeLine{01860\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01861\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(pack\%4)}
+\DoxyCodeLine{01862\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;w<pack;++w)}
+\DoxyCodeLine{01863\ \ \ \ \ \ \ \ \ \ \ \ \ blockA[count++]\ =\ cj(lhs(i+w,\ k));}
+\DoxyCodeLine{01864\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01865\ }
+\DoxyCodeLine{01866\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ pack\ *\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01867\ \ \ \ \ \}}
+\DoxyCodeLine{01868\ }
+\DoxyCodeLine{01869\ \ \ \ \ pack\ -\/=\ PacketSize;}
+\DoxyCodeLine{01870\ \ \ \ \ \textcolor{keywordflow}{if}(pack<Pack2\ \&\&\ (pack+PacketSize)!=Pack2)}
+\DoxyCodeLine{01871\ \ \ \ \ \ \ pack\ =\ Pack2;}
+\DoxyCodeLine{01872\ \ \ \}}
+\DoxyCodeLine{01873\ }
+\DoxyCodeLine{01874\ \ \ \textcolor{keywordflow}{for}(;\ i<rows;\ i++)}
+\DoxyCodeLine{01875\ \ \ \{}
+\DoxyCodeLine{01876\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ offset;}
+\DoxyCodeLine{01877\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{01878\ \ \ \ \ \ \ blockA[count++]\ =\ cj(lhs(i,\ k));}
+\DoxyCodeLine{01879\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01880\ \ \ \}}
+\DoxyCodeLine{01881\ \}}
+\DoxyCodeLine{01882\ }
+\DoxyCodeLine{01883\ \textcolor{comment}{//\ copy\ a\ complete\ panel\ of\ the\ rhs}}
+\DoxyCodeLine{01884\ \textcolor{comment}{//\ this\ version\ is\ optimized\ for\ column\ major\ matrices}}
+\DoxyCodeLine{01885\ \textcolor{comment}{//\ The\ traversal\ order\ is\ as\ follow:\ (nr==4):}}
+\DoxyCodeLine{01886\ \textcolor{comment}{//\ \ 0\ \ 1\ \ 2\ \ 3\ \ \ 12\ 13\ 14\ 15\ \ \ 24\ 27}}
+\DoxyCodeLine{01887\ \textcolor{comment}{//\ \ 4\ \ 5\ \ 6\ \ 7\ \ \ 16\ 17\ 18\ 19\ \ \ 25\ 28}}
+\DoxyCodeLine{01888\ \textcolor{comment}{//\ \ 8\ \ 9\ 10\ 11\ \ \ 20\ 21\ 22\ 23\ \ \ 26\ 29}}
+\DoxyCodeLine{01889\ \textcolor{comment}{//\ \ .\ \ .\ \ .\ \ .\ \ \ \ .\ \ .\ \ .\ \ .\ \ \ \ .\ \ .}}
+\DoxyCodeLine{01890\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ nr,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{01891\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__rhs}{gemm\_pack\_rhs}}<Scalar,\ Index,\ DataMapper,\ nr,\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{ColMajor}},\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}},\ PanelMode>}
+\DoxyCodeLine{01892\ \{}
+\DoxyCodeLine{01893\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<Scalar>::type\ Packet;}
+\DoxyCodeLine{01894\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DataMapper::LinearMapper\ LinearMapper;}
+\DoxyCodeLine{01895\ \ \ \textcolor{keyword}{enum}\ \{\ PacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::size}}\ \};}
+\DoxyCodeLine{01896\ \ \ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ operator()(Scalar*\ blockB,\ \textcolor{keyword}{const}\ DataMapper\&\ rhs,\ Index\ depth,\ Index\ cols,\ Index\ stride=0,\ Index\ offset=0);}
+\DoxyCodeLine{01897\ \};}
+\DoxyCodeLine{01898\ }
+\DoxyCodeLine{01899\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ nr,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{01900\ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__rhs}{gemm\_pack\_rhs<Scalar,\ Index,\ DataMapper,\ nr,\ ColMajor,\ Conjugate,\ PanelMode>}}}
+\DoxyCodeLine{01901\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__rhs}{\ \ ::operator()}}(Scalar*\ blockB,\ \textcolor{keyword}{const}\ DataMapper\&\ rhs,\ Index\ depth,\ Index\ cols,\ Index\ stride,\ Index\ offset)}
+\DoxyCodeLine{01902\ \{}
+\DoxyCodeLine{01903\ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}EIGEN\ PRODUCT\ PACK\ RHS\ COLMAJOR"{}});}
+\DoxyCodeLine{01904\ \ \ EIGEN\_UNUSED\_VARIABLE(stride);}
+\DoxyCodeLine{01905\ \ \ EIGEN\_UNUSED\_VARIABLE(offset);}
+\DoxyCodeLine{01906\ \ \ eigen\_assert(((!PanelMode)\ \&\&\ stride==0\ \&\&\ offset==0)\ ||\ (PanelMode\ \&\&\ stride>=depth\ \&\&\ offset<=stride));}
+\DoxyCodeLine{01907\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conj__if}{conj\_if<NumTraits<Scalar>::IsComplex}}\ \&\&\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}}>\ cj;}
+\DoxyCodeLine{01908\ \ \ Index\ packet\_cols8\ =\ nr>=8\ ?\ (cols/8)\ *\ 8\ :\ 0;}
+\DoxyCodeLine{01909\ \ \ Index\ packet\_cols4\ =\ nr>=4\ ?\ (cols/4)\ *\ 4\ :\ 0;}
+\DoxyCodeLine{01910\ \ \ Index\ count\ =\ 0;}
+\DoxyCodeLine{01911\ \ \ \textcolor{keyword}{const}\ Index\ peeled\_k\ =\ (depth/PacketSize)*PacketSize;}
+\DoxyCodeLine{01912\ \textcolor{comment}{//\ \ \ if(nr>=8)}}
+\DoxyCodeLine{01913\ \textcolor{comment}{//\ \ \ \{}}
+\DoxyCodeLine{01914\ \textcolor{comment}{//\ \ \ \ \ for(Index\ j2=0;\ j2<packet\_cols8;\ j2+=8)}}
+\DoxyCodeLine{01915\ \textcolor{comment}{//\ \ \ \ \ \{}}
+\DoxyCodeLine{01916\ \textcolor{comment}{//\ \ \ \ \ \ \ //\ skip\ what\ we\ have\ before}}
+\DoxyCodeLine{01917\ \textcolor{comment}{//\ \ \ \ \ \ \ if(PanelMode)\ count\ +=\ 8\ *\ offset;}}
+\DoxyCodeLine{01918\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b0\ =\ \&rhs[(j2+0)*rhsStride];}}
+\DoxyCodeLine{01919\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b1\ =\ \&rhs[(j2+1)*rhsStride];}}
+\DoxyCodeLine{01920\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b2\ =\ \&rhs[(j2+2)*rhsStride];}}
+\DoxyCodeLine{01921\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b3\ =\ \&rhs[(j2+3)*rhsStride];}}
+\DoxyCodeLine{01922\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b4\ =\ \&rhs[(j2+4)*rhsStride];}}
+\DoxyCodeLine{01923\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b5\ =\ \&rhs[(j2+5)*rhsStride];}}
+\DoxyCodeLine{01924\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b6\ =\ \&rhs[(j2+6)*rhsStride];}}
+\DoxyCodeLine{01925\ \textcolor{comment}{//\ \ \ \ \ \ \ const\ Scalar*\ b7\ =\ \&rhs[(j2+7)*rhsStride];}}
+\DoxyCodeLine{01926\ \textcolor{comment}{//\ \ \ \ \ \ \ Index\ k=0;}}
+\DoxyCodeLine{01927\ \textcolor{comment}{//\ \ \ \ \ \ \ if(PacketSize==8)\ //\ TODO\ enbale\ vectorized\ transposition\ for\ PacketSize==4}}
+\DoxyCodeLine{01928\ \textcolor{comment}{//\ \ \ \ \ \ \ \{}}
+\DoxyCodeLine{01929\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ for(;\ k<peeled\_k;\ k+=PacketSize)\ \{}}
+\DoxyCodeLine{01930\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ PacketBlock<Packet>\ kernel;}}
+\DoxyCodeLine{01931\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ for\ (int\ p\ =\ 0;\ p\ <\ PacketSize;\ ++p)\ \{}}
+\DoxyCodeLine{01932\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ kernel.packet[p]\ =\ ploadu<Packet>(\&rhs[(j2+p)*rhsStride+k]);}}
+\DoxyCodeLine{01933\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{01934\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ ptranspose(kernel);}}
+\DoxyCodeLine{01935\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ for\ (int\ p\ =\ 0;\ p\ <\ PacketSize;\ ++p)\ \{}}
+\DoxyCodeLine{01936\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count,\ cj.pconj(kernel.packet[p]));}}
+\DoxyCodeLine{01937\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ count+=PacketSize;}}
+\DoxyCodeLine{01938\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{01939\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{01940\ \textcolor{comment}{//\ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{01941\ \textcolor{comment}{//\ \ \ \ \ \ \ for(;\ k<depth;\ k++)}}
+\DoxyCodeLine{01942\ \textcolor{comment}{//\ \ \ \ \ \ \ \{}}
+\DoxyCodeLine{01943\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+0]\ =\ cj(b0[k]);}}
+\DoxyCodeLine{01944\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+1]\ =\ cj(b1[k]);}}
+\DoxyCodeLine{01945\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+2]\ =\ cj(b2[k]);}}
+\DoxyCodeLine{01946\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+3]\ =\ cj(b3[k]);}}
+\DoxyCodeLine{01947\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+4]\ =\ cj(b4[k]);}}
+\DoxyCodeLine{01948\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+5]\ =\ cj(b5[k]);}}
+\DoxyCodeLine{01949\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+6]\ =\ cj(b6[k]);}}
+\DoxyCodeLine{01950\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ blockB[count+7]\ =\ cj(b7[k]);}}
+\DoxyCodeLine{01951\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ count\ +=\ 8;}}
+\DoxyCodeLine{01952\ \textcolor{comment}{//\ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{01953\ \textcolor{comment}{//\ \ \ \ \ \ \ //\ skip\ what\ we\ have\ after}}
+\DoxyCodeLine{01954\ \textcolor{comment}{//\ \ \ \ \ \ \ if(PanelMode)\ count\ +=\ 8\ *\ (stride-\/offset-\/depth);}}
+\DoxyCodeLine{01955\ \textcolor{comment}{//\ \ \ \ \ \}}}
+\DoxyCodeLine{01956\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{01957\ }
+\DoxyCodeLine{01958\ \ \ \textcolor{keywordflow}{if}(nr>=4)}
+\DoxyCodeLine{01959\ \ \ \{}
+\DoxyCodeLine{01960\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols8;\ j2<packet\_cols4;\ j2+=4)}
+\DoxyCodeLine{01961\ \ \ \ \ \{}
+\DoxyCodeLine{01962\ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ what\ we\ have\ before}}
+\DoxyCodeLine{01963\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ 4\ *\ offset;}
+\DoxyCodeLine{01964\ \ \ \ \ \ \ \textcolor{keyword}{const}\ LinearMapper\ dm0\ =\ rhs.getLinearMapper(0,\ j2\ +\ 0);}
+\DoxyCodeLine{01965\ \ \ \ \ \ \ \textcolor{keyword}{const}\ LinearMapper\ dm1\ =\ rhs.getLinearMapper(0,\ j2\ +\ 1);}
+\DoxyCodeLine{01966\ \ \ \ \ \ \ \textcolor{keyword}{const}\ LinearMapper\ dm2\ =\ rhs.getLinearMapper(0,\ j2\ +\ 2);}
+\DoxyCodeLine{01967\ \ \ \ \ \ \ \textcolor{keyword}{const}\ LinearMapper\ dm3\ =\ rhs.getLinearMapper(0,\ j2\ +\ 3);}
+\DoxyCodeLine{01968\ }
+\DoxyCodeLine{01969\ \ \ \ \ \ \ Index\ k=0;}
+\DoxyCodeLine{01970\ \ \ \ \ \ \ \textcolor{keywordflow}{if}((PacketSize\%4)==0)\ \textcolor{comment}{//\ TODO\ enable\ vectorized\ transposition\ for\ PacketSize==2\ ??}}
+\DoxyCodeLine{01971\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01972\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;\ k<peeled\_k;\ k+=PacketSize)\ \{}
+\DoxyCodeLine{01973\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_packet_block}{PacketBlock}}<\mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{Packet}},(PacketSize\%4)==0?4:PacketSize>\ kernel;}
+\DoxyCodeLine{01974\ \ \ \ \ \ \ \ \ \ \ kernel.packet[0]\ =\ dm0.loadPacket(k);}
+\DoxyCodeLine{01975\ \ \ \ \ \ \ \ \ \ \ kernel.packet[1\%PacketSize]\ =\ dm1.loadPacket(k);}
+\DoxyCodeLine{01976\ \ \ \ \ \ \ \ \ \ \ kernel.packet[2\%PacketSize]\ =\ dm2.loadPacket(k);}
+\DoxyCodeLine{01977\ \ \ \ \ \ \ \ \ \ \ kernel.packet[3\%PacketSize]\ =\ dm3.loadPacket(k);}
+\DoxyCodeLine{01978\ \ \ \ \ \ \ \ \ \ \ ptranspose(kernel);}
+\DoxyCodeLine{01979\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count+0*PacketSize,\ cj.pconj(kernel.packet[0]));}
+\DoxyCodeLine{01980\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count+1*PacketSize,\ cj.pconj(kernel.packet[1\%PacketSize]));}
+\DoxyCodeLine{01981\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count+2*PacketSize,\ cj.pconj(kernel.packet[2\%PacketSize]));}
+\DoxyCodeLine{01982\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count+3*PacketSize,\ cj.pconj(kernel.packet[3\%PacketSize]));}
+\DoxyCodeLine{01983\ \ \ \ \ \ \ \ \ \ \ count+=4*PacketSize;}
+\DoxyCodeLine{01984\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01985\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01986\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(;\ k<depth;\ k++)}
+\DoxyCodeLine{01987\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{01988\ \ \ \ \ \ \ \ \ blockB[count+0]\ =\ cj(dm0(k));}
+\DoxyCodeLine{01989\ \ \ \ \ \ \ \ \ blockB[count+1]\ =\ cj(dm1(k));}
+\DoxyCodeLine{01990\ \ \ \ \ \ \ \ \ blockB[count+2]\ =\ cj(dm2(k));}
+\DoxyCodeLine{01991\ \ \ \ \ \ \ \ \ blockB[count+3]\ =\ cj(dm3(k));}
+\DoxyCodeLine{01992\ \ \ \ \ \ \ \ \ count\ +=\ 4;}
+\DoxyCodeLine{01993\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{01994\ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ what\ we\ have\ after}}
+\DoxyCodeLine{01995\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ 4\ *\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{01996\ \ \ \ \ \}}
+\DoxyCodeLine{01997\ \ \ \}}
+\DoxyCodeLine{01998\ }
+\DoxyCodeLine{01999\ \ \ \textcolor{comment}{//\ copy\ the\ remaining\ columns\ one\ at\ a\ time\ (nr==1)}}
+\DoxyCodeLine{02000\ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols4;\ j2<cols;\ ++j2)}
+\DoxyCodeLine{02001\ \ \ \{}
+\DoxyCodeLine{02002\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ offset;}
+\DoxyCodeLine{02003\ \ \ \ \ \textcolor{keyword}{const}\ LinearMapper\ dm0\ =\ rhs.getLinearMapper(0,\ j2);}
+\DoxyCodeLine{02004\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{02005\ \ \ \ \ \{}
+\DoxyCodeLine{02006\ \ \ \ \ \ \ blockB[count]\ =\ cj(dm0(k));}
+\DoxyCodeLine{02007\ \ \ \ \ \ \ count\ +=\ 1;}
+\DoxyCodeLine{02008\ \ \ \ \ \}}
+\DoxyCodeLine{02009\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{02010\ \ \ \}}
+\DoxyCodeLine{02011\ \}}
+\DoxyCodeLine{02012\ }
+\DoxyCodeLine{02013\ \textcolor{comment}{//\ this\ version\ is\ optimized\ for\ row\ major\ matrices}}
+\DoxyCodeLine{02014\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ nr,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{02015\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__rhs}{gemm\_pack\_rhs}}<Scalar,\ Index,\ DataMapper,\ nr,\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}},\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}},\ PanelMode>}
+\DoxyCodeLine{02016\ \{}
+\DoxyCodeLine{02017\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<Scalar>::type\ Packet;}
+\DoxyCodeLine{02018\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DataMapper::LinearMapper\ LinearMapper;}
+\DoxyCodeLine{02019\ \ \ \textcolor{keyword}{enum}\ \{\ PacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::size}}\ \};}
+\DoxyCodeLine{02020\ \ \ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ operator()(Scalar*\ blockB,\ \textcolor{keyword}{const}\ DataMapper\&\ rhs,\ Index\ depth,\ Index\ cols,\ Index\ stride=0,\ Index\ offset=0);}
+\DoxyCodeLine{02021\ \};}
+\DoxyCodeLine{02022\ }
+\DoxyCodeLine{02023\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ DataMapper,\ \textcolor{keywordtype}{int}\ nr,\ \textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keywordtype}{bool}\ PanelMode>}
+\DoxyCodeLine{02024\ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__rhs}{gemm\_pack\_rhs<Scalar,\ Index,\ DataMapper,\ nr,\ RowMajor,\ Conjugate,\ PanelMode>}}}
+\DoxyCodeLine{02025\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1gemm__pack__rhs}{\ \ ::operator()}}(Scalar*\ blockB,\ \textcolor{keyword}{const}\ DataMapper\&\ rhs,\ Index\ depth,\ Index\ cols,\ Index\ stride,\ Index\ offset)}
+\DoxyCodeLine{02026\ \{}
+\DoxyCodeLine{02027\ \ \ EIGEN\_ASM\_COMMENT(\textcolor{stringliteral}{"{}EIGEN\ PRODUCT\ PACK\ RHS\ ROWMAJOR"{}});}
+\DoxyCodeLine{02028\ \ \ EIGEN\_UNUSED\_VARIABLE(stride);}
+\DoxyCodeLine{02029\ \ \ EIGEN\_UNUSED\_VARIABLE(offset);}
+\DoxyCodeLine{02030\ \ \ eigen\_assert(((!PanelMode)\ \&\&\ stride==0\ \&\&\ offset==0)\ ||\ (PanelMode\ \&\&\ stride>=depth\ \&\&\ offset<=stride));}
+\DoxyCodeLine{02031\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conj__if}{conj\_if<NumTraits<Scalar>::IsComplex}}\ \&\&\ \mbox{\hyperlink{class_eigen_1_1_conjugate}{Conjugate}}>\ cj;}
+\DoxyCodeLine{02032\ \ \ Index\ packet\_cols8\ =\ nr>=8\ ?\ (cols/8)\ *\ 8\ :\ 0;}
+\DoxyCodeLine{02033\ \ \ Index\ packet\_cols4\ =\ nr>=4\ ?\ (cols/4)\ *\ 4\ :\ 0;}
+\DoxyCodeLine{02034\ \ \ Index\ count\ =\ 0;}
+\DoxyCodeLine{02035\ }
+\DoxyCodeLine{02036\ \textcolor{comment}{//\ \ \ if(nr>=8)}}
+\DoxyCodeLine{02037\ \textcolor{comment}{//\ \ \ \{}}
+\DoxyCodeLine{02038\ \textcolor{comment}{//\ \ \ \ \ for(Index\ j2=0;\ j2<packet\_cols8;\ j2+=8)}}
+\DoxyCodeLine{02039\ \textcolor{comment}{//\ \ \ \ \ \{}}
+\DoxyCodeLine{02040\ \textcolor{comment}{//\ \ \ \ \ \ \ //\ skip\ what\ we\ have\ before}}
+\DoxyCodeLine{02041\ \textcolor{comment}{//\ \ \ \ \ \ \ if(PanelMode)\ count\ +=\ 8\ *\ offset;}}
+\DoxyCodeLine{02042\ \textcolor{comment}{//\ \ \ \ \ \ \ for(Index\ k=0;\ k<depth;\ k++)}}
+\DoxyCodeLine{02043\ \textcolor{comment}{//\ \ \ \ \ \ \ \{}}
+\DoxyCodeLine{02044\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ if\ (PacketSize==8)\ \{}}
+\DoxyCodeLine{02045\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ Packet\ A\ =\ ploadu<Packet>(\&rhs[k*rhsStride\ +\ j2]);}}
+\DoxyCodeLine{02046\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count,\ cj.pconj(A));}}
+\DoxyCodeLine{02047\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}\ else\ if\ (PacketSize==4)\ \{}}
+\DoxyCodeLine{02048\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ Packet\ A\ =\ ploadu<Packet>(\&rhs[k*rhsStride\ +\ j2]);}}
+\DoxyCodeLine{02049\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ Packet\ B\ =\ ploadu<Packet>(\&rhs[k*rhsStride\ +\ j2\ +\ PacketSize]);}}
+\DoxyCodeLine{02050\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count,\ cj.pconj(A));}}
+\DoxyCodeLine{02051\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count+PacketSize,\ cj.pconj(B));}}
+\DoxyCodeLine{02052\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}\ else\ \{}}
+\DoxyCodeLine{02053\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ const\ Scalar*\ b0\ =\ \&rhs[k*rhsStride\ +\ j2];}}
+\DoxyCodeLine{02054\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+0]\ =\ cj(b0[0]);}}
+\DoxyCodeLine{02055\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+1]\ =\ cj(b0[1]);}}
+\DoxyCodeLine{02056\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+2]\ =\ cj(b0[2]);}}
+\DoxyCodeLine{02057\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+3]\ =\ cj(b0[3]);}}
+\DoxyCodeLine{02058\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+4]\ =\ cj(b0[4]);}}
+\DoxyCodeLine{02059\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+5]\ =\ cj(b0[5]);}}
+\DoxyCodeLine{02060\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+6]\ =\ cj(b0[6]);}}
+\DoxyCodeLine{02061\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ blockB[count+7]\ =\ cj(b0[7]);}}
+\DoxyCodeLine{02062\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{02063\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ count\ +=\ 8;}}
+\DoxyCodeLine{02064\ \textcolor{comment}{//\ \ \ \ \ \ \ \}}}
+\DoxyCodeLine{02065\ \textcolor{comment}{//\ \ \ \ \ \ \ //\ skip\ what\ we\ have\ after}}
+\DoxyCodeLine{02066\ \textcolor{comment}{//\ \ \ \ \ \ \ if(PanelMode)\ count\ +=\ 8\ *\ (stride-\/offset-\/depth);}}
+\DoxyCodeLine{02067\ \textcolor{comment}{//\ \ \ \ \ \}}}
+\DoxyCodeLine{02068\ \textcolor{comment}{//\ \ \ \}}}
+\DoxyCodeLine{02069\ \ \ \textcolor{keywordflow}{if}(nr>=4)}
+\DoxyCodeLine{02070\ \ \ \{}
+\DoxyCodeLine{02071\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols8;\ j2<packet\_cols4;\ j2+=4)}
+\DoxyCodeLine{02072\ \ \ \ \ \{}
+\DoxyCodeLine{02073\ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ what\ we\ have\ before}}
+\DoxyCodeLine{02074\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ 4\ *\ offset;}
+\DoxyCodeLine{02075\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{02076\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{02077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (PacketSize==4)\ \{}
+\DoxyCodeLine{02078\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{union_eigen_1_1internal_1_1_packet}{Packet}}\ A\ =\ rhs.loadPacket(k,\ j2);}
+\DoxyCodeLine{02079\ \ \ \ \ \ \ \ \ \ \ pstoreu(blockB+count,\ cj.pconj(A));}
+\DoxyCodeLine{02080\ \ \ \ \ \ \ \ \ \ \ count\ +=\ PacketSize;}
+\DoxyCodeLine{02081\ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{02082\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ LinearMapper\ dm0\ =\ rhs.getLinearMapper(k,\ j2);}
+\DoxyCodeLine{02083\ \ \ \ \ \ \ \ \ \ \ blockB[count+0]\ =\ cj(dm0(0));}
+\DoxyCodeLine{02084\ \ \ \ \ \ \ \ \ \ \ blockB[count+1]\ =\ cj(dm0(1));}
+\DoxyCodeLine{02085\ \ \ \ \ \ \ \ \ \ \ blockB[count+2]\ =\ cj(dm0(2));}
+\DoxyCodeLine{02086\ \ \ \ \ \ \ \ \ \ \ blockB[count+3]\ =\ cj(dm0(3));}
+\DoxyCodeLine{02087\ \ \ \ \ \ \ \ \ \ \ count\ +=\ 4;}
+\DoxyCodeLine{02088\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{02089\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{02090\ \ \ \ \ \ \ \textcolor{comment}{//\ skip\ what\ we\ have\ after}}
+\DoxyCodeLine{02091\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ 4\ *\ (stride-\/offset-\/depth);}
+\DoxyCodeLine{02092\ \ \ \ \ \}}
+\DoxyCodeLine{02093\ \ \ \}}
+\DoxyCodeLine{02094\ \ \ \textcolor{comment}{//\ copy\ the\ remaining\ columns\ one\ at\ a\ time\ (nr==1)}}
+\DoxyCodeLine{02095\ \ \ \textcolor{keywordflow}{for}(Index\ j2=packet\_cols4;\ j2<cols;\ ++j2)}
+\DoxyCodeLine{02096\ \ \ \{}
+\DoxyCodeLine{02097\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ offset;}
+\DoxyCodeLine{02098\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k=0;\ k<depth;\ k++)}
+\DoxyCodeLine{02099\ \ \ \ \ \{}
+\DoxyCodeLine{02100\ \ \ \ \ \ \ blockB[count]\ =\ cj(rhs(k,\ j2));}
+\DoxyCodeLine{02101\ \ \ \ \ \ \ count\ +=\ 1;}
+\DoxyCodeLine{02102\ \ \ \ \ \}}
+\DoxyCodeLine{02103\ \ \ \ \ \textcolor{keywordflow}{if}(PanelMode)\ count\ +=\ stride-\/offset-\/depth;}
+\DoxyCodeLine{02104\ \ \ \}}
+\DoxyCodeLine{02105\ \}}
+\DoxyCodeLine{02106\ }
+\DoxyCodeLine{02107\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{02108\ }
+\DoxyCodeLine{02111\ \textcolor{keyword}{inline}\ std::ptrdiff\_t\ l1CacheSize()}
+\DoxyCodeLine{02112\ \{}
+\DoxyCodeLine{02113\ \ \ std::ptrdiff\_t\ l1,\ l2,\ l3;}
+\DoxyCodeLine{02114\ \ \ internal::manage\_caching\_sizes(GetAction,\ \&l1,\ \&l2,\ \&l3);}
+\DoxyCodeLine{02115\ \ \ \textcolor{keywordflow}{return}\ l1;}
+\DoxyCodeLine{02116\ \}}
+\DoxyCodeLine{02117\ }
+\DoxyCodeLine{02120\ \textcolor{keyword}{inline}\ std::ptrdiff\_t\ l2CacheSize()}
+\DoxyCodeLine{02121\ \{}
+\DoxyCodeLine{02122\ \ \ std::ptrdiff\_t\ l1,\ l2,\ l3;}
+\DoxyCodeLine{02123\ \ \ internal::manage\_caching\_sizes(GetAction,\ \&l1,\ \&l2,\ \&l3);}
+\DoxyCodeLine{02124\ \ \ \textcolor{keywordflow}{return}\ l2;}
+\DoxyCodeLine{02125\ \}}
+\DoxyCodeLine{02126\ }
+\DoxyCodeLine{02130\ \textcolor{keyword}{inline}\ std::ptrdiff\_t\ l3CacheSize()}
+\DoxyCodeLine{02131\ \{}
+\DoxyCodeLine{02132\ \ \ std::ptrdiff\_t\ l1,\ l2,\ l3;}
+\DoxyCodeLine{02133\ \ \ internal::manage\_caching\_sizes(GetAction,\ \&l1,\ \&l2,\ \&l3);}
+\DoxyCodeLine{02134\ \ \ \textcolor{keywordflow}{return}\ l3;}
+\DoxyCodeLine{02135\ \}}
+\DoxyCodeLine{02136\ }
+\DoxyCodeLine{02142\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ setCpuCacheSizes(std::ptrdiff\_t\ l1,\ std::ptrdiff\_t\ l2,\ std::ptrdiff\_t\ l3)}
+\DoxyCodeLine{02143\ \{}
+\DoxyCodeLine{02144\ \ \ internal::manage\_caching\_sizes(SetAction,\ \&l1,\ \&l2,\ \&l3);}
+\DoxyCodeLine{02145\ \}}
+\DoxyCodeLine{02146\ }
+\DoxyCodeLine{02147\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{02148\ }
+\DoxyCodeLine{02149\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_GENERAL\_BLOCK\_PANEL\_H}}
+
+\end{DoxyCode}

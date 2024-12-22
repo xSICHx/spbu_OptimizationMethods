@@ -1,0 +1,218 @@
+\doxysection{Type\+Casting.\+h}
+\hypertarget{_c_u_d_a_2_type_casting_8h_source}{}\label{_c_u_d_a_2_type_casting_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/arch/CUDA/TypeCasting.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/arch/CUDA/TypeCasting.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2016\ Benoit\ Steiner\ <benoit.steiner.goog@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_TYPE\_CASTING\_CUDA\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_TYPE\_CASTING\_CUDA\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}}<float,\ Eigen::\mbox{\hyperlink{struct_eigen_1_1half}{half}}>\ \{}
+\DoxyCodeLine{00019\ \ \ EIGEN\_EMPTY\_STRUCT\_CTOR(\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}})}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ \mbox{\hyperlink{struct_eigen_1_1half}{result\_type}};}
+\DoxyCodeLine{00021\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ operator()\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\ \ \ \ \#if\ defined(EIGEN\_HAS\_CUDA\_FP16)\ \&\&\ defined(\_\_CUDA\_ARCH\_\_)\ \&\&\ \_\_CUDA\_ARCH\_\_\ >=\ 300}}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_\_float2half(a);}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}(a);}
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00027\ \ \ \}}
+\DoxyCodeLine{00028\ \};}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00031\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}}<float,\ Eigen::\mbox{\hyperlink{struct_eigen_1_1half}{half}}>\ >}
+\DoxyCodeLine{00032\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<float>::AddCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00036\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}}<int,\ Eigen::\mbox{\hyperlink{struct_eigen_1_1half}{half}}>\ \{}
+\DoxyCodeLine{00037\ \ \ EIGEN\_EMPTY\_STRUCT\_CTOR(\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}})}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ \mbox{\hyperlink{struct_eigen_1_1half}{result\_type}};}
+\DoxyCodeLine{00039\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ operator()\ (\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\ \ \ \ \#if\ defined(EIGEN\_HAS\_CUDA\_FP16)\ \&\&\ defined(\_\_CUDA\_ARCH\_\_)\ \&\&\ \_\_CUDA\_ARCH\_\_\ >=\ 300}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_\_float2half(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a));}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a));}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00045\ \ \ \}}
+\DoxyCodeLine{00046\ \};}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00048\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00049\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}}<int,\ Eigen::\mbox{\hyperlink{struct_eigen_1_1half}{half}}>\ >}
+\DoxyCodeLine{00050\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<float>::AddCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00054\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}}<Eigen::\mbox{\hyperlink{struct_eigen_1_1half}{half}},\ float>\ \{}
+\DoxyCodeLine{00055\ \ \ EIGEN\_EMPTY\_STRUCT\_CTOR(\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}})}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{float}\ result\_type;}
+\DoxyCodeLine{00057\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{float}\ operator()\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\&\ a)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\ \ \ \ \#if\ defined(EIGEN\_HAS\_CUDA\_FP16)\ \&\&\ defined(\_\_CUDA\_ARCH\_\_)\ \&\&\ \_\_CUDA\_ARCH\_\_\ >=\ 300}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \_\_half2float(a);}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(a);}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00063\ \ \ \}}
+\DoxyCodeLine{00064\ \};}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00067\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<\mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__cast__op}{scalar\_cast\_op}}<Eigen::\mbox{\hyperlink{struct_eigen_1_1half}{half}},\ float>\ >}
+\DoxyCodeLine{00068\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<float>::AddCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#if\ defined(EIGEN\_HAS\_CUDA\_FP16)\ \&\&\ defined(\_\_CUDA\_ARCH\_\_)\ \&\&\ \_\_CUDA\_ARCH\_\_\ >=\ 300}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00075\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1type__casting__traits}{type\_casting\_traits}}<Eigen::\mbox{\hyperlink{struct_eigen_1_1half}{half}},\ float>\ \{}
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00077\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00078\ \ \ \ \ SrcCoeffRatio\ =\ 2,}
+\DoxyCodeLine{00079\ \ \ \ \ TgtCoeffRatio\ =\ 1}
+\DoxyCodeLine{00080\ \ \ \};}
+\DoxyCodeLine{00081\ \};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \textcolor{keyword}{template}<>\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ float4\ pcast<half2,\ float4>(\textcolor{keyword}{const}\ half2\&\ a,\ \textcolor{keyword}{const}\ half2\&\ b)\ \{}
+\DoxyCodeLine{00084\ \ \ float2\ r1\ =\ \_\_half22float2(a);}
+\DoxyCodeLine{00085\ \ \ float2\ r2\ =\ \_\_half22float2(b);}
+\DoxyCodeLine{00086\ \ \ \textcolor{keywordflow}{return}\ make\_float4(r1.x,\ r1.y,\ r2.x,\ r2.y);}
+\DoxyCodeLine{00087\ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00090\ \textcolor{keyword}{struct\ }type\_casting\_traits<float,\ Eigen::half>\ \{}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00092\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00093\ \ \ \ \ SrcCoeffRatio\ =\ 1,}
+\DoxyCodeLine{00094\ \ \ \ \ TgtCoeffRatio\ =\ 2}
+\DoxyCodeLine{00095\ \ \ \};}
+\DoxyCodeLine{00096\ \};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{template}<>\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ half2\ pcast<float4,\ half2>(\textcolor{keyword}{const}\ float4\&\ a)\ \{}
+\DoxyCodeLine{00099\ \ \ \textcolor{comment}{//\ Simply\ discard\ the\ second\ half\ of\ the\ input}}
+\DoxyCodeLine{00100\ \ \ \textcolor{keywordflow}{return}\ \_\_floats2half2\_rn(a.x,\ a.y);}
+\DoxyCodeLine{00101\ \}}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ \textcolor{preprocessor}{\#elif\ defined\ EIGEN\_VECTORIZE\_AVX512}}
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00105\ \textcolor{keyword}{struct\ }type\_casting\_traits<half,\ float>\ \{}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00107\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00108\ \ \ \ \ SrcCoeffRatio\ =\ 1,}
+\DoxyCodeLine{00109\ \ \ \ \ TgtCoeffRatio\ =\ 1}
+\DoxyCodeLine{00110\ \ \ \};}
+\DoxyCodeLine{00111\ \};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{template}<>\ EIGEN\_STRONG\_INLINE\ Packet16f\ pcast<Packet16h,\ Packet16f>(\textcolor{keyword}{const}\ Packet16h\&\ a)\ \{}
+\DoxyCodeLine{00114\ \ \ \textcolor{keywordflow}{return}\ half2float(a);}
+\DoxyCodeLine{00115\ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00118\ \textcolor{keyword}{struct\ }type\_casting\_traits<float,\ half>\ \{}
+\DoxyCodeLine{00119\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00120\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00121\ \ \ \ \ SrcCoeffRatio\ =\ 1,}
+\DoxyCodeLine{00122\ \ \ \ \ TgtCoeffRatio\ =\ 1}
+\DoxyCodeLine{00123\ \ \ \};}
+\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \textcolor{keyword}{template}<>\ EIGEN\_STRONG\_INLINE\ Packet16h\ pcast<Packet16f,\ Packet16h>(\textcolor{keyword}{const}\ Packet16f\&\ a)\ \{}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordflow}{return}\ float2half(a);}
+\DoxyCodeLine{00128\ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#elif\ defined\ EIGEN\_VECTORIZE\_AVX}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00133\ \textcolor{keyword}{struct\ }type\_casting\_traits<Eigen::half,\ float>\ \{}
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00136\ \ \ \ \ SrcCoeffRatio\ =\ 1,}
+\DoxyCodeLine{00137\ \ \ \ \ TgtCoeffRatio\ =\ 1}
+\DoxyCodeLine{00138\ \ \ \};}
+\DoxyCodeLine{00139\ \};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \textcolor{keyword}{template}<>\ EIGEN\_STRONG\_INLINE\ Packet8f\ pcast<Packet8h,\ Packet8f>(\textcolor{keyword}{const}\ Packet8h\&\ a)\ \{}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordflow}{return}\ half2float(a);}
+\DoxyCodeLine{00143\ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00146\ \textcolor{keyword}{struct\ }type\_casting\_traits<float,\ Eigen::half>\ \{}
+\DoxyCodeLine{00147\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00149\ \ \ \ \ SrcCoeffRatio\ =\ 1,}
+\DoxyCodeLine{00150\ \ \ \ \ TgtCoeffRatio\ =\ 1}
+\DoxyCodeLine{00151\ \ \ \};}
+\DoxyCodeLine{00152\ \};}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{keyword}{template}<>\ EIGEN\_STRONG\_INLINE\ Packet8h\ pcast<Packet8f,\ Packet8h>(\textcolor{keyword}{const}\ Packet8f\&\ a)\ \{}
+\DoxyCodeLine{00155\ \ \ \textcolor{keywordflow}{return}\ float2half(a);}
+\DoxyCodeLine{00156\ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \textcolor{comment}{//\ Disable\ the\ following\ code\ since\ it's\ broken\ on\ too\ many\ platforms\ /\ compilers.}}
+\DoxyCodeLine{00159\ \textcolor{comment}{//\#elif\ defined(EIGEN\_VECTORIZE\_SSE)\ \&\&\ (!EIGEN\_ARCH\_x86\_64)\ \&\&\ (!EIGEN\_COMP\_MSVC)}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#elif\ 0}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00163\ \textcolor{keyword}{struct\ }type\_casting\_traits<Eigen::half,\ float>\ \{}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00165\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00166\ \ \ \ \ SrcCoeffRatio\ =\ 1,}
+\DoxyCodeLine{00167\ \ \ \ \ TgtCoeffRatio\ =\ 1}
+\DoxyCodeLine{00168\ \ \ \};}
+\DoxyCodeLine{00169\ \};}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \textcolor{keyword}{template}<>\ EIGEN\_STRONG\_INLINE\ Packet4f\ pcast<Packet4h,\ Packet4f>(\textcolor{keyword}{const}\ Packet4h\&\ a)\ \{}
+\DoxyCodeLine{00172\ \ \ \_\_int64\_t\ a64\ =\ \_mm\_cvtm64\_si64(a.x);}
+\DoxyCodeLine{00173\ \ \ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ h\ =\ raw\_uint16\_to\_half(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\textcolor{keyword}{>}(a64));}
+\DoxyCodeLine{00174\ \ \ \textcolor{keywordtype}{float}\ f1\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(h);}
+\DoxyCodeLine{00175\ \ \ h\ =\ raw\_uint16\_to\_half(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\textcolor{keyword}{>}(a64\ >>\ 16));}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordtype}{float}\ f2\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(h);}
+\DoxyCodeLine{00177\ \ \ h\ =\ raw\_uint16\_to\_half(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\textcolor{keyword}{>}(a64\ >>\ 32));}
+\DoxyCodeLine{00178\ \ \ \textcolor{keywordtype}{float}\ f3\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(h);}
+\DoxyCodeLine{00179\ \ \ h\ =\ raw\_uint16\_to\_half(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\textcolor{keyword}{>}(a64\ >>\ 48));}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordtype}{float}\ f4\ =\ \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{float}\textcolor{keyword}{>}(h);}
+\DoxyCodeLine{00181\ \ \ \textcolor{keywordflow}{return}\ \_mm\_set\_ps(f4,\ f3,\ f2,\ f1);}
+\DoxyCodeLine{00182\ \}}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00185\ \textcolor{keyword}{struct\ }type\_casting\_traits<float,\ Eigen::half>\ \{}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00187\ \ \ \ \ VectorizedCast\ =\ 1,}
+\DoxyCodeLine{00188\ \ \ \ \ SrcCoeffRatio\ =\ 1,}
+\DoxyCodeLine{00189\ \ \ \ \ TgtCoeffRatio\ =\ 1}
+\DoxyCodeLine{00190\ \ \ \};}
+\DoxyCodeLine{00191\ \};}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \textcolor{keyword}{template}<>\ EIGEN\_STRONG\_INLINE\ Packet4h\ pcast<Packet4f,\ Packet4h>(\textcolor{keyword}{const}\ Packet4f\&\ a)\ \{}
+\DoxyCodeLine{00194\ \ \ EIGEN\_ALIGN16\ \textcolor{keywordtype}{float}\ aux[4];}
+\DoxyCodeLine{00195\ \ \ pstore(aux,\ a);}
+\DoxyCodeLine{00196\ \ \ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ h0(aux[0]);}
+\DoxyCodeLine{00197\ \ \ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ h1(aux[1]);}
+\DoxyCodeLine{00198\ \ \ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ h2(aux[2]);}
+\DoxyCodeLine{00199\ \ \ \mbox{\hyperlink{struct_eigen_1_1half}{Eigen::half}}\ h3(aux[3]);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ Packet4h\ result;}
+\DoxyCodeLine{00202\ \ \ result.x\ =\ \_mm\_set\_pi16(h3.x,\ h2.x,\ h1.x,\ h0.x);}
+\DoxyCodeLine{00203\ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00204\ \}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00208\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00211\ }
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_TYPE\_CASTING\_CUDA\_H}}
+
+\end{DoxyCode}

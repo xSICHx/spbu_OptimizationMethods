@@ -1,0 +1,147 @@
+\doxysection{Boolean\+Redux.\+h}
+\hypertarget{_boolean_redux_8h_source}{}\label{_boolean_redux_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/BooleanRedux.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/BooleanRedux.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_ALLANDANY\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_ALLANDANY\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived,\ \textcolor{keywordtype}{int}\ UnrollCount>}
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1all__unroller}{all\_unroller}}}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Derived::ExpressionTraits\ Traits;}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ col\ =\ (UnrollCount-\/1)\ /\ Traits::RowsAtCompileTime,}
+\DoxyCodeLine{00023\ \ \ \ \ row\ =\ (UnrollCount-\/1)\ \%\ Traits::RowsAtCompileTime}
+\DoxyCodeLine{00024\ \ \ \};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ run(\textcolor{keyword}{const}\ Derived\ \&mat)}
+\DoxyCodeLine{00027\ \ \ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1all__unroller}{all\_unroller<Derived,\ UnrollCount-\/1>::run}}(mat)\ \&\&\ mat.coeff(row,\ col);}
+\DoxyCodeLine{00029\ \ \ \}}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00033\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1all__unroller}{all\_unroller}}<Derived,\ 0>}
+\DoxyCodeLine{00034\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ run(\textcolor{keyword}{const}\ Derived\ \&\textcolor{comment}{/*mat*/})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};\ \}}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00039\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1all__unroller}{all\_unroller}}<Derived,\ Dynamic>}
+\DoxyCodeLine{00040\ \{}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ run(\textcolor{keyword}{const}\ Derived\ \&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived,\ \textcolor{keywordtype}{int}\ UnrollCount>}
+\DoxyCodeLine{00045\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1any__unroller}{any\_unroller}}}
+\DoxyCodeLine{00046\ \{}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Derived::ExpressionTraits\ Traits;}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ col\ =\ (UnrollCount-\/1)\ /\ Traits::RowsAtCompileTime,}
+\DoxyCodeLine{00050\ \ \ \ \ row\ =\ (UnrollCount-\/1)\ \%\ Traits::RowsAtCompileTime}
+\DoxyCodeLine{00051\ \ \ \};}
+\DoxyCodeLine{00052\ \ \ }
+\DoxyCodeLine{00053\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ run(\textcolor{keyword}{const}\ Derived\ \&mat)}
+\DoxyCodeLine{00054\ \ \ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1any__unroller}{any\_unroller<Derived,\ UnrollCount-\/1>::run}}(mat)\ ||\ mat.coeff(row,\ col);}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1any__unroller}{any\_unroller}}<Derived,\ 0>}
+\DoxyCodeLine{00061\ \{}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ run(\textcolor{keyword}{const}\ Derived\ \&\ \textcolor{comment}{/*mat*/})\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00063\ \};}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00066\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1any__unroller}{any\_unroller}}<Derived,\ Dynamic>}
+\DoxyCodeLine{00067\ \{}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ run(\textcolor{keyword}{const}\ Derived\ \&)\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};\ \}}
+\DoxyCodeLine{00069\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00080\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00081\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ae42ab60296c120e9f45ce3b44e1761a4}{DenseBase<Derived>::all}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00082\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{internal::evaluator<Derived>}}\ Evaluator;}
+\DoxyCodeLine{00084\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ unroll\ =\ SizeAtCompileTime\ !=\ Dynamic}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \&\&\ SizeAtCompileTime\ *\ (Evaluator::CoeffReadCost\ +\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::AddCost}})\ <=\ EIGEN\_UNROLLING\_LIMIT}
+\DoxyCodeLine{00087\ \ \ \};}
+\DoxyCodeLine{00088\ \ \ Evaluator\ evaluator(derived());}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordflow}{if}(unroll)}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1all__unroller}{internal::all\_unroller}}<Evaluator,\ unroll\ ?\ int(SizeAtCompileTime)\ :\ Dynamic>::run(evaluator);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00092\ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j\ =\ 0;\ j\ <\ cols();\ ++j)}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ rows();\ ++i)}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!evaluator.coeff(i,\ j))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00097\ \ \ \}}
+\DoxyCodeLine{00098\ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00105\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_abfbf4cb72dd577e62fbe035b1c53e695}{DenseBase<Derived>::any}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00106\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{internal::evaluator<Derived>}}\ Evaluator;}
+\DoxyCodeLine{00108\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00109\ \ \ \ \ unroll\ =\ SizeAtCompileTime\ !=\ Dynamic}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ \ \ \&\&\ SizeAtCompileTime\ *\ (Evaluator::CoeffReadCost\ +\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::AddCost}})\ <=\ EIGEN\_UNROLLING\_LIMIT}
+\DoxyCodeLine{00111\ \ \ \};}
+\DoxyCodeLine{00112\ \ \ Evaluator\ evaluator(derived());}
+\DoxyCodeLine{00113\ \ \ \textcolor{keywordflow}{if}(unroll)}
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1any__unroller}{internal::any\_unroller}}<Evaluator,\ unroll\ ?\ int(SizeAtCompileTime)\ :\ Dynamic>::run(evaluator);}
+\DoxyCodeLine{00115\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00116\ \ \ \{}
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j\ =\ 0;\ j\ <\ cols();\ ++j)}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ rows();\ ++i)}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (evaluator.coeff(i,\ j))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00121\ \ \ \}}
+\DoxyCodeLine{00122\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00128\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00129\ \textcolor{keyword}{inline}\ Eigen::Index\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a229be090c665b9bf7d1fcdfd1ab6e0c1}{DenseBase<Derived>::count}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00130\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00131\ \ \ \textcolor{keywordflow}{return}\ derived().template\ cast<bool>().template\ cast<Index>().sum();}
+\DoxyCodeLine{00132\ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00138\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00139\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ab13d158c900560d3e1b25d85d2d33dd6}{DenseBase<Derived>::hasNaN}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00140\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#if\ EIGEN\_COMP\_MSVC\ ||\ (defined\ \_\_FAST\_MATH\_\_)}}
+\DoxyCodeLine{00142\ \ \ \textcolor{keywordflow}{return}\ derived().array().isNaN().any();}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00144\ \ \ \textcolor{keywordflow}{return}\ !((derived().array()==derived().array()).all());}
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00146\ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00152\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00153\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_af1e669fd3aaae50a4870dc1b8f3b8884}{DenseBase<Derived>::allFinite}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00154\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#if\ EIGEN\_COMP\_MSVC\ ||\ (defined\ \_\_FAST\_MATH\_\_)}}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordflow}{return}\ derived().array().isFinite().all();}
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00158\ \ \ \textcolor{keywordflow}{return}\ !((derived()-\/derived()).hasNaN());}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00160\ \}}
+\DoxyCodeLine{00161\ \ \ \ \ }
+\DoxyCodeLine{00162\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_ALLANDANY\_H}}
+
+\end{DoxyCode}

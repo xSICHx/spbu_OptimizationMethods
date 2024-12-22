@@ -1,0 +1,568 @@
+\doxysection{Math\+Functions.\+h}
+\hypertarget{arch_2_s_s_e_2_math_functions_8h_source}{}\label{arch_2_s_s_e_2_math_functions_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/arch/SSE/MathFunctions.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/arch/SSE/MathFunctions.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2007\ Julien\ Pommier}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{comment}{/*\ The\ sin,\ cos,\ exp,\ and\ log\ functions\ of\ this\ file\ come\ from}}
+\DoxyCodeLine{00012\ \textcolor{comment}{\ *\ Julien\ Pommier's\ sse\ math\ library:\ http://gruntthepeon.free.fr/ssemath/}}
+\DoxyCodeLine{00013\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_MATH\_FUNCTIONS\_SSE\_H}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ EIGEN\_MATH\_FUNCTIONS\_SSE\_H}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00023\ Packet4f\ plog<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ \_x)}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \ \ Packet4f\ x\ =\ \_x;}
+\DoxyCodeLine{00026\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(1\ ,\ 1.0f);}
+\DoxyCodeLine{00027\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(half,\ 0.5f);}
+\DoxyCodeLine{00028\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(0x7f,\ 0x7f);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f\_FROM\_INT(inv\_mant\_mask,\ \string~0x7f800000);}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \textcolor{comment}{/*\ the\ smallest\ non\ denormalized\ float\ number\ */}}
+\DoxyCodeLine{00033\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f\_FROM\_INT(min\_norm\_pos,\ \ 0x00800000);}
+\DoxyCodeLine{00034\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f\_FROM\_INT(minus\_inf,\ \ \ \ \ 0xff800000);\textcolor{comment}{//-\/1.f/0.f);}}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ \ \ \textcolor{comment}{/*\ natural\ logarithm\ computed\ for\ 4\ simultaneous\ float}}
+\DoxyCodeLine{00037\ \textcolor{comment}{\ \ \ \ return\ NaN\ for\ x\ <=\ 0}}
+\DoxyCodeLine{00038\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00039\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_SQRTHF,\ 0.707106781186547524f);}
+\DoxyCodeLine{00040\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p0,\ 7.0376836292E-\/2f);}
+\DoxyCodeLine{00041\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p1,\ -\/\ 1.1514610310E-\/1f);}
+\DoxyCodeLine{00042\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p2,\ 1.1676998740E-\/1f);}
+\DoxyCodeLine{00043\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p3,\ -\/\ 1.2420140846E-\/1f);}
+\DoxyCodeLine{00044\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p4,\ +\ 1.4249322787E-\/1f);}
+\DoxyCodeLine{00045\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p5,\ -\/\ 1.6668057665E-\/1f);}
+\DoxyCodeLine{00046\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p6,\ +\ 2.0000714765E-\/1f);}
+\DoxyCodeLine{00047\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p7,\ -\/\ 2.4999993993E-\/1f);}
+\DoxyCodeLine{00048\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_p8,\ +\ 3.3333331174E-\/1f);}
+\DoxyCodeLine{00049\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_q1,\ -\/2.12194440e-\/4f);}
+\DoxyCodeLine{00050\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_log\_q2,\ 0.693359375f);}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ Packet4i\ emm0;}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ Packet4f\ invalid\_mask\ =\ \_mm\_cmpnge\_ps(x,\ \_mm\_setzero\_ps());\ \textcolor{comment}{//\ not\ greater\ equal\ is\ true\ if\ x\ is\ NaN}}
+\DoxyCodeLine{00056\ \ \ Packet4f\ iszero\_mask\ =\ \_mm\_cmpeq\_ps(x,\ \_mm\_setzero\_ps());}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ x\ =\ pmax(x,\ p4f\_min\_norm\_pos);\ \ \textcolor{comment}{/*\ cut\ off\ denormalized\ stuff\ */}}
+\DoxyCodeLine{00059\ \ \ emm0\ =\ \_mm\_srli\_epi32(\_mm\_castps\_si128(x),\ 23);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \textcolor{comment}{/*\ keep\ only\ the\ fractional\ part\ */}}
+\DoxyCodeLine{00062\ \ \ x\ =\ \_mm\_and\_ps(x,\ p4f\_inv\_mant\_mask);}
+\DoxyCodeLine{00063\ \ \ x\ =\ \_mm\_or\_ps(x,\ p4f\_half);}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ emm0\ =\ \_mm\_sub\_epi32(emm0,\ p4i\_0x7f);}
+\DoxyCodeLine{00066\ \ \ Packet4f\ e\ =\ padd(Packet4f(\_mm\_cvtepi32\_ps(emm0)),\ p4f\_1);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{comment}{/*\ part2:}}
+\DoxyCodeLine{00069\ \textcolor{comment}{\ \ \ \ \ if(\ x\ <\ SQRTHF\ )\ \{}}
+\DoxyCodeLine{00070\ \textcolor{comment}{\ \ \ \ \ \ \ e\ -\/=\ 1;}}
+\DoxyCodeLine{00071\ \textcolor{comment}{\ \ \ \ \ \ \ x\ =\ x\ +\ x\ -\/\ 1.0;}}
+\DoxyCodeLine{00072\ \textcolor{comment}{\ \ \ \ \ \}\ else\ \{\ x\ =\ x\ -\/\ 1.0;\ \}}}
+\DoxyCodeLine{00073\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00074\ \ \ Packet4f\ mask\ =\ \_mm\_cmplt\_ps(x,\ p4f\_cephes\_SQRTHF);}
+\DoxyCodeLine{00075\ \ \ Packet4f\ tmp\ =\ pand(x,\ mask);}
+\DoxyCodeLine{00076\ \ \ x\ =\ psub(x,\ p4f\_1);}
+\DoxyCodeLine{00077\ \ \ e\ =\ psub(e,\ pand(p4f\_1,\ mask));}
+\DoxyCodeLine{00078\ \ \ x\ =\ padd(x,\ tmp);}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ Packet4f\ x2\ =\ pmul(x,x);}
+\DoxyCodeLine{00081\ \ \ Packet4f\ x3\ =\ pmul(x2,x);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ Packet4f\ y,\ y1,\ y2;}
+\DoxyCodeLine{00084\ \ \ y\ \ =\ pmadd(p4f\_cephes\_log\_p0,\ x,\ p4f\_cephes\_log\_p1);}
+\DoxyCodeLine{00085\ \ \ y1\ =\ pmadd(p4f\_cephes\_log\_p3,\ x,\ p4f\_cephes\_log\_p4);}
+\DoxyCodeLine{00086\ \ \ y2\ =\ pmadd(p4f\_cephes\_log\_p6,\ x,\ p4f\_cephes\_log\_p7);}
+\DoxyCodeLine{00087\ \ \ y\ \ =\ pmadd(y\ ,\ x,\ p4f\_cephes\_log\_p2);}
+\DoxyCodeLine{00088\ \ \ y1\ =\ pmadd(y1,\ x,\ p4f\_cephes\_log\_p5);}
+\DoxyCodeLine{00089\ \ \ y2\ =\ pmadd(y2,\ x,\ p4f\_cephes\_log\_p8);}
+\DoxyCodeLine{00090\ \ \ y\ =\ pmadd(y,\ x3,\ y1);}
+\DoxyCodeLine{00091\ \ \ y\ =\ pmadd(y,\ x3,\ y2);}
+\DoxyCodeLine{00092\ \ \ y\ =\ pmul(y,\ x3);}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \ \ y1\ =\ pmul(e,\ p4f\_cephes\_log\_q1);}
+\DoxyCodeLine{00095\ \ \ tmp\ =\ pmul(x2,\ p4f\_half);}
+\DoxyCodeLine{00096\ \ \ y\ =\ padd(y,\ y1);}
+\DoxyCodeLine{00097\ \ \ x\ =\ psub(x,\ tmp);}
+\DoxyCodeLine{00098\ \ \ y2\ =\ pmul(e,\ p4f\_cephes\_log\_q2);}
+\DoxyCodeLine{00099\ \ \ x\ =\ padd(x,\ y);}
+\DoxyCodeLine{00100\ \ \ x\ =\ padd(x,\ y2);}
+\DoxyCodeLine{00101\ \ \ \textcolor{comment}{//\ negative\ arg\ will\ be\ NAN,\ 0\ will\ be\ -\/INF}}
+\DoxyCodeLine{00102\ \ \ \textcolor{keywordflow}{return}\ \_mm\_or\_ps(\_mm\_andnot\_ps(iszero\_mask,\ \_mm\_or\_ps(x,\ invalid\_mask)),}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_mm\_and\_ps(iszero\_mask,\ p4f\_minus\_inf));}
+\DoxyCodeLine{00104\ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00107\ Packet4f\ pexp<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ \_x)}
+\DoxyCodeLine{00108\ \{}
+\DoxyCodeLine{00109\ \ \ Packet4f\ x\ =\ \_x;}
+\DoxyCodeLine{00110\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(1\ ,\ 1.0f);}
+\DoxyCodeLine{00111\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(half,\ 0.5f);}
+\DoxyCodeLine{00112\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(0x7f,\ 0x7f);}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(exp\_hi,\ \ 88.3762626647950f);}
+\DoxyCodeLine{00116\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(exp\_lo,\ -\/88.3762626647949f);}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_LOG2EF,\ 1.44269504088896341f);}
+\DoxyCodeLine{00119\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_C1,\ 0.693359375f);}
+\DoxyCodeLine{00120\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_C2,\ -\/2.12194440e-\/4f);}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_p0,\ 1.9875691500E-\/4f);}
+\DoxyCodeLine{00123\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_p1,\ 1.3981999507E-\/3f);}
+\DoxyCodeLine{00124\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_p2,\ 8.3334519073E-\/3f);}
+\DoxyCodeLine{00125\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_p3,\ 4.1665795894E-\/2f);}
+\DoxyCodeLine{00126\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_p4,\ 1.6666665459E-\/1f);}
+\DoxyCodeLine{00127\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_exp\_p5,\ 5.0000001201E-\/1f);}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ Packet4f\ tmp,\ fx;}
+\DoxyCodeLine{00130\ \ \ Packet4i\ emm0;}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \ \ \textcolor{comment}{//\ clamp\ x}}
+\DoxyCodeLine{00133\ \ \ x\ =\ pmax(pmin(x,\ p4f\_exp\_hi),\ p4f\_exp\_lo);}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00135\ \ \ \textcolor{comment}{/*\ express\ exp(x)\ as\ exp(g\ +\ n*log(2))\ */}}
+\DoxyCodeLine{00136\ \ \ fx\ =\ pmadd(x,\ p4f\_cephes\_LOG2EF,\ p4f\_half);}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_VECTORIZE\_SSE4\_1}}
+\DoxyCodeLine{00139\ \ \ fx\ =\ \_mm\_floor\_ps(fx);}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00141\ \ \ emm0\ =\ \_mm\_cvttps\_epi32(fx);}
+\DoxyCodeLine{00142\ \ \ tmp\ \ =\ \_mm\_cvtepi32\_ps(emm0);}
+\DoxyCodeLine{00143\ \ \ \textcolor{comment}{/*\ if\ greater,\ substract\ 1\ */}}
+\DoxyCodeLine{00144\ \ \ Packet4f\ mask\ =\ \_mm\_cmpgt\_ps(tmp,\ fx);}
+\DoxyCodeLine{00145\ \ \ mask\ =\ \_mm\_and\_ps(mask,\ p4f\_1);}
+\DoxyCodeLine{00146\ \ \ fx\ =\ psub(tmp,\ mask);}
+\DoxyCodeLine{00147\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \ \ tmp\ =\ pmul(fx,\ p4f\_cephes\_exp\_C1);}
+\DoxyCodeLine{00150\ \ \ Packet4f\ z\ =\ pmul(fx,\ p4f\_cephes\_exp\_C2);}
+\DoxyCodeLine{00151\ \ \ x\ =\ psub(x,\ tmp);}
+\DoxyCodeLine{00152\ \ \ x\ =\ psub(x,\ z);}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ z\ =\ pmul(x,x);}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00156\ \ \ Packet4f\ y\ =\ p4f\_cephes\_exp\_p0;}
+\DoxyCodeLine{00157\ \ \ y\ =\ pmadd(y,\ x,\ p4f\_cephes\_exp\_p1);}
+\DoxyCodeLine{00158\ \ \ y\ =\ pmadd(y,\ x,\ p4f\_cephes\_exp\_p2);}
+\DoxyCodeLine{00159\ \ \ y\ =\ pmadd(y,\ x,\ p4f\_cephes\_exp\_p3);}
+\DoxyCodeLine{00160\ \ \ y\ =\ pmadd(y,\ x,\ p4f\_cephes\_exp\_p4);}
+\DoxyCodeLine{00161\ \ \ y\ =\ pmadd(y,\ x,\ p4f\_cephes\_exp\_p5);}
+\DoxyCodeLine{00162\ \ \ y\ =\ pmadd(y,\ z,\ x);}
+\DoxyCodeLine{00163\ \ \ y\ =\ padd(y,\ p4f\_1);}
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00165\ \ \ \textcolor{comment}{//\ build\ 2\string^n}}
+\DoxyCodeLine{00166\ \ \ emm0\ =\ \_mm\_cvttps\_epi32(fx);}
+\DoxyCodeLine{00167\ \ \ emm0\ =\ \_mm\_add\_epi32(emm0,\ p4i\_0x7f);}
+\DoxyCodeLine{00168\ \ \ emm0\ =\ \_mm\_slli\_epi32(emm0,\ 23);}
+\DoxyCodeLine{00169\ \ \ \textcolor{keywordflow}{return}\ pmax(pmul(y,\ Packet4f(\_mm\_castsi128\_ps(emm0))),\ \_x);}
+\DoxyCodeLine{00170\ \}}
+\DoxyCodeLine{00171\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00172\ Packet2d\ pexp<Packet2d>(\textcolor{keyword}{const}\ Packet2d\&\ \_x)}
+\DoxyCodeLine{00173\ \{}
+\DoxyCodeLine{00174\ \ \ Packet2d\ x\ =\ \_x;}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(1\ ,\ 1.0);}
+\DoxyCodeLine{00177\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(2\ ,\ 2.0);}
+\DoxyCodeLine{00178\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(half,\ 0.5);}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(exp\_hi,\ \ 709.437);}
+\DoxyCodeLine{00181\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(exp\_lo,\ -\/709.436139303);}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_LOG2EF,\ 1.4426950408889634073599);}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_p0,\ 1.26177193074810590878e-\/4);}
+\DoxyCodeLine{00186\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_p1,\ 3.02994407707441961300e-\/2);}
+\DoxyCodeLine{00187\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_p2,\ 9.99999999999999999910e-\/1);}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_q0,\ 3.00198505138664455042e-\/6);}
+\DoxyCodeLine{00190\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_q1,\ 2.52448340349684104192e-\/3);}
+\DoxyCodeLine{00191\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_q2,\ 2.27265548208155028766e-\/1);}
+\DoxyCodeLine{00192\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_q3,\ 2.00000000000000000009e0);}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_C1,\ 0.693145751953125);}
+\DoxyCodeLine{00195\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet2d(cephes\_exp\_C2,\ 1.42860682030941723212e-\/6);}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \_\_m128i\ p4i\_1023\_0\ =\ \_mm\_setr\_epi32(1023,\ 1023,\ 0,\ 0);}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ Packet2d\ tmp,\ fx;}
+\DoxyCodeLine{00199\ \ \ Packet4i\ emm0;}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \textcolor{comment}{//\ clamp\ x}}
+\DoxyCodeLine{00202\ \ \ x\ =\ pmax(pmin(x,\ p2d\_exp\_hi),\ p2d\_exp\_lo);}
+\DoxyCodeLine{00203\ \ \ \textcolor{comment}{/*\ express\ exp(x)\ as\ exp(g\ +\ n*log(2))\ */}}
+\DoxyCodeLine{00204\ \ \ fx\ =\ pmadd(p2d\_cephes\_LOG2EF,\ x,\ p2d\_half);}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_VECTORIZE\_SSE4\_1}}
+\DoxyCodeLine{00207\ \ \ fx\ =\ \_mm\_floor\_pd(fx);}
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00209\ \ \ emm0\ =\ \_mm\_cvttpd\_epi32(fx);}
+\DoxyCodeLine{00210\ \ \ tmp\ \ =\ \_mm\_cvtepi32\_pd(emm0);}
+\DoxyCodeLine{00211\ \ \ \textcolor{comment}{/*\ if\ greater,\ substract\ 1\ */}}
+\DoxyCodeLine{00212\ \ \ Packet2d\ mask\ =\ \_mm\_cmpgt\_pd(tmp,\ fx);}
+\DoxyCodeLine{00213\ \ \ mask\ =\ \_mm\_and\_pd(mask,\ p2d\_1);}
+\DoxyCodeLine{00214\ \ \ fx\ =\ psub(tmp,\ mask);}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \ \ tmp\ =\ pmul(fx,\ p2d\_cephes\_exp\_C1);}
+\DoxyCodeLine{00218\ \ \ Packet2d\ z\ =\ pmul(fx,\ p2d\_cephes\_exp\_C2);}
+\DoxyCodeLine{00219\ \ \ x\ =\ psub(x,\ tmp);}
+\DoxyCodeLine{00220\ \ \ x\ =\ psub(x,\ z);}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \ \ Packet2d\ x2\ =\ pmul(x,x);}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \ \ Packet2d\ px\ =\ p2d\_cephes\_exp\_p0;}
+\DoxyCodeLine{00225\ \ \ px\ =\ pmadd(px,\ x2,\ p2d\_cephes\_exp\_p1);}
+\DoxyCodeLine{00226\ \ \ px\ =\ pmadd(px,\ x2,\ p2d\_cephes\_exp\_p2);}
+\DoxyCodeLine{00227\ \ \ px\ =\ pmul\ (px,\ x);}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \ \ Packet2d\ qx\ =\ p2d\_cephes\_exp\_q0;}
+\DoxyCodeLine{00230\ \ \ qx\ =\ pmadd(qx,\ x2,\ p2d\_cephes\_exp\_q1);}
+\DoxyCodeLine{00231\ \ \ qx\ =\ pmadd(qx,\ x2,\ p2d\_cephes\_exp\_q2);}
+\DoxyCodeLine{00232\ \ \ qx\ =\ pmadd(qx,\ x2,\ p2d\_cephes\_exp\_q3);}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ x\ =\ pdiv(px,psub(qx,px));}
+\DoxyCodeLine{00235\ \ \ x\ =\ pmadd(p2d\_2,x,p2d\_1);}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \textcolor{comment}{//\ build\ 2\string^n}}
+\DoxyCodeLine{00238\ \ \ emm0\ =\ \_mm\_cvttpd\_epi32(fx);}
+\DoxyCodeLine{00239\ \ \ emm0\ =\ \_mm\_add\_epi32(emm0,\ p4i\_1023\_0);}
+\DoxyCodeLine{00240\ \ \ emm0\ =\ \_mm\_slli\_epi32(emm0,\ 20);}
+\DoxyCodeLine{00241\ \ \ emm0\ =\ \_mm\_shuffle\_epi32(emm0,\ \_MM\_SHUFFLE(1,2,0,3));}
+\DoxyCodeLine{00242\ \ \ \textcolor{keywordflow}{return}\ pmax(pmul(x,\ Packet2d(\_mm\_castsi128\_pd(emm0))),\ \_x);}
+\DoxyCodeLine{00243\ \}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \textcolor{comment}{/*\ evaluation\ of\ 4\ sines\ at\ onces,\ using\ SSE2\ intrinsics.}}
+\DoxyCodeLine{00246\ \textcolor{comment}{}}
+\DoxyCodeLine{00247\ \textcolor{comment}{\ \ \ The\ code\ is\ the\ exact\ rewriting\ of\ the\ cephes\ sinf\ function.}}
+\DoxyCodeLine{00248\ \textcolor{comment}{\ \ \ Precision\ is\ excellent\ as\ long\ as\ x\ <\ 8192\ (I\ did\ not\ bother\ to}}
+\DoxyCodeLine{00249\ \textcolor{comment}{\ \ \ take\ into\ account\ the\ special\ handling\ they\ have\ for\ greater\ values}}
+\DoxyCodeLine{00250\ \textcolor{comment}{\ \ \ -\/-\/\ it\ does\ not\ return\ garbage\ for\ arguments\ over\ 8192,\ though,\ but}}
+\DoxyCodeLine{00251\ \textcolor{comment}{\ \ \ the\ extra\ precision\ is\ missing).}}
+\DoxyCodeLine{00252\ \textcolor{comment}{}}
+\DoxyCodeLine{00253\ \textcolor{comment}{\ \ \ Note\ that\ it\ is\ such\ that\ sinf((float)M\_PI)\ =\ 8.74e-\/8,\ which\ is\ the}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ \ \ surprising\ but\ correct\ result.}}
+\DoxyCodeLine{00255\ \textcolor{comment}{*/}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00258\ Packet4f\ psin<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ \_x)}
+\DoxyCodeLine{00259\ \{}
+\DoxyCodeLine{00260\ \ \ Packet4f\ x\ =\ \_x;}
+\DoxyCodeLine{00261\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(1\ ,\ 1.0f);}
+\DoxyCodeLine{00262\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(half,\ 0.5f);}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(1,\ 1);}
+\DoxyCodeLine{00265\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(not1,\ \string~1);}
+\DoxyCodeLine{00266\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(2,\ 2);}
+\DoxyCodeLine{00267\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(4,\ 4);}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00269\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f\_FROM\_INT(sign\_mask,\ 0x80000000);}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(minus\_cephes\_DP1,-\/0.78515625f);}
+\DoxyCodeLine{00272\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(minus\_cephes\_DP2,\ -\/2.4187564849853515625e-\/4f);}
+\DoxyCodeLine{00273\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(minus\_cephes\_DP3,\ -\/3.77489497744594108e-\/8f);}
+\DoxyCodeLine{00274\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(sincof\_p0,\ -\/1.9515295891E-\/4f);}
+\DoxyCodeLine{00275\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(sincof\_p1,\ \ 8.3321608736E-\/3f);}
+\DoxyCodeLine{00276\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(sincof\_p2,\ -\/1.6666654611E-\/1f);}
+\DoxyCodeLine{00277\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(coscof\_p0,\ \ 2.443315711809948E-\/005f);}
+\DoxyCodeLine{00278\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(coscof\_p1,\ -\/1.388731625493765E-\/003f);}
+\DoxyCodeLine{00279\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(coscof\_p2,\ \ 4.166664568298827E-\/002f);}
+\DoxyCodeLine{00280\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_FOPI,\ 1.27323954473516f);\ \textcolor{comment}{//\ 4\ /\ M\_PI}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ Packet4f\ xmm1,\ xmm2,\ xmm3,\ sign\_bit,\ y;}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00284\ \ \ Packet4i\ emm0,\ emm2;}
+\DoxyCodeLine{00285\ \ \ sign\_bit\ =\ x;}
+\DoxyCodeLine{00286\ \ \ \textcolor{comment}{/*\ take\ the\ absolute\ value\ */}}
+\DoxyCodeLine{00287\ \ \ x\ =\ pabs(x);}
+\DoxyCodeLine{00288\ }
+\DoxyCodeLine{00289\ \ \ \textcolor{comment}{/*\ take\ the\ modulo\ */}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \ \ \textcolor{comment}{/*\ extract\ the\ sign\ bit\ (upper\ one)\ */}}
+\DoxyCodeLine{00292\ \ \ sign\_bit\ =\ \_mm\_and\_ps(sign\_bit,\ p4f\_sign\_mask);}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \textcolor{comment}{/*\ scale\ by\ 4/Pi\ */}}
+\DoxyCodeLine{00295\ \ \ y\ =\ pmul(x,\ p4f\_cephes\_FOPI);}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \ \ \textcolor{comment}{/*\ store\ the\ integer\ part\ of\ y\ in\ mm0\ */}}
+\DoxyCodeLine{00298\ \ \ emm2\ =\ \_mm\_cvttps\_epi32(y);}
+\DoxyCodeLine{00299\ \ \ \textcolor{comment}{/*\ j=(j+1)\ \&\ (\string~1)\ (see\ the\ cephes\ sources)\ */}}
+\DoxyCodeLine{00300\ \ \ emm2\ =\ \_mm\_add\_epi32(emm2,\ p4i\_1);}
+\DoxyCodeLine{00301\ \ \ emm2\ =\ \_mm\_and\_si128(emm2,\ p4i\_not1);}
+\DoxyCodeLine{00302\ \ \ y\ =\ \_mm\_cvtepi32\_ps(emm2);}
+\DoxyCodeLine{00303\ \ \ \textcolor{comment}{/*\ get\ the\ swap\ sign\ flag\ */}}
+\DoxyCodeLine{00304\ \ \ emm0\ =\ \_mm\_and\_si128(emm2,\ p4i\_4);}
+\DoxyCodeLine{00305\ \ \ emm0\ =\ \_mm\_slli\_epi32(emm0,\ 29);}
+\DoxyCodeLine{00306\ \ \ \textcolor{comment}{/*\ get\ the\ polynom\ selection\ mask}}
+\DoxyCodeLine{00307\ \textcolor{comment}{\ \ \ \ \ there\ is\ one\ polynom\ for\ 0\ <=\ x\ <=\ Pi/4}}
+\DoxyCodeLine{00308\ \textcolor{comment}{\ \ \ \ \ and\ another\ one\ for\ Pi/4<x<=Pi/2}}
+\DoxyCodeLine{00309\ \textcolor{comment}{}}
+\DoxyCodeLine{00310\ \textcolor{comment}{\ \ \ \ \ Both\ branches\ will\ be\ computed.}}
+\DoxyCodeLine{00311\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00312\ \ \ emm2\ =\ \_mm\_and\_si128(emm2,\ p4i\_2);}
+\DoxyCodeLine{00313\ \ \ emm2\ =\ \_mm\_cmpeq\_epi32(emm2,\ \_mm\_setzero\_si128());}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00315\ \ \ Packet4f\ swap\_sign\_bit\ =\ \_mm\_castsi128\_ps(emm0);}
+\DoxyCodeLine{00316\ \ \ Packet4f\ poly\_mask\ =\ \_mm\_castsi128\_ps(emm2);}
+\DoxyCodeLine{00317\ \ \ sign\_bit\ =\ \_mm\_xor\_ps(sign\_bit,\ swap\_sign\_bit);}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \ \ \textcolor{comment}{/*\ The\ magic\ pass:\ "{}Extended\ precision\ modular\ arithmetic"{}}}
+\DoxyCodeLine{00320\ \textcolor{comment}{\ \ \ \ \ x\ =\ ((x\ -\/\ y\ *\ DP1)\ -\/\ y\ *\ DP2)\ -\/\ y\ *\ DP3;\ */}}
+\DoxyCodeLine{00321\ \ \ xmm1\ =\ pmul(y,\ p4f\_minus\_cephes\_DP1);}
+\DoxyCodeLine{00322\ \ \ xmm2\ =\ pmul(y,\ p4f\_minus\_cephes\_DP2);}
+\DoxyCodeLine{00323\ \ \ xmm3\ =\ pmul(y,\ p4f\_minus\_cephes\_DP3);}
+\DoxyCodeLine{00324\ \ \ x\ =\ padd(x,\ xmm1);}
+\DoxyCodeLine{00325\ \ \ x\ =\ padd(x,\ xmm2);}
+\DoxyCodeLine{00326\ \ \ x\ =\ padd(x,\ xmm3);}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \textcolor{comment}{/*\ Evaluate\ the\ first\ polynom\ \ (0\ <=\ x\ <=\ Pi/4)\ */}}
+\DoxyCodeLine{00329\ \ \ y\ =\ p4f\_coscof\_p0;}
+\DoxyCodeLine{00330\ \ \ Packet4f\ z\ =\ \_mm\_mul\_ps(x,x);}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ y\ =\ pmadd(y,\ z,\ p4f\_coscof\_p1);}
+\DoxyCodeLine{00333\ \ \ y\ =\ pmadd(y,\ z,\ p4f\_coscof\_p2);}
+\DoxyCodeLine{00334\ \ \ y\ =\ pmul(y,\ z);}
+\DoxyCodeLine{00335\ \ \ y\ =\ pmul(y,\ z);}
+\DoxyCodeLine{00336\ \ \ Packet4f\ tmp\ =\ pmul(z,\ p4f\_half);}
+\DoxyCodeLine{00337\ \ \ y\ =\ psub(y,\ tmp);}
+\DoxyCodeLine{00338\ \ \ y\ =\ padd(y,\ p4f\_1);}
+\DoxyCodeLine{00339\ }
+\DoxyCodeLine{00340\ \ \ \textcolor{comment}{/*\ Evaluate\ the\ second\ polynom\ \ (Pi/4\ <=\ x\ <=\ 0)\ */}}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \ \ Packet4f\ y2\ =\ p4f\_sincof\_p0;}
+\DoxyCodeLine{00343\ \ \ y2\ =\ pmadd(y2,\ z,\ p4f\_sincof\_p1);}
+\DoxyCodeLine{00344\ \ \ y2\ =\ pmadd(y2,\ z,\ p4f\_sincof\_p2);}
+\DoxyCodeLine{00345\ \ \ y2\ =\ pmul(y2,\ z);}
+\DoxyCodeLine{00346\ \ \ y2\ =\ pmul(y2,\ x);}
+\DoxyCodeLine{00347\ \ \ y2\ =\ padd(y2,\ x);}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \textcolor{comment}{/*\ select\ the\ correct\ result\ from\ the\ two\ polynoms\ */}}
+\DoxyCodeLine{00350\ \ \ y2\ =\ \_mm\_and\_ps(poly\_mask,\ y2);}
+\DoxyCodeLine{00351\ \ \ y\ =\ \_mm\_andnot\_ps(poly\_mask,\ y);}
+\DoxyCodeLine{00352\ \ \ y\ =\ \_mm\_or\_ps(y,y2);}
+\DoxyCodeLine{00353\ \ \ \textcolor{comment}{/*\ update\ the\ sign\ */}}
+\DoxyCodeLine{00354\ \ \ \textcolor{keywordflow}{return}\ \_mm\_xor\_ps(y,\ sign\_bit);}
+\DoxyCodeLine{00355\ \}}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \textcolor{comment}{/*\ almost\ the\ same\ as\ psin\ */}}
+\DoxyCodeLine{00358\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00359\ Packet4f\ pcos<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ \_x)}
+\DoxyCodeLine{00360\ \{}
+\DoxyCodeLine{00361\ \ \ Packet4f\ x\ =\ \_x;}
+\DoxyCodeLine{00362\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(1\ ,\ 1.0f);}
+\DoxyCodeLine{00363\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(half,\ 0.5f);}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00365\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(1,\ 1);}
+\DoxyCodeLine{00366\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(not1,\ \string~1);}
+\DoxyCodeLine{00367\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(2,\ 2);}
+\DoxyCodeLine{00368\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4i(4,\ 4);}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(minus\_cephes\_DP1,-\/0.78515625f);}
+\DoxyCodeLine{00371\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(minus\_cephes\_DP2,\ -\/2.4187564849853515625e-\/4f);}
+\DoxyCodeLine{00372\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(minus\_cephes\_DP3,\ -\/3.77489497744594108e-\/8f);}
+\DoxyCodeLine{00373\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(sincof\_p0,\ -\/1.9515295891E-\/4f);}
+\DoxyCodeLine{00374\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(sincof\_p1,\ \ 8.3321608736E-\/3f);}
+\DoxyCodeLine{00375\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(sincof\_p2,\ -\/1.6666654611E-\/1f);}
+\DoxyCodeLine{00376\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(coscof\_p0,\ \ 2.443315711809948E-\/005f);}
+\DoxyCodeLine{00377\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(coscof\_p1,\ -\/1.388731625493765E-\/003f);}
+\DoxyCodeLine{00378\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(coscof\_p2,\ \ 4.166664568298827E-\/002f);}
+\DoxyCodeLine{00379\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(cephes\_FOPI,\ 1.27323954473516f);\ \textcolor{comment}{//\ 4\ /\ M\_PI}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \ \ Packet4f\ xmm1,\ xmm2,\ xmm3,\ y;}
+\DoxyCodeLine{00382\ \ \ Packet4i\ emm0,\ emm2;}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ x\ =\ pabs(x);}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \textcolor{comment}{/*\ scale\ by\ 4/Pi\ */}}
+\DoxyCodeLine{00387\ \ \ y\ =\ pmul(x,\ p4f\_cephes\_FOPI);}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00389\ \ \ \textcolor{comment}{/*\ get\ the\ integer\ part\ of\ y\ */}}
+\DoxyCodeLine{00390\ \ \ emm2\ =\ \_mm\_cvttps\_epi32(y);}
+\DoxyCodeLine{00391\ \ \ \textcolor{comment}{/*\ j=(j+1)\ \&\ (\string~1)\ (see\ the\ cephes\ sources)\ */}}
+\DoxyCodeLine{00392\ \ \ emm2\ =\ \_mm\_add\_epi32(emm2,\ p4i\_1);}
+\DoxyCodeLine{00393\ \ \ emm2\ =\ \_mm\_and\_si128(emm2,\ p4i\_not1);}
+\DoxyCodeLine{00394\ \ \ y\ =\ \_mm\_cvtepi32\_ps(emm2);}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \ \ emm2\ =\ \_mm\_sub\_epi32(emm2,\ p4i\_2);}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \ \ \textcolor{comment}{/*\ get\ the\ swap\ sign\ flag\ */}}
+\DoxyCodeLine{00399\ \ \ emm0\ =\ \_mm\_andnot\_si128(emm2,\ p4i\_4);}
+\DoxyCodeLine{00400\ \ \ emm0\ =\ \_mm\_slli\_epi32(emm0,\ 29);}
+\DoxyCodeLine{00401\ \ \ \textcolor{comment}{/*\ get\ the\ polynom\ selection\ mask\ */}}
+\DoxyCodeLine{00402\ \ \ emm2\ =\ \_mm\_and\_si128(emm2,\ p4i\_2);}
+\DoxyCodeLine{00403\ \ \ emm2\ =\ \_mm\_cmpeq\_epi32(emm2,\ \_mm\_setzero\_si128());}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \ \ Packet4f\ sign\_bit\ =\ \_mm\_castsi128\_ps(emm0);}
+\DoxyCodeLine{00406\ \ \ Packet4f\ poly\_mask\ =\ \_mm\_castsi128\_ps(emm2);}
+\DoxyCodeLine{00407\ }
+\DoxyCodeLine{00408\ \ \ \textcolor{comment}{/*\ The\ magic\ pass:\ "{}Extended\ precision\ modular\ arithmetic"{}}}
+\DoxyCodeLine{00409\ \textcolor{comment}{\ \ \ \ \ x\ =\ ((x\ -\/\ y\ *\ DP1)\ -\/\ y\ *\ DP2)\ -\/\ y\ *\ DP3;\ */}}
+\DoxyCodeLine{00410\ \ \ xmm1\ =\ pmul(y,\ p4f\_minus\_cephes\_DP1);}
+\DoxyCodeLine{00411\ \ \ xmm2\ =\ pmul(y,\ p4f\_minus\_cephes\_DP2);}
+\DoxyCodeLine{00412\ \ \ xmm3\ =\ pmul(y,\ p4f\_minus\_cephes\_DP3);}
+\DoxyCodeLine{00413\ \ \ x\ =\ padd(x,\ xmm1);}
+\DoxyCodeLine{00414\ \ \ x\ =\ padd(x,\ xmm2);}
+\DoxyCodeLine{00415\ \ \ x\ =\ padd(x,\ xmm3);}
+\DoxyCodeLine{00416\ }
+\DoxyCodeLine{00417\ \ \ \textcolor{comment}{/*\ Evaluate\ the\ first\ polynom\ \ (0\ <=\ x\ <=\ Pi/4)\ */}}
+\DoxyCodeLine{00418\ \ \ y\ =\ p4f\_coscof\_p0;}
+\DoxyCodeLine{00419\ \ \ Packet4f\ z\ =\ pmul(x,x);}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00421\ \ \ y\ =\ pmadd(y,z,p4f\_coscof\_p1);}
+\DoxyCodeLine{00422\ \ \ y\ =\ pmadd(y,z,p4f\_coscof\_p2);}
+\DoxyCodeLine{00423\ \ \ y\ =\ pmul(y,\ z);}
+\DoxyCodeLine{00424\ \ \ y\ =\ pmul(y,\ z);}
+\DoxyCodeLine{00425\ \ \ Packet4f\ tmp\ =\ \_mm\_mul\_ps(z,\ p4f\_half);}
+\DoxyCodeLine{00426\ \ \ y\ =\ psub(y,\ tmp);}
+\DoxyCodeLine{00427\ \ \ y\ =\ padd(y,\ p4f\_1);}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \ \ \textcolor{comment}{/*\ Evaluate\ the\ second\ polynom\ \ (Pi/4\ <=\ x\ <=\ 0)\ */}}
+\DoxyCodeLine{00430\ \ \ Packet4f\ y2\ =\ p4f\_sincof\_p0;}
+\DoxyCodeLine{00431\ \ \ y2\ =\ pmadd(y2,\ z,\ p4f\_sincof\_p1);}
+\DoxyCodeLine{00432\ \ \ y2\ =\ pmadd(y2,\ z,\ p4f\_sincof\_p2);}
+\DoxyCodeLine{00433\ \ \ y2\ =\ pmul(y2,\ z);}
+\DoxyCodeLine{00434\ \ \ y2\ =\ pmadd(y2,\ x,\ x);}
+\DoxyCodeLine{00435\ }
+\DoxyCodeLine{00436\ \ \ \textcolor{comment}{/*\ select\ the\ correct\ result\ from\ the\ two\ polynoms\ */}}
+\DoxyCodeLine{00437\ \ \ y2\ =\ \_mm\_and\_ps(poly\_mask,\ y2);}
+\DoxyCodeLine{00438\ \ \ y\ \ =\ \_mm\_andnot\_ps(poly\_mask,\ y);}
+\DoxyCodeLine{00439\ \ \ y\ \ =\ \_mm\_or\_ps(y,y2);}
+\DoxyCodeLine{00440\ }
+\DoxyCodeLine{00441\ \ \ \textcolor{comment}{/*\ update\ the\ sign\ */}}
+\DoxyCodeLine{00442\ \ \ \textcolor{keywordflow}{return}\ \_mm\_xor\_ps(y,\ sign\_bit);}
+\DoxyCodeLine{00443\ \}}
+\DoxyCodeLine{00444\ }
+\DoxyCodeLine{00445\ \textcolor{preprocessor}{\#if\ EIGEN\_FAST\_MATH}}
+\DoxyCodeLine{00446\ }
+\DoxyCodeLine{00447\ \textcolor{comment}{//\ Functions\ for\ sqrt.}}
+\DoxyCodeLine{00448\ \textcolor{comment}{//\ The\ EIGEN\_FAST\_MATH\ version\ uses\ the\ \_mm\_rsqrt\_ps\ approximation\ and\ one\ step}}
+\DoxyCodeLine{00449\ \textcolor{comment}{//\ of\ Newton's\ method,\ at\ a\ cost\ of\ 1-\/2\ bits\ of\ precision\ as\ opposed\ to\ the}}
+\DoxyCodeLine{00450\ \textcolor{comment}{//\ exact\ solution.\ It\ does\ not\ handle\ +inf,\ or\ denormalized\ numbers\ correctly.}}
+\DoxyCodeLine{00451\ \textcolor{comment}{//\ The\ main\ advantage\ of\ this\ approach\ is\ not\ just\ speed,\ but\ also\ the\ fact\ that}}
+\DoxyCodeLine{00452\ \textcolor{comment}{//\ it\ can\ be\ inlined\ and\ pipelined\ with\ other\ computations,\ further\ reducing\ its}}
+\DoxyCodeLine{00453\ \textcolor{comment}{//\ effective\ latency.\ This\ is\ similar\ to\ Quake3's\ fast\ inverse\ square\ root.}}
+\DoxyCodeLine{00454\ \textcolor{comment}{//\ For\ detail\ see\ here:\ http://www.beyond3d.com/content/articles/8/}}
+\DoxyCodeLine{00455\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00456\ Packet4f\ psqrt<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ \_x)}
+\DoxyCodeLine{00457\ \{}
+\DoxyCodeLine{00458\ \ \ Packet4f\ half\ =\ pmul(\_x,\ pset1<Packet4f>(.5f));}
+\DoxyCodeLine{00459\ \ \ Packet4f\ denormal\_mask\ =\ \_mm\_and\_ps(}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \_mm\_cmpge\_ps(\_x,\ \_mm\_setzero\_ps()),}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \_mm\_cmplt\_ps(\_x,\ pset1<Packet4f>((std::numeric\_limits<float>::min)())));}
+\DoxyCodeLine{00462\ }
+\DoxyCodeLine{00463\ \ \ \textcolor{comment}{//\ Compute\ approximate\ reciprocal\ sqrt.}}
+\DoxyCodeLine{00464\ \ \ Packet4f\ x\ =\ \_mm\_rsqrt\_ps(\_x);}
+\DoxyCodeLine{00465\ \ \ \textcolor{comment}{//\ Do\ a\ single\ step\ of\ Newton's\ iteration.}}
+\DoxyCodeLine{00466\ \ \ x\ =\ pmul(x,\ psub(pset1<Packet4f>(1.5f),\ pmul(half,\ pmul(x,x))));}
+\DoxyCodeLine{00467\ \ \ \textcolor{comment}{//\ Flush\ results\ for\ denormals\ to\ zero.}}
+\DoxyCodeLine{00468\ \ \ \textcolor{keywordflow}{return}\ \_mm\_andnot\_ps(denormal\_mask,\ pmul(\_x,x));}
+\DoxyCodeLine{00469\ \}}
+\DoxyCodeLine{00470\ }
+\DoxyCodeLine{00471\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00472\ }
+\DoxyCodeLine{00473\ \textcolor{keyword}{template}<>EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00474\ Packet4f\ psqrt<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ x)\ \{\ \textcolor{keywordflow}{return}\ \_mm\_sqrt\_ps(x);\ \}}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00476\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00479\ Packet2d\ psqrt<Packet2d>(\textcolor{keyword}{const}\ Packet2d\&\ x)\ \{\ \textcolor{keywordflow}{return}\ \_mm\_sqrt\_pd(x);\ \}}
+\DoxyCodeLine{00480\ }
+\DoxyCodeLine{00481\ \textcolor{preprocessor}{\#if\ EIGEN\_FAST\_MATH}}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00484\ Packet4f\ prsqrt<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ \_x)\ \{}
+\DoxyCodeLine{00485\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f\_FROM\_INT(inf,\ 0x7f800000);}
+\DoxyCodeLine{00486\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f\_FROM\_INT(nan,\ 0x7fc00000);}
+\DoxyCodeLine{00487\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(one\_point\_five,\ 1.5f);}
+\DoxyCodeLine{00488\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f(minus\_half,\ -\/0.5f);}
+\DoxyCodeLine{00489\ \ \ \_EIGEN\_DECLARE\_CONST\_Packet4f\_FROM\_INT(flt\_min,\ 0x00800000);}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00491\ \ \ Packet4f\ neg\_half\ =\ pmul(\_x,\ p4f\_minus\_half);}
+\DoxyCodeLine{00492\ }
+\DoxyCodeLine{00493\ \ \ \textcolor{comment}{//\ select\ only\ the\ inverse\ sqrt\ of\ positive\ normal\ inputs\ (denormals\ are}}
+\DoxyCodeLine{00494\ \ \ \textcolor{comment}{//\ flushed\ to\ zero\ and\ cause\ infs\ as\ well).}}
+\DoxyCodeLine{00495\ \ \ Packet4f\ le\_zero\_mask\ =\ \_mm\_cmple\_ps(\_x,\ p4f\_flt\_min);}
+\DoxyCodeLine{00496\ \ \ Packet4f\ x\ =\ \_mm\_andnot\_ps(le\_zero\_mask,\ \_mm\_rsqrt\_ps(\_x));}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00498\ \ \ \textcolor{comment}{//\ Fill\ in\ NaNs\ and\ Infs\ for\ the\ negative/zero\ entries.}}
+\DoxyCodeLine{00499\ \ \ Packet4f\ neg\_mask\ =\ \_mm\_cmplt\_ps(\_x,\ \_mm\_setzero\_ps());}
+\DoxyCodeLine{00500\ \ \ Packet4f\ zero\_mask\ =\ \_mm\_andnot\_ps(neg\_mask,\ le\_zero\_mask);}
+\DoxyCodeLine{00501\ \ \ Packet4f\ infs\_and\_nans\ =\ \_mm\_or\_ps(\_mm\_and\_ps(neg\_mask,\ p4f\_nan),}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_mm\_and\_ps(zero\_mask,\ p4f\_inf));}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00504\ \ \ \textcolor{comment}{//\ Do\ a\ single\ step\ of\ Newton's\ iteration.}}
+\DoxyCodeLine{00505\ \ \ x\ =\ pmul(x,\ pmadd(neg\_half,\ pmul(x,\ x),\ p4f\_one\_point\_five));}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \ \ \textcolor{comment}{//\ Insert\ NaNs\ and\ Infs\ in\ all\ the\ right\ places.}}
+\DoxyCodeLine{00508\ \ \ \textcolor{keywordflow}{return}\ \_mm\_or\_ps(x,\ infs\_and\_nans);}
+\DoxyCodeLine{00509\ \}}
+\DoxyCodeLine{00510\ }
+\DoxyCodeLine{00511\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00512\ }
+\DoxyCodeLine{00513\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00514\ Packet4f\ prsqrt<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ x)\ \{}
+\DoxyCodeLine{00515\ \ \ \textcolor{comment}{//\ Unfortunately\ we\ can't\ use\ the\ much\ faster\ mm\_rqsrt\_ps\ since\ it\ only\ provides\ an\ approximation.}}
+\DoxyCodeLine{00516\ \ \ \textcolor{keywordflow}{return}\ \_mm\_div\_ps(pset1<Packet4f>(1.0f),\ \_mm\_sqrt\_ps(x));}
+\DoxyCodeLine{00517\ \}}
+\DoxyCodeLine{00518\ }
+\DoxyCodeLine{00519\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00520\ }
+\DoxyCodeLine{00521\ \textcolor{keyword}{template}<>\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED}
+\DoxyCodeLine{00522\ Packet2d\ prsqrt<Packet2d>(\textcolor{keyword}{const}\ Packet2d\&\ x)\ \{}
+\DoxyCodeLine{00523\ \ \ \textcolor{comment}{//\ Unfortunately\ we\ can't\ use\ the\ much\ faster\ mm\_rqsrt\_pd\ since\ it\ only\ provides\ an\ approximation.}}
+\DoxyCodeLine{00524\ \ \ \textcolor{keywordflow}{return}\ \_mm\_div\_pd(pset1<Packet2d>(1.0),\ \_mm\_sqrt\_pd(x));}
+\DoxyCodeLine{00525\ \}}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \textcolor{comment}{//\ Hyperbolic\ Tangent\ function.}}
+\DoxyCodeLine{00528\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00529\ EIGEN\_DEFINE\_FUNCTION\_ALLOWING\_MULTIPLE\_DEFINITIONS\ EIGEN\_UNUSED\ Packet4f}
+\DoxyCodeLine{00530\ ptanh<Packet4f>(\textcolor{keyword}{const}\ Packet4f\&\ x)\ \{}
+\DoxyCodeLine{00531\ \ \ \textcolor{keywordflow}{return}\ internal::generic\_fast\_tanh\_float(x);}
+\DoxyCodeLine{00532\ \}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00535\ }
+\DoxyCodeLine{00536\ \textcolor{keyword}{namespace\ }numext\ \{}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00539\ EIGEN\_DEVICE\_FUNC\ EIGEN\_ALWAYS\_INLINE}
+\DoxyCodeLine{00540\ \textcolor{keywordtype}{float}\ sqrt(\textcolor{keyword}{const}\ \textcolor{keywordtype}{float}\ \&x)}
+\DoxyCodeLine{00541\ \{}
+\DoxyCodeLine{00542\ \ \ \textcolor{keywordflow}{return}\ internal::pfirst(internal::Packet4f(\_mm\_sqrt\_ss(\_mm\_set\_ss(x))));}
+\DoxyCodeLine{00543\ \}}
+\DoxyCodeLine{00544\ }
+\DoxyCodeLine{00545\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00546\ EIGEN\_DEVICE\_FUNC\ EIGEN\_ALWAYS\_INLINE}
+\DoxyCodeLine{00547\ \textcolor{keywordtype}{double}\ sqrt(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ \&x)}
+\DoxyCodeLine{00548\ \{}
+\DoxyCodeLine{00549\ \textcolor{preprocessor}{\#if\ EIGEN\_COMP\_GNUC\_STRICT}}
+\DoxyCodeLine{00550\ \ \ \textcolor{comment}{//\ This\ works\ around\ a\ GCC\ bug\ generating\ poor\ code\ for\ \_mm\_sqrt\_pd}}
+\DoxyCodeLine{00551\ \ \ \textcolor{comment}{//\ See\ https://bitbucket.org/eigen/eigen/commits/14f468dba4d350d7c19c9b93072e19f7b3df563b}}
+\DoxyCodeLine{00552\ \ \ \textcolor{keywordflow}{return}\ internal::pfirst(internal::Packet2d(\_\_builtin\_ia32\_sqrtsd(\_mm\_set\_sd(x))));}
+\DoxyCodeLine{00553\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00554\ \ \ \textcolor{keywordflow}{return}\ internal::pfirst(internal::Packet2d(\_mm\_sqrt\_pd(\_mm\_set\_sd(x))));}
+\DoxyCodeLine{00555\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00556\ \}}
+\DoxyCodeLine{00557\ }
+\DoxyCodeLine{00558\ \}\ \textcolor{comment}{//\ end\ namespace\ numex}}
+\DoxyCodeLine{00559\ }
+\DoxyCodeLine{00560\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_MATH\_FUNCTIONS\_SSE\_H}}
+
+\end{DoxyCode}

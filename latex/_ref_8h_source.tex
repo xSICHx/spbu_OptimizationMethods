@@ -1,0 +1,217 @@
+\doxysection{Ref.\+h}
+\hypertarget{_ref_8h_source}{}\label{_ref_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Ref.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Ref.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2012\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_REF\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_REF\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_PlainObjectType,\ \textcolor{keywordtype}{int}\ \_Options,\ \textcolor{keyword}{typename}\ \_Str\textcolor{keywordtype}{id}eType>}
+\DoxyCodeLine{00018\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_ref}{Ref}}<\_PlainObjectType,\ \_Options,\ \_StrideType>\ >}
+\DoxyCodeLine{00019\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Map<\_PlainObjectType,\ \_Options,\ \_StrideType>\ >}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{typedef}\ \_PlainObjectType\ PlainObjectType;}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{typedef}\ \_StrideType\ StrideType;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ Options\ =\ \_Options,}
+\DoxyCodeLine{00025\ \ \ \ \ Flags\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<Map<\_PlainObjectType,\ \_Options,\ \_StrideType>}}\ >::Flags\ |\ NestByRefBit,}
+\DoxyCodeLine{00026\ \ \ \ \ Alignment\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<Map<\_PlainObjectType,\ \_Options,\ \_StrideType>}}\ >::Alignment}
+\DoxyCodeLine{00027\ \ \ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits_3_01_ref_3_01___plain_object_type_00_01___options_00_01___stride_type_01_4_01_4_1_1match}{match}}\ \{}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ HasDirectAccess\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1has__direct__access}{internal::has\_direct\_access<Derived>::ret}},}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ StorageOrderMatch\ =\ PlainObjectType::IsVectorAtCompileTime\ ||\ Derived::IsVectorAtCompileTime\ ||\ ((PlainObjectType::Flags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}})==(Derived::Flags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}})),}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ InnerStrideMatch\ =\ \textcolor{keywordtype}{int}(StrideType::InnerStrideAtCompileTime)==int(Dynamic)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ int(StrideType::InnerStrideAtCompileTime)==int(Derived::InnerStrideAtCompileTime)}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (int(StrideType::InnerStrideAtCompileTime)==0\ \&\&\ int(Derived::InnerStrideAtCompileTime)==1),}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ OuterStrideMatch\ =\ Derived::IsVectorAtCompileTime}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ \textcolor{keywordtype}{int}(StrideType::OuterStrideAtCompileTime)==int(Dynamic)\ ||\ int(StrideType::OuterStrideAtCompileTime)==int(Derived::OuterStrideAtCompileTime),}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \textcolor{comment}{//\ NOTE,\ this\ indirection\ of\ evaluator<Derived>::Alignment\ is\ needed}}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ \textcolor{comment}{//\ to\ workaround\ a\ very\ strange\ bug\ in\ MSVC\ related\ to\ the\ instantiation}}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \textcolor{comment}{//\ of\ has\_*ary\_operator\ in\ evaluator<CwiseNullaryOp>.}}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{comment}{//\ This\ line\ is\ surprisingly\ very\ sensitive.\ For\ instance,\ simply\ adding\ parenthesis}}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{comment}{//\ as\ "{}DerivedAlignment\ =\ (int(evaluator<Derived>::Alignment)),"{}\ will\ make\ MSVC\ fail...}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ DerivedAlignment\ =\ int(\mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{evaluator<Derived>::Alignment}}),}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ AlignmentMatch\ =\ (int(\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<PlainObjectType>::Alignment}})==int(\mbox{\hyperlink{group__enums_gga45fe06e29902b7a2773de05ba27b47a1a4e19dd09d5ff42295ba1d72d12a46686}{Unaligned}}))\ ||\ (DerivedAlignment\ >=\ \textcolor{keywordtype}{int}(Alignment)),\ \textcolor{comment}{//\ FIXME\ the\ first\ condition\ is\ not\ very\ clear,\ it\ should\ be\ replaced\ by\ the\ required\ alignment}}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ ScalarTypeMatch\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal::is\_same<typename\ PlainObjectType::Scalar,\ typename\ Derived::Scalar>::value}},}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ MatchAtCompileTime\ =\ HasDirectAccess\ \&\&\ StorageOrderMatch\ \&\&\ InnerStrideMatch\ \&\&\ OuterStrideMatch\ \&\&\ AlignmentMatch\ \&\&\ ScalarTypeMatch}
+\DoxyCodeLine{00047\ \ \ \ \ \};}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::conditional<MatchAtCompileTime,internal::true\_type,internal::false\_type>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{type}};}
+\DoxyCodeLine{00049\ \ \ \};}
+\DoxyCodeLine{00050\ \ \ }
+\DoxyCodeLine{00051\ \};}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00054\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_ref_base}{RefBase}}<Derived>\ >\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Derived>\ \{\};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_ref_base}{RefBase}}}
+\DoxyCodeLine{00059\ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}<Derived>}
+\DoxyCodeLine{00060\ \{}
+\DoxyCodeLine{00061\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::PlainObjectType}}\ PlainObjectType;}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::StrideType}}\ StrideType;}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase<Derived>}}\ Base;}
+\DoxyCodeLine{00067\ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_ref_base}{RefBase}})}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ innerStride()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00070\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordflow}{return}\ StrideType::InnerStrideAtCompileTime\ !=\ 0\ ?\ m\_stride.\mbox{\hyperlink{class_eigen_1_1_stride_a1605dcdacaff39f263bebe07bb52b23b}{inner}}()\ :\ 1;}
+\DoxyCodeLine{00072\ \ \ \}}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ outerStride()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00075\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordflow}{return}\ StrideType::OuterStrideAtCompileTime\ !=\ 0\ ?\ m\_stride.\mbox{\hyperlink{class_eigen_1_1_stride_a4bcfdae46217e9f18c7bedfa6899e74e}{outer}}()}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ :\ IsVectorAtCompileTime\ ?\ this-\/>size()}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ :\ int(Flags)\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}\ ?\ this-\/>cols()}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ :\ this-\/>rows();}
+\DoxyCodeLine{00080\ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ EIGEN\_DEVICE\_FUNC\ RefBase()}
+\DoxyCodeLine{00083\ \ \ \ \ :\ Base(0,RowsAtCompileTime==Dynamic?0:RowsAtCompileTime,ColsAtCompileTime==Dynamic?0:ColsAtCompileTime),}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \textcolor{comment}{//\ Stride<>\ does\ not\ allow\ default\ ctor\ for\ Dynamic\ strides,\ so\ let'\ initialize\ it\ with\ dummy\ values:}}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ m\_stride(StrideType::OuterStrideAtCompileTime==Dynamic?0:StrideType::OuterStrideAtCompileTime,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ StrideType::InnerStrideAtCompileTime==Dynamic?0:StrideType::InnerStrideAtCompileTime)}
+\DoxyCodeLine{00087\ \ \ \{\}}
+\DoxyCodeLine{00088\ \ \ }
+\DoxyCodeLine{00089\ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(RefBase)}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \textcolor{keyword}{typedef}\ Stride<StrideType::OuterStrideAtCompileTime,StrideType::InnerStrideAtCompileTime>\ StrideBase;}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Expression>}
+\DoxyCodeLine{00096\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keywordtype}{void}\ construct(Expression\&\ expr)}
+\DoxyCodeLine{00097\ \ \ \{}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordflow}{if}(PlainObjectType::RowsAtCompileTime==1)}
+\DoxyCodeLine{00099\ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ eigen\_assert(expr.rows()==1\ ||\ expr.cols()==1);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ ::new\ (\textcolor{keyword}{static\_cast<}Base*\textcolor{keyword}{>}(\textcolor{keyword}{this}))\ Base(expr.data(),\ 1,\ expr.size());}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ else\ if(PlainObjectType::ColsAtCompileTime==1)}
+\DoxyCodeLine{00104\ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ eigen\_assert(expr.rows()==1\ ||\ expr.cols()==1);}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ ::new\ (\textcolor{keyword}{static\_cast<}Base*\textcolor{keyword}{>}(\textcolor{keyword}{this}))\ Base(expr.data(),\ expr.size(),\ 1);}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ else}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ ::new\ (static\_cast<Base*>(this))\ Base(expr.data(),\ expr.rows(),\ expr.cols());}
+\DoxyCodeLine{00110\ \ \ \ \ }
+\DoxyCodeLine{00111\ \ \ \ \ if(Expression::IsVectorAtCompileTime\ \&\&\ (!PlainObjectType::IsVectorAtCompileTime)\ \&\&\ ((Expression::Flags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}})!=(PlainObjectType::Flags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}})))}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ ::new\ (\&m\_stride)\ StrideBase(expr.innerStride(),\ StrideType::InnerStrideAtCompileTime==0?0:1);}
+\DoxyCodeLine{00113\ \ \ \ \ else}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ ::new\ (\&m\_stride)\ StrideBase(StrideType::OuterStrideAtCompileTime==0?0:expr.outerStride(),}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ StrideType::InnerStrideAtCompileTime==0?0:expr.innerStride());\ \ \ \ }
+\DoxyCodeLine{00116\ \ \ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ StrideBase\ m\_stride;}
+\DoxyCodeLine{00119\ \};}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00190\ template<typename\ PlainObjectType,\ \textcolor{keywordtype}{int}\ Options,\ typename\ StrideType>\ class\ Ref}
+\DoxyCodeLine{00191\ \ \ :\ public\ RefBase<Ref<PlainObjectType,\ Options,\ StrideType>\ >}
+\DoxyCodeLine{00192\ \{}
+\DoxyCodeLine{00193\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keyword}{typedef}\ internal::traits<Ref>\ Traits;}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00196\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Ref(\textcolor{keyword}{const}\ PlainObjectBase<Derived>\&\ expr,}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ internal::enable\_if<\textcolor{keywordtype}{bool}(Traits::template\ match<Derived>::MatchAtCompileTime),Derived>::type*\ =\ 0);}
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keyword}{typedef}\ RefBase<Ref>\ Base;}
+\DoxyCodeLine{00201\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(Ref)}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00206\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Ref(PlainObjectBase<Derived>\&\ expr,}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ internal::enable\_if<\textcolor{keywordtype}{bool}(Traits::template\ match<Derived>::MatchAtCompileTime),Derived>::type*\ =\ 0)}
+\DoxyCodeLine{00208\ \ \ \ \ \{}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT(\textcolor{keywordtype}{bool}(Traits::template\ match<Derived>::MatchAtCompileTime),\ STORAGE\_LAYOUT\_DOES\_NOT\_MATCH);}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ Base::construct(expr.derived());}
+\DoxyCodeLine{00211\ \ \ \ \ \}}
+\DoxyCodeLine{00212\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00213\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Ref(\textcolor{keyword}{const}\ DenseBase<Derived>\&\ expr,}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ internal::enable\_if<\textcolor{keywordtype}{bool}(Traits::template\ match<Derived>::MatchAtCompileTime),Derived>::type*\ =\ 0)}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00217\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{inline}\ Ref(DenseBase<Derived>\&\ expr)}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00220\ \ \ \ \ \{}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT(\textcolor{keywordtype}{bool}(internal::is\_lvalue<Derived>::value),\ THIS\_EXPRESSION\_IS\_NOT\_A\_LVALUE\_\_IT\_IS\_READ\_ONLY);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT(\textcolor{keywordtype}{bool}(Traits::template\ match<Derived>::MatchAtCompileTime),\ STORAGE\_LAYOUT\_DOES\_NOT\_MATCH);}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT(!Derived::IsPlainObjectBase,THIS\_EXPRESSION\_IS\_NOT\_A\_LVALUE\_\_IT\_IS\_READ\_ONLY);}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ Base::construct(expr.const\_cast\_derived());}
+\DoxyCodeLine{00225\ \ \ \ \ \}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \ \ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(Ref)}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ \};}
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00231\ \textcolor{comment}{//\ this\ is\ the\ const\ ref\ version}}
+\DoxyCodeLine{00232\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ TPlainObjectType,\ \textcolor{keywordtype}{int}\ Options,\ \textcolor{keyword}{typename}\ Str\textcolor{keywordtype}{id}eType>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_ref}{Ref}}<const\ TPlainObjectType,\ Options,\ StrideType>}
+\DoxyCodeLine{00233\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_ref_base}{RefBase}}<Ref<const\ TPlainObjectType,\ Options,\ StrideType>\ >}
+\DoxyCodeLine{00234\ \{}
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Ref>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{Traits}};}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_ref_base}{RefBase<Ref>}}\ \mbox{\hyperlink{class_eigen_1_1_ref_base}{Base}};}
+\DoxyCodeLine{00239\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_ref}{Ref}})}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00242\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_ref}{Ref}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>}}\&\ expr,}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if}{internal::enable\_if}}<\textcolor{keywordtype}{bool}(Traits::template\ match<Derived>::ScalarTypeMatch),Derived>::type*\ =\ 0)}
+\DoxyCodeLine{00244\ \ \ \ \ \{}
+\DoxyCodeLine{00245\ \textcolor{comment}{//\ \ \ \ \ \ std::cout\ <<\ match\_helper<Derived>::HasDirectAccess\ <<\ "{},"{}\ <<\ match\_helper<Derived>::OuterStrideMatch\ <<\ "{},"{}\ <<\ match\_helper<Derived>::InnerStrideMatch\ <<\ "{}\(\backslash\)n"{};}}
+\DoxyCodeLine{00246\ \textcolor{comment}{//\ \ \ \ \ \ std::cout\ <<\ int(StrideType::OuterStrideAtCompileTime)\ <<\ "{}\ -\/\ "{}\ <<\ int(Derived::OuterStrideAtCompileTime)\ <<\ "{}\(\backslash\)n"{};}}
+\DoxyCodeLine{00247\ \textcolor{comment}{//\ \ \ \ \ \ std::cout\ <<\ int(StrideType::InnerStrideAtCompileTime)\ <<\ "{}\ -\/\ "{}\ <<\ int(Derived::InnerStrideAtCompileTime)\ <<\ "{}\(\backslash\)n"{};}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ construct(expr.derived(),\ \textcolor{keyword}{typename}\ Traits::template\ match<Derived>::type());}
+\DoxyCodeLine{00249\ \ \ \ \ \}}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_ref}{Ref}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_ref}{Ref}}\&\ other)\ :\ \mbox{\hyperlink{class_eigen_1_1_ref_base}{Base}}(other)\ \{}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \textcolor{comment}{//\ copy\ constructor\ shall\ not\ copy\ the\ m\_object,\ to\ avoid\ unnecessary\ malloc\ and\ copy}}
+\DoxyCodeLine{00253\ \ \ \ \ \}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherRef>}
+\DoxyCodeLine{00256\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_ref}{Ref}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_ref_base}{RefBase<OtherRef>}}\&\ other)\ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ construct(other.derived(),\ \textcolor{keyword}{typename}\ Traits::template\ match<OtherRef>::type());}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Expression>}
+\DoxyCodeLine{00263\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keywordtype}{void}\ construct(\textcolor{keyword}{const}\ Expression\&\ expr,\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::true\_type}})}
+\DoxyCodeLine{00264\ \ \ \ \ \{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ Base::construct(expr);}
+\DoxyCodeLine{00266\ \ \ \ \ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Expression>}
+\DoxyCodeLine{00269\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keywordtype}{void}\ construct(\textcolor{keyword}{const}\ Expression\&\ expr,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1false__type}{internal::false\_type}})}
+\DoxyCodeLine{00270\ \ \ \ \ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ internal::call\_assignment\_no\_alias(m\_object,expr,\mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<Scalar,Scalar>}}());}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ Base::construct(m\_object);}
+\DoxyCodeLine{00273\ \ \ \ \ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00276\ \ \ \ \ TPlainObjectType\ m\_object;}
+\DoxyCodeLine{00277\ \};}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_REF\_H}}
+
+\end{DoxyCode}

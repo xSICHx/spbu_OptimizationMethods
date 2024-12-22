@@ -1,0 +1,333 @@
+\doxysection{Transpositions.\+h}
+\hypertarget{_transpositions_8h_source}{}\label{_transpositions_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Transpositions.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Transpositions.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2010-\/2011\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_TRANSPOSITIONS\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_TRANSPOSITIONS\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }TranspositionsBase}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{typedef}\ internal::traits<Derived>\ Traits;}
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ IndicesType::Scalar\ StorageIndex;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{typedef}\ Eigen::Index\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}};\ }
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ Derived\&\ derived()\ \{\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{static\_cast<}Derived*\textcolor{keyword}{>}(\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{const}\ Derived\&\ derived()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }Derived*\textcolor{keyword}{>}(\textcolor{keyword}{this});\ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00031\ \ \ \ \ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_ac9b75de540c6a4c46b6b9a5559e278c7}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00032\ \ \ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}()\ =\ other.indices();}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ }
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00041\ \ \ \ \ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a882c55856cafcfbe622826f45b6a4adc}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase}}\&\ other)}
+\DoxyCodeLine{00042\ \ \ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}()\ =\ other.indices();}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00047\ }
+\DoxyCodeLine{00049\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a6888d6261a9cc24ee8607496e610a5a3}{size}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}().size();\ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a8c073f17542a8fc9ac581c17f6cdc8d3}{rows}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}().size();\ \}}
+\DoxyCodeLine{00053\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_acb6f58081640839bd4102b75bdeec562}{cols}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}().size();\ \}}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ StorageIndex\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_ac025c1c77dfa5019d1f5aa71ad21cebd}{coeff}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}().coeff(i);\ \}}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{inline}\ StorageIndex\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_acb7c616bb31c0bc0151c0f9765be5b10}{coeffRef}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ i)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}().coeffRef(i);\ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ StorageIndex\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a7a083ce2784b0d5efe29d53819469341}{operator()}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}()(i);\ \}}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{inline}\ StorageIndex\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_ace6a53a2fd860a7632598718eaff024f}{operator()}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ i)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}()(i);\ \}}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ StorageIndex\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a44d2bc30e321af85bd0fdeac11d20931}{operator[]}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ i)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}()(i);\ \}}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{inline}\ StorageIndex\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a92dd15adda254828bea841fa72388e3f}{operator[]}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ i)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}()(i);\ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ derived().indices();\ \}}
+\DoxyCodeLine{00071\ \ \ \ \ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a26d5f6594e4b45002573617cc5322670}{indices}}()\ \{\ \textcolor{keywordflow}{return}\ derived().indices();\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3dfa713d74fc1f9a7e589b3d428f7849}{resize}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ newSize)}
+\DoxyCodeLine{00075\ \ \ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}().resize(newSize);}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a8da379438691ea694948ea5ae31d305f}{setIdentity}}()}
+\DoxyCodeLine{00081\ \ \ \ \ \{}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(StorageIndex\ i\ =\ 0;\ i\ <\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a05ca57bbfe62f09c7b130245e06eb428}{indices}}().size();\ ++i)}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_acb7c616bb31c0bc0151c0f9765be5b10}{coeffRef}}(i)\ =\ i;}
+\DoxyCodeLine{00084\ \ \ \ \ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{comment}{//\ FIXME:\ do\ we\ want\ such\ methods\ ?}}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{comment}{//\ might\ be\ usefull\ when\ the\ target\ matrix\ expression\ is\ complex,\ e.g.:}}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{comment}{//\ object.matrix().block(..,..,..,..)\ =\ trans\ *\ object.matrix().block(..,..,..,..);}}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{comment}{/*}}
+\DoxyCodeLine{00090\ \textcolor{comment}{\ \ \ \ template<typename\ MatrixType>}}
+\DoxyCodeLine{00091\ \textcolor{comment}{\ \ \ \ void\ applyForwardToRows(MatrixType\&\ mat)\ const}}
+\DoxyCodeLine{00092\ \textcolor{comment}{\ \ \ \ \{}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ \ \ for(Index\ k=0\ ;\ k<size()\ ;\ ++k)}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ \ \ \ \ \ \ \ if(m\_indices(k)!=k)}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ mat.row(k).swap(mat.row(m\_indices(k)));}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ \ \ \ \}}}
+\DoxyCodeLine{00097\ \textcolor{comment}{}}
+\DoxyCodeLine{00098\ \textcolor{comment}{\ \ \ \ template<typename\ MatrixType>}}
+\DoxyCodeLine{00099\ \textcolor{comment}{\ \ \ \ void\ applyBackwardToRows(MatrixType\&\ mat)\ const}}
+\DoxyCodeLine{00100\ \textcolor{comment}{\ \ \ \ \{}}
+\DoxyCodeLine{00101\ \textcolor{comment}{\ \ \ \ \ \ for(Index\ k=size()-\/1\ ;\ k>=0\ ;\ -\/-\/k)}}
+\DoxyCodeLine{00102\ \textcolor{comment}{\ \ \ \ \ \ \ \ if(m\_indices(k)!=k)}}
+\DoxyCodeLine{00103\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ \ mat.row(k).swap(mat.row(m\_indices(k)));}}
+\DoxyCodeLine{00104\ \textcolor{comment}{\ \ \ \ \}}}
+\DoxyCodeLine{00105\ \textcolor{comment}{\ \ \ \ */}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<TranspositionsBase>}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_af71a5d9bdfa15c5be9deb9f2767d571b}{inverse}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00109\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<TranspositionsBase>}}(derived());\ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<TranspositionsBase>}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a265819e8e2dbd6bca600707e88b80dba}{transpose}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00113\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<TranspositionsBase>}}(derived());\ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00116\ \};}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00119\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex>}
+\DoxyCodeLine{00120\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}<SizeAtCompileTime,MaxSizeAtCompileTime,\_StorageIndex>\ >}
+\DoxyCodeLine{00121\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<PermutationMatrix<SizeAtCompileTime,MaxSizeAtCompileTime,\_StorageIndex>\ >}
+\DoxyCodeLine{00122\ \{}
+\DoxyCodeLine{00123\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<\_StorageIndex,\ SizeAtCompileTime,\ 1,\ 0,\ MaxSizeAtCompileTime,\ 1>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndicesType}};}
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_transpositions_storage}{TranspositionsStorage}}\ \mbox{\hyperlink{struct_eigen_1_1_transpositions_storage}{StorageKind}};}
+\DoxyCodeLine{00125\ \};}
+\DoxyCodeLine{00126\ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00157\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex>}
+\DoxyCodeLine{00158\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase}}<Transpositions<SizeAtCompileTime,MaxSizeAtCompileTime,\_StorageIndex>\ >}
+\DoxyCodeLine{00159\ \{}
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Transpositions>}}\ Traits;}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<Transpositions>}}\ Base;}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00165\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ IndicesType::Scalar\ StorageIndex;}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}()\ \{\}}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00171\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_a4662f8c411fe1e5258c356ac2564c418}{Transpositions}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ :\ m\_indices(other.\mbox{\hyperlink{class_eigen_1_1_transpositions_a20292c52df3f982d05ca569d90ed6339}{indices}}())\ \{\}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_a431b57b9143c969d67d7f0e8571e11bb}{Transpositions}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}\&\ other)\ :\ m\_indices(other.\mbox{\hyperlink{class_eigen_1_1_transpositions_a20292c52df3f982d05ca569d90ed6339}{indices}}())\ \{\}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00181\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00182\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_ab147f954941cc8795c42560d732cba43}{Transpositions}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Other>}}\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_a20292c52df3f982d05ca569d90ed6339}{indices}})\ :\ m\_indices(\mbox{\hyperlink{class_eigen_1_1_transpositions_a20292c52df3f982d05ca569d90ed6339}{indices}})}
+\DoxyCodeLine{00183\ \ \ \ \ \{\}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00186\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00187\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_a041ecd00a3577ec98151eb4078c34347}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00188\ \ \ \ \ \{}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_ac9b75de540c6a4c46b6b9a5559e278c7}{Base::operator=}}(other);}
+\DoxyCodeLine{00190\ \ \ \ \ \}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00196\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_aae859ff2f426994d0d822282fdcc1b35}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}\&\ other)}
+\DoxyCodeLine{00197\ \ \ \ \ \{}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ m\_indices\ =\ other.m\_indices;}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00200\ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_af03b1501cb35a6a2a06730b68a1538b4}{Transpositions}}(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a6888d6261a9cc24ee8607496e610a5a3}{size}})\ :\ m\_indices(\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a6888d6261a9cc24ee8607496e610a5a3}{size}})}
+\DoxyCodeLine{00206\ \ \ \ \ \{\}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_a20292c52df3f982d05ca569d90ed6339}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00211\ \ \ \ \ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_a93b8e2a879e81f0387b822df7b1a8787}{indices}}()\ \{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \ \ \ \ IndicesType\ m\_indices;}
+\DoxyCodeLine{00216\ \};}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ }
+\DoxyCodeLine{00219\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00220\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex,\ \textcolor{keywordtype}{int}\ \_PacketAccess>}
+\DoxyCodeLine{00221\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}<SizeAtCompileTime,MaxSizeAtCompileTime,\_StorageIndex>,\_PacketAccess>\ >}
+\DoxyCodeLine{00222\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<PermutationMatrix<SizeAtCompileTime,MaxSizeAtCompileTime,\_StorageIndex>\ >}
+\DoxyCodeLine{00223\ \{}
+\DoxyCodeLine{00224\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<const\ Matrix<\_StorageIndex,SizeAtCompileTime,1,0,MaxSizeAtCompileTime,1>}},\ \_PacketAccess>\ \mbox{\hyperlink{class_eigen_1_1_map}{IndicesType}};}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{typedef}\ \_StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_transpositions_storage}{TranspositionsStorage}}\ \mbox{\hyperlink{struct_eigen_1_1_transpositions_storage}{StorageKind}};}
+\DoxyCodeLine{00227\ \};}
+\DoxyCodeLine{00228\ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex,\ \textcolor{keywordtype}{int}\ PacketAccess>}
+\DoxyCodeLine{00231\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions}}<SizeAtCompileTime,MaxSizeAtCompileTime,\_StorageIndex>,PacketAccess>}
+\DoxyCodeLine{00232\ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase}}<Map<Transpositions<SizeAtCompileTime,MaxSizeAtCompileTime,\_StorageIndex>,PacketAccess>\ >}
+\DoxyCodeLine{00233\ \{}
+\DoxyCodeLine{00234\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Map>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{Traits}};}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<Map>}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{Base}};}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00239\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ IndicesType::Scalar\ StorageIndex;}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_map_ad73cee91c293989adb4f63c9e58c4144}{Map}}(\textcolor{keyword}{const}\ StorageIndex*\ indicesPtr)}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ :\ m\_indices(indicesPtr)}
+\DoxyCodeLine{00243\ \ \ \ \ \{\}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_map_ad73cee91c293989adb4f63c9e58c4144}{Map}}(\textcolor{keyword}{const}\ StorageIndex*\ indicesPtr,\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_a3f5f06118b419e8e6ccbe49ed5b4c91f}{Index}}\ size)}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ :\ m\_indices(indicesPtr,size)}
+\DoxyCodeLine{00247\ \ \ \ \ \{\}}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00251\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_transpositions_3_01_size_at_compile_time_00_01_max_size_at_compile_timecc993082d7c0ba51ca94b27e97da8dd3_aca5d74ea7ff4f4b99cc3867d76de03dc}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00252\ \ \ \ \ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Base::operator=(other);}
+\DoxyCodeLine{00254\ \ \ \ \ \}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00260\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_transpositions_3_01_size_at_compile_time_00_01_max_size_at_compile_timecc993082d7c0ba51ca94b27e97da8dd3_a3613bafeda37e7d402adc7a381a9dcc0}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}\&\ other)}
+\DoxyCodeLine{00261\ \ \ \ \ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ m\_indices\ =\ other.m\_indices;}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00264\ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00266\ }
+\DoxyCodeLine{00268\ \ \ \ \ \textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_transpositions_3_01_size_at_compile_time_00_01_max_size_at_compile_timecc993082d7c0ba51ca94b27e97da8dd3_aafb5cff24eaeb1af081b4f55d3b1f334}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00269\ \ \ \ \ }
+\DoxyCodeLine{00271\ \ \ \ \ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_transpositions_3_01_size_at_compile_time_00_01_max_size_at_compile_timecc993082d7c0ba51ca94b27e97da8dd3_a471347ebd131c938508cec235ba4c39e}{indices}}()\ \{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00273\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \ \ \ \ IndicesType\ m\_indices;}
+\DoxyCodeLine{00276\ \};}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00279\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_IndicesType>}
+\DoxyCodeLine{00280\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper}{TranspositionsWrapper}}<\_IndicesType>\ >}
+\DoxyCodeLine{00281\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<PermutationWrapper<\_IndicesType>\ >}
+\DoxyCodeLine{00282\ \{}
+\DoxyCodeLine{00283\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_transpositions_storage}{TranspositionsStorage}}\ \mbox{\hyperlink{struct_eigen_1_1_transpositions_storage}{StorageKind}};}
+\DoxyCodeLine{00284\ \};}
+\DoxyCodeLine{00285\ \}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00287\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_IndicesType>}
+\DoxyCodeLine{00288\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper}{TranspositionsWrapper}}}
+\DoxyCodeLine{00289\ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase}}<TranspositionsWrapper<\_IndicesType>\ >}
+\DoxyCodeLine{00290\ \{}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<TranspositionsWrapper>}}\ Traits;}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<TranspositionsWrapper>}}\ Base;}
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ IndicesType::Scalar\ StorageIndex;}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper}{TranspositionsWrapper}}(IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper_aed0aa8ee16e57a51bb170bc190507b22}{indices}})}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ :\ m\_indices(\mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper_aed0aa8ee16e57a51bb170bc190507b22}{indices}})}
+\DoxyCodeLine{00300\ \ \ \ \ \{\}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00304\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper}{TranspositionsWrapper}}\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper_a3ab4843a18ca78a333d7bf539cfaaebd}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00305\ \ \ \ \ \{}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base_ac9b75de540c6a4c46b6b9a5559e278c7}{Base::operator=}}(other);}
+\DoxyCodeLine{00307\ \ \ \ \ \}}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00309\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00313\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper}{TranspositionsWrapper}}\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper_a35aa3ea2ac71fb7ab4451769d3c231c1}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper}{TranspositionsWrapper}}\&\ other)}
+\DoxyCodeLine{00314\ \ \ \ \ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ m\_indices\ =\ other.m\_indices;}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00317\ \ \ \ \ \}}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper_aed0aa8ee16e57a51bb170bc190507b22}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00324\ \ \ \ \ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_transpositions_wrapper_aa42c6e5337126855e5b5391cbe228110}{indices}}()\ \{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{typename}\ IndicesType::Nested\ m\_indices;}
+\DoxyCodeLine{00329\ \};}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00335\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixDerived,\ \textcolor{keyword}{typename}\ TranspositionsDerived>}
+\DoxyCodeLine{00336\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00337\ \textcolor{keyword}{const}\ Product<MatrixDerived,\ TranspositionsDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00338\ operator*(\textcolor{keyword}{const}\ MatrixBase<MatrixDerived>\ \&matrix,}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ TranspositionsBase<TranspositionsDerived>\&\ transpositions)}
+\DoxyCodeLine{00340\ \{}
+\DoxyCodeLine{00341\ \ \ \textcolor{keywordflow}{return}\ Product<MatrixDerived,\ TranspositionsDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ \ \ (matrix.derived(),\ transpositions.derived());}
+\DoxyCodeLine{00343\ \}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00347\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ TranspositionsDerived,\ \textcolor{keyword}{typename}\ MatrixDerived>}
+\DoxyCodeLine{00348\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00349\ \textcolor{keyword}{const}\ Product<TranspositionsDerived,\ MatrixDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00350\ operator*(\textcolor{keyword}{const}\ TranspositionsBase<TranspositionsDerived>\ \&transpositions,}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ MatrixBase<MatrixDerived>\&\ matrix)}
+\DoxyCodeLine{00352\ \{}
+\DoxyCodeLine{00353\ \ \ \textcolor{keywordflow}{return}\ Product<TranspositionsDerived,\ MatrixDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ \ \ \ \ (transpositions.derived(),\ matrix.derived());}
+\DoxyCodeLine{00355\ \}}
+\DoxyCodeLine{00356\ }
+\DoxyCodeLine{00357\ \textcolor{comment}{//\ Template\ partial\ specialization\ for\ transposed/inverse\ transpositions}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00361\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00362\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}<\mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase}}<Derived>\ >\ >}
+\DoxyCodeLine{00363\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Derived>}
+\DoxyCodeLine{00364\ \{\};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00368\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ TranspositionsDerived>}
+\DoxyCodeLine{00369\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}<\mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase}}<TranspositionsDerived>\ >}
+\DoxyCodeLine{00370\ \{}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keyword}{typedef}\ TranspositionsDerived\ TranspositionType;}
+\DoxyCodeLine{00372\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ TranspositionType::IndicesType\ IndicesType;}
+\DoxyCodeLine{00373\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00374\ }
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}(\textcolor{keyword}{const}\ TranspositionType\&\ t)\ :\ m\_transpositions(t)\ \{\}}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ \ \ \ \ Index\ size()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_transpositions.size();\ \}}
+\DoxyCodeLine{00378\ \ \ \ \ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_transpositions.size();\ \}}
+\DoxyCodeLine{00379\ \ \ \ \ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_transpositions.size();\ \}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00383\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>\ \textcolor{keyword}{friend}}
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<OtherDerived,\ Transpose,\ AliasFreeProduct>}}}
+\DoxyCodeLine{00385\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpose_3_01_transpositions_base_3_01_transpositions_derived_01_4_01_4_a724d30ab31bfdd8fff177cbe314b654c}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<OtherDerived>}}\&\ matrix,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}\&\ trt)}
+\DoxyCodeLine{00386\ \ \ \ \ \{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<OtherDerived,\ Transpose,\ AliasFreeProduct>}}(matrix.derived(),\ trt.derived());}
+\DoxyCodeLine{00388\ \ \ \ \ \}}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00392\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00393\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Transpose,\ OtherDerived,\ AliasFreeProduct>}}}
+\DoxyCodeLine{00394\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpose_3_01_transpositions_base_3_01_transpositions_derived_01_4_01_4_ab2243276a747fcc51320ac91522b8a0c}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<OtherDerived>}}\&\ matrix)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00395\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Transpose,\ OtherDerived,\ AliasFreeProduct>}}(*\textcolor{keyword}{this},\ matrix.derived());}
+\DoxyCodeLine{00397\ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ }
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{const}\ TranspositionType\&\ \mbox{\hyperlink{class_eigen_1_1_transpose_ad118e5b77830d319813eec9b2c21e90f}{nestedExpression}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_transpositions;\ \}}
+\DoxyCodeLine{00400\ }
+\DoxyCodeLine{00401\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keyword}{const}\ TranspositionType\&\ m\_transpositions;}
+\DoxyCodeLine{00403\ \};}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00406\ }
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_TRANSPOSITIONS\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,27 @@
+\doxysection{Function\+Harmonic.\+h}
+\hypertarget{_function_harmonic_8h_source}{}\label{_function_harmonic_8h_source}\index{OptimizationMethods/FunctionHarmonic.h@{OptimizationMethods/FunctionHarmonic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Function.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_function_harmonic}{FunctionHarmonic}}\ :}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_function}{Function}}}
+\DoxyCodeLine{00010\ \{}
+\DoxyCodeLine{00011\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00012\ \ \ \ \ \mbox{\hyperlink{class_function_harmonic}{\string~FunctionHarmonic}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ getDim()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ 3;\ \}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{string}\ getName()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}sin(x)*cos(2y)*sin(3z+pi/6)"{}};\ \}}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \ \ \ \ point\_type\ operator()(\textcolor{keyword}{const}\ VectorXd\&\ point)\textcolor{keyword}{\ const\ override\ }\{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ x\ =\ point[0],\ y\ =\ point[1],\ z\ =\ point[2];}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ pi\ =\ atan(1)\ *\ 4;}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ sin(x)*cos(2*y)*sin(3*z+pi/6);}
+\DoxyCodeLine{00021\ \ \ \ \ \}}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \};}
+\DoxyCodeLine{00024\ }
+
+\end{DoxyCode}

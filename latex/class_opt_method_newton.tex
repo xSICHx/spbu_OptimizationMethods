@@ -1,0 +1,115 @@
+\doxysection{Opt\+Method\+Newton Class Reference}
+\hypertarget{class_opt_method_newton}{}\label{class_opt_method_newton}\index{OptMethodNewton@{OptMethodNewton}}
+
+
+Newton method of optimization.  
+
+
+
+
+{\ttfamily \#include $<$Opt\+Method\+Newton.\+h$>$}
+
+Inheritance diagram for Opt\+Method\+Newton\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_opt_method_newton}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_opt_method_newton_aa7959959567cd6467423248b89538918}{Opt\+Method\+Newton}} (double \+\_\+alpha=1e-\/2)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxylink{class_opt_method_newton}{Opt\+Method\+Newton} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opt_method_newton_a8dcab419fc89ffe60a9b6e2d9605b1ea}{optimize}} (const \mbox{\hyperlink{class_area}{Area}} \&area, const \mbox{\hyperlink{class_function}{Function}} \&func, const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&crit) const override
+\begin{DoxyCompactList}\small\item\em Optimizes the given function within the specified area using the Newton method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opt_method_newton_a4eae1cc216308f0342692a1f79f085df}{optimize}} (const \mbox{\hyperlink{class_area}{Area}} \&area, const \mbox{\hyperlink{class_function}{Function}} \&func, const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&crit, const Vector\+Xd \&init\+Point) const override
+\begin{DoxyCompactList}\small\item\em Optimizes the given function within the specified area using the Newton method, starting from an initial point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Newton method of optimization. 
+
+A class that implements the Newton optimization method.
+
+This class inherits from the \doxylink{class_opt_method}{Opt\+Method} base class and provides implementations for optimizing a given function within a specified area using the Newton method. It includes methods for performing optimization with and without an initial point, as well as private helper methods for performing optimization steps and setting up transfer data.
+
+
+\begin{DoxyParams}{Parameters}
+{\em alpha} & The step size parameter for the Newton method. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_opt_method_newton_aa7959959567cd6467423248b89538918}\index{OptMethodNewton@{OptMethodNewton}!OptMethodNewton@{OptMethodNewton}}
+\index{OptMethodNewton@{OptMethodNewton}!OptMethodNewton@{OptMethodNewton}}
+\doxysubsubsection{\texorpdfstring{OptMethodNewton()}{OptMethodNewton()}}
+{\footnotesize\ttfamily \label{class_opt_method_newton_aa7959959567cd6467423248b89538918} 
+Opt\+Method\+Newton\+::\+Opt\+Method\+Newton (\begin{DoxyParamCaption}\item[{double}]{\+\_\+alpha}{ = {\ttfamily 1e-\/2}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor for the \doxylink{class_opt_method_newton}{Opt\+Method\+Newton} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+alpha} & The initial step size parameter for the Newton method. Default is 1e-\/2. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_opt_method_newton_a8dcab419fc89ffe60a9b6e2d9605b1ea}\index{OptMethodNewton@{OptMethodNewton}!optimize@{optimize}}
+\index{optimize@{optimize}!OptMethodNewton@{OptMethodNewton}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_opt_method_newton_a8dcab419fc89ffe60a9b6e2d9605b1ea} 
+void Opt\+Method\+Newton\+::optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_area}{Area}} \&}]{area}{, }\item[{const \mbox{\hyperlink{class_function}{Function}} \&}]{func}{, }\item[{const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&}]{crit}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Optimizes the given function within the specified area using the Newton method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em area} & The area within which to optimize the function. \\
+\hline
+{\em func} & The function to be optimized. \\
+\hline
+{\em crit} & The stopping criterion for the optimization process. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_opt_method}{Opt\+Method}}.
+
+\Hypertarget{class_opt_method_newton_a4eae1cc216308f0342692a1f79f085df}\index{OptMethodNewton@{OptMethodNewton}!optimize@{optimize}}
+\index{optimize@{optimize}!OptMethodNewton@{OptMethodNewton}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_opt_method_newton_a4eae1cc216308f0342692a1f79f085df} 
+void Opt\+Method\+Newton\+::optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_area}{Area}} \&}]{area}{, }\item[{const \mbox{\hyperlink{class_function}{Function}} \&}]{func}{, }\item[{const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&}]{crit}{, }\item[{const Vector\+Xd \&}]{init\+Point}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Optimizes the given function within the specified area using the Newton method, starting from an initial point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em area} & The area within which to optimize the function. \\
+\hline
+{\em func} & The function to be optimized. \\
+\hline
+{\em crit} & The stopping criterion for the optimization process. \\
+\hline
+{\em init\+Point} & The initial point from which to start the optimization. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_opt_method}{Opt\+Method}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Opt\+Method\+Newton.\+h\item 
+Optimization\+Methods/Opt\+Method\+Newton.\+cpp\end{DoxyCompactItemize}

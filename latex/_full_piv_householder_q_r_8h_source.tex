@@ -1,0 +1,488 @@
+\doxysection{Full\+Piv\+Householder\+QR.\+h}
+\hypertarget{_full_piv_householder_q_r_8h_source}{}\label{_full_piv_householder_q_r_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/QR/FullPivHouseholderQR.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/QR/FullPivHouseholderQR.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_FULLPIVOTINGHOUSEHOLDERQR\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_FULLPIVOTINGHOUSEHOLDERQR\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR}}<\_MatrixType>\ >}
+\DoxyCodeLine{00019\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\_MatrixType>}
+\DoxyCodeLine{00020\ \{}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{enum}\ \{\ Flags\ =\ 0\ \};}
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{FullPivHouseholderQRMatrixQReturnType}};}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00027\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{FullPivHouseholderQRMatrixQReturnType}}<MatrixType>\ >}
+\DoxyCodeLine{00028\ \{}
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::PlainObject\ ReturnType;}
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR}}}
+\DoxyCodeLine{00058\ \{}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{typedef}\ \_MatrixType\ MatrixType;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ RowsAtCompileTime\ =\ MatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ ColsAtCompileTime\ =\ MatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ MaxRowsAtCompileTime\ =\ MatrixType::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ MatrixType::MaxColsAtCompileTime}
+\DoxyCodeLine{00067\ \ \ \ \ \};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ Scalar;}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ RealScalar;}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{comment}{//\ FIXME\ should\ be\ int}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{internal::FullPivHouseholderQRMatrixQReturnType<MatrixType>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{MatrixQReturnType}};}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::plain\_diag\_type<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{HCoeffsType}};}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}<StorageIndex,\ 1,}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_SIZE\_MIN\_PREFER\_DYNAMIC(ColsAtCompileTime,RowsAtCompileTime),\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}},\ 1,}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_SIZE\_MIN\_PREFER\_FIXED(MaxColsAtCompileTime,MaxRowsAtCompileTime)>\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IntDiagSizeVectorType}};}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix<ColsAtCompileTime,\ MaxColsAtCompileTime>}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}};}
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::plain\_row\_type<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RowVectorType}};}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::plain\_col\_type<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ColVectorType}};}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::PlainObject\ PlainObject;}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00087\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aeb14b4c1eef33128207b40a00bd0bd08}{FullPivHouseholderQR}}()}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ :\ m\_qr(),}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ m\_hCoeffs(),}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ m\_rows\_transpositions(),}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ m\_cols\_transpositions(),}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ m\_cols\_permutation(),}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ m\_temp(),}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ m\_isInitialized(false),}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ m\_usePrescribedThreshold(false)\ \{\}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00103\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_abf722e1dc7241a5d6f76460ef0c87821}{FullPivHouseholderQR}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ :\ m\_qr(rows,\ cols),}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ m\_hCoeffs((std::min)(rows,cols)),}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ m\_rows\_transpositions((std::min)(rows,cols)),}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ m\_cols\_transpositions((std::min)(rows,cols)),}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ m\_cols\_permutation(cols),}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ m\_temp(cols),}
+\DoxyCodeLine{00110\ \ \ \ \ \ \ \ \ m\_isInitialized(false),}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ m\_usePrescribedThreshold(false)\ \{\}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aeeace3abca6b215025e94c3e098b0a97}{FullPivHouseholderQR}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ :\ m\_qr(matrix.rows(),\ matrix.cols()),}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ m\_hCoeffs((std::min)(matrix.rows(),\ matrix.cols())),}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ m\_rows\_transpositions((std::min)(matrix.rows(),\ matrix.cols())),}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ m\_cols\_transpositions((std::min)(matrix.rows(),\ matrix.cols())),}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ m\_cols\_permutation(matrix.cols()),}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ m\_temp(matrix.cols()),}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ m\_isInitialized(false),}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ m\_usePrescribedThreshold(false)}
+\DoxyCodeLine{00135\ \ \ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ compute(matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_ac9bdb4f7fa77c1aa16f238592c248e70}{FullPivHouseholderQR}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ :\ m\_qr(matrix.derived()),}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ m\_hCoeffs((std::min)(matrix.rows(),\ matrix.cols())),}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ m\_rows\_transpositions((std::min)(matrix.rows(),\ matrix.cols())),}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \ \ m\_cols\_transpositions((std::min)(matrix.rows(),\ matrix.cols())),}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ m\_cols\_permutation(matrix.cols()),}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ m\_temp(matrix.cols()),}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ m\_isInitialized(false),}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ m\_usePrescribedThreshold(false)}
+\DoxyCodeLine{00155\ \ \ \ \ \{}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ computeInPlace();}
+\DoxyCodeLine{00157\ \ \ \ \ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<FullPivHouseholderQR,\ Rhs>}}}
+\DoxyCodeLine{00176\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_acfb47b4bcb1dfda217c9de0436e48858}{solve}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Rhs>}}\&\ b)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00177\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<FullPivHouseholderQR,\ Rhs>}}(*\textcolor{keyword}{this},\ b.derived());}
+\DoxyCodeLine{00180\ \ \ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00184\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{MatrixQReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_ad26dd2d3c002939771d2375e4e051c28}{matrixQ}}(\textcolor{keywordtype}{void})\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00188\ \ \ \ \ \textcolor{keyword}{const}\ MatrixType\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a172a486062f34604e72c883ce2846d81}{matrixQR}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00189\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_qr;}
+\DoxyCodeLine{00192\ \ \ \ \ \}}
+\DoxyCodeLine{00193\ }
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00195\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR}}\&\ compute(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix);}
+\DoxyCodeLine{00196\ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}}\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a2a17d9b6d87481e30db6051a47cb952d}{colsPermutation}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00199\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_cols\_permutation;}
+\DoxyCodeLine{00202\ \ \ \ \ \}}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IntDiagSizeVectorType}}\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a654899ddbc7cca1e9298e1c2094b37c9}{rowsTranspositions}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00206\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_rows\_transpositions;}
+\DoxyCodeLine{00209\ \ \ \ \ \}}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a1029e1ccc70bb8669043c5775e7f3b75}{absDeterminant}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aafde38918912c9b562f44b0fc3b22589}{logAbsDeterminant}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aeae555220f46477818ccc94aca2de770}{rank}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00247\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ RealScalar\ premultiplied\_threshold\ =\ abs(m\_maxpivot)\ *\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_af7f6ac15ca19c2b9e45dc3eaae58c201}{threshold}}();}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ Index\ result\ =\ 0;}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ m\_nonzero\_pivots;\ ++i)}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ result\ +=\ (abs(m\_qr.coeff(i,i))\ >\ premultiplied\_threshold);}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ result;}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a3b5fe5edc66acc01c45b16e728470aa0}{dimensionOfKernel}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00264\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ cols()\ -\/\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aeae555220f46477818ccc94aca2de770}{rank}}();}
+\DoxyCodeLine{00267\ \ \ \ \ \}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a6776788011026b0f63192485a59deaed}{isInjective}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00277\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aeae555220f46477818ccc94aca2de770}{rank}}()\ ==\ cols();}
+\DoxyCodeLine{00280\ \ \ \ \ \}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00289\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aa3593db4708ce9079b0bdf219b99f57e}{isSurjective}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00290\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aeae555220f46477818ccc94aca2de770}{rank}}()\ ==\ rows();}
+\DoxyCodeLine{00293\ \ \ \ \ \}}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00301\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aeb1d779ec22ec68a5a28d4235db02ec1}{isInvertible}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00302\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00303\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a6776788011026b0f63192485a59deaed}{isInjective}}()\ \&\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aa3593db4708ce9079b0bdf219b99f57e}{isSurjective}}();}
+\DoxyCodeLine{00305\ \ \ \ \ \}}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<FullPivHouseholderQR>}}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_ad7050778df4da4ba17663b6aa2a18d08}{inverse}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00313\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<FullPivHouseholderQR>}}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00316\ \ \ \ \ \}}
+\DoxyCodeLine{00317\ }
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_qr.rows();\ \}}
+\DoxyCodeLine{00319\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_qr.cols();\ \}}
+\DoxyCodeLine{00320\ \ \ \ \ }
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{HCoeffsType}}\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a7620dc0cae74975b3e997d852fa4d6f4}{hCoeffs}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_hCoeffs;\ \}}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00344\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR}}\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a0b236a8d1a2e0b63ecb68a7308562ed2}{setThreshold}}(\textcolor{keyword}{const}\ RealScalar\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_af7f6ac15ca19c2b9e45dc3eaae58c201}{threshold}})}
+\DoxyCodeLine{00345\ \ \ \ \ \{}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ m\_usePrescribedThreshold\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ m\_prescribedThreshold\ =\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_af7f6ac15ca19c2b9e45dc3eaae58c201}{threshold}};}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00349\ \ \ \ \ \}}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00359\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR}}\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a2119cef4dab273aad0c6afbe7602a6f3}{setThreshold}}(Default\_t)}
+\DoxyCodeLine{00360\ \ \ \ \ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ m\_usePrescribedThreshold\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00363\ \ \ \ \ \}}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00369\ \ \ \ \ RealScalar\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_af7f6ac15ca19c2b9e45dc3eaae58c201}{threshold}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00370\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ ||\ m\_usePrescribedThreshold);}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_usePrescribedThreshold\ ?\ m\_prescribedThreshold}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \textcolor{comment}{//\ this\ formula\ comes\ from\ experimenting\ (see\ "{}LU\ precision\ tuning"{}\ thread\ on\ the\ list)}}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \textcolor{comment}{//\ and\ turns\ out\ to\ be\ identical\ to\ Higham's\ formula\ used\ already\ in\ LDLt.}}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::epsilon}}()\ *\ RealScalar(m\_qr.diagonalSize());}
+\DoxyCodeLine{00376\ \ \ \ \ \}}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00385\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_af1e4d04824084a964c1a6e51db68376f}{nonzeroPivots}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00386\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nonzero\_pivots;}
+\DoxyCodeLine{00389\ \ \ \ \ \}}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00394\ \ \ \ \ RealScalar\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a7887506237a3bf912aebc9aaa8edacec}{maxPivot}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_maxpivot;\ \}}
+\DoxyCodeLine{00395\ \ \ \ \ }
+\DoxyCodeLine{00396\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00397\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00398\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keywordtype}{void}\ \_solve\_impl(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00400\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00403\ \ \ \ \ }
+\DoxyCodeLine{00404\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ check\_template\_parameters()}
+\DoxyCodeLine{00405\ \ \ \ \ \{}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_NON\_INTEGER(Scalar);}
+\DoxyCodeLine{00407\ \ \ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \ \ }
+\DoxyCodeLine{00409\ \ \ \ \ \textcolor{keywordtype}{void}\ computeInPlace();}
+\DoxyCodeLine{00410\ \ \ \ \ }
+\DoxyCodeLine{00411\ \ \ \ \ MatrixType\ m\_qr;}
+\DoxyCodeLine{00412\ \ \ \ \ HCoeffsType\ m\_hCoeffs;}
+\DoxyCodeLine{00413\ \ \ \ \ IntDiagSizeVectorType\ m\_rows\_transpositions;}
+\DoxyCodeLine{00414\ \ \ \ \ IntDiagSizeVectorType\ m\_cols\_transpositions;}
+\DoxyCodeLine{00415\ \ \ \ \ PermutationType\ m\_cols\_permutation;}
+\DoxyCodeLine{00416\ \ \ \ \ RowVectorType\ m\_temp;}
+\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_isInitialized,\ m\_usePrescribedThreshold;}
+\DoxyCodeLine{00418\ \ \ \ \ RealScalar\ m\_prescribedThreshold,\ m\_maxpivot;}
+\DoxyCodeLine{00419\ \ \ \ \ Index\ m\_nonzero\_pivots;}
+\DoxyCodeLine{00420\ \ \ \ \ RealScalar\ m\_precision;}
+\DoxyCodeLine{00421\ \ \ \ \ Index\ m\_det\_pq;}
+\DoxyCodeLine{00422\ \};}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00425\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_a1029e1ccc70bb8669043c5775e7f3b75}{FullPivHouseholderQR<MatrixType>::absDeterminant}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00426\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00427\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00428\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00429\ \ \ eigen\_assert(m\_qr.rows()\ ==\ m\_qr.cols()\ \&\&\ \textcolor{stringliteral}{"{}You\ can't\ take\ the\ determinant\ of\ a\ non-\/square\ matrix!"{}});}
+\DoxyCodeLine{00430\ \ \ \textcolor{keywordflow}{return}\ abs(m\_qr.diagonal().prod());}
+\DoxyCodeLine{00431\ \}}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00434\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_aafde38918912c9b562f44b0fc3b22589}{FullPivHouseholderQR<MatrixType>::logAbsDeterminant}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00435\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00436\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00437\ \ \ eigen\_assert(m\_qr.rows()\ ==\ m\_qr.cols()\ \&\&\ \textcolor{stringliteral}{"{}You\ can't\ take\ the\ determinant\ of\ a\ non-\/square\ matrix!"{}});}
+\DoxyCodeLine{00438\ \ \ \textcolor{keywordflow}{return}\ m\_qr.diagonal().cwiseAbs().array().log().sum();}
+\DoxyCodeLine{00439\ \}}
+\DoxyCodeLine{00440\ }
+\DoxyCodeLine{00447\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00448\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00449\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR<MatrixType>}}\&\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR<MatrixType>::compute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00450\ \{}
+\DoxyCodeLine{00451\ \ \ m\_qr\ =\ matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00452\ \ \ computeInPlace();}
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00454\ \}}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00457\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR<MatrixType>::computeInPlace}}()}
+\DoxyCodeLine{00458\ \{}
+\DoxyCodeLine{00459\ \ \ check\_template\_parameters();}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00462\ \ \ Index\ rows\ =\ m\_qr.rows();}
+\DoxyCodeLine{00463\ \ \ Index\ cols\ =\ m\_qr.cols();}
+\DoxyCodeLine{00464\ \ \ Index\ size\ =\ (std::min)(rows,cols);}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00466\ \ \ }
+\DoxyCodeLine{00467\ \ \ m\_hCoeffs.resize(size);}
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00469\ \ \ m\_temp.resize(cols);}
+\DoxyCodeLine{00470\ }
+\DoxyCodeLine{00471\ \ \ m\_precision\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::epsilon}}()\ *\ RealScalar(size);}
+\DoxyCodeLine{00472\ }
+\DoxyCodeLine{00473\ \ \ m\_rows\_transpositions.resize(size);}
+\DoxyCodeLine{00474\ \ \ m\_cols\_transpositions.resize(size);}
+\DoxyCodeLine{00475\ \ \ Index\ number\_of\_transpositions\ =\ 0;}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \ \ RealScalar\ biggest(0);}
+\DoxyCodeLine{00478\ }
+\DoxyCodeLine{00479\ \ \ m\_nonzero\_pivots\ =\ size;\ \textcolor{comment}{//\ the\ generic\ case\ is\ that\ in\ which\ all\ pivots\ are\ nonzero\ (invertible\ case)}}
+\DoxyCodeLine{00480\ \ \ m\_maxpivot\ =\ RealScalar(0);}
+\DoxyCodeLine{00481\ }
+\DoxyCodeLine{00482\ \ \ \textcolor{keywordflow}{for}\ (Index\ k\ =\ 0;\ k\ <\ size;\ ++k)}
+\DoxyCodeLine{00483\ \ \ \{}
+\DoxyCodeLine{00484\ \ \ \ \ Index\ row\_of\_biggest\_in\_corner,\ col\_of\_biggest\_in\_corner;}
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__score__coeff__op}{internal::scalar\_score\_coeff\_op<Scalar>}}\ Scoring;}
+\DoxyCodeLine{00486\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Scoring::result\_type\ Score;}
+\DoxyCodeLine{00487\ }
+\DoxyCodeLine{00488\ \ \ \ \ Score\ score\ =\ m\_qr.bottomRightCorner(rows-\/k,\ cols-\/k)}
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .unaryExpr(Scoring())}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .maxCoeff(\&row\_of\_biggest\_in\_corner,\ \&col\_of\_biggest\_in\_corner);}
+\DoxyCodeLine{00491\ \ \ \ \ row\_of\_biggest\_in\_corner\ +=\ k;}
+\DoxyCodeLine{00492\ \ \ \ \ col\_of\_biggest\_in\_corner\ +=\ k;}
+\DoxyCodeLine{00493\ \ \ \ \ RealScalar\ biggest\_in\_corner\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1abs__knowing__score}{internal::abs\_knowing\_score<Scalar>}}()(m\_qr(row\_of\_biggest\_in\_corner,\ col\_of\_biggest\_in\_corner),\ score);}
+\DoxyCodeLine{00494\ \ \ \ \ \textcolor{keywordflow}{if}(k==0)\ biggest\ =\ biggest\_in\_corner;}
+\DoxyCodeLine{00495\ }
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{comment}{//\ if\ the\ corner\ is\ negligible,\ then\ we\ have\ less\ than\ full\ rank,\ and\ we\ can\ finish\ early}}
+\DoxyCodeLine{00497\ \ \ \ \ \textcolor{keywordflow}{if}(internal::isMuchSmallerThan(biggest\_in\_corner,\ biggest,\ m\_precision))}
+\DoxyCodeLine{00498\ \ \ \ \ \{}
+\DoxyCodeLine{00499\ \ \ \ \ \ \ m\_nonzero\_pivots\ =\ k;}
+\DoxyCodeLine{00500\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ k;\ i\ <\ size;\ i++)}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ m\_rows\_transpositions.coeffRef(i)\ =\ i;}
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ m\_cols\_transpositions.coeffRef(i)\ =\ i;}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ m\_hCoeffs.coeffRef(i)\ =\ Scalar(0);}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00507\ \ \ \ \ \}}
+\DoxyCodeLine{00508\ }
+\DoxyCodeLine{00509\ \ \ \ \ m\_rows\_transpositions.coeffRef(k)\ =\ row\_of\_biggest\_in\_corner;}
+\DoxyCodeLine{00510\ \ \ \ \ m\_cols\_transpositions.coeffRef(k)\ =\ col\_of\_biggest\_in\_corner;}
+\DoxyCodeLine{00511\ \ \ \ \ \textcolor{keywordflow}{if}(k\ !=\ row\_of\_biggest\_in\_corner)\ \{}
+\DoxyCodeLine{00512\ \ \ \ \ \ \ m\_qr.row(k).tail(cols-\/k).swap(m\_qr.row(row\_of\_biggest\_in\_corner).tail(cols-\/k));}
+\DoxyCodeLine{00513\ \ \ \ \ \ \ ++number\_of\_transpositions;}
+\DoxyCodeLine{00514\ \ \ \ \ \}}
+\DoxyCodeLine{00515\ \ \ \ \ \textcolor{keywordflow}{if}(k\ !=\ col\_of\_biggest\_in\_corner)\ \{}
+\DoxyCodeLine{00516\ \ \ \ \ \ \ m\_qr.col(k).swap(m\_qr.col(col\_of\_biggest\_in\_corner));}
+\DoxyCodeLine{00517\ \ \ \ \ \ \ ++number\_of\_transpositions;}
+\DoxyCodeLine{00518\ \ \ \ \ \}}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \ \ \ \ RealScalar\ beta;}
+\DoxyCodeLine{00521\ \ \ \ \ m\_qr.col(k).tail(rows-\/k).makeHouseholderInPlace(m\_hCoeffs.coeffRef(k),\ beta);}
+\DoxyCodeLine{00522\ \ \ \ \ m\_qr.coeffRef(k,k)\ =\ beta;}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \ \ \ \ \textcolor{comment}{//\ remember\ the\ maximum\ absolute\ value\ of\ diagonal\ coefficients}}
+\DoxyCodeLine{00525\ \ \ \ \ \textcolor{keywordflow}{if}(abs(beta)\ >\ m\_maxpivot)\ m\_maxpivot\ =\ abs(beta);}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \ \ \ \ m\_qr.bottomRightCorner(rows-\/k,\ cols-\/k-\/1)}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ .applyHouseholderOnTheLeft(m\_qr.col(k).tail(rows-\/k-\/1),\ m\_hCoeffs.coeffRef(k),\ \&m\_temp.coeffRef(k+1));}
+\DoxyCodeLine{00529\ \ \ \}}
+\DoxyCodeLine{00530\ }
+\DoxyCodeLine{00531\ \ \ m\_cols\_permutation.setIdentity(cols);}
+\DoxyCodeLine{00532\ \ \ \textcolor{keywordflow}{for}(Index\ k\ =\ 0;\ k\ <\ size;\ ++k)}
+\DoxyCodeLine{00533\ \ \ \ \ m\_cols\_permutation.applyTranspositionOnTheRight(k,\ m\_cols\_transpositions.coeff(k));}
+\DoxyCodeLine{00534\ }
+\DoxyCodeLine{00535\ \ \ m\_det\_pq\ =\ (number\_of\_transpositions\%2)\ ?\ -\/1\ :\ 1;}
+\DoxyCodeLine{00536\ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00537\ \}}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00539\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00540\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>}
+\DoxyCodeLine{00541\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00542\ \textcolor{keywordtype}{void}\ FullPivHouseholderQR<\_MatrixType>::\_solve\_impl(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00543\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00544\ \ \ eigen\_assert(rhs.rows()\ ==\ rows());}
+\DoxyCodeLine{00545\ \ \ \textcolor{keyword}{const}\ Index\ l\_rank\ =\ rank();}
+\DoxyCodeLine{00546\ }
+\DoxyCodeLine{00547\ \ \ \textcolor{comment}{//\ FIXME\ introduce\ nonzeroPivots()\ and\ use\ it\ here.\ and\ more\ generally,}}
+\DoxyCodeLine{00548\ \ \ \textcolor{comment}{//\ make\ the\ same\ improvements\ in\ this\ dec\ as\ in\ FullPivLU.}}
+\DoxyCodeLine{00549\ \ \ \textcolor{keywordflow}{if}(l\_rank==0)}
+\DoxyCodeLine{00550\ \ \ \{}
+\DoxyCodeLine{00551\ \ \ \ \ dst.setZero();}
+\DoxyCodeLine{00552\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00553\ \ \ \}}
+\DoxyCodeLine{00554\ }
+\DoxyCodeLine{00555\ \ \ \textcolor{keyword}{typename}\ RhsType::PlainObject\ c(rhs);}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00557\ \ \ Matrix<Scalar,1,RhsType::ColsAtCompileTime>\ temp(rhs.cols());}
+\DoxyCodeLine{00558\ \ \ \textcolor{keywordflow}{for}\ (Index\ k\ =\ 0;\ k\ <\ l\_rank;\ ++k)}
+\DoxyCodeLine{00559\ \ \ \{}
+\DoxyCodeLine{00560\ \ \ \ \ Index\ remainingSize\ =\ rows()-\/k;}
+\DoxyCodeLine{00561\ \ \ \ \ c.row(k).swap(c.row(m\_rows\_transpositions.coeff(k)));}
+\DoxyCodeLine{00562\ \ \ \ \ c.bottomRightCorner(remainingSize,\ rhs.cols())}
+\DoxyCodeLine{00563\ \ \ \ \ \ \ .applyHouseholderOnTheLeft(m\_qr.col(k).tail(remainingSize-\/1),}
+\DoxyCodeLine{00564\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_hCoeffs.coeff(k),\ \&temp.coeffRef(0));}
+\DoxyCodeLine{00565\ \ \ \}}
+\DoxyCodeLine{00566\ }
+\DoxyCodeLine{00567\ \ \ m\_qr.topLeftCorner(l\_rank,\ l\_rank)}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ .template\ triangularView<Upper>()}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ .solveInPlace(c.topRows(l\_rank));}
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ l\_rank;\ ++i)\ dst.row(m\_cols\_permutation.indices().coeff(i))\ =\ c.row(i);}
+\DoxyCodeLine{00572\ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ l\_rank;\ i\ <\ cols();\ ++i)\ dst.row(m\_cols\_permutation.indices().coeff(i)).setZero();}
+\DoxyCodeLine{00573\ \}}
+\DoxyCodeLine{00574\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00576\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00577\ \ \ }
+\DoxyCodeLine{00578\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00579\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment}{Assignment}}<DstXprType,\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse}}<\mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR}}<MatrixType>\ >,\ internal::\mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{assign\_op}}<typename\ DstXprType::Scalar,typename\ FullPivHouseholderQR<MatrixType>::Scalar>,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}}>}
+\DoxyCodeLine{00580\ \{}
+\DoxyCodeLine{00581\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR<MatrixType>}}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{QrType}};}
+\DoxyCodeLine{00582\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<QrType>}}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{SrcXprType}};}
+\DoxyCodeLine{00583\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{SrcXprType}}\ \&src,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<typename\ DstXprType::Scalar,typename\ QrType::Scalar>}}\ \&)}
+\DoxyCodeLine{00584\ \ \ \{\ \ \ \ }
+\DoxyCodeLine{00585\ \ \ \ \ dst\ =\ src.nestedExpression().solve(MatrixType::Identity(src.rows(),\ src.cols()));}
+\DoxyCodeLine{00586\ \ \ \}}
+\DoxyCodeLine{00587\ \};}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00595\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{FullPivHouseholderQRMatrixQReturnType}}}
+\DoxyCodeLine{00596\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_return_by_value}{ReturnByValue}}<FullPivHouseholderQRMatrixQReturnType<MatrixType>\ >}
+\DoxyCodeLine{00597\ \{}
+\DoxyCodeLine{00598\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00599\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{FullPivHouseholderQR<MatrixType>::IntDiagSizeVectorType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IntDiagSizeVectorType}};}
+\DoxyCodeLine{00600\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::plain\_diag\_type<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{HCoeffsType}};}
+\DoxyCodeLine{00601\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}<\textcolor{keyword}{typename}\ MatrixType::Scalar,\ 1,\ MatrixType::RowsAtCompileTime,\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}},\ 1,}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MatrixType::MaxRowsAtCompileTime>\ \mbox{\hyperlink{class_eigen_1_1_matrix}{WorkVectorType}};}
+\DoxyCodeLine{00603\ }
+\DoxyCodeLine{00604\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{FullPivHouseholderQRMatrixQReturnType}}(\textcolor{keyword}{const}\ MatrixType\&\ \ \ \ \ \ \ qr,}
+\DoxyCodeLine{00605\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{HCoeffsType}}\&\ \ \ \ \ \ hCoeffs,}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IntDiagSizeVectorType}}\&\ rowsTranspositions)}
+\DoxyCodeLine{00607\ \ \ \ \ :\ m\_qr(qr),}
+\DoxyCodeLine{00608\ \ \ \ \ \ \ m\_hCoeffs(hCoeffs),}
+\DoxyCodeLine{00609\ \ \ \ \ \ \ m\_rowsTranspositions(rowsTranspositions)}
+\DoxyCodeLine{00610\ \ \ \{\}}
+\DoxyCodeLine{00611\ }
+\DoxyCodeLine{00612\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ResultType>}
+\DoxyCodeLine{00613\ \ \ \textcolor{keywordtype}{void}\ evalTo(ResultType\&\ result)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00614\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00615\ \ \ \ \ \textcolor{keyword}{const}\ Index\ rows\ =\ m\_qr.rows();}
+\DoxyCodeLine{00616\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{WorkVectorType}}\ workspace(rows);}
+\DoxyCodeLine{00617\ \ \ \ \ evalTo(result,\ workspace);}
+\DoxyCodeLine{00618\ \ \ \}}
+\DoxyCodeLine{00619\ }
+\DoxyCodeLine{00620\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ ResultType>}
+\DoxyCodeLine{00621\ \ \ \textcolor{keywordtype}{void}\ evalTo(ResultType\&\ result,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{WorkVectorType}}\&\ workspace)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00622\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00623\ \ \ \ \ \textcolor{keyword}{using\ }numext::conj;}
+\DoxyCodeLine{00624\ \ \ \ \ \textcolor{comment}{//\ compute\ the\ product\ H'\_0\ H'\_1\ ...\ H'\_n-\/1,}}
+\DoxyCodeLine{00625\ \ \ \ \ \textcolor{comment}{//\ where\ H\_k\ is\ the\ k-\/th\ Householder\ transformation\ I\ -\/\ h\_k\ v\_k\ v\_k'}}
+\DoxyCodeLine{00626\ \ \ \ \ \textcolor{comment}{//\ and\ v\_k\ is\ the\ k-\/th\ Householder\ vector\ [1,m\_qr(k+1,k),\ m\_qr(k+2,k),\ ...]}}
+\DoxyCodeLine{00627\ \ \ \ \ \textcolor{keyword}{const}\ Index\ rows\ =\ m\_qr.rows();}
+\DoxyCodeLine{00628\ \ \ \ \ \textcolor{keyword}{const}\ Index\ cols\ =\ m\_qr.cols();}
+\DoxyCodeLine{00629\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ (std::min)(rows,\ cols);}
+\DoxyCodeLine{00630\ \ \ \ \ workspace.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a99d9054ee2d5a40c6e00ded0265e9cea}{resize}}(rows);}
+\DoxyCodeLine{00631\ \ \ \ \ result.setIdentity(rows,\ rows);}
+\DoxyCodeLine{00632\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ k\ =\ size-\/1;\ k\ >=\ 0;\ k-\/-\/)}
+\DoxyCodeLine{00633\ \ \ \ \ \{}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ result.block(k,\ k,\ rows-\/k,\ rows-\/k)}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \ \ \ \ .applyHouseholderOnTheLeft(m\_qr.col(k).tail(rows-\/k-\/1),\ conj(m\_hCoeffs.coeff(k)),\ \&workspace.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(k));}
+\DoxyCodeLine{00636\ \ \ \ \ \ \ result.row(k).swap(result.row(m\_rowsTranspositions.coeff(k)));}
+\DoxyCodeLine{00637\ \ \ \ \ \}}
+\DoxyCodeLine{00638\ \ \ \}}
+\DoxyCodeLine{00639\ }
+\DoxyCodeLine{00640\ \ \ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_qr.rows();\ \}}
+\DoxyCodeLine{00641\ \ \ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_qr.rows();\ \}}
+\DoxyCodeLine{00642\ }
+\DoxyCodeLine{00643\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00644\ \ \ \textcolor{keyword}{typename}\ MatrixType::Nested\ m\_qr;}
+\DoxyCodeLine{00645\ \ \ \textcolor{keyword}{typename}\ HCoeffsType::Nested\ m\_hCoeffs;}
+\DoxyCodeLine{00646\ \ \ \textcolor{keyword}{typename}\ IntDiagSizeVectorType::Nested\ m\_rowsTranspositions;}
+\DoxyCodeLine{00647\ \};}
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ \textcolor{comment}{//\ template<typename\ MatrixType>}}
+\DoxyCodeLine{00650\ \textcolor{comment}{//\ struct\ evaluator<FullPivHouseholderQRMatrixQReturnType<MatrixType>\ >}}
+\DoxyCodeLine{00651\ \textcolor{comment}{//\ \ :\ public\ evaluator<ReturnByValue<FullPivHouseholderQRMatrixQReturnType<MatrixType>\ >\ >}}
+\DoxyCodeLine{00652\ \textcolor{comment}{//\ \{\};}}
+\DoxyCodeLine{00653\ }
+\DoxyCodeLine{00654\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00655\ }
+\DoxyCodeLine{00656\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00657\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{FullPivHouseholderQR<MatrixType>::MatrixQReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r_ad26dd2d3c002939771d2375e4e051c28}{FullPivHouseholderQR<MatrixType>::matrixQ}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00658\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00659\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}FullPivHouseholderQR\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00660\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_full_piv_householder_q_r_matrix_q_return_type}{MatrixQReturnType}}(m\_qr,\ m\_hCoeffs,\ m\_rows\_transpositions);}
+\DoxyCodeLine{00661\ \}}
+\DoxyCodeLine{00662\ }
+\DoxyCodeLine{00667\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00668\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR<typename\ MatrixBase<Derived>::PlainObject}}>}
+\DoxyCodeLine{00669\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a863bc0e06b641a089508eabec6835ab2}{MatrixBase<Derived>::fullPivHouseholderQr}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00670\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00671\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_full_piv_householder_q_r}{FullPivHouseholderQR<PlainObject>}}(eval());}
+\DoxyCodeLine{00672\ \}}
+\DoxyCodeLine{00673\ }
+\DoxyCodeLine{00674\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00675\ }
+\DoxyCodeLine{00676\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_FULLPIVOTINGHOUSEHOLDERQR\_H}}
+
+\end{DoxyCode}

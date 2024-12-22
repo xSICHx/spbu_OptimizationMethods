@@ -1,0 +1,71 @@
+\doxysection{Stop\+Criterion\+Area Class Reference}
+\hypertarget{class_stop_criterion_area}{}\label{class_stop_criterion_area}\index{StopCriterionArea@{StopCriterionArea}}
+
+
+A class that represents a stopping criterion based on an area condition.  
+
+
+
+
+{\ttfamily \#include $<$Stop\+Criterion\+Area.\+h$>$}
+
+Inheritance diagram for Stop\+Criterion\+Area\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_stop_criterion_area}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_stop_criterion_area_a1f7521a213c1439d8c13faa19abc6aeb}\label{class_stop_criterion_area_a1f7521a213c1439d8c13faa19abc6aeb} 
+{\bfseries Stop\+Criterion\+Area} (size\+\_\+t \+\_\+n\+\_\+max)
+\item 
+bool \mbox{\hyperlink{class_stop_criterion_area_af9a9884a54c6f71d5e3b8a678548f658}{check}} (\mbox{\hyperlink{class_transfer_data}{Transfer\+Data}} \&data) const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Stop\+Criterion} (size\+\_\+t \+\_\+n\+\_\+max)
+\item 
+virtual string {\bfseries get\+Name} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}}}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t {\bfseries n\+\_\+max}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class that represents a stopping criterion based on an area condition. 
+
+This class inherits from the \doxylink{class_stop_criterion}{Stop\+Criterion} class and provides an implementation for checking if a stopping criterion based on an area condition is met.
+
+\begin{DoxyNote}{Note}
+The class uses virtual inheritance to prevent repeated initialization of n\+\_\+max.
+\end{DoxyNote}
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+n\+\_\+max} & The maximum number of iterations allowed. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_stop_criterion_area_af9a9884a54c6f71d5e3b8a678548f658}\index{StopCriterionArea@{StopCriterionArea}!check@{check}}
+\index{check@{check}!StopCriterionArea@{StopCriterionArea}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}}
+{\footnotesize\ttfamily \label{class_stop_criterion_area_af9a9884a54c6f71d5e3b8a678548f658} 
+bool Stop\+Criterion\+Area\+::check (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_transfer_data}{Transfer\+Data}} \&}]{data}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Stop\+Criterion\+Area.\+h\end{DoxyCompactItemize}

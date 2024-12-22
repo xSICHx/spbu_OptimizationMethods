@@ -1,0 +1,127 @@
+/**
+ * @mainpage Optimization Methods Package
+ *
+ * The **Optimization Methods** package provides a flexible framework for optimization tasks, supporting both console input and programmatic usage. It includes various optimization algorithms (e.g., Newton's method, Random Search) and allows users to define functions, initial points, and stopping criteria.
+ *
+ * ## Features
+ * - **Console Input**: Interactive console interface for selecting functions, dimensions, initial points, and optimization methods.
+ * - **Programmatic Usage**: Direct integration into C++ programs for automated optimization tasks.
+ * - **Support for Multiple Dimensions**: Handles optimization in 1D to 4D spaces.
+ * - **Customizable Stopping Criteria**: Supports maximum iterations, function value changes, and gradient-based criteria.
+ *
+ * ## Example Usage
+ * ### Console Input Example
+ * The following example demonstrates how to use the console interface to perform optimization:
+ *
+ * @code{.cpp}
+ * int main() {
+ *     initializeRandomGenerator(100);
+ *     consoleInput();
+ *     return 0;
+ * }
+ * @endcode
+ *
+ * **Console Output Example**:
+ * ```
+ * Enter the dimension of the space (from 1 to 4): 2
+ * Available functions for dimension 2:
+ * 0: 5*x^2 - 6*x*y + 5*y^2
+ * 1: |x+y|+3*|y-x|
+ * 2: (1-x)^2 + 100*(y-x^2)^2
+ * Enter the function number: 2
+ * You selected the function: (1-x)^2 + 100*(y-x^2)^2
+ * Enter two numbers for row 1 (first < second):
+ *   First: -5
+ *   Second: 3
+ * Enter two numbers for row 2 (first < second):
+ *   First: -3
+ *   Second: 5
+ * You have entered the following n-dimensional cube:
+ * -5  3
+ * -3  5
+ * Enter initial point:
+ * Enter point for 0 dimension :-1.35
+ * Enter point for 1 dimension :2
+ * Enter the maximum of iterations: 10000
+ * Enter eps:0.0001
+ * Available criterions :
+ * 0: max iteration
+ * 1: |f_curr - f_prev|/|f_curr| >= eps
+ * 2: |f_curr - f_prev| >= eps
+ * Enter the criterion number: 2
+ * You selected the criterion: |f_curr - f_prev| >= eps
+ * Available optimize methods:
+ * 0: Newton
+ * 1: Random Search
+ * Enter the optimize method number: 0
+ * ------------------------------
+ *
+ * Curr_point: -1.36701 2.00156
+ * Prev_point: -1.35 2
+ * Grad: 91.1569 35.501
+ * Iter: 1
+ * Curr F: 7.36725
+ * Prev F: 8.67312
+ * Alpha: 0.25
+ *
+ * Curr_point: 0.99686 0.994655
+ * Prev_point: 0.996784 0.994814
+ * Grad: -0.494944 0.248042
+ * Iter: 168
+ * Curr F: 9.5451e-05
+ * Prev F: 0.000162916
+ * Alpha: 0.25
+ *
+ * ------------------------------
+ * ```
+ *
+ * ### Programmatic Usage Example
+ * The following example demonstrates how to use the package programmatically:
+ *
+ * @code{.cpp}
+ * cout << "------------------------------" << endl;
+ * cout << "Newton test not in area" << endl;
+ *
+ * cout << "Function: x^2 + y^4" << endl;
+ * FunctionTest f1;
+ *
+ * VectorXd point(2);
+ * point[0] = 2; point[1] = 1;
+ * cout << "Point: " << point[0] << " " << point[1] << endl;
+ *
+ * point_type f1_point = f1(point);
+ * cout << "Function in point: " << f1_point << endl;
+ *
+ * VectorXd f1_grad = f1.getGradient(point);
+ * cout << "Gradient in point: ";
+ * for (int i = 0; i < f1_grad.size(); i++) {
+ *     cout << f1_grad[i] << " ";
+ * }
+ * cout << endl;
+ *
+ * MatrixXd f1_hessian = f1.getHessianMatrix(point);
+ * cout << "Hessian in point: " << endl;
+ * for (int i = 0; i < f1_hessian.rows(); i++) {
+ *     for (int j = 0; j < f1_hessian.cols(); j++) {
+ *         cout << f1_hessian(i, j) << " ";
+ *     }
+ *     cout << endl;
+ * }
+ * cout << endl;
+ *
+ * MatrixXd ar(2, 2);
+ * ar(0, 0) = -3; ar(0, 1) = -1; ar(1, 0) = -5; ar(1, 1) = 8;
+ * Area area(ar);
+ * FunctionTest f;
+ *
+ * StopCriterionFEps stop(10000, 1e-5);
+ * OptMethodNewton opt(1e-2);
+ * opt.optimize(area, f, stop);
+ * cout << "------------------------------" << endl << endl;
+ * @endcode
+ *
+ * ## Contact
+ * For questions or feedback, please contact:
+ * - Email: n.v.pogrebnilov@gmail.com
+ * - GitHub: [Optimization Methods Repository](https://github.com/xSICHx/spbu_OptimizationMethods)
+ */

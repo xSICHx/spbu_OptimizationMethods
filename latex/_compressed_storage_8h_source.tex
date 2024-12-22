@@ -1,0 +1,252 @@
+\doxysection{Compressed\+Storage.\+h}
+\hypertarget{_compressed_storage_8h_source}{}\label{_compressed_storage_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/SparseCore/CompressedStorage.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/SparseCore/CompressedStorage.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2014\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_COMPRESSED\_STORAGE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_COMPRESSED\_STORAGE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\textcolor{keyword}{typename}\ \_StorageIndex>}
+\DoxyCodeLine{00022\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{typedef}\ \_Scalar\ Scalar;}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{typedef}\ \_StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}()}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ :\ m\_values(0),\ m\_indices(0),\ m\_size(0),\ m\_allocatedSize(0)}
+\DoxyCodeLine{00037\ \ \ \ \ \{\}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}(Index\ size)}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ :\ m\_values(0),\ m\_indices(0),\ m\_size(0),\ m\_allocatedSize(0)}
+\DoxyCodeLine{00041\ \ \ \ \ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ resize(size);}
+\DoxyCodeLine{00043\ \ \ \ \ \}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}\&\ other)}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ :\ m\_values(0),\ m\_indices(0),\ m\_size(0),\ m\_allocatedSize(0)}
+\DoxyCodeLine{00047\ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ *\textcolor{keyword}{this}\ =\ other;}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}\&\ other)}
+\DoxyCodeLine{00052\ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ resize(other.size());}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(other.size()>0)}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ internal::smart\_copy(other.m\_values,\ \ other.m\_values\ \ +\ m\_size,\ m\_values);}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ internal::smart\_copy(other.m\_indices,\ other.m\_indices\ +\ m\_size,\ m\_indices);}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ swap(\mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{CompressedStorage}}\&\ other)}
+\DoxyCodeLine{00063\ \ \ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ std::swap(m\_values,\ other.m\_values);}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ std::swap(m\_indices,\ other.m\_indices);}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ std::swap(m\_size,\ other.m\_size);}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ std::swap(m\_allocatedSize,\ other.m\_allocatedSize);}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage}{\string~CompressedStorage}}()}
+\DoxyCodeLine{00071\ \ \ \ \ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ m\_values;}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \textcolor{keyword}{delete}[]\ m\_indices;}
+\DoxyCodeLine{00074\ \ \ \ \ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{void}\ reserve(Index\ size)}
+\DoxyCodeLine{00077\ \ \ \ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ Index\ newAllocatedSize\ =\ m\_size\ +\ size;}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (newAllocatedSize\ >\ m\_allocatedSize)}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ reallocate(newAllocatedSize);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ squeeze()}
+\DoxyCodeLine{00084\ \ \ \ \ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_allocatedSize>m\_size)}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ reallocate(m\_size);}
+\DoxyCodeLine{00087\ \ \ \ \ \}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keywordtype}{void}\ resize(Index\ size,\ \textcolor{keywordtype}{double}\ reserveSizeFactor\ =\ 0)}
+\DoxyCodeLine{00090\ \ \ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_allocatedSize<size)}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ Index\ realloc\_size\ =\ (std::min<Index>)(\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<StorageIndex>::highest}}(),\ \ size\ +\ Index(reserveSizeFactor*\textcolor{keywordtype}{double}(size)));}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(realloc\_size<size)}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ internal::throw\_std\_bad\_alloc();}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \ \ reallocate(realloc\_size);}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ m\_size\ =\ size;}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keywordtype}{void}\ append(\textcolor{keyword}{const}\ Scalar\&\ v,\ Index\ i)}
+\DoxyCodeLine{00102\ \ \ \ \ \{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ Index\ \textcolor{keywordtype}{id}\ =\ m\_size;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ resize(m\_size+1,\ 1);}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ m\_values[id]\ =\ v;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ m\_indices[id]\ =\ internal::convert\_index<StorageIndex>(i);}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ size()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_size;\ \}}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ allocatedSize()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_allocatedSize;\ \}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ clear()\ \{\ m\_size\ =\ 0;\ \}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keyword}{const}\ Scalar*\ valuePtr()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_values;\ \}}
+\DoxyCodeLine{00114\ \ \ \ \ Scalar*\ valuePtr()\ \{\ \textcolor{keywordflow}{return}\ m\_values;\ \}}
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{const}\ StorageIndex*\ indexPtr()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00116\ \ \ \ \ StorageIndex*\ indexPtr()\ \{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{inline}\ Scalar\&\ value(Index\ i)\ \{\ eigen\_internal\_assert(m\_values!=0);\ \textcolor{keywordflow}{return}\ m\_values[i];\ \}}
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar\&\ value(Index\ i)\textcolor{keyword}{\ const\ }\{\ eigen\_internal\_assert(m\_values!=0);\ \textcolor{keywordflow}{return}\ m\_values[i];\ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{inline}\ StorageIndex\&\ index(Index\ i)\ \{\ eigen\_internal\_assert(m\_indices!=0);\ \textcolor{keywordflow}{return}\ m\_indices[i];\ \}}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ StorageIndex\&\ index(Index\ i)\textcolor{keyword}{\ const\ }\{\ eigen\_internal\_assert(m\_indices!=0);\ \textcolor{keywordflow}{return}\ m\_indices[i];\ \}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_ad96105b5ab19886e96076513eab77da5}{searchLowerIndex}}(Index\ key)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00126\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_ad96105b5ab19886e96076513eab77da5}{searchLowerIndex}}(0,\ m\_size,\ key);}
+\DoxyCodeLine{00128\ \ \ \ \ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_a250b3282557fc6da7cf505f93ab5ad59}{searchLowerIndex}}(Index\ start,\ Index\ end,\ Index\ key)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00132\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(end>start)}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ Index\ mid\ =\ (end+start)>>1;}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_indices[mid]<key)}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ start\ =\ mid+1;}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ end\ =\ mid;}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ start;}
+\DoxyCodeLine{00142\ \ \ \ \ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_a0fe151c0217177fd43df764e8e0cdec2}{at}}(Index\ key,\ \textcolor{keyword}{const}\ Scalar\&\ defaultValue\ =\ Scalar(0))\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00147\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_size==0)}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ defaultValue;}
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (key==m\_indices[m\_size-\/1])}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_values[m\_size-\/1];}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{comment}{//\ \string^\string^\ \ optimization:\ let's\ first\ check\ if\ it\ is\ the\ last\ coefficient}}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{comment}{//\ (very\ common\ in\ high\ level\ algorithms)}}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ \textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_ad96105b5ab19886e96076513eab77da5}{searchLowerIndex}}(0,m\_size-\/1,key);}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((\textcolor{keywordtype}{id}<m\_size)\ \&\&\ (m\_indices[\textcolor{keywordtype}{id}]==key))\ ?\ m\_values[id]\ :\ defaultValue;}
+\DoxyCodeLine{00156\ \ \ \ \ \}}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00159\ \ \ \ \ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_a70c2745dd270aaa44b415ec2e9bf2ae0}{atInRange}}(Index\ start,\ Index\ end,\ Index\ key,\ \textcolor{keyword}{const}\ Scalar\ \&defaultValue\ =\ Scalar(0))\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00160\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (start>=end)}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ defaultValue;}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (end>start\ \&\&\ key==m\_indices[end-\/1])}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_values[end-\/1];}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \textcolor{comment}{//\ \string^\string^\ \ optimization:\ let's\ first\ check\ if\ it\ is\ the\ last\ coefficient}}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{comment}{//\ (very\ common\ in\ high\ level\ algorithms)}}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ \textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_ad96105b5ab19886e96076513eab77da5}{searchLowerIndex}}(start,end-\/1,key);}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ((\textcolor{keywordtype}{id}<end)\ \&\&\ (m\_indices[\textcolor{keywordtype}{id}]==key))\ ?\ m\_values[id]\ :\ defaultValue;}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keyword}{inline}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_aa2d24623b6558ccc226161015c03b5ec}{atWithInsertion}}(Index\ key,\ \textcolor{keyword}{const}\ Scalar\&\ defaultValue\ =\ Scalar(0))}
+\DoxyCodeLine{00175\ \ \ \ \ \{}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ Index\ \textcolor{keywordtype}{id}\ =\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_compressed_storage_ad96105b5ab19886e96076513eab77da5}{searchLowerIndex}}(0,m\_size,key);}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keywordtype}{id}>=m\_size\ ||\ m\_indices[\textcolor{keywordtype}{id}]!=key)}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_allocatedSize<m\_size+1)}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ \ \ \ \ m\_allocatedSize\ =\ 2*(m\_size+1);}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1scoped__array}{internal::scoped\_array<Scalar>}}\ newValues(m\_allocatedSize);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1scoped__array}{internal::scoped\_array<StorageIndex>}}\ newIndices(m\_allocatedSize);}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ copy\ first\ chunk}}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ \ \ \ \ internal::smart\_copy(m\_values,\ \ m\_values\ +\textcolor{keywordtype}{id},\ newValues.ptr());}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ \ \ internal::smart\_copy(m\_indices,\ m\_indices+\textcolor{keywordtype}{id},\ newIndices.ptr());}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ copy\ the\ rest}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(m\_size>\textcolor{keywordtype}{id})}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ \ \ \ \ internal::smart\_copy(m\_values\ +\textcolor{keywordtype}{id},\ \ m\_values\ +m\_size,\ newValues.ptr()\ +\textcolor{keywordtype}{id}+1);}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ \ \ \ \ internal::smart\_copy(m\_indices+\textcolor{keywordtype}{id},\ \ m\_indices+m\_size,\ newIndices.ptr()+\textcolor{keywordtype}{id}+1);}
+\DoxyCodeLine{00194\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \ \ std::swap(m\_values,newValues.ptr());}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \ \ std::swap(m\_indices,newIndices.ptr());}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(m\_size>\textcolor{keywordtype}{id})}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \ \ \ \ internal::smart\_memmove(m\_values\ +\textcolor{keywordtype}{id},\ m\_values\ +m\_size,\ m\_values\ +\textcolor{keywordtype}{id}+1);}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \ \ \ \ internal::smart\_memmove(m\_indices+\textcolor{keywordtype}{id},\ m\_indices+m\_size,\ m\_indices+\textcolor{keywordtype}{id}+1);}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ m\_size++;}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ m\_indices[id]\ =\ internal::convert\_index<StorageIndex>(key);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ m\_values[id]\ =\ defaultValue;}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_values[id];}
+\DoxyCodeLine{00208\ \ \ \ \ \}}
+\DoxyCodeLine{00209\ }
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keywordtype}{void}\ prune(\textcolor{keyword}{const}\ Scalar\&\ reference,\ \textcolor{keyword}{const}\ RealScalar\&\ epsilon\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<RealScalar>::dummy\_precision}}())}
+\DoxyCodeLine{00211\ \ \ \ \ \{}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ Index\ k\ =\ 0;}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ Index\ n\ =\ size();}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i=0;\ i<n;\ ++i)}
+\DoxyCodeLine{00215\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!internal::isMuchSmallerThan(value(i),\ reference,\ epsilon))}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ value(k)\ =\ value(i);}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ index(k)\ =\ index(i);}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ ++k;}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ resize(k,0);}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ reallocate(Index\ size)}
+\DoxyCodeLine{00229\ \ \ \ \ \{}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\ \ \ \ \ \ \#ifdef\ EIGEN\_SPARSE\_COMPRESSED\_STORAGE\_REALLOCATE\_PLUGIN}}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ EIGEN\_SPARSE\_COMPRESSED\_STORAGE\_REALLOCATE\_PLUGIN}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\ \ \ \ \ \ \#endif}}
+\DoxyCodeLine{00233\ \ \ \ \ \ \ eigen\_internal\_assert(size!=m\_allocatedSize);}
+\DoxyCodeLine{00234\ \ \ \ \ \ \ internal::scoped\_array<Scalar>\ newValues(size);}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ internal::scoped\_array<StorageIndex>\ newIndices(size);}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ Index\ copySize\ =\ (std::min)(size,\ m\_size);}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (copySize>0)\ \{}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ internal::smart\_copy(m\_values,\ m\_values+copySize,\ newValues.ptr());}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ internal::smart\_copy(m\_indices,\ m\_indices+copySize,\ newIndices.ptr());}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ std::swap(m\_values,newValues.ptr());}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ std::swap(m\_indices,newIndices.ptr());}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ m\_allocatedSize\ =\ size;}
+\DoxyCodeLine{00244\ \ \ \ \ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00247\ \ \ \ \ Scalar*\ m\_values;}
+\DoxyCodeLine{00248\ \ \ \ \ StorageIndex*\ m\_indices;}
+\DoxyCodeLine{00249\ \ \ \ \ Index\ m\_size;}
+\DoxyCodeLine{00250\ \ \ \ \ Index\ m\_allocatedSize;}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \};}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00254\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_COMPRESSED\_STORAGE\_H}}
+
+\end{DoxyCode}

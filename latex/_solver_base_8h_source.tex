@@ -1,0 +1,96 @@
+\doxysection{Solver\+Base.\+h}
+\hypertarget{_solver_base_8h_source}{}\label{_solver_base_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/SolverBase.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/SolverBase.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2015\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_SOLVERBASE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_SOLVERBASE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00041\ \textcolor{keyword}{class\ }SolverBase\ :\ \textcolor{keyword}{public}\ EigenBase<Derived>}
+\DoxyCodeLine{00042\ \{}
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{typedef}\ EigenBase<Derived>\ Base;}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::traits<Derived>::Scalar\ Scalar;}
+\DoxyCodeLine{00047\ \ \ \ \ \textcolor{keyword}{typedef}\ Scalar\ CoeffReturnType;}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ RowsAtCompileTime\ =\ internal::traits<Derived>::RowsAtCompileTime,}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ ColsAtCompileTime\ =\ internal::traits<Derived>::ColsAtCompileTime,}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ SizeAtCompileTime\ =\ (internal::size\_at\_compile\_time<internal::traits<Derived>::RowsAtCompileTime,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ internal::traits<Derived>::ColsAtCompileTime>::ret),}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ MaxRowsAtCompileTime\ =\ internal::traits<Derived>::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ internal::traits<Derived>::MaxColsAtCompileTime,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ MaxSizeAtCompileTime\ =\ (internal::size\_at\_compile\_time<internal::traits<Derived>::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ internal::traits<Derived>::MaxColsAtCompileTime>::ret),}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ IsVectorAtCompileTime\ =\ internal::traits<Derived>::MaxRowsAtCompileTime\ ==\ 1}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ internal::traits<Derived>::MaxColsAtCompileTime\ ==\ 1}
+\DoxyCodeLine{00060\ \ \ \ \ \};}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00063\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_solver_base_a4d5e5baddfba3790ab1a5f247dcc4dc1}{SolverBase}}()}
+\DoxyCodeLine{00064\ \ \ \ \ \{\}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_solver_base}{\string~SolverBase}}()}
+\DoxyCodeLine{00067\ \ \ \ \ \{\}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{Base::derived}};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Solve<Derived,\ Rhs>}
+\DoxyCodeLine{00075\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_solver_base_a943c352b597e3cd4744d5c11bfd77520}{solve}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Rhs>}}\&\ b)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00076\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ eigen\_assert(\mbox{\hyperlink{class_eigen_1_1_solver_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}().\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a8141320ba8df384426c298b32b000d8e}{rows}}()==b.rows()\ \&\&\ \textcolor{stringliteral}{"{}solve():\ invalid\ number\ of\ rows\ of\ the\ right\ hand\ side\ matrix\ b"{}});}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<Derived,\ Rhs>}}(\mbox{\hyperlink{class_eigen_1_1_solver_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}(),\ b.derived());}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1add__const}{internal::add\_const<Transpose<const\ Derived>}}\ >::type\ ConstTransposeReturnType;}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_diagonal}{ConstTransposeReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_solver_base_a732e75b5132bb4db3775916927b0e86c}{transpose}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00091\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_diagonal}{ConstTransposeReturnType}}(\mbox{\hyperlink{class_eigen_1_1_solver_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());}
+\DoxyCodeLine{00093\ \ \ \ \ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional<NumTraits<Scalar>::IsComplex}},}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_op}{CwiseUnaryOp<internal::scalar\_conjugate\_op<Scalar>}},\ ConstTransposeReturnType>,}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ConstTransposeReturnType}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ >::type\ AdjointReturnType;}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AdjointReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_solver_base_a05a3686a89888681c8e0c2bcab6d1ce5}{adjoint}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00110\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AdjointReturnType}}(\mbox{\hyperlink{class_eigen_1_1_solver_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}().\mbox{\hyperlink{class_eigen_1_1_solver_base_a732e75b5132bb4db3775916927b0e86c}{transpose}}());}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00115\ \};}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00120\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__xpr__base}{generic\_xpr\_base}}<Derived,\ \mbox{\hyperlink{struct_eigen_1_1_matrix_xpr}{MatrixXpr}},\ \mbox{\hyperlink{struct_eigen_1_1_solver_storage}{SolverStorage}}>}
+\DoxyCodeLine{00121\ \{}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_solver_base}{SolverBase<Derived>}}\ \mbox{\hyperlink{class_eigen_1_1_solver_base}{type}};}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_SOLVERBASE\_H}}
+
+\end{DoxyCode}

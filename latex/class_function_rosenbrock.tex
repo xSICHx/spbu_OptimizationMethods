@@ -1,0 +1,74 @@
+\doxysection{Function\+Rosenbrock Class Reference}
+\hypertarget{class_function_rosenbrock}{}\label{class_function_rosenbrock}\index{FunctionRosenbrock@{FunctionRosenbrock}}
+
+
+(1-\/x)\texorpdfstring{$^\wedge$}{\string^}2 + 100\texorpdfstring{$\ast$}{*}(y-\/x\texorpdfstring{$^\wedge$}{\string^}2)\texorpdfstring{$^\wedge$}{\string^}2  
+
+
+
+
+{\ttfamily \#include $<$Function\+Rosenbrock.\+h$>$}
+
+Inheritance diagram for Function\+Rosenbrock\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_function_rosenbrock}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{class_function_rosenbrock_a7785d56f50f4f676ad2180273d860e0b}{get\+Dim}} () const override
+\item 
+string \mbox{\hyperlink{class_function_rosenbrock_af93d01525888fb6dfa82693db5fb197e}{get\+Name}} () const override
+\item 
+point\+\_\+type \mbox{\hyperlink{class_function_rosenbrock_acf0cfde4e6f50f5c857ec89fa98b508f}{operator()}} (const Vector\+Xd \&point) const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_function}{Function}}}
+\begin{DoxyCompactItemize}
+\item 
+Vector\+Xd {\bfseries get\+Gradient} (const Vector\+Xd \&point) const
+\item 
+Matrix\+Xd {\bfseries get\+Hessian\+Matrix} (const Vector\+Xd \&point) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+(1-\/x)\texorpdfstring{$^\wedge$}{\string^}2 + 100\texorpdfstring{$\ast$}{*}(y-\/x\texorpdfstring{$^\wedge$}{\string^}2)\texorpdfstring{$^\wedge$}{\string^}2 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_function_rosenbrock_a7785d56f50f4f676ad2180273d860e0b}\index{FunctionRosenbrock@{FunctionRosenbrock}!getDim@{getDim}}
+\index{getDim@{getDim}!FunctionRosenbrock@{FunctionRosenbrock}}
+\doxysubsubsection{\texorpdfstring{getDim()}{getDim()}}
+{\footnotesize\ttfamily \label{class_function_rosenbrock_a7785d56f50f4f676ad2180273d860e0b} 
+size\+\_\+t Function\+Rosenbrock\+::get\+Dim (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+\Hypertarget{class_function_rosenbrock_af93d01525888fb6dfa82693db5fb197e}\index{FunctionRosenbrock@{FunctionRosenbrock}!getName@{getName}}
+\index{getName@{getName}!FunctionRosenbrock@{FunctionRosenbrock}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily \label{class_function_rosenbrock_af93d01525888fb6dfa82693db5fb197e} 
+string Function\+Rosenbrock\+::get\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+\Hypertarget{class_function_rosenbrock_acf0cfde4e6f50f5c857ec89fa98b508f}\index{FunctionRosenbrock@{FunctionRosenbrock}!operator()@{operator()}}
+\index{operator()@{operator()}!FunctionRosenbrock@{FunctionRosenbrock}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily \label{class_function_rosenbrock_acf0cfde4e6f50f5c857ec89fa98b508f} 
+point\+\_\+type Function\+Rosenbrock\+::operator() (\begin{DoxyParamCaption}\item[{const Vector\+Xd \&}]{point}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Function\+Rosenbrock.\+h\end{DoxyCompactItemize}

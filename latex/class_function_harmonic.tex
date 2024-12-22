@@ -1,0 +1,74 @@
+\doxysection{Function\+Harmonic Class Reference}
+\hypertarget{class_function_harmonic}{}\label{class_function_harmonic}\index{FunctionHarmonic@{FunctionHarmonic}}
+
+
+sin(x)\texorpdfstring{$\ast$}{*}cos(2y)\texorpdfstring{$\ast$}{*}sin(3z+pi/6)  
+
+
+
+
+{\ttfamily \#include $<$Function\+Harmonic.\+h$>$}
+
+Inheritance diagram for Function\+Harmonic\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_function_harmonic}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{class_function_harmonic_a82362e61f366b719733bb362ac5a1cb7}{get\+Dim}} () const override
+\item 
+string \mbox{\hyperlink{class_function_harmonic_a3e3520e2be276f2c20ce527bc8ed6f4d}{get\+Name}} () const override
+\item 
+point\+\_\+type \mbox{\hyperlink{class_function_harmonic_a02fc2e8713a731a3fa5a761bfb40c6ae}{operator()}} (const Vector\+Xd \&point) const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_function}{Function}}}
+\begin{DoxyCompactItemize}
+\item 
+Vector\+Xd {\bfseries get\+Gradient} (const Vector\+Xd \&point) const
+\item 
+Matrix\+Xd {\bfseries get\+Hessian\+Matrix} (const Vector\+Xd \&point) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+sin(x)\texorpdfstring{$\ast$}{*}cos(2y)\texorpdfstring{$\ast$}{*}sin(3z+pi/6) 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_function_harmonic_a82362e61f366b719733bb362ac5a1cb7}\index{FunctionHarmonic@{FunctionHarmonic}!getDim@{getDim}}
+\index{getDim@{getDim}!FunctionHarmonic@{FunctionHarmonic}}
+\doxysubsubsection{\texorpdfstring{getDim()}{getDim()}}
+{\footnotesize\ttfamily \label{class_function_harmonic_a82362e61f366b719733bb362ac5a1cb7} 
+size\+\_\+t Function\+Harmonic\+::get\+Dim (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+\Hypertarget{class_function_harmonic_a3e3520e2be276f2c20ce527bc8ed6f4d}\index{FunctionHarmonic@{FunctionHarmonic}!getName@{getName}}
+\index{getName@{getName}!FunctionHarmonic@{FunctionHarmonic}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily \label{class_function_harmonic_a3e3520e2be276f2c20ce527bc8ed6f4d} 
+string Function\+Harmonic\+::get\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+\Hypertarget{class_function_harmonic_a02fc2e8713a731a3fa5a761bfb40c6ae}\index{FunctionHarmonic@{FunctionHarmonic}!operator()@{operator()}}
+\index{operator()@{operator()}!FunctionHarmonic@{FunctionHarmonic}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily \label{class_function_harmonic_a02fc2e8713a731a3fa5a761bfb40c6ae} 
+point\+\_\+type Function\+Harmonic\+::operator() (\begin{DoxyParamCaption}\item[{const Vector\+Xd \&}]{point}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Function\+Harmonic.\+h\end{DoxyCompactItemize}

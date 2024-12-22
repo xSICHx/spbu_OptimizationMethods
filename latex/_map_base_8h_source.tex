@@ -1,0 +1,261 @@
+\doxysection{Map\+Base.\+h}
+\hypertarget{_map_base_8h_source}{}\label{_map_base_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/MapBase.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/MapBase.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2007-\/2010\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2008\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_MAPBASE\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_MAPBASE\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ EIGEN\_STATIC\_ASSERT\_INDEX\_BASED\_ACCESS(Derived)\ \(\backslash\)}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\ \ \ \ \ \ EIGEN\_STATIC\_ASSERT((int(internal::evaluator<Derived>::Flags)\ \&\ LinearAccessBit)\ ||\ Derived::IsVectorAtCompileTime,\ \(\backslash\)}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ YOU\_ARE\_TRYING\_TO\_USE\_AN\_INDEX\_BASED\_ACCESSOR\_ON\_AN\_EXPRESSION\_THAT\_DOES\_NOT\_SUPPORT\_THAT)}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}<Derived,\ \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5daa1f2b0e6a668b11f2958940965d2b572}{ReadOnlyAccessors}}>}
+\DoxyCodeLine{00038\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__xpr__base}{internal::dense\_xpr\_base}}<Derived>::type}
+\DoxyCodeLine{00039\ \{}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::dense\_xpr\_base<Derived>::type\ Base;}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ RowsAtCompileTime\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::RowsAtCompileTime}},}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ ColsAtCompileTime\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::ColsAtCompileTime}},}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ SizeAtCompileTime\ =\ Base::SizeAtCompileTime}
+\DoxyCodeLine{00047\ \ \ \ \ \};}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::StorageKind}}\ StorageKind;}
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Scalar}}\ Scalar;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::packet\_traits<Scalar>::type\ PacketScalar;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional}}<}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ bool(\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__lvalue}{internal::is\_lvalue<Derived>::value}}),}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Scalar\ *,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ *>::type}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PointerType}};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{using\ }Base::derived;}
+\DoxyCodeLine{00060\ \textcolor{comment}{//\ \ \ \ using\ Base::RowsAtCompileTime;}}
+\DoxyCodeLine{00061\ \textcolor{comment}{//\ \ \ \ using\ Base::ColsAtCompileTime;}}
+\DoxyCodeLine{00062\ \textcolor{comment}{//\ \ \ \ using\ Base::SizeAtCompileTime;}}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{using\ }Base::MaxRowsAtCompileTime;}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{using\ }Base::MaxColsAtCompileTime;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{using\ }Base::MaxSizeAtCompileTime;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{using\ }Base::IsVectorAtCompileTime;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{using\ }Base::Flags;}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{using\ }Base::IsRowMajor;}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{using\ }Base::rows;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{using\ }Base::cols;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{using\ }Base::size;}
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{using\ }Base::coeff;}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{using\ }Base::coeffRef;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{using\ }Base::lazyAssign;}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{using\ }Base::eval;}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keyword}{using\ }Base::innerStride;}
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{using\ }Base::outerStride;}
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{using\ }Base::rowStride;}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{using\ }Base::colStride;}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ bug\ 217\ -\/\ compile\ error\ on\ ICC\ 11.1}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{using\ }Base::operator=;}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Base::CoeffReturnType\ CoeffReturnType;}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00089\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4_a78b3ab4983de51f112e6a062ac8f6ffd}{rows}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_rows.value();\ \}}
+\DoxyCodeLine{00091\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4_ad345a6b995b9894e9b076ee174876659}{cols}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_cols.value();\ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00099\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar*\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4_adc5e5ae6cbc430301e8904551683e501}{data}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_data;\ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00102\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00103\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4_a1c032de9fdbf2842485825e91669fe78}{coeff}}(Index\ rowId,\ Index\ colId)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00104\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_data[colId\ *\ colStride()\ +\ rowId\ *\ rowStride()];}
+\DoxyCodeLine{00106\ \ \ \ \ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00109\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4_ad8d0a4fb970eba8cdf99f57d10fd763d}{coeff}}(Index\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00111\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_INDEX\_BASED\_ACCESS(Derived)}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_data[index\ *\ innerStride()];}
+\DoxyCodeLine{00114\ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00117\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4_af8f5c2b985b137783804fc5f388a2b11}{coeffRef}}(Index\ rowId,\ Index\ colId)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00119\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ this-\/>m\_data[colId\ *\ colStride()\ +\ rowId\ *\ rowStride()];}
+\DoxyCodeLine{00121\ \ \ \ \ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00124\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4_a91e39530451825f4ce5bae86d4aed0fd}{coeffRef}}(Index\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00126\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_INDEX\_BASED\_ACCESS(Derived)}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ this-\/>m\_data[index\ *\ innerStride()];}
+\DoxyCodeLine{00129\ \ \ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00132\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ LoadMode>}
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{inline}\ PacketScalar\ packet(Index\ rowId,\ Index\ colId)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00134\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ internal::ploadt<PacketScalar,\ LoadMode>}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (m\_data\ +\ (colId\ *\ colStride()\ +\ rowId\ *\ rowStride()));}
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00140\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ LoadMode>}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{inline}\ PacketScalar\ packet(Index\ index)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00142\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_INDEX\_BASED\_ACCESS(Derived)}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ internal::ploadt<PacketScalar,\ LoadMode>(m\_data\ +\ index\ *\ innerStride());}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00148\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ MapBase(PointerType\ dataPtr)\ :\ m\_data(dataPtr),\ m\_rows(RowsAtCompileTime),\ m\_cols(ColsAtCompileTime)}
+\DoxyCodeLine{00150\ \ \ \ \ \{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_FIXED\_SIZE(Derived)}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ checkSanity<Derived>();}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00156\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{inline}\ MapBase(PointerType\ dataPtr,\ Index\ vecSize)}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ :\ m\_data(dataPtr),}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_rows(RowsAtCompileTime\ ==\ Dynamic\ ?\ vecSize\ :\ Index(RowsAtCompileTime)),}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_cols(ColsAtCompileTime\ ==\ Dynamic\ ?\ vecSize\ :\ Index(ColsAtCompileTime))}
+\DoxyCodeLine{00161\ \ \ \ \ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ eigen\_assert(vecSize\ >=\ 0);}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ eigen\_assert(dataPtr\ ==\ 0\ ||\ SizeAtCompileTime\ ==\ Dynamic\ ||\ SizeAtCompileTime\ ==\ vecSize);}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ checkSanity<Derived>();}
+\DoxyCodeLine{00166\ \ \ \ \ \}}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00169\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keyword}{inline}\ MapBase(PointerType\ dataPtr,\ Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \ \ \ \ :\ m\_data(dataPtr),\ m\_rows(rows),\ m\_cols(cols)}
+\DoxyCodeLine{00172\ \ \ \ \ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ eigen\_assert(\ (dataPtr\ ==\ 0)}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (\ \ \ rows\ >=\ 0\ \&\&\ (RowsAtCompileTime\ ==\ Dynamic\ ||\ RowsAtCompileTime\ ==\ rows)}
+\DoxyCodeLine{00175\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ cols\ >=\ 0\ \&\&\ (ColsAtCompileTime\ ==\ Dynamic\ ||\ ColsAtCompileTime\ ==\ cols)));}
+\DoxyCodeLine{00176\ \ \ \ \ \ \ checkSanity<Derived>();}
+\DoxyCodeLine{00177\ \ \ \ \ \}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ EIGEN\_MAPBASE\_PLUGIN}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\ \ \ \ \#include\ EIGEN\_MAPBASE\_PLUGIN}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00186\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordtype}{void}\ checkSanity(\textcolor{keyword}{typename}\ internal::enable\_if<(internal::traits<T>::Alignment>0),\textcolor{keywordtype}{void}*>::type\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00188\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#if\ EIGEN\_MAX\_ALIGN\_BYTES>0}}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ eigen\_assert((\ \ \ ((internal::UIntPtr(m\_data)\ \%\ internal::traits<Derived>::Alignment)\ ==\ 0)}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (cols()\ *\ rows()\ *\ innerStride()\ *\ \textcolor{keyword}{sizeof}(Scalar))\ <\ internal::traits<Derived>::Alignment\ )\ \&\&\ \textcolor{stringliteral}{"{}data\ is\ not\ aligned"{}});}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00196\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keywordtype}{void}\ checkSanity(\textcolor{keyword}{typename}\ internal::enable\_if<internal::traits<T>::Alignment==0,\textcolor{keywordtype}{void}*>::type\ =\ 0)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00198\ \textcolor{keyword}{\ \ \ \ }\{\}}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ PointerType\ m\_data;}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{const}\ internal::variable\_if\_dynamic<Index,\ RowsAtCompileTime>\ m\_rows;}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{const}\ internal::variable\_if\_dynamic<Index,\ ColsAtCompileTime>\ m\_cols;}
+\DoxyCodeLine{00203\ \};}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00215\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}<Derived,\ \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5dabcadf08230fb1a5ef7b3195745d3a458}{WriteAccessors}}>}
+\DoxyCodeLine{00216\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}<Derived,\ ReadOnlyAccessors>}
+\DoxyCodeLine{00217\ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase<Derived,\ ReadOnlyAccessors>}}\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4}{ReadOnlyMapBase}};}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase<Derived,\ ReadOnlyAccessors>}}\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4}{Base}};}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Base::Scalar\ Scalar;}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Base::PacketScalar\ PacketScalar;}
+\DoxyCodeLine{00225\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Base::StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Base::PointerType}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PointerType}};}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \ \ \ \ \textcolor{keyword}{using\ }Base::derived;}
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{using\ }Base::rows;}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{using\ }Base::cols;}
+\DoxyCodeLine{00231\ \ \ \ \ \textcolor{keyword}{using\ }Base::size;}
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{using\ }Base::coeff;}
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{using\ }Base::coeffRef;}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keyword}{using\ }Base::innerStride;}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keyword}{using\ }Base::outerStride;}
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{using\ }Base::rowStride;}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{using\ }Base::colStride;}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional}}<}
+\DoxyCodeLine{00241\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1is__lvalue}{internal::is\_lvalue<Derived>::value}},}
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Scalar,}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Scalar}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ >::type\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ScalarWithConstIfNotLvalue}};}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar*\ data()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>m\_data;\ \}}
+\DoxyCodeLine{00248\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ScalarWithConstIfNotLvalue}}*\ data()\ \{\ \textcolor{keywordflow}{return}\ this-\/>m\_data;\ \}\ \textcolor{comment}{//\ no\ const-\/cast\ here\ so\ non-\/const-\/correct\ code\ will\ give\ a\ compile\ error}}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00251\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ScalarWithConstIfNotLvalue}}\&\ coeffRef(Index\ row,\ Index\ col)}
+\DoxyCodeLine{00253\ \ \ \ \ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ this-\/>m\_data[col\ *\ colStride()\ +\ row\ *\ rowStride()];}
+\DoxyCodeLine{00255\ \ \ \ \ \}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00258\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ScalarWithConstIfNotLvalue}}\&\ coeffRef(Index\ index)}
+\DoxyCodeLine{00259\ \ \ \ \ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_INDEX\_BASED\_ACCESS(Derived)}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ this-\/>m\_data[index\ *\ innerStride()];}
+\DoxyCodeLine{00262\ \ \ \ \ \}}
+\DoxyCodeLine{00263\ }
+\DoxyCodeLine{00264\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ StoreMode>}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ writePacket(Index\ row,\ Index\ col,\ \textcolor{keyword}{const}\ PacketScalar\&\ val)}
+\DoxyCodeLine{00266\ \ \ \ \ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ internal::pstoret<Scalar,\ PacketScalar,\ StoreMode>}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (this-\/>m\_data\ +\ (col\ *\ colStride()\ +\ row\ *\ rowStride()),\ val);}
+\DoxyCodeLine{00269\ \ \ \ \ \}}
+\DoxyCodeLine{00270\ }
+\DoxyCodeLine{00271\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ StoreMode>}
+\DoxyCodeLine{00272\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ writePacket(Index\ index,\ \textcolor{keyword}{const}\ PacketScalar\&\ val)}
+\DoxyCodeLine{00273\ \ \ \ \ \{}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_INDEX\_BASED\_ACCESS(Derived)}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ internal::pstoret<Scalar,\ PacketScalar,\ StoreMode>}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (this-\/>m\_data\ +\ index\ *\ innerStride(),\ val);}
+\DoxyCodeLine{00277\ \ \ \ \ \}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PointerType}}\ dataPtr)\ :\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4}{Base}}(dataPtr)\ \{\}}
+\DoxyCodeLine{00280\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PointerType}}\ dataPtr,\ Index\ vecSize)\ :\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4}{Base}}(dataPtr,\ vecSize)\ \{\}}
+\DoxyCodeLine{00281\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PointerType}}\ dataPtr,\ Index\ rows,\ Index\ cols)\ :\ \mbox{\hyperlink{class_eigen_1_1_map_base_3_01_derived_00_01_read_only_accessors_01_4}{Base}}(dataPtr,\ rows,\ cols)\ \{\}}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00284\ \ \ \ \ Derived\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_map_base}{MapBase}}\&\ other)}
+\DoxyCodeLine{00285\ \ \ \ \ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ ReadOnlyMapBase::Base::operator=(other);}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00288\ \ \ \ \ \}}
+\DoxyCodeLine{00289\ }
+\DoxyCodeLine{00290\ \ \ \ \ \textcolor{comment}{//\ In\ theory\ we\ could\ simply\ refer\ to\ Base:Base::operator=,\ but\ MSVC\ does\ not\ like\ Base::Base,}}
+\DoxyCodeLine{00291\ \ \ \ \ \textcolor{comment}{//\ see\ bugs\ 821\ and\ 920.}}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{using\ }ReadOnlyMapBase::Base::operator=;}
+\DoxyCodeLine{00293\ \};}
+\DoxyCodeLine{00294\ }
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#undef\ EIGEN\_STATIC\_ASSERT\_INDEX\_BASED\_ACCESS}}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_MAPBASE\_H}}
+
+\end{DoxyCode}

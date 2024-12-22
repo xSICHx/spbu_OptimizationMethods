@@ -1,0 +1,330 @@
+\doxysection{Householder\+Sequence.\+h}
+\hypertarget{_householder_sequence_8h_source}{}\label{_householder_sequence_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Householder/HouseholderSequence.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Householder/HouseholderSequence.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2010\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_HOUSEHOLDER\_SEQUENCE\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_HOUSEHOLDER\_SEQUENCE\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType,\ \textcolor{keywordtype}{int}\ S\textcolor{keywordtype}{id}e>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}<VectorsType,CoeffsType,Side>\ >}
+\DoxyCodeLine{00061\ \{}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VectorsType::Scalar\ Scalar;}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VectorsType::StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VectorsType::StorageKind\ StorageKind;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00066\ \ \ \ \ RowsAtCompileTime\ =\ Side==\mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba21b30a61e9cb10c967aec17567804007}{OnTheLeft}}\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<VectorsType>::RowsAtCompileTime}}}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<VectorsType>::ColsAtCompileTime}},}
+\DoxyCodeLine{00068\ \ \ \ \ ColsAtCompileTime\ =\ RowsAtCompileTime,}
+\DoxyCodeLine{00069\ \ \ \ \ MaxRowsAtCompileTime\ =\ Side==\mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba21b30a61e9cb10c967aec17567804007}{OnTheLeft}}\ ?\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<VectorsType>::MaxRowsAtCompileTime}}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<VectorsType>::MaxColsAtCompileTime}},}
+\DoxyCodeLine{00071\ \ \ \ \ MaxColsAtCompileTime\ =\ MaxRowsAtCompileTime,}
+\DoxyCodeLine{00072\ \ \ \ \ Flags\ =\ 0}
+\DoxyCodeLine{00073\ \ \ \};}
+\DoxyCodeLine{00074\ \};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_householder_sequence_shape}{HouseholderSequenceShape}}\ \{\};}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType,\ \textcolor{keywordtype}{int}\ S\textcolor{keywordtype}{id}e>}
+\DoxyCodeLine{00079\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator__traits}{evaluator\_traits}}<\mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}<VectorsType,CoeffsType,Side>\ >}
+\DoxyCodeLine{00080\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator__traits__base}{evaluator\_traits\_base}}<HouseholderSequence<VectorsType,CoeffsType,Side>\ >}
+\DoxyCodeLine{00081\ \{}
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_householder_sequence_shape}{HouseholderSequenceShape}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_householder_sequence_shape}{Shape}};}
+\DoxyCodeLine{00083\ \};}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType,\ \textcolor{keywordtype}{int}\ S\textcolor{keywordtype}{id}e>}
+\DoxyCodeLine{00086\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1hseq__side__dependent__impl}{hseq\_side\_dependent\_impl}}}
+\DoxyCodeLine{00087\ \{}
+\DoxyCodeLine{00088\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_block}{Block<const\ VectorsType,\ Dynamic,\ 1>}}\ \mbox{\hyperlink{class_eigen_1_1_block}{EssentialVectorType}};}
+\DoxyCodeLine{00089\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence<VectorsType,\ CoeffsType,\ OnTheLeft>}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequenceType}};}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_block}{EssentialVectorType}}\ essentialVector(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequenceType}}\&\ h,\ Index\ k)}
+\DoxyCodeLine{00091\ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ Index\ start\ =\ k+1+h.m\_shift;}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_block}{Block<const\ VectorsType,Dynamic,1>}}(h.m\_vectors,\ start,\ k,\ h.\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/start,\ 1);}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \};}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00097\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType>}
+\DoxyCodeLine{00098\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1hseq__side__dependent__impl}{hseq\_side\_dependent\_impl}}<VectorsType,\ CoeffsType,\ \mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba329fc3a54ceb2b6e0e73b400998b8a82}{OnTheRight}}>}
+\DoxyCodeLine{00099\ \{}
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<Block<const\ VectorsType,\ 1,\ Dynamic>}}\ >\ \mbox{\hyperlink{class_eigen_1_1_transpose}{EssentialVectorType}};}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence<VectorsType,\ CoeffsType,\ OnTheRight>}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequenceType}};}
+\DoxyCodeLine{00102\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpose}{EssentialVectorType}}\ essentialVector(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequenceType}}\&\ h,\ Index\ k)}
+\DoxyCodeLine{00103\ \ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ Index\ start\ =\ k+1+h.m\_shift;}
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_block}{Block<const\ VectorsType,1,Dynamic>}}(h.m\_vectors,\ k,\ start,\ 1,\ h.\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/start).transpose();}
+\DoxyCodeLine{00106\ \ \ \}}
+\DoxyCodeLine{00107\ \};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherScalarType,\ \textcolor{keyword}{typename}\ MatrixType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1matrix__type__times__scalar__type}{matrix\_type\_times\_scalar\_type}}}
+\DoxyCodeLine{00110\ \{}
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1_scalar_binary_op_traits}{ScalarBinaryOpTraits<OtherScalarType,\ typename\ MatrixType::Scalar>::ReturnType}}}
+\DoxyCodeLine{00112\ \ \ \ \ ResultScalar;}
+\DoxyCodeLine{00113\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}<ResultScalar,\ MatrixType::RowsAtCompileTime,\ MatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 0,\ MatrixType::MaxRowsAtCompileTime,\ MatrixType::MaxColsAtCompileTime>\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Type}};}
+\DoxyCodeLine{00115\ \};}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00118\ }
+\DoxyCodeLine{00119\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType,\ \textcolor{keywordtype}{int}\ S\textcolor{keywordtype}{id}e>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}}
+\DoxyCodeLine{00120\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase}}<HouseholderSequence<VectorsType,CoeffsType,Side>\ >}
+\DoxyCodeLine{00121\ \{}
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_block}{internal::hseq\_side\_dependent\_impl<VectorsType,CoeffsType,Side>::EssentialVectorType}}\ \mbox{\hyperlink{class_eigen_1_1_block}{EssentialVectorType}};}
+\DoxyCodeLine{00123\ \ \ }
+\DoxyCodeLine{00124\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ RowsAtCompileTime\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<HouseholderSequence>::RowsAtCompileTime}},}
+\DoxyCodeLine{00127\ \ \ \ \ \ \ ColsAtCompileTime\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<HouseholderSequence>::ColsAtCompileTime}},}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ MaxRowsAtCompileTime\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<HouseholderSequence>::MaxRowsAtCompileTime}},}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<HouseholderSequence>::MaxColsAtCompileTime}}}
+\DoxyCodeLine{00130\ \ \ \ \ \};}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<HouseholderSequence>::Scalar}}\ Scalar;}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}<}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional<NumTraits<Scalar>::IsComplex}},}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ internal::remove\_all<typename\ VectorsType::ConjugateReturnType>::type,}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ VectorsType>::type,}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional<NumTraits<Scalar>::IsComplex}},}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ internal::remove\_all<typename\ CoeffsType::ConjugateReturnType>::type,}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ CoeffsType>::type,}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ Side}
+\DoxyCodeLine{00141\ \ \ \ \ >\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{ConjugateReturnType}};}
+\DoxyCodeLine{00142\ }
+\DoxyCodeLine{00160\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_af6aeede87ed8dac452f4fa8b4f45c3f2}{HouseholderSequence}}(\textcolor{keyword}{const}\ VectorsType\&\ v,\ \textcolor{keyword}{const}\ CoeffsType\&\ h)}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ :\ m\_vectors(v),\ m\_coeffs(h),\ m\_trans(false),\ m\_length(v.diagonalSize()),}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ \ \ m\_shift(0)}
+\DoxyCodeLine{00163\ \ \ \ \ \{}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00167\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_aa4b1b93fff4d5c79342974d9d2a9eec8}{HouseholderSequence}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}\&\ other)}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ :\ m\_vectors(other.m\_vectors),}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ m\_coeffs(other.m\_coeffs),}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \ \ m\_trans(other.m\_trans),}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ m\_length(other.m\_length),}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ m\_shift(other.m\_shift)}
+\DoxyCodeLine{00173\ \ \ \ \ \{}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00180\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ Side==\mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba21b30a61e9cb10c967aec17567804007}{OnTheLeft}}\ ?\ m\_vectors.rows()\ :\ m\_vectors.cols();\ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00186\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_adcdcdd92a77810ce4bdd2b1282fe6a75}{cols}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}();\ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_block}{EssentialVectorType}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac91cf37b0cbea9e504c89e021fd289ba}{essentialVector}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00203\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ eigen\_assert(k\ >=\ 0\ \&\&\ k\ <\ m\_length);}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1hseq__side__dependent__impl}{internal::hseq\_side\_dependent\_impl<VectorsType,CoeffsType,Side>::essentialVector}}(*\textcolor{keyword}{this},\ k);}
+\DoxyCodeLine{00206\ \ \ \ \ \}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00209\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_aa60b1f1ed1a699d092c865d1a0da47e9}{transpose}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00210\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}(*this).\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a1001219fedd8f9bb4f306d1d2def2c0a}{setTrans}}(!m\_trans);}
+\DoxyCodeLine{00212\ \ \ \ \ \}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00215\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{ConjugateReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac71fa85a4f177b0aeb1026752aea5590}{conjugate}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00216\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{ConjugateReturnType}}(m\_vectors.conjugate(),\ m\_coeffs.conjugate())}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ \ \ \ \ \ \ \ .\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a1001219fedd8f9bb4f306d1d2def2c0a}{setTrans}}(m\_trans)}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \ \ \ \ \ \ \ .\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a182e62a04a5674d56a244390a67e4b38}{setLength}}(m\_length)}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ \ \ \ \ \ \ \ .\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6a2e69033bfd36b5c0a0be92d425068d}{setShift}}(m\_shift);}
+\DoxyCodeLine{00221\ \ \ \ \ \}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00224\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{ConjugateReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a40ca81cf392d8de4c747dbbdd6bd6545}{adjoint}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00225\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac71fa85a4f177b0aeb1026752aea5590}{conjugate}}().\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a1001219fedd8f9bb4f306d1d2def2c0a}{setTrans}}(!m\_trans);}
+\DoxyCodeLine{00227\ \ \ \ \ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00230\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{ConjugateReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_af030b5ac2151241aeb920f74e8f73b4a}{inverse}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a40ca81cf392d8de4c747dbbdd6bd6545}{adjoint}}();\ \}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00233\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DestType>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ evalTo(DestType\&\ dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00234\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00235\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}<Scalar,\ DestType::RowsAtCompileTime,\ 1,}
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13ad0e7f67d40bcde3d41c12849b16ce6ea}{AutoAlign}}|\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{ColMajor}},\ DestType::MaxRowsAtCompileTime,\ 1>\ workspace(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}());}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ evalTo(dst,\ workspace);}
+\DoxyCodeLine{00238\ \ \ \ \ \}}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest,\ \textcolor{keyword}{typename}\ Workspace>}
+\DoxyCodeLine{00242\ \ \ \ \ \textcolor{keywordtype}{void}\ evalTo(Dest\&\ dst,\ Workspace\&\ workspace)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00243\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00244\ \ \ \ \ \ \ workspace.resize(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}());}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ vecs\ =\ m\_length;}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(internal::is\_same\_dense(dst,m\_vectors))}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ in-\/place}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ dst.diagonal().setOnes();}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ dst.template\ triangularView<StrictlyUpper>().setZero();}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k\ =\ vecs-\/1;\ k\ >=\ 0;\ -\/-\/k)}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ cornerSize\ =\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()\ -\/\ k\ -\/\ m\_shift;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(m\_trans)}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ dst.bottomRightCorner(cornerSize,\ cornerSize)}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .applyHouseholderOnTheRight(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac91cf37b0cbea9e504c89e021fd289ba}{essentialVector}}(k),\ m\_coeffs.coeff(k),\ workspace.data());}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ \ \ dst.bottomRightCorner(cornerSize,\ cornerSize)}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .applyHouseholderOnTheLeft(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac91cf37b0cbea9e504c89e021fd289ba}{essentialVector}}(k),\ m\_coeffs.coeff(k),\ workspace.data());}
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ clear\ the\ off\ diagonal\ vector}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ dst.col(k).tail(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/k-\/1).setZero();}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ clear\ the\ remaining\ columns\ if\ needed}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k\ =\ 0;\ k<\mbox{\hyperlink{class_eigen_1_1_householder_sequence_adcdcdd92a77810ce4bdd2b1282fe6a75}{cols}}()-\/vecs\ ;\ ++k)}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \ \ dst.col(k).tail(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/k-\/1).setZero();}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ dst.setIdentity(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}(),\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}());}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k\ =\ vecs-\/1;\ k\ >=\ 0;\ -\/-\/k)}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ cornerSize\ =\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()\ -\/\ k\ -\/\ m\_shift;}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(m\_trans)}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ \ \ \ \ dst.bottomRightCorner(cornerSize,\ cornerSize)}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .applyHouseholderOnTheRight(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac91cf37b0cbea9e504c89e021fd289ba}{essentialVector}}(k),\ m\_coeffs.coeff(k),\ \&workspace.coeffRef(0));}
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \ \ \ \ dst.bottomRightCorner(cornerSize,\ cornerSize)}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ .applyHouseholderOnTheLeft(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac91cf37b0cbea9e504c89e021fd289ba}{essentialVector}}(k),\ m\_coeffs.coeff(k),\ \&workspace.coeffRef(0));}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00282\ \ \ \ \ \}}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00285\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ applyThisOnTheRight(Dest\&\ dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00286\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ Matrix<Scalar,1,Dest::RowsAtCompileTime,RowMajor,1,Dest::MaxRowsAtCompileTime>\ workspace(dst.rows());}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ applyThisOnTheRight(dst,\ workspace);}
+\DoxyCodeLine{00289\ \ \ \ \ \}}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest,\ \textcolor{keyword}{typename}\ Workspace>}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ applyThisOnTheRight(Dest\&\ dst,\ Workspace\&\ workspace)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00294\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ workspace.resize(dst.rows());}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k\ =\ 0;\ k\ <\ m\_length;\ ++k)}
+\DoxyCodeLine{00297\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00298\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ actual\_k\ =\ m\_trans\ ?\ m\_length-\/k-\/1\ :\ k;}
+\DoxyCodeLine{00299\ \ \ \ \ \ \ \ \ dst.rightCols(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/m\_shift-\/actual\_k)}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ \ \ \ .applyHouseholderOnTheRight(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac91cf37b0cbea9e504c89e021fd289ba}{essentialVector}}(actual\_k),\ m\_coeffs.coeff(actual\_k),\ workspace.data());}
+\DoxyCodeLine{00301\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00302\ \ \ \ \ \}}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00305\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ applyThisOnTheLeft(Dest\&\ dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00306\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ Matrix<Scalar,1,Dest::ColsAtCompileTime,RowMajor,1,Dest::MaxColsAtCompileTime>\ workspace;}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ applyThisOnTheLeft(dst,\ workspace);}
+\DoxyCodeLine{00309\ \ \ \ \ \}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00312\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest,\ \textcolor{keyword}{typename}\ Workspace>}
+\DoxyCodeLine{00313\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ applyThisOnTheLeft(Dest\&\ dst,\ Workspace\&\ workspace)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00314\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00315\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ BlockSize\ =\ 48;}
+\DoxyCodeLine{00316\ \ \ \ \ \ \ \textcolor{comment}{//\ if\ the\ entries\ are\ large\ enough,\ then\ apply\ the\ reflectors\ by\ block}}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(m\_length>=BlockSize\ \&\&\ dst.cols()>1)}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ i\ =\ 0;\ i\ <\ m\_length;\ i+=BlockSize)}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ end\ =\ m\_trans\ ?\ (std::min)(m\_length,i+BlockSize)\ :\ m\_length-\/i;}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k\ =\ m\_trans\ ?\ i\ :\ (std::max)(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}(0),end-\/BlockSize);}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ bs\ =\ end-\/k;}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ start\ =\ k\ +\ m\_shift;}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typedef}\ Block<typename\ internal::remove\_all<VectorsType>::type,Dynamic,Dynamic>\ SubVectorsType;}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \ \ SubVectorsType\ sub\_vecs1(m\_vectors.const\_cast\_derived(),\ Side==\mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba329fc3a54ceb2b6e0e73b400998b8a82}{OnTheRight}}\ ?\ k\ :\ start,}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Side==\mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba329fc3a54ceb2b6e0e73b400998b8a82}{OnTheRight}}\ ?\ start\ :\ k,}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Side==\mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba329fc3a54ceb2b6e0e73b400998b8a82}{OnTheRight}}\ ?\ bs\ :\ m\_vectors.\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/start,}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Side==\mbox{\hyperlink{group__enums_ggac22de43beeac7a78b384f99bed5cee0ba329fc3a54ceb2b6e0e73b400998b8a82}{OnTheRight}}\ ?\ m\_vectors.\mbox{\hyperlink{class_eigen_1_1_householder_sequence_adcdcdd92a77810ce4bdd2b1282fe6a75}{cols}}()-\/start\ :\ bs);}
+\DoxyCodeLine{00331\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ internal::conditional<Side==OnTheRight,\ Transpose<SubVectorsType>,\ SubVectorsType\&>::type\ sub\_vecs(sub\_vecs1);}
+\DoxyCodeLine{00332\ \ \ \ \ \ \ \ \ \ \ Block<Dest,Dynamic,Dynamic>\ sub\_dst(dst,dst.rows()-\/\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()+m\_shift+k,0,\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/m\_shift-\/k,dst.cols());}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \ \ \ \ apply\_block\_householder\_on\_the\_left(sub\_dst,\ sub\_vecs,\ m\_coeffs.segment(k,\ bs),\ !m\_trans);}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00336\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00337\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ \ \ workspace.resize(dst.cols());}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k\ =\ 0;\ k\ <\ m\_length;\ ++k)}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ actual\_k\ =\ m\_trans\ ?\ k\ :\ m\_length-\/k-\/1;}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \ \ \ \ dst.bottomRows(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6eaafe2460930d1f4aa67d6e577b71f0}{rows}}()-\/m\_shift-\/actual\_k)}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \ \ \ \ \ \ .applyHouseholderOnTheLeft(\mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac91cf37b0cbea9e504c89e021fd289ba}{essentialVector}}(actual\_k),\ m\_coeffs.coeff(actual\_k),\ workspace.data());}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00346\ \ \ \ \ \}}
+\DoxyCodeLine{00347\ }
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{internal::matrix\_type\_times\_scalar\_type<Scalar,\ OtherDerived>::Type}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ab857ac85a9a200ab8dce3315c99b3fb9}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<OtherDerived>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00357\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{internal::matrix\_type\_times\_scalar\_type<Scalar,\ OtherDerived>::Type}}}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ \ \ res(other.template\ cast<\textcolor{keyword}{typename}\ internal::matrix\_type\_times\_scalar\_type<Scalar,OtherDerived>::ResultScalar>());}
+\DoxyCodeLine{00360\ \ \ \ \ \ \ applyThisOnTheLeft(res);}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00362\ \ \ \ \ \}}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_VectorsType,\ \textcolor{keyword}{typename}\ \_CoeffsType,\ \textcolor{keywordtype}{int}\ \_S\textcolor{keywordtype}{id}e>\ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1hseq__side__dependent__impl}{internal::hseq\_side\_dependent\_impl}};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00375\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}\&\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a182e62a04a5674d56a244390a67e4b38}{setLength}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac62fad812f3893f237378fe70e55bf66}{length}})}
+\DoxyCodeLine{00376\ \ \ \ \ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ m\_length\ =\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac62fad812f3893f237378fe70e55bf66}{length}};}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00379\ \ \ \ \ \}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00392\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}\&\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a6a2e69033bfd36b5c0a0be92d425068d}{setShift}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a34482bfad5563fd8a8a4264db76ac917}{shift}})}
+\DoxyCodeLine{00393\ \ \ \ \ \{}
+\DoxyCodeLine{00394\ \ \ \ \ \ \ m\_shift\ =\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a34482bfad5563fd8a8a4264db76ac917}{shift}};}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00396\ \ \ \ \ \}}
+\DoxyCodeLine{00397\ }
+\DoxyCodeLine{00398\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ac62fad812f3893f237378fe70e55bf66}{length}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_length;\ \}\ \ }
+\DoxyCodeLine{00399\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a34482bfad5563fd8a8a4264db76ac917}{shift}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_shift;\ \}\ \ \ \ }
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{comment}{/*\ Necessary\ for\ .adjoint()\ and\ .conjugate()\ */}}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ VectorsType2,\ \textcolor{keyword}{typename}\ CoeffsType2,\ \textcolor{keywordtype}{int}\ S\textcolor{keywordtype}{id}e2>\ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}};}
+\DoxyCodeLine{00403\ }
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00414\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_householder_sequence}{HouseholderSequence}}\&\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_a1001219fedd8f9bb4f306d1d2def2c0a}{setTrans}}(\textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ad61c9b10d95c26b7397ccb47f4d80b08}{trans}})}
+\DoxyCodeLine{00415\ \ \ \ \ \{}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ m\_trans\ =\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ad61c9b10d95c26b7397ccb47f4d80b08}{trans}};}
+\DoxyCodeLine{00417\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00418\ \ \ \ \ \}}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00420\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_householder_sequence_ad61c9b10d95c26b7397ccb47f4d80b08}{trans}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_trans;\ \}\ \ \ \ \ }
+\DoxyCodeLine{00422\ \ \ \ \ \textcolor{keyword}{typename}\ VectorsType::Nested\ m\_vectors;}
+\DoxyCodeLine{00423\ \ \ \ \ \textcolor{keyword}{typename}\ CoeffsType::Nested\ m\_coeffs;}
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_trans;}
+\DoxyCodeLine{00425\ \ \ \ \ Index\ m\_length;}
+\DoxyCodeLine{00426\ \ \ \ \ Index\ m\_shift;}
+\DoxyCodeLine{00427\ \};}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00437\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived,\ \textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType,\ \textcolor{keywordtype}{int}\ S\textcolor{keywordtype}{id}e>}
+\DoxyCodeLine{00438\ \textcolor{keyword}{typename}\ internal::matrix\_type\_times\_scalar\_type<typename\ VectorsType::Scalar,OtherDerived>::Type\ operator*(\textcolor{keyword}{const}\ MatrixBase<OtherDerived>\&\ other,\ \textcolor{keyword}{const}\ HouseholderSequence<VectorsType,CoeffsType,Side>\&\ h)}
+\DoxyCodeLine{00439\ \{}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{typename}\ internal::matrix\_type\_times\_scalar\_type<typename\ VectorsType::Scalar,OtherDerived>::Type}
+\DoxyCodeLine{00441\ \ \ \ \ res(other.template\ cast<\textcolor{keyword}{typename}\ internal::matrix\_type\_times\_scalar\_type<typename\ VectorsType::Scalar,OtherDerived>::ResultScalar>());}
+\DoxyCodeLine{00442\ \ \ h.applyThisOnTheRight(res);}
+\DoxyCodeLine{00443\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00444\ \}}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00450\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType>}
+\DoxyCodeLine{00451\ HouseholderSequence<VectorsType,CoeffsType>\ householderSequence(\textcolor{keyword}{const}\ VectorsType\&\ v,\ \textcolor{keyword}{const}\ CoeffsType\&\ h)}
+\DoxyCodeLine{00452\ \{}
+\DoxyCodeLine{00453\ \ \ \textcolor{keywordflow}{return}\ HouseholderSequence<VectorsType,CoeffsType,OnTheLeft>(v,\ h);}
+\DoxyCodeLine{00454\ \}}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00462\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorsType,\ \textcolor{keyword}{typename}\ CoeffsType>}
+\DoxyCodeLine{00463\ HouseholderSequence<VectorsType,CoeffsType,OnTheRight>\ rightHouseholderSequence(\textcolor{keyword}{const}\ VectorsType\&\ v,\ \textcolor{keyword}{const}\ CoeffsType\&\ h)}
+\DoxyCodeLine{00464\ \{}
+\DoxyCodeLine{00465\ \ \ \textcolor{keywordflow}{return}\ HouseholderSequence<VectorsType,CoeffsType,OnTheRight>(v,\ h);}
+\DoxyCodeLine{00466\ \}}
+\DoxyCodeLine{00467\ }
+\DoxyCodeLine{00468\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_HOUSEHOLDER\_SEQUENCE\_H}}
+
+\end{DoxyCode}

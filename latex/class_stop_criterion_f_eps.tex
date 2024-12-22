@@ -1,0 +1,86 @@
+\doxysection{Stop\+Criterion\+FEps Class Reference}
+\hypertarget{class_stop_criterion_f_eps}{}\label{class_stop_criterion_f_eps}\index{StopCriterionFEps@{StopCriterionFEps}}
+
+
+A class that defines a stopping criterion based on the relative change in function values.  
+
+
+
+
+{\ttfamily \#include $<$Stop\+Criterion\+FEps.\+h$>$}
+
+Inheritance diagram for Stop\+Criterion\+FEps\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_stop_criterion_f_eps}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_stop_criterion_f_eps_a5fede2431f1a09bed7c15dfdb76acc94}\label{class_stop_criterion_f_eps_a5fede2431f1a09bed7c15dfdb76acc94} 
+{\bfseries Stop\+Criterion\+FEps} (size\+\_\+t \+\_\+n\+\_\+max, double \+\_\+eps)
+\item 
+bool \mbox{\hyperlink{class_stop_criterion_f_eps_a76c677817634b2a4cc13364cb19fedcc}{check}} (\mbox{\hyperlink{class_transfer_data}{Transfer\+Data}} \&data) const override
+\item 
+string \mbox{\hyperlink{class_stop_criterion_f_eps_a9a2b14ce6c7d5eac891614db7907028c}{get\+Name}} () override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_stop_criterion_eps}{Stop\+Criterion\+Eps}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Stop\+Criterion\+Eps} (size\+\_\+t \+\_\+n\+\_\+max, double \+\_\+eps)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Stop\+Criterion} (size\+\_\+t \+\_\+n\+\_\+max)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_stop_criterion_area}{Stop\+Criterion\+Area}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries Stop\+Criterion\+Area} (size\+\_\+t \+\_\+n\+\_\+max)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_stop_criterion_eps}{Stop\+Criterion\+Eps}}}
+\begin{DoxyCompactItemize}
+\item 
+double {\bfseries eps}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}}}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t {\bfseries n\+\_\+max}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class that defines a stopping criterion based on the relative change in function values. 
+
+This class inherits from \doxylink{class_stop_criterion_eps}{Stop\+Criterion\+Eps} and \doxylink{class_stop_criterion_area}{Stop\+Criterion\+Area} and combines their stopping criteria with an additional criterion based on the relative change in function values. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_stop_criterion_f_eps_a76c677817634b2a4cc13364cb19fedcc}\index{StopCriterionFEps@{StopCriterionFEps}!check@{check}}
+\index{check@{check}!StopCriterionFEps@{StopCriterionFEps}}
+\doxysubsubsection{\texorpdfstring{check()}{check()}}
+{\footnotesize\ttfamily \label{class_stop_criterion_f_eps_a76c677817634b2a4cc13364cb19fedcc} 
+bool Stop\+Criterion\+FEps\+::check (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_transfer_data}{Transfer\+Data}} \&}]{data}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}}.
+
+\Hypertarget{class_stop_criterion_f_eps_a9a2b14ce6c7d5eac891614db7907028c}\index{StopCriterionFEps@{StopCriterionFEps}!getName@{getName}}
+\index{getName@{getName}!StopCriterionFEps@{StopCriterionFEps}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily \label{class_stop_criterion_f_eps_a9a2b14ce6c7d5eac891614db7907028c} 
+string Stop\+Criterion\+FEps\+::get\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Stop\+Criterion\+FEps.\+h\end{DoxyCompactItemize}

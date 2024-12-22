@@ -1,0 +1,556 @@
+\doxysection{Block\+Methods.\+h}
+\hypertarget{_block_methods_8h_source}{}\label{_block_methods_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/plugins/BlockMethods.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/plugins/BlockMethods.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2006-\/2010\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{typedef}\ Block<Derived,\ internal::traits<Derived>::RowsAtCompileTime,\ 1,\ !IsRowMajor>\ ColXpr;}
+\DoxyCodeLine{00015\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ Block<const\ Derived,\ internal::traits<Derived>::RowsAtCompileTime,\ 1,\ !IsRowMajor>\ ConstColXpr;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{typedef}\ Block<Derived,\ 1,\ internal::traits<Derived>::ColsAtCompileTime,\ IsRowMajor>\ RowXpr;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ Block<const\ Derived,\ 1,\ internal::traits<Derived>::ColsAtCompileTime,\ IsRowMajor>\ ConstRowXpr;}
+\DoxyCodeLine{00020\ \textcolor{keyword}{typedef}\ Block<Derived,\ internal::traits<Derived>::RowsAtCompileTime,\ Dynamic,\ !IsRowMajor>\ ColsBlockXpr;}
+\DoxyCodeLine{00021\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ Block<const\ Derived,\ internal::traits<Derived>::RowsAtCompileTime,\ Dynamic,\ !IsRowMajor>\ ConstColsBlockXpr;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{typedef}\ Block<Derived,\ Dynamic,\ internal::traits<Derived>::ColsAtCompileTime,\ IsRowMajor>\ RowsBlockXpr;}
+\DoxyCodeLine{00024\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ Block<const\ Derived,\ Dynamic,\ internal::traits<Derived>::ColsAtCompileTime,\ IsRowMajor>\ ConstRowsBlockXpr;}
+\DoxyCodeLine{00026\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_n_cols_block_xpr}{NColsBlockXpr}}\ \{\ \textcolor{keyword}{typedef}\ Block<Derived,\ internal::traits<Derived>::RowsAtCompileTime,\ N,\ !IsRowMajor>\ Type;\ \};}
+\DoxyCodeLine{00027\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_const_n_cols_block_xpr}{ConstNColsBlockXpr}}\ \{\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ Block<const\ Derived,\ internal::traits<Derived>::RowsAtCompileTime,\ N,\ !IsRowMajor>\ Type;\ \};}
+\DoxyCodeLine{00029\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_n_rows_block_xpr}{NRowsBlockXpr}}\ \{\ \textcolor{keyword}{typedef}\ Block<Derived,\ N,\ internal::traits<Derived>::ColsAtCompileTime,\ IsRowMajor>\ Type;\ \};}
+\DoxyCodeLine{00030\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_const_n_rows_block_xpr}{ConstNRowsBlockXpr}}\ \{\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ Block<const\ Derived,\ N,\ internal::traits<Derived>::ColsAtCompileTime,\ IsRowMajor>\ Type;\ \};}
+\DoxyCodeLine{00032\ \textcolor{keyword}{typedef}\ Block<Derived>\ BlockXpr;}
+\DoxyCodeLine{00033\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ Block<const\ Derived>\ ConstBlockXpr;}
+\DoxyCodeLine{00035\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Rows,\ \textcolor{keywordtype}{int}\ Cols>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_fixed_block_xpr}{FixedBlockXpr}}\ \{\ \textcolor{keyword}{typedef}\ Block<Derived,Rows,Cols>\ Type;\ \};}
+\DoxyCodeLine{00036\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Rows,\ \textcolor{keywordtype}{int}\ Cols>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_const_fixed_block_xpr}{ConstFixedBlockXpr}}\ \{\ \textcolor{keyword}{typedef}\ Block<const\ Derived,Rows,Cols>\ Type;\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{typedef}\ VectorBlock<Derived>\ SegmentReturnType;}
+\DoxyCodeLine{00039\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ VectorBlock<const\ Derived>\ ConstSegmentReturnType;}
+\DoxyCodeLine{00040\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Size>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_fixed_segment_return_type}{FixedSegmentReturnType}}\ \{\ \textcolor{keyword}{typedef}\ VectorBlock<Derived,\ Size>\ Type;\ \};}
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Size>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_const_fixed_segment_return_type}{ConstFixedSegmentReturnType}}\ \{\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ VectorBlock<const\ Derived,\ Size>\ Type;\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ not\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00059\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00063\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00064\ \textcolor{keyword}{inline}\ BlockXpr\ block(Index\ startRow,\ Index\ startCol,\ Index\ blockRows,\ Index\ blockCols)}
+\DoxyCodeLine{00065\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keywordflow}{return}\ BlockXpr(derived(),\ startRow,\ startCol,\ blockRows,\ blockCols);}
+\DoxyCodeLine{00067\ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00071\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ ConstBlockXpr\ block(Index\ startRow,\ Index\ startCol,\ Index\ blockRows,\ Index\ blockCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00072\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00073\ \ \ \textcolor{keywordflow}{return}\ ConstBlockXpr(derived(),\ startRow,\ startCol,\ blockRows,\ blockCols);}
+\DoxyCodeLine{00074\ \}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00087\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00091\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00092\ \textcolor{keyword}{inline}\ BlockXpr\ topRightCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00093\ \{}
+\DoxyCodeLine{00094\ \ \ \textcolor{keywordflow}{return}\ BlockXpr(derived(),\ 0,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00095\ \}}
+\DoxyCodeLine{00096\ }
+\DoxyCodeLine{00098\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00099\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ ConstBlockXpr\ topRightCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00100\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00101\ \ \ \textcolor{keywordflow}{return}\ ConstBlockXpr(derived(),\ 0,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00102\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00112\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00116\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00117\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00118\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ topRightCorner()}
+\DoxyCodeLine{00119\ \{}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ cols()\ -\/\ CCols);}
+\DoxyCodeLine{00121\ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00124\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00125\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00126\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ topRightCorner()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00127\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00128\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ cols()\ -\/\ CCols);}
+\DoxyCodeLine{00129\ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00146\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00150\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00151\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ topRightCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00152\ \{}
+\DoxyCodeLine{00153\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00154\ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00157\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00158\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ topRightCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00159\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00160\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00161\ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00164\ }
+\DoxyCodeLine{00173\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00177\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00178\ \textcolor{keyword}{inline}\ BlockXpr\ topLeftCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00179\ \{}
+\DoxyCodeLine{00180\ \ \ \textcolor{keywordflow}{return}\ BlockXpr(derived(),\ 0,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00181\ \}}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00184\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00185\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ ConstBlockXpr\ topLeftCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00186\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00187\ \ \ \textcolor{keywordflow}{return}\ ConstBlockXpr(derived(),\ 0,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00188\ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00197\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00201\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00202\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00203\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ topLeftCorner()}
+\DoxyCodeLine{00204\ \{}
+\DoxyCodeLine{00205\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ 0);}
+\DoxyCodeLine{00206\ \}}
+\DoxyCodeLine{00207\ }
+\DoxyCodeLine{00209\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00210\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00211\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ topLeftCorner()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00212\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00213\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ 0);}
+\DoxyCodeLine{00214\ \}}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00231\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00235\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00236\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ topLeftCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00237\ \{}
+\DoxyCodeLine{00238\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00239\ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00242\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00243\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ topLeftCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00244\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ 0,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00246\ \}}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00258\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00262\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00263\ \textcolor{keyword}{inline}\ BlockXpr\ bottomRightCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00264\ \{}
+\DoxyCodeLine{00265\ \ \ \textcolor{keywordflow}{return}\ BlockXpr(derived(),\ rows()\ -\/\ cRows,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00266\ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00269\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00270\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ ConstBlockXpr\ bottomRightCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00271\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00272\ \ \ \textcolor{keywordflow}{return}\ ConstBlockXpr(derived(),\ rows()\ -\/\ cRows,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00273\ \}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00282\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00286\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00287\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00288\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ bottomRightCorner()}
+\DoxyCodeLine{00289\ \{}
+\DoxyCodeLine{00290\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ CRows,\ cols()\ -\/\ CCols);}
+\DoxyCodeLine{00291\ \}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00294\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00295\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00296\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ bottomRightCorner()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00297\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00298\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ CRows,\ cols()\ -\/\ CCols);}
+\DoxyCodeLine{00299\ \}}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00316\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00320\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00321\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ bottomRightCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00322\ \{}
+\DoxyCodeLine{00323\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ cRows,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00324\ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00327\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00328\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ bottomRightCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00329\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00330\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ cRows,\ cols()\ -\/\ cCols,\ cRows,\ cCols);}
+\DoxyCodeLine{00331\ \}}
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00343\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00347\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00348\ \textcolor{keyword}{inline}\ BlockXpr\ bottomLeftCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00349\ \{}
+\DoxyCodeLine{00350\ \ \ \textcolor{keywordflow}{return}\ BlockXpr(derived(),\ rows()\ -\/\ cRows,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00351\ \}}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00354\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00355\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ ConstBlockXpr\ bottomLeftCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00356\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00357\ \ \ \textcolor{keywordflow}{return}\ ConstBlockXpr(derived(),\ rows()\ -\/\ cRows,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00358\ \}}
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00367\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00371\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00372\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00373\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ bottomLeftCorner()}
+\DoxyCodeLine{00374\ \{}
+\DoxyCodeLine{00375\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ CRows,\ 0);}
+\DoxyCodeLine{00376\ \}}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00379\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00380\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00381\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ bottomLeftCorner()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00382\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00383\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ CRows,\ 0);}
+\DoxyCodeLine{00384\ \}}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00401\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00405\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00406\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type\ bottomLeftCorner(Index\ cRows,\ Index\ cCols)}
+\DoxyCodeLine{00407\ \{}
+\DoxyCodeLine{00408\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ cRows,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00409\ \}}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00412\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ CRows,\ \textcolor{keywordtype}{int}\ CCols>}
+\DoxyCodeLine{00413\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type\ bottomLeftCorner(Index\ cRows,\ Index\ cCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00414\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00415\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<CRows,CCols>::Type(derived(),\ rows()\ -\/\ cRows,\ 0,\ cRows,\ cCols);}
+\DoxyCodeLine{00416\ \}}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ }
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00427\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(row-\/major)}
+\DoxyCodeLine{00431\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00432\ \textcolor{keyword}{inline}\ RowsBlockXpr\ topRows(Index\ n)}
+\DoxyCodeLine{00433\ \{}
+\DoxyCodeLine{00434\ \ \ \textcolor{keywordflow}{return}\ RowsBlockXpr(derived(),\ 0,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00435\ \}}
+\DoxyCodeLine{00436\ }
+\DoxyCodeLine{00438\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00439\ \textcolor{keyword}{inline}\ ConstRowsBlockXpr\ topRows(Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00440\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00441\ \ \ \textcolor{keywordflow}{return}\ ConstRowsBlockXpr(derived(),\ 0,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00442\ \}}
+\DoxyCodeLine{00443\ }
+\DoxyCodeLine{00455\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(row-\/major)}
+\DoxyCodeLine{00459\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00460\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00461\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ NRowsBlockXpr<N>::Type\ topRows(Index\ n\ =\ N)}
+\DoxyCodeLine{00462\ \{}
+\DoxyCodeLine{00463\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ NRowsBlockXpr<N>::Type(derived(),\ 0,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00464\ \}}
+\DoxyCodeLine{00465\ }
+\DoxyCodeLine{00467\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00468\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00469\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstNRowsBlockXpr<N>::Type\ topRows(Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00470\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00471\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstNRowsBlockXpr<N>::Type(derived(),\ 0,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00472\ \}}
+\DoxyCodeLine{00473\ }
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00483\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(row-\/major)}
+\DoxyCodeLine{00487\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00488\ \textcolor{keyword}{inline}\ RowsBlockXpr\ bottomRows(Index\ n)}
+\DoxyCodeLine{00489\ \{}
+\DoxyCodeLine{00490\ \ \ \textcolor{keywordflow}{return}\ RowsBlockXpr(derived(),\ rows()\ -\/\ n,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00491\ \}}
+\DoxyCodeLine{00492\ }
+\DoxyCodeLine{00494\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00495\ \textcolor{keyword}{inline}\ ConstRowsBlockXpr\ bottomRows(Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00496\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00497\ \ \ \textcolor{keywordflow}{return}\ ConstRowsBlockXpr(derived(),\ rows()\ -\/\ n,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00498\ \}}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00511\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(row-\/major)}
+\DoxyCodeLine{00515\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00516\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00517\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ NRowsBlockXpr<N>::Type\ bottomRows(Index\ n\ =\ N)}
+\DoxyCodeLine{00518\ \{}
+\DoxyCodeLine{00519\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ NRowsBlockXpr<N>::Type(derived(),\ rows()\ -\/\ n,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00520\ \}}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00523\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00524\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00525\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstNRowsBlockXpr<N>::Type\ bottomRows(Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00526\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00527\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstNRowsBlockXpr<N>::Type(derived(),\ rows()\ -\/\ n,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00528\ \}}
+\DoxyCodeLine{00529\ }
+\DoxyCodeLine{00530\ }
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00540\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(row-\/major)}
+\DoxyCodeLine{00544\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00545\ \textcolor{keyword}{inline}\ RowsBlockXpr\ middleRows(Index\ startRow,\ Index\ n)}
+\DoxyCodeLine{00546\ \{}
+\DoxyCodeLine{00547\ \ \ \textcolor{keywordflow}{return}\ RowsBlockXpr(derived(),\ startRow,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00548\ \}}
+\DoxyCodeLine{00549\ }
+\DoxyCodeLine{00551\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00552\ \textcolor{keyword}{inline}\ ConstRowsBlockXpr\ middleRows(Index\ startRow,\ Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00553\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00554\ \ \ \textcolor{keywordflow}{return}\ ConstRowsBlockXpr(derived(),\ startRow,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00555\ \}}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00569\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(row-\/major)}
+\DoxyCodeLine{00573\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00574\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00575\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ NRowsBlockXpr<N>::Type\ middleRows(Index\ startRow,\ Index\ n\ =\ N)}
+\DoxyCodeLine{00576\ \{}
+\DoxyCodeLine{00577\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ NRowsBlockXpr<N>::Type(derived(),\ startRow,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00578\ \}}
+\DoxyCodeLine{00579\ }
+\DoxyCodeLine{00581\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00582\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00583\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstNRowsBlockXpr<N>::Type\ middleRows(Index\ startRow,\ Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00584\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00585\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstNRowsBlockXpr<N>::Type(derived(),\ startRow,\ 0,\ n,\ cols());}
+\DoxyCodeLine{00586\ \}}
+\DoxyCodeLine{00587\ }
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ }
+\DoxyCodeLine{00597\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(column-\/major)}
+\DoxyCodeLine{00601\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00602\ \textcolor{keyword}{inline}\ ColsBlockXpr\ leftCols(Index\ n)}
+\DoxyCodeLine{00603\ \{}
+\DoxyCodeLine{00604\ \ \ \textcolor{keywordflow}{return}\ ColsBlockXpr(derived(),\ 0,\ 0,\ rows(),\ n);}
+\DoxyCodeLine{00605\ \}}
+\DoxyCodeLine{00606\ }
+\DoxyCodeLine{00608\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00609\ \textcolor{keyword}{inline}\ ConstColsBlockXpr\ leftCols(Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00610\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00611\ \ \ \textcolor{keywordflow}{return}\ ConstColsBlockXpr(derived(),\ 0,\ 0,\ rows(),\ n);}
+\DoxyCodeLine{00612\ \}}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00625\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(column-\/major)}
+\DoxyCodeLine{00629\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00630\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00631\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ NColsBlockXpr<N>::Type\ leftCols(Index\ n\ =\ N)}
+\DoxyCodeLine{00632\ \{}
+\DoxyCodeLine{00633\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ NColsBlockXpr<N>::Type(derived(),\ 0,\ 0,\ rows(),\ n);}
+\DoxyCodeLine{00634\ \}}
+\DoxyCodeLine{00635\ }
+\DoxyCodeLine{00637\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00638\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00639\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstNColsBlockXpr<N>::Type\ leftCols(Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00640\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00641\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstNColsBlockXpr<N>::Type(derived(),\ 0,\ 0,\ rows(),\ n);}
+\DoxyCodeLine{00642\ \}}
+\DoxyCodeLine{00643\ }
+\DoxyCodeLine{00644\ }
+\DoxyCodeLine{00645\ }
+\DoxyCodeLine{00653\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(column-\/major)}
+\DoxyCodeLine{00657\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00658\ \textcolor{keyword}{inline}\ ColsBlockXpr\ rightCols(Index\ n)}
+\DoxyCodeLine{00659\ \{}
+\DoxyCodeLine{00660\ \ \ \textcolor{keywordflow}{return}\ ColsBlockXpr(derived(),\ 0,\ cols()\ -\/\ n,\ rows(),\ n);}
+\DoxyCodeLine{00661\ \}}
+\DoxyCodeLine{00662\ }
+\DoxyCodeLine{00664\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00665\ \textcolor{keyword}{inline}\ ConstColsBlockXpr\ rightCols(Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00666\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00667\ \ \ \textcolor{keywordflow}{return}\ ConstColsBlockXpr(derived(),\ 0,\ cols()\ -\/\ n,\ rows(),\ n);}
+\DoxyCodeLine{00668\ \}}
+\DoxyCodeLine{00669\ }
+\DoxyCodeLine{00681\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(column-\/major)}
+\DoxyCodeLine{00685\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00686\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00687\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ NColsBlockXpr<N>::Type\ rightCols(Index\ n\ =\ N)}
+\DoxyCodeLine{00688\ \{}
+\DoxyCodeLine{00689\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ NColsBlockXpr<N>::Type(derived(),\ 0,\ cols()\ -\/\ n,\ rows(),\ n);}
+\DoxyCodeLine{00690\ \}}
+\DoxyCodeLine{00691\ }
+\DoxyCodeLine{00693\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00694\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00695\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstNColsBlockXpr<N>::Type\ rightCols(Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00696\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00697\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstNColsBlockXpr<N>::Type(derived(),\ 0,\ cols()\ -\/\ n,\ rows(),\ n);}
+\DoxyCodeLine{00698\ \}}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00700\ }
+\DoxyCodeLine{00701\ }
+\DoxyCodeLine{00710\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(column-\/major)}
+\DoxyCodeLine{00714\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00715\ \textcolor{keyword}{inline}\ ColsBlockXpr\ middleCols(Index\ startCol,\ Index\ numCols)}
+\DoxyCodeLine{00716\ \{}
+\DoxyCodeLine{00717\ \ \ \textcolor{keywordflow}{return}\ ColsBlockXpr(derived(),\ 0,\ startCol,\ rows(),\ numCols);}
+\DoxyCodeLine{00718\ \}}
+\DoxyCodeLine{00719\ }
+\DoxyCodeLine{00721\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00722\ \textcolor{keyword}{inline}\ ConstColsBlockXpr\ middleCols(Index\ startCol,\ Index\ numCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00723\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00724\ \ \ \textcolor{keywordflow}{return}\ ConstColsBlockXpr(derived(),\ 0,\ startCol,\ rows(),\ numCols);}
+\DoxyCodeLine{00725\ \}}
+\DoxyCodeLine{00726\ }
+\DoxyCodeLine{00739\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(column-\/major)}
+\DoxyCodeLine{00743\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00744\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00745\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ NColsBlockXpr<N>::Type\ middleCols(Index\ startCol,\ Index\ n\ =\ N)}
+\DoxyCodeLine{00746\ \{}
+\DoxyCodeLine{00747\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ NColsBlockXpr<N>::Type(derived(),\ 0,\ startCol,\ rows(),\ n);}
+\DoxyCodeLine{00748\ \}}
+\DoxyCodeLine{00749\ }
+\DoxyCodeLine{00751\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00752\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00753\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstNColsBlockXpr<N>::Type\ middleCols(Index\ startCol,\ Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00754\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00755\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstNColsBlockXpr<N>::Type(derived(),\ 0,\ startCol,\ rows(),\ n);}
+\DoxyCodeLine{00756\ \}}
+\DoxyCodeLine{00757\ }
+\DoxyCodeLine{00758\ }
+\DoxyCodeLine{00759\ }
+\DoxyCodeLine{00774\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00778\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ NRows,\ \textcolor{keywordtype}{int}\ NCols>}
+\DoxyCodeLine{00779\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00780\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<NRows,NCols>::Type\ block(Index\ startRow,\ Index\ startCol)}
+\DoxyCodeLine{00781\ \{}
+\DoxyCodeLine{00782\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<NRows,NCols>::Type(derived(),\ startRow,\ startCol);}
+\DoxyCodeLine{00783\ \}}
+\DoxyCodeLine{00784\ }
+\DoxyCodeLine{00786\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ NRows,\ \textcolor{keywordtype}{int}\ NCols>}
+\DoxyCodeLine{00787\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00788\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<NRows,NCols>::Type\ block(Index\ startRow,\ Index\ startCol)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00789\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00790\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<NRows,NCols>::Type(derived(),\ startRow,\ startCol);}
+\DoxyCodeLine{00791\ \}}
+\DoxyCodeLine{00792\ }
+\DoxyCodeLine{00810\ EIGEN\_DOC\_BLOCK\_ADDONS\_NOT\_INNER\_PANEL}
+\DoxyCodeLine{00814\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ NRows,\ \textcolor{keywordtype}{int}\ NCols>}
+\DoxyCodeLine{00815\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedBlockXpr<NRows,NCols>::Type\ block(Index\ startRow,\ Index\ startCol,}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ blockRows,\ Index\ blockCols)}
+\DoxyCodeLine{00817\ \{}
+\DoxyCodeLine{00818\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedBlockXpr<NRows,NCols>::Type(derived(),\ startRow,\ startCol,\ blockRows,\ blockCols);}
+\DoxyCodeLine{00819\ \}}
+\DoxyCodeLine{00820\ }
+\DoxyCodeLine{00822\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ NRows,\ \textcolor{keywordtype}{int}\ NCols>}
+\DoxyCodeLine{00823\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<NRows,NCols>::Type\ block(Index\ startRow,\ Index\ startCol,}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ blockRows,\ Index\ blockCols)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00825\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00826\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedBlockXpr<NRows,NCols>::Type(derived(),\ startRow,\ startCol,\ blockRows,\ blockCols);}
+\DoxyCodeLine{00827\ \}}
+\DoxyCodeLine{00828\ }
+\DoxyCodeLine{00834\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(column-\/major)}
+\DoxyCodeLine{00837\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00838\ \textcolor{keyword}{inline}\ ColXpr\ col(Index\ i)}
+\DoxyCodeLine{00839\ \{}
+\DoxyCodeLine{00840\ \ \ \textcolor{keywordflow}{return}\ ColXpr(derived(),\ i);}
+\DoxyCodeLine{00841\ \}}
+\DoxyCodeLine{00842\ }
+\DoxyCodeLine{00844\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00845\ \textcolor{keyword}{inline}\ ConstColXpr\ col(Index\ i)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00846\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00847\ \ \ \textcolor{keywordflow}{return}\ ConstColXpr(derived(),\ i);}
+\DoxyCodeLine{00848\ \}}
+\DoxyCodeLine{00849\ }
+\DoxyCodeLine{00855\ EIGEN\_DOC\_BLOCK\_ADDONS\_INNER\_PANEL\_IF(row-\/major)}
+\DoxyCodeLine{00858\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00859\ \textcolor{keyword}{inline}\ RowXpr\ row(Index\ i)}
+\DoxyCodeLine{00860\ \{}
+\DoxyCodeLine{00861\ \ \ \textcolor{keywordflow}{return}\ RowXpr(derived(),\ i);}
+\DoxyCodeLine{00862\ \}}
+\DoxyCodeLine{00863\ }
+\DoxyCodeLine{00865\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00866\ \textcolor{keyword}{inline}\ ConstRowXpr\ row(Index\ i)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00867\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00868\ \ \ \textcolor{keywordflow}{return}\ ConstRowXpr(derived(),\ i);}
+\DoxyCodeLine{00869\ \}}
+\DoxyCodeLine{00870\ }
+\DoxyCodeLine{00887\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00888\ \textcolor{keyword}{inline}\ SegmentReturnType\ segment(Index\ start,\ Index\ n)}
+\DoxyCodeLine{00889\ \{}
+\DoxyCodeLine{00890\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00891\ \ \ \textcolor{keywordflow}{return}\ SegmentReturnType(derived(),\ start,\ n);}
+\DoxyCodeLine{00892\ \}}
+\DoxyCodeLine{00893\ }
+\DoxyCodeLine{00894\ }
+\DoxyCodeLine{00896\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00897\ \textcolor{keyword}{inline}\ ConstSegmentReturnType\ segment(Index\ start,\ Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00898\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00899\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00900\ \ \ \textcolor{keywordflow}{return}\ ConstSegmentReturnType(derived(),\ start,\ n);}
+\DoxyCodeLine{00901\ \}}
+\DoxyCodeLine{00902\ }
+\DoxyCodeLine{00918\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00919\ \textcolor{keyword}{inline}\ SegmentReturnType\ head(Index\ n)}
+\DoxyCodeLine{00920\ \{}
+\DoxyCodeLine{00921\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00922\ \ \ \textcolor{keywordflow}{return}\ SegmentReturnType(derived(),\ 0,\ n);}
+\DoxyCodeLine{00923\ \}}
+\DoxyCodeLine{00924\ }
+\DoxyCodeLine{00926\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00927\ \textcolor{keyword}{inline}\ ConstSegmentReturnType\ head(Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00928\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00929\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00930\ \ \ \textcolor{keywordflow}{return}\ ConstSegmentReturnType(derived(),\ 0,\ n);}
+\DoxyCodeLine{00931\ \}}
+\DoxyCodeLine{00932\ }
+\DoxyCodeLine{00948\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00949\ \textcolor{keyword}{inline}\ SegmentReturnType\ tail(Index\ n)}
+\DoxyCodeLine{00950\ \{}
+\DoxyCodeLine{00951\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00952\ \ \ \textcolor{keywordflow}{return}\ SegmentReturnType(derived(),\ this-\/>size()\ -\/\ n,\ n);}
+\DoxyCodeLine{00953\ \}}
+\DoxyCodeLine{00954\ }
+\DoxyCodeLine{00956\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00957\ \textcolor{keyword}{inline}\ ConstSegmentReturnType\ tail(Index\ n)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00958\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00959\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00960\ \ \ \textcolor{keywordflow}{return}\ ConstSegmentReturnType(derived(),\ this-\/>size()\ -\/\ n,\ n);}
+\DoxyCodeLine{00961\ \}}
+\DoxyCodeLine{00962\ }
+\DoxyCodeLine{00979\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00980\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00981\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedSegmentReturnType<N>::Type\ segment(Index\ start,\ Index\ n\ =\ N)}
+\DoxyCodeLine{00982\ \{}
+\DoxyCodeLine{00983\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00984\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedSegmentReturnType<N>::Type(derived(),\ start,\ n);}
+\DoxyCodeLine{00985\ \}}
+\DoxyCodeLine{00986\ }
+\DoxyCodeLine{00988\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{00989\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00990\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstFixedSegmentReturnType<N>::Type\ segment(Index\ start,\ Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00991\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00992\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00993\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedSegmentReturnType<N>::Type(derived(),\ start,\ n);}
+\DoxyCodeLine{00994\ \}}
+\DoxyCodeLine{00995\ }
+\DoxyCodeLine{01011\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{01012\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{01013\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedSegmentReturnType<N>::Type\ head(Index\ n\ =\ N)}
+\DoxyCodeLine{01014\ \{}
+\DoxyCodeLine{01015\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{01016\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedSegmentReturnType<N>::Type(derived(),\ 0,\ n);}
+\DoxyCodeLine{01017\ \}}
+\DoxyCodeLine{01018\ }
+\DoxyCodeLine{01020\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{01021\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{01022\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstFixedSegmentReturnType<N>::Type\ head(Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{01023\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{01024\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{01025\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedSegmentReturnType<N>::Type(derived(),\ 0,\ n);}
+\DoxyCodeLine{01026\ \}}
+\DoxyCodeLine{01027\ }
+\DoxyCodeLine{01043\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{01044\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{01045\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ FixedSegmentReturnType<N>::Type\ tail(Index\ n\ =\ N)}
+\DoxyCodeLine{01046\ \{}
+\DoxyCodeLine{01047\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{01048\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ FixedSegmentReturnType<N>::Type(derived(),\ size()\ -\/\ n);}
+\DoxyCodeLine{01049\ \}}
+\DoxyCodeLine{01050\ }
+\DoxyCodeLine{01052\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ N>}
+\DoxyCodeLine{01053\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{01054\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ ConstFixedSegmentReturnType<N>::Type\ tail(Index\ n\ =\ N)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{01055\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{01056\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{01057\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ ConstFixedSegmentReturnType<N>::Type(derived(),\ size()\ -\/\ n);}
+\DoxyCodeLine{01058\ \}}
+
+\end{DoxyCode}

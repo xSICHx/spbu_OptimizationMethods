@@ -217,6 +217,27 @@ void getValidInitPoint(VectorXd& initPoint, const Area& area) {
 }
 
 
+/**
+ * @brief Handles console input for optimization methods.
+ * 
+ * This function interacts with the user through the console to gather necessary inputs
+ * for performing optimization. It allows the user to select the dimension of the space,
+ * choose a function to optimize, define the area of optimization, specify the initial point,
+ * select a stopping criterion, and choose an optimization method. Once all inputs are gathered,
+ * it performs the optimization and displays the results.
+ * 
+ * The function supports dimensions from 1 to 4 and provides a set of predefined functions,
+ * stopping criteria, and optimization methods for the user to choose from.
+ * 
+ * The following steps are performed:
+ * 1. Request the dimension of the space.
+ * 2. Display available functions for the selected dimension and request function selection.
+ * 3. Request and display the n-dimensional cube (area of optimization).
+ * 4. Request the initial point within the defined area.
+ * 5. Display available stopping criteria and request criterion selection.
+ * 6. Display available optimization methods and request method selection.
+ * 7. Perform the optimization using the selected inputs and display the results.
+ */
 void consoleInput() {
 	// Храним функции для каждой размерности
 	vector<vector<shared_ptr<Function>>> functions(5);

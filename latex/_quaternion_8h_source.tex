@@ -1,0 +1,610 @@
+\doxysection{Quaternion.\+h}
+\hypertarget{_quaternion_8h_source}{}\label{_quaternion_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Geometry/Quaternion.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Geometry/Quaternion.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Mathieu\ Gautier\ <mathieu.gautier@cea.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_QUATERNION\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_QUATERNION\_H}}
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00017\ \textcolor{comment}{*\ Definition\ of\ QuaternionBase<Derived>}}
+\DoxyCodeLine{00018\ \textcolor{comment}{*\ The\ implementation\ is\ at\ the\ end\ of\ the\ file}}
+\DoxyCodeLine{00019\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other,}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ OtherRows=Other::RowsAtCompileTime,}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ OtherCols=Other::ColsAtCompileTime>}
+\DoxyCodeLine{00025\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1quaternionbase__assign__impl}{quaternionbase\_assign\_impl}};}
+\DoxyCodeLine{00026\ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00035\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_rotation_base}{RotationBase}}<Derived,\ 3>}
+\DoxyCodeLine{00036\ \{}
+\DoxyCodeLine{00037\ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_rotation_base}{RotationBase<Derived,\ 3>}}\ \mbox{\hyperlink{class_eigen_1_1_rotation_base}{Base}};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{using\ }Base::operator*;}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{using\ }Base::derived;}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Scalar}}\ Scalar;}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00045\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Coefficients}}\ Coefficients;}
+\DoxyCodeLine{00046\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ Flags\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{Eigen::internal::traits<Derived>::Flags}}}
+\DoxyCodeLine{00048\ \ \ \};}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \textcolor{comment}{//\ typedef\ typename\ Matrix<Scalar,4,1>\ Coefficients;}}
+\DoxyCodeLine{00052\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,3,1>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a974c0529d55983b0b3a6d99a8466f331}{Vector3}};}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,3,3>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_ac3972e6cb0f56cccbe9e3946a7e494f8}{Matrix3}};}
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_angle_axis}{AngleAxis<Scalar>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_aed266c63b10a4028304901d9c8614199}{AngleAxisType}};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00061\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeff(0);\ \}}
+\DoxyCodeLine{00063\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeff(1);\ \}}
+\DoxyCodeLine{00065\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeff(2);\ \}}
+\DoxyCodeLine{00067\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeff(3);\ \}}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00070\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a3fd225fd26cbcfda99f42ad7775a1926}{x}}()\ \{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeffRef(0);\ \}}
+\DoxyCodeLine{00072\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a335a8421880409d1a202970b5af0b4f2}{y}}()\ \{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeffRef(1);\ \}}
+\DoxyCodeLine{00074\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a123f546f269cfb1535063fdd195eb60e}{z}}()\ \{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeffRef(2);\ \}}
+\DoxyCodeLine{00076\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_af28d8a8c57777b6d29026714540d28b3}{w}}()\ \{\ \textcolor{keywordflow}{return}\ this-\/>derived().coeffs().coeffRef(3);\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00079\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_vector_block}{VectorBlock<const\ Coefficients,3>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_ae7927333472826cc8c471ebb9984dd89}{vec}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().template\ head<3>();\ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_vector_block}{VectorBlock<Coefficients,3>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a3464bef51c839f557a1e75c80d8ef167}{vec}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().template\ head<3>();\ \}}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00085\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Coefficients}}\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ derived().coeffs();\ \}}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00088\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Coefficients}}\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_ad2dd94e51c8f77c8d025913a49aaf7fd}{coeffs}}()\ \{\ \textcolor{keywordflow}{return}\ derived().coeffs();\ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ other);}
+\DoxyCodeLine{00091\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ Derived\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other);}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{comment}{//\ disabled\ this\ copy\ operator\ as\ it\ is\ giving\ very\ strange\ compilation\ errors\ when\ compiling}}
+\DoxyCodeLine{00094\ \textcolor{comment}{//\ test\_stdvector\ with\ GCC\ 4.4.2.\ This\ looks\ like\ a\ GCC\ bug\ though,\ so\ feel\ free\ to\ re-\/enable\ it\ if\ it's}}
+\DoxyCodeLine{00095\ \textcolor{comment}{//\ useful;\ however\ notice\ that\ we\ already\ have\ the\ templated\ operator=\ above\ and\ e.g.\ in\ MatrixBase}}
+\DoxyCodeLine{00096\ \textcolor{comment}{//\ we\ didn't\ have\ to\ add,\ in\ addition\ to\ templated\ operator=,\ such\ a\ non-\/templated\ copy\ operator.}}
+\DoxyCodeLine{00097\ \textcolor{comment}{//\ \ Derived\&\ operator=(const\ QuaternionBase\&\ other)}}
+\DoxyCodeLine{00098\ \textcolor{comment}{//\ \ \{\ return\ operator=<Derived>(other);\ \}}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ EIGEN\_DEVICE\_FUNC\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_af2f49bb475fcfd4965803787c8784d13}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_angle_axis}{AngleAxisType}}\&\ aa);}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>\ EIGEN\_DEVICE\_FUNC\ Derived\&\ operator=(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<OtherDerived>}}\&\ m);}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00106\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a869ccdbfc40597182d30a758d48b2a79}{Identity}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}(Scalar(1),\ Scalar(0),\ Scalar(0),\ Scalar(0));\ \}}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00110\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase}}\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a2db6c89fd0c22344c504e294509ce224}{setIdentity}}()\ \{\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}()\ <<\ Scalar(0),\ Scalar(0),\ Scalar(0),\ Scalar(1);\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00115\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a5370cf77843374a5adefca3f78770961}{squaredNorm}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().squaredNorm();\ \}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00120\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a3c317a676ccae923a9c4a5e80019be17}{norm}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().norm();\ \}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00124\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_aa8d67d855940925f634327827aed1cad}{normalize}}()\ \{\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().normalize();\ \}}
+\DoxyCodeLine{00127\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a2e53ffc8d50b7a591ddd77cc0ccfd2f9}{normalized}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}(\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a2e53ffc8d50b7a591ddd77cc0ccfd2f9}{normalized}}());\ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00134\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_aa95c422b3d12869ed6aa46e4dd5a430a}{dot}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other)\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().dot(other.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}());\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>\ EIGEN\_DEVICE\_FUNC\ Scalar\ angularDistance(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00139\ \ \ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix3}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a621c71eec9680bf77342b28a473b6874}{toRotationMatrix}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00142\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived1,\ \textcolor{keyword}{typename}\ Derived2>}
+\DoxyCodeLine{00143\ \ \ EIGEN\_DEVICE\_FUNC\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a61ce1b4b1faf6849c9663fd86e9b3a70}{setFromTwoVectors}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived1>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived2>}}\&\ b);}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ \mbox{\hyperlink{class_eigen_1_1_rotation_base_affba3749838de939140b601e7db834e8}{operator*\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ q)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00146\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_ad5fb3b0792f02b2863f4dc3c3c70ea2d}{operator*=\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ q);}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00149\ \ \ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a6a1d8af1fe34cb4127f705c0d10ef649}{inverse}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00152\ \ \ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_aa82dabadce488031c298a5a0a92cda14}{conjugate}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>\ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ slerp(\textcolor{keyword}{const}\ Scalar\&\ t,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>}
+\DoxyCodeLine{00161\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a83c9e817b726fb798d3f2e15002a4241}{isApprox}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other,\ \textcolor{keyword}{const}\ RealScalar\&\ prec\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::dummy\_precision}}())\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00162\ \textcolor{keyword}{\ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().isApprox(other.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}(),\ prec);\ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00165\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a03896e1e743aae2c18a0146086cef983}{\_transformVector}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\&\ v)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NewScalarType>}
+\DoxyCodeLine{00173\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1cast__return__type}{internal::cast\_return\_type<Derived,Quaternion<NewScalarType>}}\ >::type\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_aac52fcdafb8d3dbefab4075c150d512f}{cast}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00174\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1cast__return__type}{internal::cast\_return\_type<Derived,Quaternion<NewScalarType>}}\ >::type(derived());}
+\DoxyCodeLine{00176\ \ \ \}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_QUATERNIONBASE\_PLUGIN}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#\ include\ EIGEN\_QUATERNIONBASE\_PLUGIN}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00181\ \};}
+\DoxyCodeLine{00182\ }
+\DoxyCodeLine{00183\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00184\ \textcolor{comment}{*\ Definition/implementation\ of\ Quaternion<Scalar>}}
+\DoxyCodeLine{00185\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00212\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00213\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\textcolor{keywordtype}{int}\ \_Options>}
+\DoxyCodeLine{00214\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}<\_Scalar,\_Options>\ >}
+\DoxyCodeLine{00215\ \{}
+\DoxyCodeLine{00216\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<\_Scalar,\_Options>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{PlainObject}};}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{typedef}\ \_Scalar\ Scalar;}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<\_Scalar,4,1,\_Options>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Coefficients}};}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{enum}\{}
+\DoxyCodeLine{00220\ \ \ \ \ Alignment\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Coefficients>::Alignment}},}
+\DoxyCodeLine{00221\ \ \ \ \ Flags\ =\ \mbox{\hyperlink{group__flags_gae2c323957f20dfdc6cb8f44428eaec1a}{LvalueBit}}}
+\DoxyCodeLine{00222\ \ \ \};}
+\DoxyCodeLine{00223\ \};}
+\DoxyCodeLine{00224\ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ \_Options>}
+\DoxyCodeLine{00227\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase}}<Quaternion<\_Scalar,\_Options>\ >}
+\DoxyCodeLine{00228\ \{}
+\DoxyCodeLine{00229\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Quaternion<\_Scalar,\_Options>}}\ >\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{Base}};}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{enum}\ \{\ NeedsAlignment\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Quaternion>::Alignment}}>0\ \};}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{typedef}\ \_Scalar\ Scalar;}
+\DoxyCodeLine{00234\ }
+\DoxyCodeLine{00235\ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(\mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}})}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{using\ }Base::operator*=;}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Quaternion>::Coefficients}}\ Coefficients;}
+\DoxyCodeLine{00239\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_angle_axis}{Base::AngleAxisType}}\ \mbox{\hyperlink{class_eigen_1_1_angle_axis}{AngleAxisType}};}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00242\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_a7f8e93e2615e56344fd0d89c2916f9be}{Quaternion}}()\ \{\}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00251\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_a90c179492cd3ca296c85815e20773d60}{Quaternion}}(\textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}},\ \textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}},\ \textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}},\ \textcolor{keyword}{const}\ Scalar\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}})\ :\ m\_coeffs(\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}},\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}},\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}},\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}})\{\}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00254\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_abb9e33e5d10806b5bc8b0683e94e8f72}{Quaternion}}(\textcolor{keyword}{const}\ Scalar*\ data)\ :\ m\_coeffs(data)\ \{\}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_quaternion_a272ce2dc4e30e6e0d68f455c7b1cc407}{Quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ other)\ \{\ this-\/>Base::operator=(other);\ \}}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00260\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_a7ce40a727b6532e52d7d58d399328ce7}{Quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_angle_axis}{AngleAxisType}}\&\ aa)\ \{\ *\textcolor{keyword}{this}\ =\ aa;\ \}}
+\DoxyCodeLine{00261\ }
+\DoxyCodeLine{00266\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00267\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_a3a7ed649b5c8c80ec7e78baf1ed0ba4c}{Quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>}}\&\ other)\ \{\ *\textcolor{keyword}{this}\ =\ other;\ \}}
+\DoxyCodeLine{00268\ }
+\DoxyCodeLine{00270\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherScalar,\ \textcolor{keywordtype}{int}\ OtherOptions>}
+\DoxyCodeLine{00271\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_af6430466427b40d7ed79bfb6818cccc2}{Quaternion}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<OtherScalar,\ OtherOptions>}}\&\ other)}
+\DoxyCodeLine{00272\ \ \ \{\ m\_coeffs\ =\ other.coeffs().template\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_aac52fcdafb8d3dbefab4075c150d512f}{cast<Scalar>}}();\ \}}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_a8a61f4092bc520c7291e5b5e16e80d71}{UnitRandom}}();}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived1,\ \textcolor{keyword}{typename}\ Derived2>}
+\DoxyCodeLine{00277\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}\ FromTwoVectors(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived1>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived2>}}\&\ b);}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Coefficients\&\ coeffs()\ \{\ \textcolor{keywordflow}{return}\ m\_coeffs;\}}
+\DoxyCodeLine{00280\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Coefficients\&\ coeffs()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_coeffs;\}}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \ \ EIGEN\_MAKE\_ALIGNED\_OPERATOR\_NEW\_IF(\textcolor{keywordtype}{bool}(NeedsAlignment))}
+\DoxyCodeLine{00283\ \ \ }
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_QUATERNION\_PLUGIN}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#\ include\ EIGEN\_QUATERNION\_PLUGIN}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00288\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00289\ \ \ Coefficients\ m\_coeffs;}
+\DoxyCodeLine{00290\ \ \ }
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00292\ \ \ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ \_check\_template\_params()}
+\DoxyCodeLine{00293\ \ \ \ \ \{}
+\DoxyCodeLine{00294\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT(\ (\_Options\ \&\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a56908522e51443a0aa0567f879c2e78a}{DontAlign}})\ ==\ \_Options,}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \ \ INVALID\_MATRIX\_TEMPLATE\_PARAMETERS)}
+\DoxyCodeLine{00296\ \ \ \ \ \}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00298\ \};}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00302\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<float>}}\ \mbox{\hyperlink{group___geometry___module_ga66aa915a26d698c60ed206818c3e4c9b}{Quaternionf}};}
+\DoxyCodeLine{00305\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<double>}}\ \mbox{\hyperlink{group___geometry___module_ga5daab8e66aa480465000308455578830}{Quaterniond}};}
+\DoxyCodeLine{00306\ }
+\DoxyCodeLine{00307\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00308\ \textcolor{comment}{*\ Specialization\ of\ Map<Quaternion<Scalar>>}}
+\DoxyCodeLine{00309\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00310\ }
+\DoxyCodeLine{00311\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00312\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ \_Options>}
+\DoxyCodeLine{00313\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}<\_Scalar>,\ \_Options>\ >\ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Quaternion<\_Scalar,\ (int(\_Options)\&Aligned)==Aligned\ ?\ AutoAlign\ :\ DontAlign>\ >}
+\DoxyCodeLine{00314\ \ \ \{}
+\DoxyCodeLine{00315\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<Matrix<\_Scalar,4,1>}},\ \_Options>\ \mbox{\hyperlink{class_eigen_1_1_map}{Coefficients}};}
+\DoxyCodeLine{00316\ \ \ \};}
+\DoxyCodeLine{00317\ \}}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00320\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ \_Options>}
+\DoxyCodeLine{00321\ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<const\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}<\_Scalar>,\ \_Options>\ >\ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Quaternion<\_Scalar,\ (int(\_Options)\&Aligned)==Aligned\ ?\ AutoAlign\ :\ DontAlign>\ >}
+\DoxyCodeLine{00322\ \ \ \{}
+\DoxyCodeLine{00323\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<const\ Matrix<\_Scalar,4,1>}},\ \_Options>\ \mbox{\hyperlink{class_eigen_1_1_map}{Coefficients}};}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}<\_Scalar,\ (int(\_Options)\&\mbox{\hyperlink{group__enums_gga45fe06e29902b7a2773de05ba27b47a1ae12d0f8f869c40c76128260af2242bc8}{Aligned}})==\mbox{\hyperlink{group__enums_gga45fe06e29902b7a2773de05ba27b47a1ae12d0f8f869c40c76128260af2242bc8}{Aligned}}\ ?\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13ad0e7f67d40bcde3d41c12849b16ce6ea}{AutoAlign}}\ :\ \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a56908522e51443a0aa0567f879c2e78a}{DontAlign}}>\ >\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{TraitsBase}};}
+\DoxyCodeLine{00325\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ Flags\ =\ TraitsBase::Flags\ \&\ \string~LvalueBit}
+\DoxyCodeLine{00327\ \ \ \ \ \};}
+\DoxyCodeLine{00328\ \ \ \};}
+\DoxyCodeLine{00329\ \}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00342\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ \_Options>}
+\DoxyCodeLine{00343\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<const\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}<\_Scalar>,\ \_Options\ >}
+\DoxyCodeLine{00344\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase}}<Map<const\ Quaternion<\_Scalar>,\ \_Options>\ >}
+\DoxyCodeLine{00345\ \{}
+\DoxyCodeLine{00346\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Map<const\ Quaternion<\_Scalar>}},\ \_Options>\ >\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{Base}};}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keyword}{typedef}\ \_Scalar\ Scalar;}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Map>::Coefficients}}\ Coefficients;}
+\DoxyCodeLine{00351\ \ \ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(\mbox{\hyperlink{class_eigen_1_1_map}{Map}})}
+\DoxyCodeLine{00352\ \ \ \ \ \textcolor{keyword}{using\ }Base::operator*=;}
+\DoxyCodeLine{00353\ }
+\DoxyCodeLine{00360\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_map_3_01const_01_quaternion_3_01___scalar_01_4_00_01___options_01_4_a8b321eb2bf9a4e4b76465564e80f212b}{Map}}(\textcolor{keyword}{const}\ Scalar*\ coeffs)\ :\ m\_coeffs(coeffs)\ \{\}}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00362\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Coefficients\&\ coeffs()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_coeffs;\}}
+\DoxyCodeLine{00363\ }
+\DoxyCodeLine{00364\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00365\ \ \ \ \ \textcolor{keyword}{const}\ Coefficients\ m\_coeffs;}
+\DoxyCodeLine{00366\ \};}
+\DoxyCodeLine{00367\ }
+\DoxyCodeLine{00379\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ \_Options>}
+\DoxyCodeLine{00380\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}<\_Scalar>,\ \_Options\ >}
+\DoxyCodeLine{00381\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase}}<Map<Quaternion<\_Scalar>,\ \_Options>\ >}
+\DoxyCodeLine{00382\ \{}
+\DoxyCodeLine{00383\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Map<Quaternion<\_Scalar>}},\ \_Options>\ >\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{Base}};}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keyword}{typedef}\ \_Scalar\ Scalar;}
+\DoxyCodeLine{00387\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Map>::Coefficients}}\ Coefficients;}
+\DoxyCodeLine{00388\ \ \ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(\mbox{\hyperlink{class_eigen_1_1_map}{Map}})}
+\DoxyCodeLine{00389\ \ \ \ \ \textcolor{keyword}{using\ }Base::operator*=;}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00397\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_quaternion_3_01___scalar_01_4_00_01___options_01_4_ad94fc6daefd48cccb87aef782e0949e5}{Map}}(Scalar*\ coeffs)\ :\ m\_coeffs(coeffs)\ \{\}}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Coefficients\&\ coeffs()\ \{\ \textcolor{keywordflow}{return}\ m\_coeffs;\ \}}
+\DoxyCodeLine{00400\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Coefficients\&\ coeffs()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_coeffs;\ \}}
+\DoxyCodeLine{00401\ }
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00403\ \ \ \ \ Coefficients\ m\_coeffs;}
+\DoxyCodeLine{00404\ \};}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00408\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<Quaternion<float>}},\ 0>\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{group___geometry___module_ga867ff508ac860bdf7cab3b8a8fc1048d}{QuaternionMapf}};}
+\DoxyCodeLine{00411\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<Quaternion<double>}},\ 0>\ \ \ \ \ \ \ \ \mbox{\hyperlink{group___geometry___module_ga89412d1dcf23537e5990dfb3089ace76}{QuaternionMapd}};}
+\DoxyCodeLine{00414\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<Quaternion<float>}},\ \mbox{\hyperlink{group__enums_gga45fe06e29902b7a2773de05ba27b47a1ae12d0f8f869c40c76128260af2242bc8}{Aligned}}>\ \ \ \mbox{\hyperlink{group___geometry___module_gadaf7f3ee984d9828ca94d66355f0b226}{QuaternionMapAlignedf}};}
+\DoxyCodeLine{00417\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<Quaternion<double>}},\ \mbox{\hyperlink{group__enums_gga45fe06e29902b7a2773de05ba27b47a1ae12d0f8f869c40c76128260af2242bc8}{Aligned}}>\ \ \mbox{\hyperlink{group___geometry___module_ga4289f38cc6ecf302e07d2365abc6a902}{QuaternionMapAlignedd}};}
+\DoxyCodeLine{00418\ }
+\DoxyCodeLine{00419\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00420\ \textcolor{comment}{*\ Implementation\ of\ QuaternionBase\ methods}}
+\DoxyCodeLine{00421\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00422\ }
+\DoxyCodeLine{00423\ \textcolor{comment}{//\ Generic\ Quaternion\ *\ Quaternion\ product}}
+\DoxyCodeLine{00424\ \textcolor{comment}{//\ This\ product\ can\ be\ specialized\ for\ a\ given\ architecture\ via\ the\ Arch\ template\ argument.}}
+\DoxyCodeLine{00425\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00426\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Arch,\ \textcolor{keyword}{class}\ Derived1,\ \textcolor{keyword}{class}\ Derived2,\ \textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ \_Options>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1quat__product}{quat\_product}}}
+\DoxyCodeLine{00427\ \{}
+\DoxyCodeLine{00428\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ run(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived1>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived2>}}\&\ b)\{}
+\DoxyCodeLine{00429\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}}
+\DoxyCodeLine{00430\ \ \ \ \ (}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ -\/\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ -\/\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ -\/\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}(),}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ +\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ +\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\ -\/\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}(),}
+\DoxyCodeLine{00433\ \ \ \ \ \ \ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ +\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ +\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ -\/\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}(),}
+\DoxyCodeLine{00434\ \ \ \ \ \ \ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\ +\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ +\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ -\/\ a.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ *\ b.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()}
+\DoxyCodeLine{00435\ \ \ \ \ );}
+\DoxyCodeLine{00436\ \ \ \}}
+\DoxyCodeLine{00437\ \};}
+\DoxyCodeLine{00438\ \}}
+\DoxyCodeLine{00439\ }
+\DoxyCodeLine{00441\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00442\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OtherDerived>}
+\DoxyCodeLine{00443\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<typename\ internal::traits<Derived>::Scalar}}>}
+\DoxyCodeLine{00444\ \mbox{\hyperlink{class_eigen_1_1_rotation_base_affba3749838de939140b601e7db834e8}{QuaternionBase<Derived>::operator*\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00445\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00446\ \ \ EIGEN\_STATIC\_ASSERT((\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal::is\_same<typename\ Derived::Scalar,\ typename\ OtherDerived::Scalar>::value}}),}
+\DoxyCodeLine{00447\ \ \ \ YOU\_MIXED\_DIFFERENT\_NUMERIC\_TYPES\_\_YOU\_NEED\_TO\_USE\_THE\_CAST\_METHOD\_OF\_MATRIXBASE\_TO\_CAST\_NUMERIC\_TYPES\_EXPLICITLY)}
+\DoxyCodeLine{00448\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1quat__product}{internal::quat\_product}}<Architecture::Target,\ Derived,\ OtherDerived,}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Scalar}},}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ EIGEN\_PLAIN\_ENUM\_MIN(\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Alignment}},\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<OtherDerived>::Alignment}})>::run(*\textcolor{keyword}{this},\ other);}
+\DoxyCodeLine{00451\ \}}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00454\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00455\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OtherDerived>}
+\DoxyCodeLine{00456\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_ad5fb3b0792f02b2863f4dc3c3c70ea2d}{QuaternionBase<Derived>::operator*=\ }}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00457\ \{}
+\DoxyCodeLine{00458\ \ \ derived()\ =\ derived()\ *\ other.derived();}
+\DoxyCodeLine{00459\ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00460\ \}}
+\DoxyCodeLine{00461\ }
+\DoxyCodeLine{00469\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00470\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{QuaternionBase<Derived>::Vector3}}}
+\DoxyCodeLine{00471\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a03896e1e743aae2c18a0146086cef983}{QuaternionBase<Derived>::\_transformVector}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\&\ v)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00472\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00473\ \ \ \ \ \textcolor{comment}{//\ Note\ that\ this\ algorithm\ comes\ from\ the\ optimization\ by\ hand}}
+\DoxyCodeLine{00474\ \ \ \ \ \textcolor{comment}{//\ of\ the\ conversion\ to\ a\ Matrix\ followed\ by\ a\ Matrix/Vector\ product.}}
+\DoxyCodeLine{00475\ \ \ \ \ \textcolor{comment}{//\ It\ appears\ to\ be\ much\ faster\ than\ the\ common\ algorithm\ found}}
+\DoxyCodeLine{00476\ \ \ \ \ \textcolor{comment}{//\ in\ the\ literature\ (30\ versus\ 39\ flops).\ It\ also\ requires\ two}}
+\DoxyCodeLine{00477\ \ \ \ \ \textcolor{comment}{//\ Vector3\ as\ temporaries.}}
+\DoxyCodeLine{00478\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\ uv\ =\ this-\/>vec().cross(v);}
+\DoxyCodeLine{00479\ \ \ \ \ uv\ +=\ uv;}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordflow}{return}\ v\ +\ this-\/>w()\ *\ uv\ +\ this-\/>vec().cross(uv);}
+\DoxyCodeLine{00481\ \}}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00484\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>::operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ other)}
+\DoxyCodeLine{00485\ \{}
+\DoxyCodeLine{00486\ \ \ coeffs()\ =\ other.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}();}
+\DoxyCodeLine{00487\ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00488\ \}}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00491\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ OtherDerived>}
+\DoxyCodeLine{00492\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ Derived\&\ QuaternionBase<Derived>::operator=(\textcolor{keyword}{const}\ QuaternionBase<OtherDerived>\&\ other)}
+\DoxyCodeLine{00493\ \{}
+\DoxyCodeLine{00494\ \ \ coeffs()\ =\ other.coeffs();}
+\DoxyCodeLine{00495\ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00496\ \}}
+\DoxyCodeLine{00497\ }
+\DoxyCodeLine{00500\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00501\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>::operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_angle_axis}{AngleAxisType}}\&\ aa)}
+\DoxyCodeLine{00502\ \{}
+\DoxyCodeLine{00503\ \ \ EIGEN\_USING\_STD\_MATH(cos)}
+\DoxyCodeLine{00504\ \ \ EIGEN\_USING\_STD\_MATH(sin)}
+\DoxyCodeLine{00505\ \ \ Scalar\ ha\ =\ Scalar(0.5)*aa.\mbox{\hyperlink{class_eigen_1_1_angle_axis_a83d3c08a73c111550b7e480d3ed043d4}{angle}}();\ \textcolor{comment}{//\ Scalar(0.5)\ to\ suppress\ precision\ loss\ warnings}}
+\DoxyCodeLine{00506\ \ \ this-\/>w()\ =\ cos(ha);}
+\DoxyCodeLine{00507\ \ \ this-\/>vec()\ =\ sin(ha)\ *\ aa.\mbox{\hyperlink{class_eigen_1_1_angle_axis_a231eedd1fab9bca948f2bdf93565c005}{axis}}();}
+\DoxyCodeLine{00508\ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00509\ \}}
+\DoxyCodeLine{00510\ }
+\DoxyCodeLine{00517\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00518\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ MatrixDerived>}
+\DoxyCodeLine{00519\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>::operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<MatrixDerived>}}\&\ xpr)}
+\DoxyCodeLine{00520\ \{}
+\DoxyCodeLine{00521\ \ \ EIGEN\_STATIC\_ASSERT((\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal::is\_same<typename\ Derived::Scalar,\ typename\ MatrixDerived::Scalar>::value}}),}
+\DoxyCodeLine{00522\ \ \ \ YOU\_MIXED\_DIFFERENT\_NUMERIC\_TYPES\_\_YOU\_NEED\_TO\_USE\_THE\_CAST\_METHOD\_OF\_MATRIXBASE\_TO\_CAST\_NUMERIC\_TYPES\_EXPLICITLY)}
+\DoxyCodeLine{00523\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1quaternionbase__assign__impl}{internal::quaternionbase\_assign\_impl<MatrixDerived>::run}}(*\textcolor{keyword}{this},\ xpr.derived());}
+\DoxyCodeLine{00524\ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00525\ \}}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00530\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00531\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{QuaternionBase<Derived>::Matrix3}}}
+\DoxyCodeLine{00532\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a621c71eec9680bf77342b28a473b6874}{QuaternionBase<Derived>::toRotationMatrix}}(\textcolor{keywordtype}{void})\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00533\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00534\ \ \ \textcolor{comment}{//\ NOTE\ if\ inlined,\ then\ gcc\ 4.2\ and\ 4.4\ get\ rid\ of\ the\ temporary\ (not\ gcc\ 4.3\ !!)}}
+\DoxyCodeLine{00535\ \ \ \textcolor{comment}{//\ if\ not\ inlined\ then\ the\ cost\ of\ the\ return\ by\ value\ is\ huge\ \string~\ +35\%,}}
+\DoxyCodeLine{00536\ \ \ \textcolor{comment}{//\ however,\ not\ inlining\ this\ function\ is\ an\ order\ of\ magnitude\ slower,\ so}}
+\DoxyCodeLine{00537\ \ \ \textcolor{comment}{//\ it\ has\ to\ be\ inlined,\ and\ so\ the\ return\ by\ value\ is\ not\ an\ issue}}
+\DoxyCodeLine{00538\ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix3}}\ res;}
+\DoxyCodeLine{00539\ }
+\DoxyCodeLine{00540\ \ \ \textcolor{keyword}{const}\ Scalar\ tx\ \ =\ Scalar(2)*this-\/>x();}
+\DoxyCodeLine{00541\ \ \ \textcolor{keyword}{const}\ Scalar\ ty\ \ =\ Scalar(2)*this-\/>y();}
+\DoxyCodeLine{00542\ \ \ \textcolor{keyword}{const}\ Scalar\ tz\ \ =\ Scalar(2)*this-\/>z();}
+\DoxyCodeLine{00543\ \ \ \textcolor{keyword}{const}\ Scalar\ twx\ =\ tx*this-\/>w();}
+\DoxyCodeLine{00544\ \ \ \textcolor{keyword}{const}\ Scalar\ twy\ =\ ty*this-\/>w();}
+\DoxyCodeLine{00545\ \ \ \textcolor{keyword}{const}\ Scalar\ twz\ =\ tz*this-\/>w();}
+\DoxyCodeLine{00546\ \ \ \textcolor{keyword}{const}\ Scalar\ txx\ =\ tx*this-\/>x();}
+\DoxyCodeLine{00547\ \ \ \textcolor{keyword}{const}\ Scalar\ txy\ =\ ty*this-\/>x();}
+\DoxyCodeLine{00548\ \ \ \textcolor{keyword}{const}\ Scalar\ txz\ =\ tz*this-\/>x();}
+\DoxyCodeLine{00549\ \ \ \textcolor{keyword}{const}\ Scalar\ tyy\ =\ ty*this-\/>y();}
+\DoxyCodeLine{00550\ \ \ \textcolor{keyword}{const}\ Scalar\ tyz\ =\ tz*this-\/>y();}
+\DoxyCodeLine{00551\ \ \ \textcolor{keyword}{const}\ Scalar\ tzz\ =\ tz*this-\/>z();}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00553\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(0,0)\ =\ Scalar(1)-\/(tyy+tzz);}
+\DoxyCodeLine{00554\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(0,1)\ =\ txy-\/twz;}
+\DoxyCodeLine{00555\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(0,2)\ =\ txz+twy;}
+\DoxyCodeLine{00556\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(1,0)\ =\ txy+twz;}
+\DoxyCodeLine{00557\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(1,1)\ =\ Scalar(1)-\/(txx+tzz);}
+\DoxyCodeLine{00558\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(1,2)\ =\ tyz-\/twx;}
+\DoxyCodeLine{00559\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(2,0)\ =\ txz-\/twy;}
+\DoxyCodeLine{00560\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(2,1)\ =\ tyz+twx;}
+\DoxyCodeLine{00561\ \ \ res.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(2,2)\ =\ Scalar(1)-\/(txx+tyy);}
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00564\ \}}
+\DoxyCodeLine{00565\ }
+\DoxyCodeLine{00576\ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00577\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived1,\ \textcolor{keyword}{typename}\ Derived2>}
+\DoxyCodeLine{00578\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a61ce1b4b1faf6849c9663fd86e9b3a70}{QuaternionBase<Derived>::setFromTwoVectors}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived1>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived2>}}\&\ b)}
+\DoxyCodeLine{00579\ \{}
+\DoxyCodeLine{00580\ \ \ EIGEN\_USING\_STD\_MATH(sqrt)}
+\DoxyCodeLine{00581\ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\ v0\ =\ a.\mbox{\hyperlink{class_eigen_1_1_matrix_base_a5cf2fd4c57e59604fd4116158fd34308}{normalized}}();}
+\DoxyCodeLine{00582\ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\ v1\ =\ b.\mbox{\hyperlink{class_eigen_1_1_matrix_base_a5cf2fd4c57e59604fd4116158fd34308}{normalized}}();}
+\DoxyCodeLine{00583\ \ \ Scalar\ c\ =\ v1.dot(v0);}
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00585\ \ \ \textcolor{comment}{//\ if\ dot\ ==\ -\/1,\ vectors\ are\ nearly\ opposites}}
+\DoxyCodeLine{00586\ \ \ \textcolor{comment}{//\ =>\ accurately\ compute\ the\ rotation\ axis\ by\ computing\ the}}
+\DoxyCodeLine{00587\ \ \ \textcolor{comment}{//\ \ \ \ intersection\ of\ the\ two\ planes.\ This\ is\ done\ by\ solving:}}
+\DoxyCodeLine{00588\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ x\string^T\ v0\ =\ 0}}
+\DoxyCodeLine{00589\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ x\string^T\ v1\ =\ 0}}
+\DoxyCodeLine{00590\ \ \ \textcolor{comment}{//\ \ \ \ under\ the\ constraint:}}
+\DoxyCodeLine{00591\ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ ||x||\ =\ 1}}
+\DoxyCodeLine{00592\ \ \ \textcolor{comment}{//\ \ \ \ which\ yields\ a\ singular\ value\ problem}}
+\DoxyCodeLine{00593\ \ \ \textcolor{keywordflow}{if}\ (c\ <\ Scalar(-\/1)+\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::dummy\_precision}}())}
+\DoxyCodeLine{00594\ \ \ \{}
+\DoxyCodeLine{00595\ \ \ \ \ c\ =\ numext::maxi(c,Scalar(-\/1));}
+\DoxyCodeLine{00596\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,2,3>}}\ m;\ m\ <<\ v0.transpose(),\ v1.transpose();}
+\DoxyCodeLine{00597\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_jacobi_s_v_d}{JacobiSVD<Matrix<Scalar,2,3>}}\ >\ svd(m,\ \mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a36581f7c662f7def31efd500c284f930}{ComputeFullV}});}
+\DoxyCodeLine{00598\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\ axis\ =\ svd.\mbox{\hyperlink{class_eigen_1_1_s_v_d_base_af09f06357d7d7442f7ca7343713756fe}{matrixV}}().col(2);}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00600\ \ \ \ \ Scalar\ w2\ =\ (Scalar(1)+c)*Scalar(0.5);}
+\DoxyCodeLine{00601\ \ \ \ \ this-\/>w()\ =\ sqrt(w2);}
+\DoxyCodeLine{00602\ \ \ \ \ this-\/>vec()\ =\ axis\ *\ sqrt(Scalar(1)\ -\/\ w2);}
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00604\ \ \ \}}
+\DoxyCodeLine{00605\ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Vector3}}\ axis\ =\ v0.cross(v1);}
+\DoxyCodeLine{00606\ \ \ Scalar\ s\ =\ sqrt((Scalar(1)+c)*Scalar(2));}
+\DoxyCodeLine{00607\ \ \ Scalar\ invs\ =\ Scalar(1)/s;}
+\DoxyCodeLine{00608\ \ \ this-\/>vec()\ =\ axis\ *\ invs;}
+\DoxyCodeLine{00609\ \ \ this-\/>w()\ =\ s\ *\ Scalar(0.5);}
+\DoxyCodeLine{00610\ }
+\DoxyCodeLine{00611\ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00612\ \}}
+\DoxyCodeLine{00613\ }
+\DoxyCodeLine{00618\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ Options>}
+\DoxyCodeLine{00619\ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar,Options>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_a8a61f4092bc520c7291e5b5e16e80d71}{Quaternion<Scalar,Options>::UnitRandom}}()}
+\DoxyCodeLine{00620\ \{}
+\DoxyCodeLine{00621\ \ \ EIGEN\_USING\_STD\_MATH(sqrt)}
+\DoxyCodeLine{00622\ \ \ EIGEN\_USING\_STD\_MATH(sin)}
+\DoxyCodeLine{00623\ \ \ EIGEN\_USING\_STD\_MATH(cos)}
+\DoxyCodeLine{00624\ \ \ \textcolor{keyword}{const}\ Scalar\ u1\ =\ internal::random<Scalar>(0,\ 1),}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u2\ =\ internal::random<Scalar>(0,\ 2*EIGEN\_PI),}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ u3\ =\ internal::random<Scalar>(0,\ 2*EIGEN\_PI);}
+\DoxyCodeLine{00627\ \ \ \textcolor{keyword}{const}\ Scalar\ a\ =\ sqrt(1\ -\/\ u1),}
+\DoxyCodeLine{00628\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ b\ =\ sqrt(u1);}
+\DoxyCodeLine{00629\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}\ (a\ *\ sin(u2),\ a\ *\ cos(u2),\ b\ *\ sin(u3),\ b\ *\ cos(u3));}
+\DoxyCodeLine{00630\ \}}
+\DoxyCodeLine{00631\ }
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00643\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ Options>}
+\DoxyCodeLine{00644\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived1,\ \textcolor{keyword}{typename}\ Derived2>}
+\DoxyCodeLine{00645\ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar,Options>}}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar,Options>::FromTwoVectors}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived1>}}\&\ a,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived2>}}\&\ b)}
+\DoxyCodeLine{00646\ \{}
+\DoxyCodeLine{00647\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion}}\ quat;}
+\DoxyCodeLine{00648\ \ \ \ \ quat.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a61ce1b4b1faf6849c9663fd86e9b3a70}{setFromTwoVectors}}(a,\ b);}
+\DoxyCodeLine{00649\ \ \ \ \ \textcolor{keywordflow}{return}\ quat;}
+\DoxyCodeLine{00650\ \}}
+\DoxyCodeLine{00651\ }
+\DoxyCodeLine{00652\ }
+\DoxyCodeLine{00659\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00660\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<typename\ internal::traits<Derived>::Scalar}}>\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_a6a1d8af1fe34cb4127f705c0d10ef649}{QuaternionBase<Derived>::inverse}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00661\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00662\ \ \ \textcolor{comment}{//\ FIXME\ should\ this\ function\ be\ called\ multiplicativeInverse\ and\ conjugate()\ be\ called\ inverse()\ or\ opposite()\ \ ??}}
+\DoxyCodeLine{00663\ \ \ Scalar\ n2\ =\ this-\/>squaredNorm();}
+\DoxyCodeLine{00664\ \ \ \textcolor{keywordflow}{if}\ (n2\ >\ Scalar(0))}
+\DoxyCodeLine{00665\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}(conjugate().coeffs()\ /\ n2);}
+\DoxyCodeLine{00666\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00667\ \ \ \{}
+\DoxyCodeLine{00668\ \ \ \ \ \textcolor{comment}{//\ return\ an\ invalid\ result\ to\ flag\ the\ error}}
+\DoxyCodeLine{00669\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}(Coefficients::Zero());}
+\DoxyCodeLine{00670\ \ \ \}}
+\DoxyCodeLine{00671\ \}}
+\DoxyCodeLine{00672\ }
+\DoxyCodeLine{00673\ \textcolor{comment}{//\ Generic\ conjugate\ of\ a\ Quaternion}}
+\DoxyCodeLine{00674\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00675\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Arch,\ \textcolor{keyword}{class}\ Derived,\ \textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ \_Options>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1quat__conj}{quat\_conj}}}
+\DoxyCodeLine{00676\ \{}
+\DoxyCodeLine{00677\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ run(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ q)\{}
+\DoxyCodeLine{00678\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}(q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}(),-\/q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}(),-\/q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}(),-\/q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}());}
+\DoxyCodeLine{00679\ \ \ \}}
+\DoxyCodeLine{00680\ \};}
+\DoxyCodeLine{00681\ \}}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00689\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00690\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<typename\ internal::traits<Derived>::Scalar}}>}
+\DoxyCodeLine{00691\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base_aa82dabadce488031c298a5a0a92cda14}{QuaternionBase<Derived>::conjugate}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00692\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00693\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1quat__conj}{internal::quat\_conj}}<Architecture::Target,\ Derived,}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Scalar}},}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Alignment}}>::run(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00697\ \}}
+\DoxyCodeLine{00698\ }
+\DoxyCodeLine{00702\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00703\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OtherDerived>}
+\DoxyCodeLine{00704\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Derived>::Scalar}}}
+\DoxyCodeLine{00705\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>::angularDistance}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00706\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00707\ \ \ EIGEN\_USING\_STD\_MATH(atan2)}
+\DoxyCodeLine{00708\ \ \ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}\ d\ =\ (*this)\ *\ other.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_aa82dabadce488031c298a5a0a92cda14}{conjugate}}();}
+\DoxyCodeLine{00709\ \ \ \textcolor{keywordflow}{return}\ Scalar(2)\ *\ atan2(\ d.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_ae7927333472826cc8c471ebb9984dd89}{vec}}().norm(),\ numext::abs(d.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}())\ );}
+\DoxyCodeLine{00710\ \}}
+\DoxyCodeLine{00711\ }
+\DoxyCodeLine{00712\ \ }
+\DoxyCodeLine{00713\ \ \ \ \ }
+\DoxyCodeLine{00720\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ Derived>}
+\DoxyCodeLine{00721\ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ OtherDerived>}
+\DoxyCodeLine{00722\ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<typename\ internal::traits<Derived>::Scalar}}>}
+\DoxyCodeLine{00723\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>::slerp}}(\textcolor{keyword}{const}\ Scalar\&\ t,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<OtherDerived>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00724\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00725\ \ \ EIGEN\_USING\_STD\_MATH(acos)}
+\DoxyCodeLine{00726\ \ \ EIGEN\_USING\_STD\_MATH(sin)}
+\DoxyCodeLine{00727\ \ \ \textcolor{keyword}{const}\ Scalar\ one\ =\ Scalar(1)\ -\/\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::epsilon}}();}
+\DoxyCodeLine{00728\ \ \ Scalar\ d\ =\ this-\/>dot(other);}
+\DoxyCodeLine{00729\ \ \ Scalar\ absD\ =\ numext::abs(d);}
+\DoxyCodeLine{00730\ }
+\DoxyCodeLine{00731\ \ \ Scalar\ scale0;}
+\DoxyCodeLine{00732\ \ \ Scalar\ scale1;}
+\DoxyCodeLine{00733\ }
+\DoxyCodeLine{00734\ \ \ \textcolor{keywordflow}{if}(absD>=one)}
+\DoxyCodeLine{00735\ \ \ \{}
+\DoxyCodeLine{00736\ \ \ \ \ scale0\ =\ Scalar(1)\ -\/\ t;}
+\DoxyCodeLine{00737\ \ \ \ \ scale1\ =\ t;}
+\DoxyCodeLine{00738\ \ \ \}}
+\DoxyCodeLine{00739\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00740\ \ \ \{}
+\DoxyCodeLine{00741\ \ \ \ \ \textcolor{comment}{//\ theta\ is\ the\ angle\ between\ the\ 2\ quaternions}}
+\DoxyCodeLine{00742\ \ \ \ \ Scalar\ theta\ =\ acos(absD);}
+\DoxyCodeLine{00743\ \ \ \ \ Scalar\ sinTheta\ =\ sin(theta);}
+\DoxyCodeLine{00744\ }
+\DoxyCodeLine{00745\ \ \ \ \ scale0\ =\ sin(\ (\ Scalar(1)\ -\/\ t\ )\ *\ theta)\ /\ sinTheta;}
+\DoxyCodeLine{00746\ \ \ \ \ scale1\ =\ sin(\ (\ t\ *\ theta)\ )\ /\ sinTheta;}
+\DoxyCodeLine{00747\ \ \ \}}
+\DoxyCodeLine{00748\ \ \ \textcolor{keywordflow}{if}(d<Scalar(0))\ scale1\ =\ -\/scale1;}
+\DoxyCodeLine{00749\ }
+\DoxyCodeLine{00750\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_quaternion}{Quaternion<Scalar>}}(scale0\ *\ coeffs()\ +\ scale1\ *\ other.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}());}
+\DoxyCodeLine{00751\ \}}
+\DoxyCodeLine{00752\ }
+\DoxyCodeLine{00753\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00754\ }
+\DoxyCodeLine{00755\ \textcolor{comment}{//\ set\ from\ a\ rotation\ matrix}}
+\DoxyCodeLine{00756\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00757\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1quaternionbase__assign__impl}{quaternionbase\_assign\_impl}}<Other,3,3>}
+\DoxyCodeLine{00758\ \{}
+\DoxyCodeLine{00759\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Other::Scalar\ Scalar;}
+\DoxyCodeLine{00760\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ run(\mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ q,\ \textcolor{keyword}{const}\ Other\&\ a\_mat)}
+\DoxyCodeLine{00761\ \ \ \{}
+\DoxyCodeLine{00762\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::nested\_eval<Other,2>::type}}\ mat(a\_mat);}
+\DoxyCodeLine{00763\ \ \ \ \ EIGEN\_USING\_STD\_MATH(sqrt)}
+\DoxyCodeLine{00764\ \ \ \ \ \textcolor{comment}{//\ This\ algorithm\ comes\ from\ \ "{}Quaternion\ Calculus\ and\ Fast\ Animation"{},}}
+\DoxyCodeLine{00765\ \ \ \ \ \textcolor{comment}{//\ Ken\ Shoemake,\ 1987\ SIGGRAPH\ course\ notes}}
+\DoxyCodeLine{00766\ \ \ \ \ Scalar\ t\ =\ mat.trace();}
+\DoxyCodeLine{00767\ \ \ \ \ \textcolor{keywordflow}{if}\ (t\ >\ Scalar(0))}
+\DoxyCodeLine{00768\ \ \ \ \ \{}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ t\ =\ sqrt(t\ +\ Scalar(1.0));}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ =\ Scalar(0.5)*t;}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ t\ =\ Scalar(0.5)/t;}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a782b9d83caa9bbe84d6e0b822f2dbea9}{x}}()\ =\ (mat.coeff(2,1)\ -\/\ mat.coeff(1,2))\ *\ t;}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a8c7883015c5fa41aa5107350279a5229}{y}}()\ =\ (mat.coeff(0,2)\ -\/\ mat.coeff(2,0))\ *\ t;}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_abb82ebd1b6ac5e6c4442201ede65449b}{z}}()\ =\ (mat.coeff(1,0)\ -\/\ mat.coeff(0,1))\ *\ t;}
+\DoxyCodeLine{00775\ \ \ \ \ \}}
+\DoxyCodeLine{00776\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00777\ \ \ \ \ \{}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ Index\ i\ =\ 0;}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mat.coeff(1,1)\ >\ mat.coeff(0,0))}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ i\ =\ 1;}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (mat.coeff(2,2)\ >\ mat.coeff(i,i))}
+\DoxyCodeLine{00782\ \ \ \ \ \ \ \ \ i\ =\ 2;}
+\DoxyCodeLine{00783\ \ \ \ \ \ \ Index\ j\ =\ (i+1)\%3;}
+\DoxyCodeLine{00784\ \ \ \ \ \ \ Index\ k\ =\ (j+1)\%3;}
+\DoxyCodeLine{00785\ }
+\DoxyCodeLine{00786\ \ \ \ \ \ \ t\ =\ sqrt(mat.coeff(i,i)-\/mat.coeff(j,j)-\/mat.coeff(k,k)\ +\ Scalar(1.0));}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().coeffRef(i)\ =\ Scalar(0.5)\ *\ t;}
+\DoxyCodeLine{00788\ \ \ \ \ \ \ t\ =\ Scalar(0.5)/t;}
+\DoxyCodeLine{00789\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1f3f580927483150d4558c327988a9b4}{w}}()\ =\ (mat.coeff(k,j)-\/mat.coeff(j,k))*t;}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().coeffRef(j)\ =\ (mat.coeff(j,i)+mat.coeff(i,j))*t;}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}().coeffRef(k)\ =\ (mat.coeff(k,i)+mat.coeff(i,k))*t;}
+\DoxyCodeLine{00792\ \ \ \ \ \}}
+\DoxyCodeLine{00793\ \ \ \}}
+\DoxyCodeLine{00794\ \};}
+\DoxyCodeLine{00795\ }
+\DoxyCodeLine{00796\ \textcolor{comment}{//\ set\ from\ a\ vector\ of\ coefficients\ assumed\ to\ be\ a\ quaternion}}
+\DoxyCodeLine{00797\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00798\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1quaternionbase__assign__impl}{quaternionbase\_assign\_impl}}<Other,4,1>}
+\DoxyCodeLine{00799\ \{}
+\DoxyCodeLine{00800\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Other::Scalar\ Scalar;}
+\DoxyCodeLine{00801\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ Derived>\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ run(\mbox{\hyperlink{class_eigen_1_1_quaternion_base}{QuaternionBase<Derived>}}\&\ q,\ \textcolor{keyword}{const}\ Other\&\ vec)}
+\DoxyCodeLine{00802\ \ \ \{}
+\DoxyCodeLine{00803\ \ \ \ \ q.\mbox{\hyperlink{class_eigen_1_1_quaternion_base_a1a7dd10b8e218170dd8f52edd8356f9b}{coeffs}}()\ =\ vec;}
+\DoxyCodeLine{00804\ \ \ \}}
+\DoxyCodeLine{00805\ \};}
+\DoxyCodeLine{00806\ }
+\DoxyCodeLine{00807\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00808\ }
+\DoxyCodeLine{00809\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00810\ }
+\DoxyCodeLine{00811\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_QUATERNION\_H}}
+
+\end{DoxyCode}

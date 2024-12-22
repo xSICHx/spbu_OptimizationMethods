@@ -1,0 +1,57 @@
+\doxysection{Opt\+Method Class Reference}
+\hypertarget{class_opt_method}{}\label{class_opt_method}\index{OptMethod@{OptMethod}}
+
+
+Abstract base class for optimization methods.  
+
+
+
+
+{\ttfamily \#include $<$Opt\+Method.\+h$>$}
+
+Inheritance diagram for Opt\+Method\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_opt_method}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \mbox{\hyperlink{class_opt_method_a821670157e72a1aed51155b5bb208bcf}{optimize}} (const \mbox{\hyperlink{class_area}{Area}} \&area, const \mbox{\hyperlink{class_function}{Function}} \&func, const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&crit) const =0
+\item 
+virtual void \mbox{\hyperlink{class_opt_method_ae58c9fa97c47754f1b6d8683018f4381}{optimize}} (const \mbox{\hyperlink{class_area}{Area}} \&area, const \mbox{\hyperlink{class_function}{Function}} \&func, const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&crit, const Vector\+Xd \&init\+Point) const =0
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Abstract base class for optimization methods. 
+
+This class provides an interface for optimization methods. It declares pure virtual functions that must be implemented by derived classes. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_opt_method_a821670157e72a1aed51155b5bb208bcf}\index{OptMethod@{OptMethod}!optimize@{optimize}}
+\index{optimize@{optimize}!OptMethod@{OptMethod}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_opt_method_a821670157e72a1aed51155b5bb208bcf} 
+virtual void Opt\+Method\+::optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_area}{Area}} \&}]{area}{, }\item[{const \mbox{\hyperlink{class_function}{Function}} \&}]{func}{, }\item[{const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&}]{crit}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{class_opt_method_newton_a8dcab419fc89ffe60a9b6e2d9605b1ea}{Opt\+Method\+Newton}}, and \mbox{\hyperlink{class_opt_method_random_search_a7cdfb899984734b36a5e7bdc98ef6176}{Opt\+Method\+Random\+Search}}.
+
+\Hypertarget{class_opt_method_ae58c9fa97c47754f1b6d8683018f4381}\index{OptMethod@{OptMethod}!optimize@{optimize}}
+\index{optimize@{optimize}!OptMethod@{OptMethod}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_opt_method_ae58c9fa97c47754f1b6d8683018f4381} 
+virtual void Opt\+Method\+::optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_area}{Area}} \&}]{area}{, }\item[{const \mbox{\hyperlink{class_function}{Function}} \&}]{func}{, }\item[{const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&}]{crit}{, }\item[{const Vector\+Xd \&}]{init\+Point}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [pure virtual]}}
+
+
+
+Implemented in \mbox{\hyperlink{class_opt_method_newton_a4eae1cc216308f0342692a1f79f085df}{Opt\+Method\+Newton}}, and \mbox{\hyperlink{class_opt_method_random_search_a673a1d679013baf28054909117118d28}{Opt\+Method\+Random\+Search}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Opt\+Method.\+h\end{DoxyCompactItemize}

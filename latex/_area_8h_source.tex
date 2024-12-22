@@ -1,0 +1,100 @@
+\doxysection{Area.\+h}
+\hypertarget{_area_8h_source}{}\label{_area_8h_source}\index{OptimizationMethods/Area.h@{OptimizationMethods/Area.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}config.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_area}{Area}}}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{comment}{//\ matrix(n,\ 2).\ ѕо\ первому индексу -\/\ верхн€€,\ нижн€€\ границы}}
+\DoxyCodeLine{00014\ \ \ \ \ MatrixXd\ bounds;}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \mbox{\hyperlink{class_area}{Area}}(\textcolor{keyword}{const}\ MatrixXd\&\ \_bounds)\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ bounds\ =\ \_bounds;}
+\DoxyCodeLine{00019\ \ \ \ \ \}}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//\ creates\ cube\ with\ bounds\ point\ +-\/\ delta}}
+\DoxyCodeLine{00021\ \ \ \ \ \mbox{\hyperlink{class_area}{Area}}(\textcolor{keyword}{const}\ VectorXd\&\ point,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ delta)\ :\ bounds(point.size(),\ 2)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ point.size();\ ++i)}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ bounds(i,\ 0)\ =\ point[i]\ -\/\ delta;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ bounds(i,\ 1)\ =\ point[i]\ +\ delta;}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ MatrixXd\ GetBounds()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bounds;}
+\DoxyCodeLine{00031\ \ \ \ \ \}}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{double}\ getILeftBound(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bounds(i,\ 0);}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{double}\ getIRightBound(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\ i)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bounds(i,\ 1);}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keywordtype}{int}\ getAreaDim()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ bounds.rows();}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_area_adbb050e2cb8cd3bc5b2d859efbc28d53}{checkPointInArea}}(\textcolor{keyword}{const}\ VectorXd\&\ point)\textcolor{keyword}{\ const}\{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ flag\ =\ 1;}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ getAreaDim();\ ++i)\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ flag\ =\ flag\ \&\&\ bounds(i,\ 0)\ <\ point[i]\ \&\&\ point[i]\ <\ bounds(i,\ 1);}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ flag;}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ VectorXd\ getMiddleAreaPoint()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ VectorXd\ res\_point(getAreaDim());}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ res\_point.size();\ ++i)}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ \ \ \ \ res\_point[i]\ =\ (getILeftBound(i)\ +\ getIRightBound(i))\ /\ 2;}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res\_point;}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ VectorXd\ getRandomAreaPoint()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ VectorXd\ res\_point(getAreaDim());}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ res\_point.size();\ ++i)}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \ \ \ \ \ \ std::uniform\_real\_distribution<>\ dis(getILeftBound(i),\ getIRightBound(i));}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ \ \ \ \ res\_point[i]\ =\ dis(gen);}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res\_point;}
+\DoxyCodeLine{00071\ \ \ \ \ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{double}\ getMinBoundLen()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ res\ =\ (getIRightBound(0)\ -\/\ getILeftBound(0));}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ getAreaDim();\ ++i)}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \ \ \ \ res\ =\ min(\ (getIRightBound(i)\ -\/\ getILeftBound(i)),\ res\ );}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00087\ \ \ \ \ \mbox{\hyperlink{class_area}{Area}}\ \mbox{\hyperlink{class_area_a081795061929df35c5b73738458f36d6}{intersection}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ another)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ MatrixXd\ inter\_bounds(getAreaDim(),\ 2);}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ getAreaDim();\ ++i)}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ inter\_bounds(i,\ 0)\ =\ max(getILeftBound(i),\ another.getILeftBound(i));}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ inter\_bounds(i,\ 1)\ =\ min(getIRightBound(i),\ another.getIRightBound(i));}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_area}{Area}}\ res(inter\_bounds);}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00096\ \ \ \ \ \}}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{comment}{//\ set\ up\ cube\ area\ with\ bounds\ point[i]\ +-\/\ delta}}
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{void}\ setCube(\textcolor{keyword}{const}\ VectorXd\&\ point,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\ delta)\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ point.size();\ ++i)}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ bounds(i,\ 0)\ =\ point[i]\ -\/\ delta;}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ bounds(i,\ 1)\ =\ point[i]\ +\ delta;}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \};}
+\DoxyCodeLine{00107\ }
+
+\end{DoxyCode}

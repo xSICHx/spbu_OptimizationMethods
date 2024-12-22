@@ -1,0 +1,102 @@
+\doxysection{Eigen\+::Cwise\+Nullary\+Op\texorpdfstring{$<$}{<} Nullary\+Op, Matrix\+Type \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_eigen_1_1_cwise_nullary_op}{}\label{class_eigen_1_1_cwise_nullary_op}\index{Eigen::CwiseNullaryOp$<$ NullaryOp, MatrixType $>$@{Eigen::CwiseNullaryOp$<$ NullaryOp, MatrixType $>$}}
+
+
+Generic expression of a matrix where all coefficients are defined by a functor.  
+
+
+
+
+{\ttfamily \#include $<$Cwise\+Nullary\+Op.\+h$>$}
+
+Inheritance diagram for Eigen\+::Cwise\+Nullary\+Op\texorpdfstring{$<$}{<} Nullary\+Op, Matrix\+Type \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.842105cm]{class_eigen_1_1_cwise_nullary_op}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_a6218f8afe5addcd47d42d2f48d8ea07f}\label{class_eigen_1_1_cwise_nullary_op_a6218f8afe5addcd47d42d2f48d8ea07f} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__xpr__base}{internal\+::dense\+\_\+xpr\+\_\+base}}$<$ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}} $>$\+::type {\bfseries Base}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_a5057993eb2cdaa003da6a22d8d161ee6}\label{class_eigen_1_1_cwise_nullary_op_a5057993eb2cdaa003da6a22d8d161ee6} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC {\bfseries Cwise\+Nullary\+Op} (Index rows, Index cols, const Nullary\+Op \&func=Nullary\+Op())
+\item 
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_ac6d0bcf74660bcfe8334be6e574917c5}\label{class_eigen_1_1_cwise_nullary_op_ac6d0bcf74660bcfe8334be6e574917c5} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Index {\bfseries rows} () const
+\item 
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_a931cff0b99505c78b108dc9022cf4456}\label{class_eigen_1_1_cwise_nullary_op_a931cff0b99505c78b108dc9022cf4456} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Index {\bfseries cols} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Nullary\+Op \& \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op_ac0c215c75760c38efc779b7175f7a0ca}{functor}} () const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_ab29aff3ee2812e0b2a107249dfdf6278}\label{class_eigen_1_1_cwise_nullary_op_ab29aff3ee2812e0b2a107249dfdf6278} 
+const \mbox{\hyperlink{class_eigen_1_1internal_1_1variable__if__dynamic}{internal\+::variable\+\_\+if\+\_\+dynamic}}$<$ Index, Rows\+At\+Compile\+Time $>$ {\bfseries m\+\_\+rows}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_ac8bdb2a2b8f0bc23f28c45c4f7e3669b}\label{class_eigen_1_1_cwise_nullary_op_ac8bdb2a2b8f0bc23f28c45c4f7e3669b} 
+const \mbox{\hyperlink{class_eigen_1_1internal_1_1variable__if__dynamic}{internal\+::variable\+\_\+if\+\_\+dynamic}}$<$ Index, Cols\+At\+Compile\+Time $>$ {\bfseries m\+\_\+cols}
+\item 
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_af36f706236ad71f41cd532290139e388}\label{class_eigen_1_1_cwise_nullary_op_af36f706236ad71f41cd532290139e388} 
+const Nullary\+Op {\bfseries m\+\_\+functor}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Nullary\+Op, typename Matrix\+Type$>$\newline
+class Eigen\+::\+Cwise\+Nullary\+Op$<$ Nullary\+Op, Matrix\+Type $>$}
+Generic expression of a matrix where all coefficients are defined by a functor. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Nullary\+Op} & template functor implementing the operator \\
+\hline
+{\em Plain\+Object\+Type} & the underlying plain matrix/array type\\
+\hline
+\end{DoxyTemplParams}
+This class represents an expression of a generic nullary operator. It is the return type of the Ones(), Zero(), Constant(), Identity() and Random() methods, and most of the time this is the only way it is used.
+
+However, if you want to write a function returning such an expression, you will need to use this class.
+
+The functor Nullary\+Op must expose one of the following method\+: \tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{2}{|X[-1]}|}
+\hline
+{\ttfamily operator()()} &if the procedural generation does not depend on the coefficient entries (e.\+g., random numbers) \\\cline{1-2}
+{\ttfamily operator()(\+Index i)} &if the procedural generation makes sense for vectors only and that it depends on the coefficient index {\ttfamily i} (e.\+g., linspace)  \\\cline{1-2}
+{\ttfamily operator()(\+Index i,\+Index j)} &if the procedural generation depends on the matrix coordinates {\ttfamily i}, {\ttfamily j} (e.\+g., to generate a checkerboard with 0 and 1) \\\cline{1-2}
+\end{longtabu}
+It is also possible to expose the last two operators if the generation makes sense for matrices but can be optimized for vectors.
+
+See Dense\+Base\+::\+Nullary\+Expr(\+Index,const Custom\+Nullary\+Op\&) for an example binding C++11 random number generators.
+
+A nullary expression can also be used to implement custom sophisticated matrix manipulations that cannot be covered by the existing set of natively supported matrix manipulations. See this page for some examples and additional explanations on the behavior of \doxylink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}.
+
+\begin{DoxySeeAlso}{See also}
+class \doxylink{class_eigen_1_1_cwise_unary_op}{Cwise\+Unary\+Op}, class \doxylink{class_eigen_1_1_cwise_binary_op}{Cwise\+Binary\+Op}, Dense\+Base\+::\+Nullary\+Expr 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_eigen_1_1_cwise_nullary_op_ac0c215c75760c38efc779b7175f7a0ca}\index{Eigen::CwiseNullaryOp$<$ NullaryOp, MatrixType $>$@{Eigen::CwiseNullaryOp$<$ NullaryOp, MatrixType $>$}!functor@{functor}}
+\index{functor@{functor}!Eigen::CwiseNullaryOp$<$ NullaryOp, MatrixType $>$@{Eigen::CwiseNullaryOp$<$ NullaryOp, MatrixType $>$}}
+\doxysubsubsection{\texorpdfstring{functor()}{functor()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_cwise_nullary_op_ac0c215c75760c38efc779b7175f7a0ca} 
+template$<$typename Nullary\+Op , typename Matrix\+Type $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Nullary\+Op \& \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Eigen\+::\+Cwise\+Nullary\+Op}}$<$ Nullary\+Op, Matrix\+Type $>$\+::functor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the functor representing the nullary operation 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/Cwise\+Nullary\+Op.\+h\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/util/Forward\+Declarations.\+h\end{DoxyCompactItemize}

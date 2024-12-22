@@ -1,0 +1,938 @@
+\doxysection{Assign\+Evaluator.\+h}
+\hypertarget{_assign_evaluator_8h_source}{}\label{_assign_evaluator_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/AssignEvaluator.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/AssignEvaluator.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2011\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2011-\/2014\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ Copyright\ (C)\ 2011-\/2012\ Jitse\ Niesen\ <jitse@maths.leeds.ac.uk>}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_ASSIGN\_EVALUATOR\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ EIGEN\_ASSIGN\_EVALUATOR\_H}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ This\ implementation\ is\ based\ on\ Assign.h}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00020\ \ \ }
+\DoxyCodeLine{00021\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00022\ \textcolor{comment}{*\ Part\ 1\ :\ the\ logic\ deciding\ a\ strategy\ for\ traversal\ and\ unrolling\ \ \ \ \ \ \ *}}
+\DoxyCodeLine{00023\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{comment}{//\ copy\_using\_evaluator\_traits\ is\ based\ on\ assign\_traits}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ DstEvaluator,\ \textcolor{keyword}{typename}\ SrcEvaluator,\ \textcolor{keyword}{typename}\ AssignFunc>}
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__traits}{copy\_using\_evaluator\_traits}}}
+\DoxyCodeLine{00029\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DstEvaluator::XprType\ Dst;}
+\DoxyCodeLine{00031\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Dst::Scalar\ DstScalar;}
+\DoxyCodeLine{00032\ \ \ }
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ DstFlags\ =\ DstEvaluator::Flags,}
+\DoxyCodeLine{00035\ \ \ \ \ SrcFlags\ =\ SrcEvaluator::Flags}
+\DoxyCodeLine{00036\ \ \ \};}
+\DoxyCodeLine{00037\ \ \ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ DstAlignment\ =\ DstEvaluator::Alignment,}
+\DoxyCodeLine{00041\ \ \ \ \ SrcAlignment\ =\ SrcEvaluator::Alignment,}
+\DoxyCodeLine{00042\ \ \ \ \ DstHasDirectAccess\ =\ DstFlags\ \&\ \mbox{\hyperlink{group__flags_gabf1e9d0516a933445a4c307ad8f14915}{DirectAccessBit}},}
+\DoxyCodeLine{00043\ \ \ \ \ JointAlignment\ =\ EIGEN\_PLAIN\_ENUM\_MIN(DstAlignment,SrcAlignment)}
+\DoxyCodeLine{00044\ \ \ \};}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00047\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ InnerSize\ =\ int(Dst::IsVectorAtCompileTime)\ ?\ int(Dst::SizeAtCompileTime)}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(DstFlags)\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}\ ?\ int(Dst::ColsAtCompileTime)}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(Dst::RowsAtCompileTime),}
+\DoxyCodeLine{00051\ \ \ \ \ InnerMaxSize\ =\ int(Dst::IsVectorAtCompileTime)\ ?\ int(Dst::MaxSizeAtCompileTime)}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(DstFlags)\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}\ ?\ int(Dst::MaxColsAtCompileTime)}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(Dst::MaxRowsAtCompileTime),}
+\DoxyCodeLine{00054\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride}}\ =\ int(\mbox{\hyperlink{struct_eigen_1_1internal_1_1outer__stride__at__compile__time}{outer\_stride\_at\_compile\_time<Dst>::ret}}),}
+\DoxyCodeLine{00055\ \ \ \ \ MaxSizeAtCompileTime\ =\ Dst::SizeAtCompileTime}
+\DoxyCodeLine{00056\ \ \ \};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \textcolor{comment}{//\ TODO\ distinguish\ between\ linear\ traversal\ and\ inner-\/traversals}}
+\DoxyCodeLine{00059\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ find\_best\_packet<DstScalar,Dst::SizeAtCompileTime>::type\ LinearPacketType;}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ find\_best\_packet<DstScalar,InnerSize>::type\ InnerPacketType;}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ LinearPacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<LinearPacketType>::size}},}
+\DoxyCodeLine{00064\ \ \ \ \ InnerPacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<InnerPacketType>::size}}}
+\DoxyCodeLine{00065\ \ \ \};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00069\ \ \ \ \ LinearRequiredAlignment\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<LinearPacketType>::alignment}},}
+\DoxyCodeLine{00070\ \ \ \ \ InnerRequiredAlignment\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<InnerPacketType>::alignment}}}
+\DoxyCodeLine{00071\ \ \ \};}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00074\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ DstIsRowMajor\ =\ DstFlags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}},}
+\DoxyCodeLine{00076\ \ \ \ \ SrcIsRowMajor\ =\ SrcFlags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}},}
+\DoxyCodeLine{00077\ \ \ \ \ StorageOrdersAgree\ =\ (int(DstIsRowMajor)\ ==\ int(SrcIsRowMajor)),}
+\DoxyCodeLine{00078\ \ \ \ \ MightVectorize\ =\ \textcolor{keywordtype}{bool}(StorageOrdersAgree)}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (int(DstFlags)\ \&\ int(SrcFlags)\ \&\ ActualPacketAccessBit)}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \textcolor{keywordtype}{bool}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits<AssignFunc>::PacketAccess}}),}
+\DoxyCodeLine{00081\ \ \ \ \ MayInnerVectorize\ \ =\ MightVectorize}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ int(InnerSize)!=Dynamic\ \&\&\ int(InnerSize)\%int(InnerPacketSize)==0}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ int(\mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride}})!=Dynamic\ \&\&\ int(\mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride}})\%int(InnerPacketSize)==0}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (EIGEN\_UNALIGNED\_VECTORIZE\ \ ||\ int(JointAlignment)>=int(InnerRequiredAlignment)),}
+\DoxyCodeLine{00085\ \ \ \ \ MayLinearize\ =\ \textcolor{keywordtype}{bool}(StorageOrdersAgree)\ \&\&\ (int(DstFlags)\ \&\ int(SrcFlags)\ \&\ \mbox{\hyperlink{group__flags_ga4b983a15d57cd55806df618ac544d09e}{LinearAccessBit}}),}
+\DoxyCodeLine{00086\ \ \ \ \ MayLinearVectorize\ =\ \textcolor{keywordtype}{bool}(MightVectorize)\ \&\&\ MayLinearize\ \&\&\ DstHasDirectAccess}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (EIGEN\_UNALIGNED\_VECTORIZE\ ||\ (int(DstAlignment)>=int(LinearRequiredAlignment))\ ||\ MaxSizeAtCompileTime\ ==\ Dynamic),}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{comment}{/*\ If\ the\ destination\ isn't\ aligned,\ we\ have\ to\ do\ runtime\ checks\ and\ we\ don't\ unroll,}}
+\DoxyCodeLine{00089\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ so\ it's\ only\ good\ for\ large\ enough\ sizes.\ */}}
+\DoxyCodeLine{00090\ \ \ \ \ MaySliceVectorize\ \ =\ bool(MightVectorize)\ \&\&\ bool(DstHasDirectAccess)}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (int(InnerMaxSize)==Dynamic\ ||\ int(InnerMaxSize)>=(EIGEN\_UNALIGNED\_VECTORIZE?InnerPacketSize:(3*InnerPacketSize)))}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \textcolor{comment}{/*\ slice\ vectorization\ can\ be\ slow,\ so\ we\ only\ want\ it\ if\ the\ slices\ are\ big,\ which\ is}}
+\DoxyCodeLine{00093\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ indicated\ by\ InnerMaxSize\ rather\ than\ InnerSize,\ think\ of\ the\ case\ of\ a\ dynamic\ block}}
+\DoxyCodeLine{00094\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ in\ a\ fixed-\/size\ matrix}}
+\DoxyCodeLine{00095\ \textcolor{comment}{\ \ \ \ \ \ \ \ \ However,\ with\ EIGEN\_UNALIGNED\_VECTORIZE\ and\ unrolling,\ slice\ vectorization\ is\ still\ worth\ it\ */}}
+\DoxyCodeLine{00096\ \ \ \};}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00099\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00100\ \ \ \ \ Traversal\ =\ int(MayLinearVectorize)\ \&\&\ (LinearPacketSize>InnerPacketSize)\ ?\ \textcolor{keywordtype}{int}(LinearVectorizedTraversal)}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(MayInnerVectorize)\ \ \ ?\ int(InnerVectorizedTraversal)}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(MayLinearVectorize)\ \ ?\ int(LinearVectorizedTraversal)}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(MaySliceVectorize)\ \ \ ?\ int(SliceVectorizedTraversal)}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(MayLinearize)\ \ \ \ \ \ \ \ ?\ int(LinearTraversal)}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(DefaultTraversal),}
+\DoxyCodeLine{00106\ \ \ \ \ Vectorized\ =\ int(Traversal)\ ==\ InnerVectorizedTraversal}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ int(Traversal)\ ==\ LinearVectorizedTraversal}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ int(Traversal)\ ==\ SliceVectorizedTraversal}
+\DoxyCodeLine{00109\ \ \ \};}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{conditional}}<int(Traversal)==LinearVectorizedTraversal,\ LinearPacketType,\ InnerPacketType>::type\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PacketType}};}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00114\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00115\ \ \ \ \ ActualPacketSize\ \ \ \ =\ int(Traversal)==LinearVectorizedTraversal\ ?\ LinearPacketSize}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ Vectorized\ ?\ InnerPacketSize}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ 1,}
+\DoxyCodeLine{00118\ \ \ \ \ UnrollingLimit\ \ \ \ \ \ =\ EIGEN\_UNROLLING\_LIMIT\ *\ ActualPacketSize,}
+\DoxyCodeLine{00119\ \ \ \ \ MayUnrollCompletely\ =\ int(Dst::SizeAtCompileTime)\ !=\ Dynamic}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ int(Dst::SizeAtCompileTime)\ *\ (int(DstEvaluator::CoeffReadCost)+int(SrcEvaluator::CoeffReadCost))\ <=\ \textcolor{keywordtype}{int}(UnrollingLimit),}
+\DoxyCodeLine{00121\ \ \ \ \ MayUnrollInner\ \ \ \ \ \ =\ int(InnerSize)\ !=\ Dynamic}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ int(InnerSize)\ *\ (int(DstEvaluator::CoeffReadCost)+int(SrcEvaluator::CoeffReadCost))\ <=\ \textcolor{keywordtype}{int}(UnrollingLimit)}
+\DoxyCodeLine{00123\ \ \ \};}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00125\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00126\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00127\ \ \ \ \ Unrolling\ =\ (int(Traversal)\ ==\ int(InnerVectorizedTraversal)\ ||\ int(Traversal)\ ==\ int(DefaultTraversal))}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}(MayUnrollCompletely)\ ?\ int(CompleteUnrolling)}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(MayUnrollInner)\ \ \ \ \ \ ?\ int(InnerUnrolling)}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(NoUnrolling)}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(Traversal)\ ==\ int(LinearVectorizedTraversal)}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (\ bool(MayUnrollCompletely)\ \&\&\ (\ EIGEN\_UNALIGNED\_VECTORIZE\ ||\ (int(DstAlignment)>=int(LinearRequiredAlignment)))}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ int(CompleteUnrolling)}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(NoUnrolling)\ )}
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(Traversal)\ ==\ int(LinearTraversal)}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (\ bool(MayUnrollCompletely)\ ?\ int(CompleteUnrolling)\ }
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(NoUnrolling)\ )}
+\DoxyCodeLine{00140\ \#\textcolor{keywordflow}{if}\ EIGEN\_UNALIGNED\_VECTORIZE}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(Traversal)\ ==\ int(SliceVectorizedTraversal)}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ (\ bool(MayUnrollInner)\ ?\ int(InnerUnrolling)}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(NoUnrolling)\ )}
+\DoxyCodeLine{00144\ \#endif}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(NoUnrolling)}
+\DoxyCodeLine{00146\ \ \ \};}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_DEBUG\_ASSIGN}}
+\DoxyCodeLine{00149\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ debug()}
+\DoxyCodeLine{00150\ \ \ \{}
+\DoxyCodeLine{00151\ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}DstXpr:\ "{}}\ <<\ \textcolor{keyword}{typeid}(\textcolor{keyword}{typename}\ DstEvaluator::XprType).name()\ <<\ std::endl;}
+\DoxyCodeLine{00152\ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}SrcXpr:\ "{}}\ <<\ \textcolor{keyword}{typeid}(\textcolor{keyword}{typename}\ SrcEvaluator::XprType).name()\ <<\ std::endl;}
+\DoxyCodeLine{00153\ \ \ \ \ std::cerr.setf(std::ios::hex,\ std::ios::basefield);}
+\DoxyCodeLine{00154\ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}DstFlags"{}}\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}}\ <<\ DstFlags\ <<\ \textcolor{stringliteral}{"{}\ ("{}}\ <<\ demangle\_flags(DstFlags)\ <<\ \textcolor{stringliteral}{"{}\ )"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00155\ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}SrcFlags"{}}\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}}\ <<\ SrcFlags\ <<\ \textcolor{stringliteral}{"{}\ ("{}}\ <<\ demangle\_flags(SrcFlags)\ <<\ \textcolor{stringliteral}{"{}\ )"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00156\ \ \ \ \ std::cerr.unsetf(std::ios::hex);}
+\DoxyCodeLine{00157\ \ \ \ \ EIGEN\_DEBUG\_VAR(DstAlignment)}
+\DoxyCodeLine{00158\ \ \ \ \ EIGEN\_DEBUG\_VAR(SrcAlignment)}
+\DoxyCodeLine{00159\ \ \ \ \ EIGEN\_DEBUG\_VAR(LinearRequiredAlignment)}
+\DoxyCodeLine{00160\ \ \ \ \ EIGEN\_DEBUG\_VAR(InnerRequiredAlignment)}
+\DoxyCodeLine{00161\ \ \ \ \ EIGEN\_DEBUG\_VAR(JointAlignment)}
+\DoxyCodeLine{00162\ \ \ \ \ EIGEN\_DEBUG\_VAR(InnerSize)}
+\DoxyCodeLine{00163\ \ \ \ \ EIGEN\_DEBUG\_VAR(InnerMaxSize)}
+\DoxyCodeLine{00164\ \ \ \ \ EIGEN\_DEBUG\_VAR(LinearPacketSize)}
+\DoxyCodeLine{00165\ \ \ \ \ EIGEN\_DEBUG\_VAR(InnerPacketSize)}
+\DoxyCodeLine{00166\ \ \ \ \ EIGEN\_DEBUG\_VAR(ActualPacketSize)}
+\DoxyCodeLine{00167\ \ \ \ \ EIGEN\_DEBUG\_VAR(StorageOrdersAgree)}
+\DoxyCodeLine{00168\ \ \ \ \ EIGEN\_DEBUG\_VAR(MightVectorize)}
+\DoxyCodeLine{00169\ \ \ \ \ EIGEN\_DEBUG\_VAR(MayLinearize)}
+\DoxyCodeLine{00170\ \ \ \ \ EIGEN\_DEBUG\_VAR(MayInnerVectorize)}
+\DoxyCodeLine{00171\ \ \ \ \ EIGEN\_DEBUG\_VAR(MayLinearVectorize)}
+\DoxyCodeLine{00172\ \ \ \ \ EIGEN\_DEBUG\_VAR(MaySliceVectorize)}
+\DoxyCodeLine{00173\ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Traversal"{}}\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}}\ <<\ Traversal\ <<\ \textcolor{stringliteral}{"{}\ ("{}}\ <<\ demangle\_traversal(Traversal)\ <<\ \textcolor{stringliteral}{"{})"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00174\ \ \ \ \ EIGEN\_DEBUG\_VAR(SrcEvaluator::CoeffReadCost)}
+\DoxyCodeLine{00175\ \ \ \ \ EIGEN\_DEBUG\_VAR(UnrollingLimit)}
+\DoxyCodeLine{00176\ \ \ \ \ EIGEN\_DEBUG\_VAR(MayUnrollCompletely)}
+\DoxyCodeLine{00177\ \ \ \ \ EIGEN\_DEBUG\_VAR(MayUnrollInner)}
+\DoxyCodeLine{00178\ \ \ \ \ std::cerr\ <<\ \textcolor{stringliteral}{"{}Unrolling"{}}\ <<\ \textcolor{stringliteral}{"{}\ =\ "{}}\ <<\ Unrolling\ <<\ \textcolor{stringliteral}{"{}\ ("{}}\ <<\ demangle\_unrolling(Unrolling)\ <<\ \textcolor{stringliteral}{"{})"{}}\ <<\ std::endl;}
+\DoxyCodeLine{00179\ \ \ \ \ std::cerr\ <<\ std::endl;}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00182\ \};}
+\DoxyCodeLine{00183\ }
+\DoxyCodeLine{00184\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00185\ \textcolor{comment}{*\ Part\ 2\ :\ meta-\/unrollers}}
+\DoxyCodeLine{00186\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00188\ \textcolor{comment}{/************************}}
+\DoxyCodeLine{00189\ \textcolor{comment}{***\ Default\ traversal\ ***}}
+\DoxyCodeLine{00190\ \textcolor{comment}{************************/}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Index,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00193\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___complete_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_CompleteUnrolling}}}
+\DoxyCodeLine{00194\ \{}
+\DoxyCodeLine{00195\ \ \ \textcolor{comment}{//\ FIXME:\ this\ is\ not\ very\ clean,\ perhaps\ this\ information\ should\ be\ provided\ by\ the\ kernel?}}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType\ DstEvaluatorType;}
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00198\ \ \ }
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00200\ \ \ \ \ outer\ =\ Index\ /\ DstXprType::InnerSizeAtCompileTime,}
+\DoxyCodeLine{00201\ \ \ \ \ inner\ =\ Index\ \%\ DstXprType::InnerSizeAtCompileTime}
+\DoxyCodeLine{00202\ \ \ \};}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00205\ \ \ \{}
+\DoxyCodeLine{00206\ \ \ \ \ kernel.assignCoeffByOuterInner(outer,\ inner);}
+\DoxyCodeLine{00207\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___complete_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_CompleteUnrolling<Kernel,\ Index+1,\ Stop>::run}}(kernel);}
+\DoxyCodeLine{00208\ \ \ \}}
+\DoxyCodeLine{00209\ \};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00212\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___complete_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_CompleteUnrolling}}<Kernel,\ Stop,\ Stop>}
+\DoxyCodeLine{00213\ \{}
+\DoxyCodeLine{00214\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\&)\ \{\ \}}
+\DoxyCodeLine{00215\ \};}
+\DoxyCodeLine{00216\ }
+\DoxyCodeLine{00217\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Index\_,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00218\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___inner_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_InnerUnrolling}}}
+\DoxyCodeLine{00219\ \{}
+\DoxyCodeLine{00220\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel,\ Index\ outer)}
+\DoxyCodeLine{00221\ \ \ \{}
+\DoxyCodeLine{00222\ \ \ \ \ kernel.assignCoeffByOuterInner(outer,\ Index\_);}
+\DoxyCodeLine{00223\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___inner_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_InnerUnrolling<Kernel,\ Index\_+1,\ Stop>::run}}(kernel,\ outer);}
+\DoxyCodeLine{00224\ \ \ \}}
+\DoxyCodeLine{00225\ \};}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00228\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___inner_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_InnerUnrolling}}<Kernel,\ Stop,\ Stop>}
+\DoxyCodeLine{00229\ \{}
+\DoxyCodeLine{00230\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\&,\ Index)\ \{\ \}}
+\DoxyCodeLine{00231\ \};}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00233\ \textcolor{comment}{/***********************}}
+\DoxyCodeLine{00234\ \textcolor{comment}{***\ Linear\ traversal\ ***}}
+\DoxyCodeLine{00235\ \textcolor{comment}{***********************/}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Index,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00238\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___linear_traversal___complete_unrolling}{copy\_using\_evaluator\_LinearTraversal\_CompleteUnrolling}}}
+\DoxyCodeLine{00239\ \{}
+\DoxyCodeLine{00240\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\&\ kernel)}
+\DoxyCodeLine{00241\ \ \ \{}
+\DoxyCodeLine{00242\ \ \ \ \ kernel.assignCoeff(Index);}
+\DoxyCodeLine{00243\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___linear_traversal___complete_unrolling}{copy\_using\_evaluator\_LinearTraversal\_CompleteUnrolling<Kernel,\ Index+1,\ Stop>::run}}(kernel);}
+\DoxyCodeLine{00244\ \ \ \}}
+\DoxyCodeLine{00245\ \};}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00248\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___linear_traversal___complete_unrolling}{copy\_using\_evaluator\_LinearTraversal\_CompleteUnrolling}}<Kernel,\ Stop,\ Stop>}
+\DoxyCodeLine{00249\ \{}
+\DoxyCodeLine{00250\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\&)\ \{\ \}}
+\DoxyCodeLine{00251\ \};}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{comment}{/**************************}}
+\DoxyCodeLine{00254\ \textcolor{comment}{***\ Inner\ vectorization\ ***}}
+\DoxyCodeLine{00255\ \textcolor{comment}{**************************/}}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Index,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00258\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___complete_unrolling}{copy\_using\_evaluator\_innervec\_CompleteUnrolling}}}
+\DoxyCodeLine{00259\ \{}
+\DoxyCodeLine{00260\ \ \ \textcolor{comment}{//\ FIXME:\ this\ is\ not\ very\ clean,\ perhaps\ this\ information\ should\ be\ provided\ by\ the\ kernel?}}
+\DoxyCodeLine{00261\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType\ DstEvaluatorType;}
+\DoxyCodeLine{00262\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00263\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::PacketType\ PacketType;}
+\DoxyCodeLine{00264\ \ \ }
+\DoxyCodeLine{00265\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00266\ \ \ \ \ outer\ =\ Index\ /\ DstXprType::InnerSizeAtCompileTime,}
+\DoxyCodeLine{00267\ \ \ \ \ inner\ =\ Index\ \%\ DstXprType::InnerSizeAtCompileTime,}
+\DoxyCodeLine{00268\ \ \ \ \ SrcAlignment\ =\ Kernel::AssignmentTraits::SrcAlignment,}
+\DoxyCodeLine{00269\ \ \ \ \ DstAlignment\ =\ Kernel::AssignmentTraits::DstAlignment}
+\DoxyCodeLine{00270\ \ \ \};}
+\DoxyCodeLine{00271\ }
+\DoxyCodeLine{00272\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00273\ \ \ \{}
+\DoxyCodeLine{00274\ \ \ \ \ kernel.template\ assignPacketByOuterInner<DstAlignment,\ SrcAlignment,\ PacketType>(outer,\ inner);}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ NextIndex\ =\ Index\ +\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<PacketType>::size}}\ \};}
+\DoxyCodeLine{00276\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___complete_unrolling}{copy\_using\_evaluator\_innervec\_CompleteUnrolling<Kernel,\ NextIndex,\ Stop>::run}}(kernel);}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ \};}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Stop>}
+\DoxyCodeLine{00281\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___complete_unrolling}{copy\_using\_evaluator\_innervec\_CompleteUnrolling}}<Kernel,\ Stop,\ Stop>}
+\DoxyCodeLine{00282\ \{}
+\DoxyCodeLine{00283\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\&)\ \{\ \}}
+\DoxyCodeLine{00284\ \};}
+\DoxyCodeLine{00285\ }
+\DoxyCodeLine{00286\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Index\_,\ \textcolor{keywordtype}{int}\ Stop,\ \textcolor{keywordtype}{int}\ SrcAlignment,\ \textcolor{keywordtype}{int}\ DstAlignment>}
+\DoxyCodeLine{00287\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___inner_unrolling}{copy\_using\_evaluator\_innervec\_InnerUnrolling}}}
+\DoxyCodeLine{00288\ \{}
+\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::PacketType\ PacketType;}
+\DoxyCodeLine{00290\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel,\ Index\ outer)}
+\DoxyCodeLine{00291\ \ \ \{}
+\DoxyCodeLine{00292\ \ \ \ \ kernel.template\ assignPacketByOuterInner<DstAlignment,\ SrcAlignment,\ PacketType>(outer,\ Index\_);}
+\DoxyCodeLine{00293\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ NextIndex\ =\ Index\_\ +\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<PacketType>::size}}\ \};}
+\DoxyCodeLine{00294\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___inner_unrolling}{copy\_using\_evaluator\_innervec\_InnerUnrolling<Kernel,\ NextIndex,\ Stop,\ SrcAlignment,\ DstAlignment>::run}}(kernel,\ outer);}
+\DoxyCodeLine{00295\ \ \ \}}
+\DoxyCodeLine{00296\ \};}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,\ \textcolor{keywordtype}{int}\ Stop,\ \textcolor{keywordtype}{int}\ SrcAlignment,\ \textcolor{keywordtype}{int}\ DstAlignment>}
+\DoxyCodeLine{00299\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___inner_unrolling}{copy\_using\_evaluator\_innervec\_InnerUnrolling}}<Kernel,\ Stop,\ Stop,\ SrcAlignment,\ DstAlignment>}
+\DoxyCodeLine{00300\ \{}
+\DoxyCodeLine{00301\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&,\ Index)\ \{\ \}}
+\DoxyCodeLine{00302\ \};}
+\DoxyCodeLine{00303\ }
+\DoxyCodeLine{00304\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00305\ \textcolor{comment}{*\ Part\ 3\ :\ implementation\ of\ all\ cases}}
+\DoxyCodeLine{00306\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00308\ \textcolor{comment}{//\ dense\_assignment\_loop\ is\ based\ on\ assign\_impl}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel,}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Traversal\ =\ Kernel::AssignmentTraits::Traversal,}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ Unrolling\ =\ Kernel::AssignmentTraits::Unrolling>}
+\DoxyCodeLine{00313\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}};}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00315\ \textcolor{comment}{/************************}}
+\DoxyCodeLine{00316\ \textcolor{comment}{***\ Default\ traversal\ ***}}
+\DoxyCodeLine{00317\ \textcolor{comment}{************************/}}
+\DoxyCodeLine{00318\ }
+\DoxyCodeLine{00319\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00320\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ DefaultTraversal,\ NoUnrolling>}
+\DoxyCodeLine{00321\ \{}
+\DoxyCodeLine{00322\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ EIGEN\_STRONG\_INLINE\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00323\ \ \ \{}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ outer\ =\ 0;\ outer\ <\ kernel.outerSize();\ ++outer)\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ inner\ =\ 0;\ inner\ <\ kernel.innerSize();\ ++inner)\ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ kernel.assignCoeffByOuterInner(outer,\ inner);}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \ \ \}}
+\DoxyCodeLine{00329\ \ \ \}}
+\DoxyCodeLine{00330\ \};}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00333\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ DefaultTraversal,\ CompleteUnrolling>}
+\DoxyCodeLine{00334\ \{}
+\DoxyCodeLine{00335\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00336\ \ \ \{}
+\DoxyCodeLine{00337\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00338\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___complete_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_CompleteUnrolling<Kernel,\ 0,\ DstXprType::SizeAtCompileTime>::run}}(kernel);}
+\DoxyCodeLine{00339\ \ \ \}}
+\DoxyCodeLine{00340\ \};}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00342\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00343\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ DefaultTraversal,\ InnerUnrolling>}
+\DoxyCodeLine{00344\ \{}
+\DoxyCodeLine{00345\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00346\ \ \ \{}
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keyword}{const}\ Index\ outerSize\ =\ kernel.outerSize();}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ outer\ =\ 0;\ outer\ <\ outerSize;\ ++outer)}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___inner_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_InnerUnrolling<Kernel,\ 0,\ DstXprType::InnerSizeAtCompileTime>::run}}(kernel,\ outer);}
+\DoxyCodeLine{00352\ \ \ \}}
+\DoxyCodeLine{00353\ \};}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00355\ \textcolor{comment}{/***************************}}
+\DoxyCodeLine{00356\ \textcolor{comment}{***\ Linear\ vectorization\ ***}}
+\DoxyCodeLine{00357\ \textcolor{comment}{***************************/}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ }
+\DoxyCodeLine{00360\ \textcolor{comment}{//\ The\ goal\ of\ unaligned\_dense\_assignment\_loop\ is\ simply\ to\ factorize\ the\ handling}}
+\DoxyCodeLine{00361\ \textcolor{comment}{//\ of\ the\ non\ vectorizable\ beginning\ and\ ending\ parts}}
+\DoxyCodeLine{00362\ }
+\DoxyCodeLine{00363\ \textcolor{keyword}{template}\ <\textcolor{keywordtype}{bool}\ IsAligned\ =\ false>}
+\DoxyCodeLine{00364\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1unaligned__dense__assignment__loop}{unaligned\_dense\_assignment\_loop}}}
+\DoxyCodeLine{00365\ \{}
+\DoxyCodeLine{00366\ \ \ \textcolor{comment}{//\ if\ IsAligned\ =\ true,\ then\ do\ nothing}}
+\DoxyCodeLine{00367\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00368\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\&,\ Index,\ Index)\ \{\}}
+\DoxyCodeLine{00369\ \};}
+\DoxyCodeLine{00370\ }
+\DoxyCodeLine{00371\ \textcolor{keyword}{template}\ <>}
+\DoxyCodeLine{00372\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1unaligned__dense__assignment__loop}{unaligned\_dense\_assignment\_loop}}<false>}
+\DoxyCodeLine{00373\ \{}
+\DoxyCodeLine{00374\ \ \ \textcolor{comment}{//\ MSVC\ must\ not\ inline\ this\ functions.\ If\ it\ does,\ it\ fails\ to\ optimize\ the}}
+\DoxyCodeLine{00375\ \ \ \textcolor{comment}{//\ packet\ access\ path.}}
+\DoxyCodeLine{00376\ \ \ \textcolor{comment}{//\ FIXME\ check\ which\ version\ exhibits\ this\ issue}}
+\DoxyCodeLine{00377\ \textcolor{preprocessor}{\#if\ EIGEN\_COMP\_MSVC}}
+\DoxyCodeLine{00378\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00379\ \ \ \textcolor{keyword}{static}\ EIGEN\_DONT\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel,}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ start,}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ end)}
+\DoxyCodeLine{00382\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00383\ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00384\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel,}
+\DoxyCodeLine{00385\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ start,}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Index\ end)}
+\DoxyCodeLine{00387\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00388\ \ \ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ index\ =\ start;\ index\ <\ end;\ ++index)}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ kernel.assignCoeff(index);}
+\DoxyCodeLine{00391\ \ \ \}}
+\DoxyCodeLine{00392\ \};}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00395\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ LinearVectorizedTraversal,\ NoUnrolling>}
+\DoxyCodeLine{00396\ \{}
+\DoxyCodeLine{00397\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00398\ \ \ \{}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ kernel.size();}
+\DoxyCodeLine{00400\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::Scalar\ Scalar;}
+\DoxyCodeLine{00401\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::PacketType\ PacketType;}
+\DoxyCodeLine{00402\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ requestedAlignment\ =\ Kernel::AssignmentTraits::LinearRequiredAlignment,}
+\DoxyCodeLine{00404\ \ \ \ \ \ \ packetSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<PacketType>::size}},}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ dstIsAligned\ =\ int(Kernel::AssignmentTraits::DstAlignment)>=int(requestedAlignment),}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ dstAlignment\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::AlignedOnScalar}}\ ?\ int(requestedAlignment)}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(Kernel::AssignmentTraits::DstAlignment),}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ srcAlignment\ =\ Kernel::AssignmentTraits::JointAlignment}
+\DoxyCodeLine{00409\ \ \ \ \ \};}
+\DoxyCodeLine{00410\ \ \ \ \ \textcolor{keyword}{const}\ Index\ alignedStart\ =\ dstIsAligned\ ?\ 0\ :\ internal::first\_aligned<requestedAlignment>(kernel.dstDataPtr(),\ size);}
+\DoxyCodeLine{00411\ \ \ \ \ \textcolor{keyword}{const}\ Index\ alignedEnd\ =\ alignedStart\ +\ ((size-\/alignedStart)/packetSize)*packetSize;}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unaligned__dense__assignment__loop}{unaligned\_dense\_assignment\_loop<dstIsAligned!=0>::run}}(kernel,\ 0,\ alignedStart);}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ index\ =\ alignedStart;\ index\ <\ alignedEnd;\ index\ +=\ packetSize)}
+\DoxyCodeLine{00416\ \ \ \ \ \ \ kernel.template\ assignPacket<dstAlignment,\ srcAlignment,\ PacketType>(index);}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unaligned__dense__assignment__loop}{unaligned\_dense\_assignment\_loop<>::run}}(kernel,\ alignedEnd,\ size);}
+\DoxyCodeLine{00419\ \ \ \}}
+\DoxyCodeLine{00420\ \};}
+\DoxyCodeLine{00421\ }
+\DoxyCodeLine{00422\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00423\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ LinearVectorizedTraversal,\ CompleteUnrolling>}
+\DoxyCodeLine{00424\ \{}
+\DoxyCodeLine{00425\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00426\ \ \ \{}
+\DoxyCodeLine{00427\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00428\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::PacketType\ PacketType;}
+\DoxyCodeLine{00429\ \ \ \ \ }
+\DoxyCodeLine{00430\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ size\ =\ DstXprType::SizeAtCompileTime,}
+\DoxyCodeLine{00431\ \ \ \ \ \ \ \ \ \ \ \ packetSize\ =\mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<PacketType>::size}},}
+\DoxyCodeLine{00432\ \ \ \ \ \ \ \ \ \ \ \ alignedSize\ =\ (size/packetSize)*packetSize\ \};}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___complete_unrolling}{copy\_using\_evaluator\_innervec\_CompleteUnrolling<Kernel,\ 0,\ alignedSize>::run}}(kernel);}
+\DoxyCodeLine{00435\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___default_traversal___complete_unrolling}{copy\_using\_evaluator\_DefaultTraversal\_CompleteUnrolling<Kernel,\ alignedSize,\ size>::run}}(kernel);}
+\DoxyCodeLine{00436\ \ \ \}}
+\DoxyCodeLine{00437\ \};}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \textcolor{comment}{/**************************}}
+\DoxyCodeLine{00440\ \textcolor{comment}{***\ Inner\ vectorization\ ***}}
+\DoxyCodeLine{00441\ \textcolor{comment}{**************************/}}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00444\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ InnerVectorizedTraversal,\ NoUnrolling>}
+\DoxyCodeLine{00445\ \{}
+\DoxyCodeLine{00446\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::PacketType\ PacketType;}
+\DoxyCodeLine{00447\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00448\ \ \ \ \ SrcAlignment\ =\ Kernel::AssignmentTraits::SrcAlignment,}
+\DoxyCodeLine{00449\ \ \ \ \ DstAlignment\ =\ Kernel::AssignmentTraits::DstAlignment}
+\DoxyCodeLine{00450\ \ \ \};}
+\DoxyCodeLine{00451\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00452\ \ \ \{}
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{keyword}{const}\ Index\ innerSize\ =\ kernel.innerSize();}
+\DoxyCodeLine{00454\ \ \ \ \ \textcolor{keyword}{const}\ Index\ outerSize\ =\ kernel.outerSize();}
+\DoxyCodeLine{00455\ \ \ \ \ \textcolor{keyword}{const}\ Index\ packetSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<PacketType>::size}};}
+\DoxyCodeLine{00456\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ outer\ =\ 0;\ outer\ <\ outerSize;\ ++outer)}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ inner\ =\ 0;\ inner\ <\ innerSize;\ inner+=packetSize)}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ kernel.template\ assignPacketByOuterInner<DstAlignment,\ SrcAlignment,\ PacketType>(outer,\ inner);}
+\DoxyCodeLine{00459\ \ \ \}}
+\DoxyCodeLine{00460\ \};}
+\DoxyCodeLine{00461\ }
+\DoxyCodeLine{00462\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00463\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ InnerVectorizedTraversal,\ CompleteUnrolling>}
+\DoxyCodeLine{00464\ \{}
+\DoxyCodeLine{00465\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00466\ \ \ \{}
+\DoxyCodeLine{00467\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00468\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___complete_unrolling}{copy\_using\_evaluator\_innervec\_CompleteUnrolling<Kernel,\ 0,\ DstXprType::SizeAtCompileTime>::run}}(kernel);}
+\DoxyCodeLine{00469\ \ \ \}}
+\DoxyCodeLine{00470\ \};}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00472\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00473\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ InnerVectorizedTraversal,\ InnerUnrolling>}
+\DoxyCodeLine{00474\ \{}
+\DoxyCodeLine{00475\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00476\ \ \ \{}
+\DoxyCodeLine{00477\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00478\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::AssignmentTraits\ Traits;}
+\DoxyCodeLine{00479\ \ \ \ \ \textcolor{keyword}{const}\ Index\ outerSize\ =\ kernel.outerSize();}
+\DoxyCodeLine{00480\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ outer\ =\ 0;\ outer\ <\ outerSize;\ ++outer)}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__innervec___inner_unrolling}{copy\_using\_evaluator\_innervec\_InnerUnrolling}}<Kernel,\ 0,\ DstXprType::InnerSizeAtCompileTime,}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Traits::SrcAlignment,\ Traits::DstAlignment>::run(kernel,\ outer);}
+\DoxyCodeLine{00483\ \ \ \}}
+\DoxyCodeLine{00484\ \};}
+\DoxyCodeLine{00485\ }
+\DoxyCodeLine{00486\ \textcolor{comment}{/***********************}}
+\DoxyCodeLine{00487\ \textcolor{comment}{***\ Linear\ traversal\ ***}}
+\DoxyCodeLine{00488\ \textcolor{comment}{***********************/}}
+\DoxyCodeLine{00489\ }
+\DoxyCodeLine{00490\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00491\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ LinearTraversal,\ NoUnrolling>}
+\DoxyCodeLine{00492\ \{}
+\DoxyCodeLine{00493\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00494\ \ \ \{}
+\DoxyCodeLine{00495\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ kernel.size();}
+\DoxyCodeLine{00496\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ size;\ ++i)}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ kernel.assignCoeff(i);}
+\DoxyCodeLine{00498\ \ \ \}}
+\DoxyCodeLine{00499\ \};}
+\DoxyCodeLine{00500\ }
+\DoxyCodeLine{00501\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00502\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ LinearTraversal,\ CompleteUnrolling>}
+\DoxyCodeLine{00503\ \{}
+\DoxyCodeLine{00504\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00505\ \ \ \{}
+\DoxyCodeLine{00506\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00507\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator___linear_traversal___complete_unrolling}{copy\_using\_evaluator\_LinearTraversal\_CompleteUnrolling<Kernel,\ 0,\ DstXprType::SizeAtCompileTime>::run}}(kernel);}
+\DoxyCodeLine{00508\ \ \ \}}
+\DoxyCodeLine{00509\ \};}
+\DoxyCodeLine{00510\ }
+\DoxyCodeLine{00511\ \textcolor{comment}{/**************************}}
+\DoxyCodeLine{00512\ \textcolor{comment}{***\ Slice\ vectorization\ ***}}
+\DoxyCodeLine{00513\ \textcolor{comment}{***************************/}}
+\DoxyCodeLine{00514\ }
+\DoxyCodeLine{00515\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00516\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ SliceVectorizedTraversal,\ NoUnrolling>}
+\DoxyCodeLine{00517\ \{}
+\DoxyCodeLine{00518\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00519\ \ \ \{}
+\DoxyCodeLine{00520\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::Scalar\ Scalar;}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::PacketType\ PacketType;}
+\DoxyCodeLine{00522\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00523\ \ \ \ \ \ \ packetSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<PacketType>::size}},}
+\DoxyCodeLine{00524\ \ \ \ \ \ \ requestedAlignment\ =\ int(Kernel::AssignmentTraits::InnerRequiredAlignment),}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ alignable\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{packet\_traits<Scalar>::AlignedOnScalar}}\ ||\ int(Kernel::AssignmentTraits::DstAlignment)>=\textcolor{keyword}{sizeof}(Scalar),}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ dstIsAligned\ =\ \textcolor{keywordtype}{int}(Kernel::AssignmentTraits::DstAlignment)>=int(requestedAlignment),}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ dstAlignment\ =\ alignable\ ?\ int(requestedAlignment)}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(Kernel::AssignmentTraits::DstAlignment)}
+\DoxyCodeLine{00529\ \ \ \ \ \};}
+\DoxyCodeLine{00530\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ *dst\_ptr\ =\ kernel.dstDataPtr();}
+\DoxyCodeLine{00531\ \ \ \ \ \textcolor{keywordflow}{if}((!\textcolor{keywordtype}{bool}(dstIsAligned))\ \&\&\ (UIntPtr(dst\_ptr)\ \%\ \textcolor{keyword}{sizeof}(Scalar))>0)}
+\DoxyCodeLine{00532\ \ \ \ \ \{}
+\DoxyCodeLine{00533\ \ \ \ \ \ \ \textcolor{comment}{//\ the\ pointer\ is\ not\ aligend-\/on\ scalar,\ so\ alignment\ is\ not\ possible}}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop<Kernel,DefaultTraversal,NoUnrolling>::run}}(kernel);}
+\DoxyCodeLine{00535\ \ \ \ \ \}}
+\DoxyCodeLine{00536\ \ \ \ \ \textcolor{keyword}{const}\ Index\ packetAlignedMask\ =\ packetSize\ -\/\ 1;}
+\DoxyCodeLine{00537\ \ \ \ \ \textcolor{keyword}{const}\ Index\ innerSize\ =\ kernel.innerSize();}
+\DoxyCodeLine{00538\ \ \ \ \ \textcolor{keyword}{const}\ Index\ outerSize\ =\ kernel.outerSize();}
+\DoxyCodeLine{00539\ \ \ \ \ \textcolor{keyword}{const}\ Index\ alignedStep\ =\ alignable\ ?\ (packetSize\ -\/\ kernel.outerStride()\ \%\ packetSize)\ \&\ packetAlignedMask\ :\ 0;}
+\DoxyCodeLine{00540\ \ \ \ \ Index\ alignedStart\ =\ ((!alignable)\ ||\ \textcolor{keywordtype}{bool}(dstIsAligned))\ ?\ 0\ :\ internal::first\_aligned<requestedAlignment>(dst\_ptr,\ innerSize);}
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00542\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ outer\ =\ 0;\ outer\ <\ outerSize;\ ++outer)}
+\DoxyCodeLine{00543\ \ \ \ \ \{}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \textcolor{keyword}{const}\ Index\ alignedEnd\ =\ alignedStart\ +\ ((innerSize-\/alignedStart)\ \&\ \string~packetAlignedMask);}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \textcolor{comment}{//\ do\ the\ non-\/vectorizable\ part\ of\ the\ assignment}}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ inner\ =\ 0;\ inner<alignedStart\ ;\ ++inner)}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ kernel.assignCoeffByOuterInner(outer,\ inner);}
+\DoxyCodeLine{00548\ }
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \textcolor{comment}{//\ do\ the\ vectorizable\ part\ of\ the\ assignment}}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ inner\ =\ alignedStart;\ inner<alignedEnd;\ inner+=packetSize)}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ kernel.template\ assignPacketByOuterInner<dstAlignment,\ Unaligned,\ PacketType>(outer,\ inner);}
+\DoxyCodeLine{00552\ }
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \textcolor{comment}{//\ do\ the\ non-\/vectorizable\ part\ of\ the\ assignment}}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ inner\ =\ alignedEnd;\ inner<innerSize\ ;\ ++inner)}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ kernel.assignCoeffByOuterInner(outer,\ inner);}
+\DoxyCodeLine{00556\ }
+\DoxyCodeLine{00557\ \ \ \ \ \ \ alignedStart\ =\ numext::mini((alignedStart+alignedStep)\%packetSize,\ innerSize);}
+\DoxyCodeLine{00558\ \ \ \ \ \}}
+\DoxyCodeLine{00559\ \ \ \}}
+\DoxyCodeLine{00560\ \};}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \textcolor{preprocessor}{\#if\ EIGEN\_UNALIGNED\_VECTORIZE}}
+\DoxyCodeLine{00563\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Kernel>}
+\DoxyCodeLine{00564\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__assignment__loop}{dense\_assignment\_loop}}<Kernel,\ SliceVectorizedTraversal,\ InnerUnrolling>}
+\DoxyCodeLine{00565\ \{}
+\DoxyCodeLine{00566\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(Kernel\ \&kernel)}
+\DoxyCodeLine{00567\ \ \ \{}
+\DoxyCodeLine{00568\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::DstEvaluatorType::XprType\ DstXprType;}
+\DoxyCodeLine{00569\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Kernel::PacketType\ PacketType;}
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ size\ =\ DstXprType::InnerSizeAtCompileTime,}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ packetSize\ =\mbox{\hyperlink{struct_eigen_1_1internal_1_1unpacket__traits}{unpacket\_traits<PacketType>::size}},}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ vectorizableSize\ =\ (size/packetSize)*packetSize\ \};}
+\DoxyCodeLine{00574\ }
+\DoxyCodeLine{00575\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ outer\ =\ 0;\ outer\ <\ kernel.outerSize();\ ++outer)}
+\DoxyCodeLine{00576\ \ \ \ \ \{}
+\DoxyCodeLine{00577\ \ \ \ \ \ \ copy\_using\_evaluator\_innervec\_InnerUnrolling<Kernel,\ 0,\ vectorizableSize,\ 0,\ 0>::run(kernel,\ outer);}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ copy\_using\_evaluator\_DefaultTraversal\_InnerUnrolling<Kernel,\ vectorizableSize,\ size>::run(kernel,\ outer);}
+\DoxyCodeLine{00579\ \ \ \ \ \}}
+\DoxyCodeLine{00580\ \ \ \}}
+\DoxyCodeLine{00581\ \};}
+\DoxyCodeLine{00582\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00583\ }
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00585\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00586\ \textcolor{comment}{*\ Part\ 4\ :\ Generic\ dense\ assignment\ kernel}}
+\DoxyCodeLine{00587\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \textcolor{comment}{//\ This\ class\ generalize\ the\ assignment\ of\ a\ coefficient\ (or\ packet)\ from\ one\ dense\ evaluator}}
+\DoxyCodeLine{00590\ \textcolor{comment}{//\ to\ another\ dense\ writable\ evaluator.}}
+\DoxyCodeLine{00591\ \textcolor{comment}{//\ It\ is\ parametrized\ by\ the\ two\ evaluators,\ and\ the\ actual\ assignment\ functor.}}
+\DoxyCodeLine{00592\ \textcolor{comment}{//\ This\ abstraction\ level\ permits\ to\ keep\ the\ evaluation\ loops\ as\ simple\ and\ as\ generic\ as\ possible.}}
+\DoxyCodeLine{00593\ \textcolor{comment}{//\ One\ can\ customize\ the\ assignment\ using\ this\ generic\ dense\_assignment\_kernel\ with\ different}}
+\DoxyCodeLine{00594\ \textcolor{comment}{//\ functors,\ or\ by\ completely\ overloading\ it,\ by-\/passing\ a\ functor.}}
+\DoxyCodeLine{00595\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstEvaluatorTypeT,\ \textcolor{keyword}{typename}\ SrcEvaluatorTypeT,\ \textcolor{keyword}{typename}\ Functor,\ \textcolor{keywordtype}{int}\ Version\ =\ Specialized>}
+\DoxyCodeLine{00596\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1generic__dense__assignment__kernel}{generic\_dense\_assignment\_kernel}}}
+\DoxyCodeLine{00597\ \{}
+\DoxyCodeLine{00598\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00599\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DstEvaluatorTypeT::XprType\ DstXprType;}
+\DoxyCodeLine{00600\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SrcEvaluatorTypeT::XprType\ SrcXprType;}
+\DoxyCodeLine{00601\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00602\ \ \ }
+\DoxyCodeLine{00603\ \ \ \textcolor{keyword}{typedef}\ DstEvaluatorTypeT\ DstEvaluatorType;}
+\DoxyCodeLine{00604\ \ \ \textcolor{keyword}{typedef}\ SrcEvaluatorTypeT\ SrcEvaluatorType;}
+\DoxyCodeLine{00605\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DstEvaluatorType::Scalar\ Scalar;}
+\DoxyCodeLine{00606\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__traits}{copy\_using\_evaluator\_traits<DstEvaluatorTypeT,\ SrcEvaluatorTypeT,\ Functor>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1copy__using__evaluator__traits}{AssignmentTraits}};}
+\DoxyCodeLine{00607\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{AssignmentTraits::PacketType}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PacketType}};}
+\DoxyCodeLine{00608\ \ \ }
+\DoxyCodeLine{00609\ \ \ }
+\DoxyCodeLine{00610\ \ \ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{class_eigen_1_1internal_1_1generic__dense__assignment__kernel}{generic\_dense\_assignment\_kernel}}(DstEvaluatorType\ \&dst,\ \textcolor{keyword}{const}\ SrcEvaluatorType\ \&src,\ \textcolor{keyword}{const}\ Functor\ \&func,\ DstXprType\&\ dstExpr)}
+\DoxyCodeLine{00611\ \ \ \ \ :\ m\_dst(dst),\ m\_src(src),\ m\_functor(func),\ m\_dstExpr(dstExpr)}
+\DoxyCodeLine{00612\ \ \ \{}
+\DoxyCodeLine{00613\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ EIGEN\_DEBUG\_ASSIGN}}
+\DoxyCodeLine{00614\ \ \ \ \ AssignmentTraits::debug();}
+\DoxyCodeLine{00615\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00616\ \ \ \}}
+\DoxyCodeLine{00617\ \ \ }
+\DoxyCodeLine{00618\ \ \ EIGEN\_DEVICE\_FUNC\ Index\ size()\textcolor{keyword}{\ const\ \ \ \ \ \ \ \ }\{\ \textcolor{keywordflow}{return}\ m\_dstExpr.size();\ \}}
+\DoxyCodeLine{00619\ \ \ EIGEN\_DEVICE\_FUNC\ Index\ innerSize()\textcolor{keyword}{\ const\ \ \ }\{\ \textcolor{keywordflow}{return}\ m\_dstExpr.innerSize();\ \}}
+\DoxyCodeLine{00620\ \ \ EIGEN\_DEVICE\_FUNC\ Index\ outerSize()\textcolor{keyword}{\ const\ \ \ }\{\ \textcolor{keywordflow}{return}\ m\_dstExpr.outerSize();\ \}}
+\DoxyCodeLine{00621\ \ \ EIGEN\_DEVICE\_FUNC\ Index\ rows()\textcolor{keyword}{\ const\ \ \ \ \ \ \ \ }\{\ \textcolor{keywordflow}{return}\ m\_dstExpr.rows();\ \}}
+\DoxyCodeLine{00622\ \ \ EIGEN\_DEVICE\_FUNC\ Index\ cols()\textcolor{keyword}{\ const\ \ \ \ \ \ \ \ }\{\ \textcolor{keywordflow}{return}\ m\_dstExpr.cols();\ \}}
+\DoxyCodeLine{00623\ \ \ EIGEN\_DEVICE\_FUNC\ Index\ outerStride()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_dstExpr.outerStride();\ \}}
+\DoxyCodeLine{00624\ \ \ }
+\DoxyCodeLine{00625\ \ \ EIGEN\_DEVICE\_FUNC\ DstEvaluatorType\&\ dstEvaluator()\ \{\ \textcolor{keywordflow}{return}\ m\_dst;\ \}}
+\DoxyCodeLine{00626\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{const}\ SrcEvaluatorType\&\ srcEvaluator()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_src;\ \}}
+\DoxyCodeLine{00627\ \ \ }
+\DoxyCodeLine{00629\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1generic__dense__assignment__kernel_a7ca974cc4049f1ef3d6f2feac94ea35b}{assignCoeff}}(Index\ row,\ Index\ col)}
+\DoxyCodeLine{00630\ \ \ \{}
+\DoxyCodeLine{00631\ \ \ \ \ m\_functor.assignCoeff(m\_dst.coeffRef(row,col),\ m\_src.coeff(row,col));}
+\DoxyCodeLine{00632\ \ \ \}}
+\DoxyCodeLine{00633\ \ \ }
+\DoxyCodeLine{00635\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1generic__dense__assignment__kernel_a9f36120222600d1d843b4253b08a383b}{assignCoeff}}(Index\ index)}
+\DoxyCodeLine{00636\ \ \ \{}
+\DoxyCodeLine{00637\ \ \ \ \ m\_functor.assignCoeff(m\_dst.coeffRef(index),\ m\_src.coeff(index));}
+\DoxyCodeLine{00638\ \ \ \}}
+\DoxyCodeLine{00639\ \ \ }
+\DoxyCodeLine{00641\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1generic__dense__assignment__kernel_aff1bc113e270d4f895ca90570536303b}{assignCoeffByOuterInner}}(Index\ outer,\ Index\ inner)}
+\DoxyCodeLine{00642\ \ \ \{}
+\DoxyCodeLine{00643\ \ \ \ \ Index\ row\ =\ rowIndexByOuterInner(outer,\ inner);\ }
+\DoxyCodeLine{00644\ \ \ \ \ Index\ col\ =\ colIndexByOuterInner(outer,\ inner);\ }
+\DoxyCodeLine{00645\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1generic__dense__assignment__kernel_a7ca974cc4049f1ef3d6f2feac94ea35b}{assignCoeff}}(row,\ col);}
+\DoxyCodeLine{00646\ \ \ \}}
+\DoxyCodeLine{00647\ \ \ }
+\DoxyCodeLine{00648\ \ \ }
+\DoxyCodeLine{00649\ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ StoreMode,\ \textcolor{keywordtype}{int}\ LoadMode,\ \textcolor{keyword}{typename}\ PacketType>}
+\DoxyCodeLine{00650\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ assignPacket(Index\ row,\ Index\ col)}
+\DoxyCodeLine{00651\ \ \ \{}
+\DoxyCodeLine{00652\ \ \ \ \ m\_functor.template\ assignPacket<StoreMode>(\&m\_dst.coeffRef(row,col),\ m\_src.template\ packet<LoadMode,PacketType>(row,col));}
+\DoxyCodeLine{00653\ \ \ \}}
+\DoxyCodeLine{00654\ \ \ }
+\DoxyCodeLine{00655\ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ StoreMode,\ \textcolor{keywordtype}{int}\ LoadMode,\ \textcolor{keyword}{typename}\ PacketType>}
+\DoxyCodeLine{00656\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ assignPacket(Index\ index)}
+\DoxyCodeLine{00657\ \ \ \{}
+\DoxyCodeLine{00658\ \ \ \ \ m\_functor.template\ assignPacket<StoreMode>(\&m\_dst.coeffRef(index),\ m\_src.template\ packet<LoadMode,PacketType>(index));}
+\DoxyCodeLine{00659\ \ \ \}}
+\DoxyCodeLine{00660\ \ \ }
+\DoxyCodeLine{00661\ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ StoreMode,\ \textcolor{keywordtype}{int}\ LoadMode,\ \textcolor{keyword}{typename}\ PacketType>}
+\DoxyCodeLine{00662\ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ assignPacketByOuterInner(Index\ outer,\ Index\ inner)}
+\DoxyCodeLine{00663\ \ \ \{}
+\DoxyCodeLine{00664\ \ \ \ \ Index\ row\ =\ rowIndexByOuterInner(outer,\ inner);\ }
+\DoxyCodeLine{00665\ \ \ \ \ Index\ col\ =\ colIndexByOuterInner(outer,\ inner);}
+\DoxyCodeLine{00666\ \ \ \ \ assignPacket<StoreMode,LoadMode,PacketType>(row,\ col);}
+\DoxyCodeLine{00667\ \ \ \}}
+\DoxyCodeLine{00668\ \ \ }
+\DoxyCodeLine{00669\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ Index\ rowIndexByOuterInner(Index\ outer,\ Index\ inner)}
+\DoxyCodeLine{00670\ \ \ \{}
+\DoxyCodeLine{00671\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DstEvaluatorType::ExpressionTraits\ Traits;}
+\DoxyCodeLine{00672\ \ \ \ \ \textcolor{keywordflow}{return}\ int(Traits::RowsAtCompileTime)\ ==\ 1\ ?\ 0}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ :\ int(Traits::ColsAtCompileTime)\ ==\ 1\ ?\ inner}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ :\ int(DstEvaluatorType::Flags)\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}\ ?\ outer}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ :\ inner;}
+\DoxyCodeLine{00676\ \ \ \}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ Index\ colIndexByOuterInner(Index\ outer,\ Index\ inner)}
+\DoxyCodeLine{00679\ \ \ \{}
+\DoxyCodeLine{00680\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DstEvaluatorType::ExpressionTraits\ Traits;}
+\DoxyCodeLine{00681\ \ \ \ \ \textcolor{keywordflow}{return}\ int(Traits::ColsAtCompileTime)\ ==\ 1\ ?\ 0}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ :\ int(Traits::RowsAtCompileTime)\ ==\ 1\ ?\ inner}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ :\ int(DstEvaluatorType::Flags)\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}\ ?\ inner}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ :\ outer;}
+\DoxyCodeLine{00685\ \ \ \}}
+\DoxyCodeLine{00686\ }
+\DoxyCodeLine{00687\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{const}\ Scalar*\ dstDataPtr()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00688\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00689\ \ \ \ \ \textcolor{keywordflow}{return}\ m\_dstExpr.data();}
+\DoxyCodeLine{00690\ \ \ \}}
+\DoxyCodeLine{00691\ \ \ }
+\DoxyCodeLine{00692\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00693\ \ \ DstEvaluatorType\&\ m\_dst;}
+\DoxyCodeLine{00694\ \ \ \textcolor{keyword}{const}\ SrcEvaluatorType\&\ m\_src;}
+\DoxyCodeLine{00695\ \ \ \textcolor{keyword}{const}\ Functor\ \&m\_functor;}
+\DoxyCodeLine{00696\ \ \ \textcolor{comment}{//\ TODO\ find\ a\ way\ to\ avoid\ the\ needs\ of\ the\ original\ expression}}
+\DoxyCodeLine{00697\ \ \ DstXprType\&\ m\_dstExpr;}
+\DoxyCodeLine{00698\ \};}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00700\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00701\ \textcolor{comment}{*\ Part\ 5\ :\ Entry\ point\ for\ dense\ rectangular\ assignment}}
+\DoxyCodeLine{00702\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00703\ }
+\DoxyCodeLine{00704\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstXprType,\textcolor{keyword}{typename}\ SrcXprType,\ \textcolor{keyword}{typename}\ Functor>}
+\DoxyCodeLine{00705\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00706\ \textcolor{keywordtype}{void}\ resize\_if\_allowed(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ SrcXprType\&\ src,\ \textcolor{keyword}{const}\ Functor\ \&\textcolor{comment}{/*func*/})}
+\DoxyCodeLine{00707\ \{}
+\DoxyCodeLine{00708\ \ \ EIGEN\_ONLY\_USED\_FOR\_DEBUG(dst);}
+\DoxyCodeLine{00709\ \ \ EIGEN\_ONLY\_USED\_FOR\_DEBUG(src);}
+\DoxyCodeLine{00710\ \ \ eigen\_assert(dst.rows()\ ==\ src.rows()\ \&\&\ dst.cols()\ ==\ src.cols());}
+\DoxyCodeLine{00711\ \}}
+\DoxyCodeLine{00712\ }
+\DoxyCodeLine{00713\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstXprType,\textcolor{keyword}{typename}\ SrcXprType,\ \textcolor{keyword}{typename}\ T1,\ \textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00714\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00715\ \textcolor{keywordtype}{void}\ resize\_if\_allowed(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ SrcXprType\&\ src,\ \textcolor{keyword}{const}\ internal::assign\_op<T1,T2>\ \&\textcolor{comment}{/*func*/})}
+\DoxyCodeLine{00716\ \{}
+\DoxyCodeLine{00717\ \ \ Index\ dstRows\ =\ src.rows();}
+\DoxyCodeLine{00718\ \ \ Index\ dstCols\ =\ src.cols();}
+\DoxyCodeLine{00719\ \ \ \textcolor{keywordflow}{if}(((dst.rows()!=dstRows)\ ||\ (dst.cols()!=dstCols)))}
+\DoxyCodeLine{00720\ \ \ \ \ dst.resize(dstRows,\ dstCols);}
+\DoxyCodeLine{00721\ \ \ eigen\_assert(dst.rows()\ ==\ dstRows\ \&\&\ dst.cols()\ ==\ dstCols);}
+\DoxyCodeLine{00722\ \}}
+\DoxyCodeLine{00723\ }
+\DoxyCodeLine{00724\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ SrcXprType,\ \textcolor{keyword}{typename}\ Functor>}
+\DoxyCodeLine{00725\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ call\_dense\_assignment\_loop(DstXprType\&\ dst,\ \textcolor{keyword}{const}\ SrcXprType\&\ src,\ \textcolor{keyword}{const}\ Functor\ \&func)}
+\DoxyCodeLine{00726\ \{}
+\DoxyCodeLine{00727\ \ \ \textcolor{keyword}{typedef}\ evaluator<DstXprType>\ DstEvaluatorType;}
+\DoxyCodeLine{00728\ \ \ \textcolor{keyword}{typedef}\ evaluator<SrcXprType>\ SrcEvaluatorType;}
+\DoxyCodeLine{00729\ }
+\DoxyCodeLine{00730\ \ \ SrcEvaluatorType\ srcEvaluator(src);}
+\DoxyCodeLine{00731\ }
+\DoxyCodeLine{00732\ \ \ \textcolor{comment}{//\ NOTE\ To\ properly\ handle\ A\ =\ (A*A.transpose())/s\ with\ A\ rectangular,}}
+\DoxyCodeLine{00733\ \ \ \textcolor{comment}{//\ we\ need\ to\ resize\ the\ destination\ after\ the\ source\ evaluator\ has\ been\ created.}}
+\DoxyCodeLine{00734\ \ \ resize\_if\_allowed(dst,\ src,\ func);}
+\DoxyCodeLine{00735\ }
+\DoxyCodeLine{00736\ \ \ DstEvaluatorType\ dstEvaluator(dst);}
+\DoxyCodeLine{00737\ \ \ \ \ }
+\DoxyCodeLine{00738\ \ \ \textcolor{keyword}{typedef}\ generic\_dense\_assignment\_kernel<DstEvaluatorType,SrcEvaluatorType,Functor>\ Kernel;}
+\DoxyCodeLine{00739\ \ \ Kernel\ kernel(dstEvaluator,\ srcEvaluator,\ func,\ dst.const\_cast\_derived());}
+\DoxyCodeLine{00740\ }
+\DoxyCodeLine{00741\ \ \ dense\_assignment\_loop<Kernel>::run(kernel);}
+\DoxyCodeLine{00742\ \}}
+\DoxyCodeLine{00743\ }
+\DoxyCodeLine{00744\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ SrcXprType>}
+\DoxyCodeLine{00745\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ call\_dense\_assignment\_loop(DstXprType\&\ dst,\ \textcolor{keyword}{const}\ SrcXprType\&\ src)}
+\DoxyCodeLine{00746\ \{}
+\DoxyCodeLine{00747\ \ \ call\_dense\_assignment\_loop(dst,\ src,\ internal::assign\_op<typename\ DstXprType::Scalar,typename\ SrcXprType::Scalar>());}
+\DoxyCodeLine{00748\ \}}
+\DoxyCodeLine{00749\ }
+\DoxyCodeLine{00750\ \textcolor{comment}{/***************************************************************************}}
+\DoxyCodeLine{00751\ \textcolor{comment}{*\ Part\ 6\ :\ Generic\ assignment}}
+\DoxyCodeLine{00752\ \textcolor{comment}{***************************************************************************/}}
+\DoxyCodeLine{00753\ }
+\DoxyCodeLine{00754\ \textcolor{comment}{//\ Based\ on\ the\ respective\ shapes\ of\ the\ destination\ and\ source,}}
+\DoxyCodeLine{00755\ \textcolor{comment}{//\ the\ class\ AssignmentKind\ determine\ the\ kind\ of\ assignment\ mechanism.}}
+\DoxyCodeLine{00756\ \textcolor{comment}{//\ AssignmentKind\ must\ define\ a\ Kind\ typedef.}}
+\DoxyCodeLine{00757\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstShape,\ \textcolor{keyword}{typename}\ SrcShape>\ \textcolor{keyword}{struct\ }AssignmentKind;}
+\DoxyCodeLine{00758\ }
+\DoxyCodeLine{00759\ \textcolor{comment}{//\ Assignement\ kind\ defined\ in\ this\ file:}}
+\DoxyCodeLine{00760\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}}\ \{\};}
+\DoxyCodeLine{00761\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_eigen_base2_eigen_base}{EigenBase2EigenBase}}\ \{\};}
+\DoxyCodeLine{00762\ }
+\DoxyCodeLine{00763\ \textcolor{keyword}{template}<\textcolor{keyword}{typename},\textcolor{keyword}{typename}>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment_kind}{AssignmentKind}}\ \{\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_eigen_base2_eigen_base}{EigenBase2EigenBase}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_eigen_base2_eigen_base}{Kind}};\ \};}
+\DoxyCodeLine{00764\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment_kind}{AssignmentKind}}<\mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}},\mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}}>\ \{\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Kind}};\ \};}
+\DoxyCodeLine{00765\ \ \ \ \ }
+\DoxyCodeLine{00766\ \textcolor{comment}{//\ This\ is\ the\ main\ assignment\ class}}
+\DoxyCodeLine{00767\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ SrcXprType,\ \textcolor{keyword}{typename}\ Functor,}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Kind\ =\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment_kind}{AssignmentKind<\ typename\ evaluator\_traits<DstXprType>::Shape}}\ ,\ \textcolor{keyword}{typename}\ evaluator\_traits<SrcXprType>::Shape\ >::Kind,}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_enable_if}{EnableIf}}\ =\ \textcolor{keywordtype}{void}>}
+\DoxyCodeLine{00770\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment}{Assignment}};}
+\DoxyCodeLine{00771\ }
+\DoxyCodeLine{00772\ }
+\DoxyCodeLine{00773\ \textcolor{comment}{//\ The\ only\ purpose\ of\ this\ call\_assignment()\ function\ is\ to\ deal\ with\ noalias()\ /\ "{}assume-\/aliasing"{}\ and\ automatic\ transposition.}}
+\DoxyCodeLine{00774\ \textcolor{comment}{//\ Indeed,\ I\ (Gael)\ think\ that\ this\ concept\ of\ "{}assume-\/aliasing"{}\ was\ a\ mistake,\ and\ it\ makes\ thing\ quite\ complicated.}}
+\DoxyCodeLine{00775\ \textcolor{comment}{//\ So\ this\ intermediate\ function\ removes\ everything\ related\ to\ "{}assume-\/aliasing"{}\ such\ that\ Assignment}}
+\DoxyCodeLine{00776\ \textcolor{comment}{//\ does\ not\ has\ to\ bother\ about\ these\ annoying\ details.}}
+\DoxyCodeLine{00777\ }
+\DoxyCodeLine{00778\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00779\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00780\ \textcolor{keywordtype}{void}\ call\_assignment(Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src)}
+\DoxyCodeLine{00781\ \{}
+\DoxyCodeLine{00782\ \ \ call\_assignment(dst,\ src,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<typename\ Dst::Scalar,typename\ Src::Scalar>}}());}
+\DoxyCodeLine{00783\ \}}
+\DoxyCodeLine{00784\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00785\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00786\ \textcolor{keywordtype}{void}\ call\_assignment(\textcolor{keyword}{const}\ Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src)}
+\DoxyCodeLine{00787\ \{}
+\DoxyCodeLine{00788\ \ \ call\_assignment(dst,\ src,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<typename\ Dst::Scalar,typename\ Src::Scalar>}}());}
+\DoxyCodeLine{00789\ \}}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00791\ \textcolor{comment}{//\ Deal\ with\ "{}assume-\/aliasing"{}}}
+\DoxyCodeLine{00792\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00793\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00794\ \textcolor{keywordtype}{void}\ call\_assignment(Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src,\ \textcolor{keyword}{const}\ Func\&\ func,\ \textcolor{keyword}{typename}\ enable\_if<\ evaluator\_assume\_aliasing<Src>::value,\ \textcolor{keywordtype}{void}*>::type\ =\ 0)}
+\DoxyCodeLine{00795\ \{}
+\DoxyCodeLine{00796\ \ \ \textcolor{keyword}{typename}\ plain\_matrix\_type<Src>::type\ tmp(src);}
+\DoxyCodeLine{00797\ \ \ call\_assignment\_no\_alias(dst,\ tmp,\ func);}
+\DoxyCodeLine{00798\ \}}
+\DoxyCodeLine{00799\ }
+\DoxyCodeLine{00800\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00801\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00802\ \textcolor{keywordtype}{void}\ call\_assignment(Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src,\ \textcolor{keyword}{const}\ Func\&\ func,\ \textcolor{keyword}{typename}\ enable\_if<!evaluator\_assume\_aliasing<Src>::value,\ \textcolor{keywordtype}{void}*>::type\ =\ 0)}
+\DoxyCodeLine{00803\ \{}
+\DoxyCodeLine{00804\ \ \ call\_assignment\_no\_alias(dst,\ src,\ func);}
+\DoxyCodeLine{00805\ \}}
+\DoxyCodeLine{00806\ }
+\DoxyCodeLine{00807\ \textcolor{comment}{//\ by-\/pass\ "{}assume-\/aliasing"{}}}
+\DoxyCodeLine{00808\ \textcolor{comment}{//\ When\ there\ is\ no\ aliasing,\ we\ require\ that\ 'dst'\ has\ been\ properly\ resized}}
+\DoxyCodeLine{00809\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}>\ \textcolor{keyword}{class\ }StorageBase,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00810\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00811\ \textcolor{keywordtype}{void}\ call\_assignment(NoAlias<Dst,StorageBase>\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src,\ \textcolor{keyword}{const}\ Func\&\ func)}
+\DoxyCodeLine{00812\ \{}
+\DoxyCodeLine{00813\ \ \ call\_assignment\_no\_alias(dst.expression(),\ src,\ func);}
+\DoxyCodeLine{00814\ \}}
+\DoxyCodeLine{00815\ }
+\DoxyCodeLine{00816\ }
+\DoxyCodeLine{00817\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00818\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00819\ \textcolor{keywordtype}{void}\ call\_assignment\_no\_alias(Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src,\ \textcolor{keyword}{const}\ Func\&\ func)}
+\DoxyCodeLine{00820\ \{}
+\DoxyCodeLine{00821\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00822\ \ \ \ \ NeedToTranspose\ =\ (\ \ \ \ (int(Dst::RowsAtCompileTime)\ ==\ 1\ \&\&\ int(Src::ColsAtCompileTime)\ ==\ 1)}
+\DoxyCodeLine{00823\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ (\textcolor{keywordtype}{int}(Dst::ColsAtCompileTime)\ ==\ 1\ \&\&\ int(Src::RowsAtCompileTime)\ ==\ 1)}
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )\ \&\&\ int(Dst::SizeAtCompileTime)\ !=\ 1}
+\DoxyCodeLine{00825\ \ \ \};}
+\DoxyCodeLine{00826\ }
+\DoxyCodeLine{00827\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::conditional<NeedToTranspose,\ Transpose<Dst>,\ Dst>::type\ ActualDstTypeCleaned;}
+\DoxyCodeLine{00828\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::conditional<NeedToTranspose,\ Transpose<Dst>,\ Dst\&>::type\ ActualDstType;}
+\DoxyCodeLine{00829\ \ \ ActualDstType\ actualDst(dst);}
+\DoxyCodeLine{00830\ \ \ }
+\DoxyCodeLine{00831\ \ \ \textcolor{comment}{//\ TODO\ check\ whether\ this\ is\ the\ right\ place\ to\ perform\ these\ checks:}}
+\DoxyCodeLine{00832\ \ \ EIGEN\_STATIC\_ASSERT\_LVALUE(Dst)}
+\DoxyCodeLine{00833\ \ \ EIGEN\_STATIC\_ASSERT\_SAME\_MATRIX\_SIZE(ActualDstTypeCleaned,Src)}
+\DoxyCodeLine{00834\ \ \ EIGEN\_CHECK\_BINARY\_COMPATIBILIY(Func,\textcolor{keyword}{typename}\ ActualDstTypeCleaned::Scalar,\textcolor{keyword}{typename}\ Src::Scalar);}
+\DoxyCodeLine{00835\ \ \ }
+\DoxyCodeLine{00836\ \ \ Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst,\ src,\ func);}
+\DoxyCodeLine{00837\ \}}
+\DoxyCodeLine{00838\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00839\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00840\ \textcolor{keywordtype}{void}\ call\_assignment\_no\_alias(Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src)}
+\DoxyCodeLine{00841\ \{}
+\DoxyCodeLine{00842\ \ \ call\_assignment\_no\_alias(dst,\ src,\ internal::assign\_op<typename\ Dst::Scalar,typename\ Src::Scalar>());}
+\DoxyCodeLine{00843\ \}}
+\DoxyCodeLine{00844\ }
+\DoxyCodeLine{00845\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src,\ \textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00846\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00847\ \textcolor{keywordtype}{void}\ call\_assignment\_no\_alias\_no\_transpose(Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src,\ \textcolor{keyword}{const}\ Func\&\ func)}
+\DoxyCodeLine{00848\ \{}
+\DoxyCodeLine{00849\ \ \ \textcolor{comment}{//\ TODO\ check\ whether\ this\ is\ the\ right\ place\ to\ perform\ these\ checks:}}
+\DoxyCodeLine{00850\ \ \ EIGEN\_STATIC\_ASSERT\_LVALUE(Dst)}
+\DoxyCodeLine{00851\ \ \ EIGEN\_STATIC\_ASSERT\_SAME\_MATRIX\_SIZE(Dst,Src)}
+\DoxyCodeLine{00852\ \ \ EIGEN\_CHECK\_BINARY\_COMPATIBILIY(Func,\textcolor{keyword}{typename}\ Dst::Scalar,\textcolor{keyword}{typename}\ Src::Scalar);}
+\DoxyCodeLine{00853\ }
+\DoxyCodeLine{00854\ \ \ Assignment<Dst,Src,Func>::run(dst,\ src,\ func);}
+\DoxyCodeLine{00855\ \}}
+\DoxyCodeLine{00856\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>}
+\DoxyCodeLine{00857\ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE}
+\DoxyCodeLine{00858\ \textcolor{keywordtype}{void}\ call\_assignment\_no\_alias\_no\_transpose(Dst\&\ dst,\ \textcolor{keyword}{const}\ Src\&\ src)}
+\DoxyCodeLine{00859\ \{}
+\DoxyCodeLine{00860\ \ \ call\_assignment\_no\_alias\_no\_transpose(dst,\ src,\ internal::assign\_op<typename\ Dst::Scalar,typename\ Src::Scalar>());}
+\DoxyCodeLine{00861\ \}}
+\DoxyCodeLine{00862\ }
+\DoxyCodeLine{00863\ \textcolor{comment}{//\ forward\ declaration}}
+\DoxyCodeLine{00864\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dst,\ \textcolor{keyword}{typename}\ Src>\ \textcolor{keywordtype}{void}\ check\_for\_aliasing(\textcolor{keyword}{const}\ Dst\ \&dst,\ \textcolor{keyword}{const}\ Src\ \&src);}
+\DoxyCodeLine{00865\ }
+\DoxyCodeLine{00866\ \textcolor{comment}{//\ Generic\ Dense\ to\ Dense\ assignment}}
+\DoxyCodeLine{00867\ \textcolor{comment}{//\ Note\ that\ the\ last\ template\ argument\ "{}Weak"{}\ is\ needed\ to\ make\ it\ possible\ to\ perform}}
+\DoxyCodeLine{00868\ \textcolor{comment}{//\ both\ partial\ specialization+SFINAE\ without\ ambiguous\ specialization}}
+\DoxyCodeLine{00869\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ SrcXprType,\ \textcolor{keyword}{typename}\ Functor,\ \textcolor{keyword}{typename}\ Weak>}
+\DoxyCodeLine{00870\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment}{Assignment}}<DstXprType,\ SrcXprType,\ Functor,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}},\ Weak>}
+\DoxyCodeLine{00871\ \{}
+\DoxyCodeLine{00872\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00873\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ SrcXprType\ \&src,\ \textcolor{keyword}{const}\ Functor\ \&func)}
+\DoxyCodeLine{00874\ \ \ \{}
+\DoxyCodeLine{00875\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_NO\_DEBUG}}
+\DoxyCodeLine{00876\ \ \ \ \ internal::check\_for\_aliasing(dst,\ src);}
+\DoxyCodeLine{00877\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00878\ \ \ \ \ }
+\DoxyCodeLine{00879\ \ \ \ \ call\_dense\_assignment\_loop(dst,\ src,\ func);}
+\DoxyCodeLine{00880\ \ \ \}}
+\DoxyCodeLine{00881\ \};}
+\DoxyCodeLine{00882\ }
+\DoxyCodeLine{00883\ \textcolor{comment}{//\ Generic\ assignment\ through\ evalTo.}}
+\DoxyCodeLine{00884\ \textcolor{comment}{//\ TODO:\ not\ sure\ we\ have\ to\ keep\ that\ one,\ but\ it\ helps\ porting\ current\ code\ to\ new\ evaluator\ mechanism.}}
+\DoxyCodeLine{00885\ \textcolor{comment}{//\ Note\ that\ the\ last\ template\ argument\ "{}Weak"{}\ is\ needed\ to\ make\ it\ possible\ to\ perform}}
+\DoxyCodeLine{00886\ \textcolor{comment}{//\ both\ partial\ specialization+SFINAE\ without\ ambiguous\ specialization}}
+\DoxyCodeLine{00887\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ SrcXprType,\ \textcolor{keyword}{typename}\ Functor,\ \textcolor{keyword}{typename}\ Weak>}
+\DoxyCodeLine{00888\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment}{Assignment}}<DstXprType,\ SrcXprType,\ Functor,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_eigen_base2_eigen_base}{EigenBase2EigenBase}},\ Weak>}
+\DoxyCodeLine{00889\ \{}
+\DoxyCodeLine{00890\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00891\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ SrcXprType\ \&src,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<typename\ DstXprType::Scalar,typename\ SrcXprType::Scalar>}}\ \&\textcolor{comment}{/*func*/})}
+\DoxyCodeLine{00892\ \ \ \{}
+\DoxyCodeLine{00893\ \ \ \ \ Index\ dstRows\ =\ src.rows();}
+\DoxyCodeLine{00894\ \ \ \ \ Index\ dstCols\ =\ src.cols();}
+\DoxyCodeLine{00895\ \ \ \ \ \textcolor{keywordflow}{if}((dst.rows()!=dstRows)\ ||\ (dst.cols()!=dstCols))}
+\DoxyCodeLine{00896\ \ \ \ \ \ \ dst.resize(dstRows,\ dstCols);}
+\DoxyCodeLine{00897\ }
+\DoxyCodeLine{00898\ \ \ \ \ eigen\_assert(dst.rows()\ ==\ src.rows()\ \&\&\ dst.cols()\ ==\ src.cols());}
+\DoxyCodeLine{00899\ \ \ \ \ src.evalTo(dst);}
+\DoxyCodeLine{00900\ \ \ \}}
+\DoxyCodeLine{00901\ }
+\DoxyCodeLine{00902\ \ \ \textcolor{comment}{//\ NOTE\ The\ following\ two\ functions\ are\ templated\ to\ avoid\ their\ instanciation\ if\ not\ needed}}
+\DoxyCodeLine{00903\ \ \ \textcolor{comment}{//\ \ \ \ \ \ This\ is\ needed\ because\ some\ expressions\ supports\ evalTo\ only\ and/or\ have\ 'void'\ as\ scalar\ type.}}
+\DoxyCodeLine{00904\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ SrcScalarType>}
+\DoxyCodeLine{00905\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00906\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ SrcXprType\ \&src,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1add__assign__op}{internal::add\_assign\_op<typename\ DstXprType::Scalar,SrcScalarType>}}\ \&\textcolor{comment}{/*func*/})}
+\DoxyCodeLine{00907\ \ \ \{}
+\DoxyCodeLine{00908\ \ \ \ \ Index\ dstRows\ =\ src.rows();}
+\DoxyCodeLine{00909\ \ \ \ \ Index\ dstCols\ =\ src.cols();}
+\DoxyCodeLine{00910\ \ \ \ \ \textcolor{keywordflow}{if}((dst.rows()!=dstRows)\ ||\ (dst.cols()!=dstCols))}
+\DoxyCodeLine{00911\ \ \ \ \ \ \ dst.resize(dstRows,\ dstCols);}
+\DoxyCodeLine{00912\ }
+\DoxyCodeLine{00913\ \ \ \ \ eigen\_assert(dst.rows()\ ==\ src.rows()\ \&\&\ dst.cols()\ ==\ src.cols());}
+\DoxyCodeLine{00914\ \ \ \ \ src.addTo(dst);}
+\DoxyCodeLine{00915\ \ \ \}}
+\DoxyCodeLine{00916\ }
+\DoxyCodeLine{00917\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ SrcScalarType>}
+\DoxyCodeLine{00918\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00919\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ SrcXprType\ \&src,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1sub__assign__op}{internal::sub\_assign\_op<typename\ DstXprType::Scalar,SrcScalarType>}}\ \&\textcolor{comment}{/*func*/})}
+\DoxyCodeLine{00920\ \ \ \{}
+\DoxyCodeLine{00921\ \ \ \ \ Index\ dstRows\ =\ src.rows();}
+\DoxyCodeLine{00922\ \ \ \ \ Index\ dstCols\ =\ src.cols();}
+\DoxyCodeLine{00923\ \ \ \ \ \textcolor{keywordflow}{if}((dst.rows()!=dstRows)\ ||\ (dst.cols()!=dstCols))}
+\DoxyCodeLine{00924\ \ \ \ \ \ \ dst.resize(dstRows,\ dstCols);}
+\DoxyCodeLine{00925\ }
+\DoxyCodeLine{00926\ \ \ \ \ eigen\_assert(dst.rows()\ ==\ src.rows()\ \&\&\ dst.cols()\ ==\ src.cols());}
+\DoxyCodeLine{00927\ \ \ \ \ src.subTo(dst);}
+\DoxyCodeLine{00928\ \ \ \}}
+\DoxyCodeLine{00929\ \};}
+\DoxyCodeLine{00930\ }
+\DoxyCodeLine{00931\ \}\ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00932\ }
+\DoxyCodeLine{00933\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00934\ }
+\DoxyCodeLine{00935\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_ASSIGN\_EVALUATOR\_H}}
+
+\end{DoxyCode}

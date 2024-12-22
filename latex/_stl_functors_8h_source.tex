@@ -1,0 +1,138 @@
+\doxysection{Stl\+Functors.\+h}
+\hypertarget{_stl_functors_8h_source}{}\label{_stl_functors_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/functors/StlFunctors.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/functors/StlFunctors.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_STL\_FUNCTORS\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_STL\_FUNCTORS\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ default\ functor\ traits\ for\ STL\ functors:}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00020\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::multiplies<T>\ >}
+\DoxyCodeLine{00021\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<T>::MulCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00024\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::divides<T>\ >}
+\DoxyCodeLine{00025\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<T>::MulCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::plus<T>\ >}
+\DoxyCodeLine{00029\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<T>::AddCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00032\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::minus<T>\ >}
+\DoxyCodeLine{00033\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<T>::AddCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00036\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::negate<T>\ >}
+\DoxyCodeLine{00037\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<T>::AddCost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00040\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::logical\_or<T>\ >}
+\DoxyCodeLine{00041\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00044\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::logical\_and<T>\ >}
+\DoxyCodeLine{00045\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00048\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::logical\_not<T>\ >}
+\DoxyCodeLine{00049\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::greater<T>\ >}
+\DoxyCodeLine{00053\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00056\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::less<T>\ >}
+\DoxyCodeLine{00057\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::greater\_equal<T>\ >}
+\DoxyCodeLine{00061\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00064\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::less\_equal<T>\ >}
+\DoxyCodeLine{00065\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00068\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::equal\_to<T>\ >}
+\DoxyCodeLine{00069\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00072\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::not\_equal\_to<T>\ >}
+\DoxyCodeLine{00073\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#if\ (\_\_cplusplus\ <\ 201103L)\ \&\&\ (EIGEN\_COMP\_MSVC\ <=\ 1900)}}
+\DoxyCodeLine{00076\ \textcolor{comment}{//\ std::binder*\ are\ deprecated\ since\ c++11\ and\ will\ be\ removed\ in\ c++17}}
+\DoxyCodeLine{00077\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00078\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::binder2nd<T>\ >}
+\DoxyCodeLine{00079\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits<T>::Cost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00082\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::binder1st<T>\ >}
+\DoxyCodeLine{00083\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits<T>::Cost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00087\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::unary\_negate<T>\ >}
+\DoxyCodeLine{00088\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1\ +\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits<T>::Cost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00091\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::binary\_negate<T>\ >}
+\DoxyCodeLine{00092\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 1\ +\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits<T>::Cost}},\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_STDEXT\_SUPPORT}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T0,\textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00097\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1functor__traits}{functor\_traits}}<std::project1st<T0,T1>\ >}
+\DoxyCodeLine{00098\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 0,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T0,\textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00101\ \textcolor{keyword}{struct\ }functor\_traits<std::project2nd<T0,T1>\ >}
+\DoxyCodeLine{00102\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 0,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T0,\textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00105\ \textcolor{keyword}{struct\ }functor\_traits<std::select2nd<std::pair<T0,T1>\ >\ >}
+\DoxyCodeLine{00106\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 0,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00108\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T0,\textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00109\ \textcolor{keyword}{struct\ }functor\_traits<std::select1st<std::pair<T0,T1>\ >\ >}
+\DoxyCodeLine{00110\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ 0,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T0,\textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00113\ \textcolor{keyword}{struct\ }functor\_traits<std::unary\_compose<T0,T1>\ >}
+\DoxyCodeLine{00114\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ functor\_traits<T0>::Cost\ +\ functor\_traits<T1>::Cost,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00116\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T0,\textcolor{keyword}{typename}\ T1,\textcolor{keyword}{typename}\ T2>}
+\DoxyCodeLine{00117\ \textcolor{keyword}{struct\ }functor\_traits<std::binary\_compose<T0,T1,T2>\ >}
+\DoxyCodeLine{00118\ \{\ \textcolor{keyword}{enum}\ \{\ Cost\ =\ functor\_traits<T0>::Cost\ +\ functor\_traits<T1>::Cost\ +\ functor\_traits<T2>::Cost,\ PacketAccess\ =\ \textcolor{keyword}{false}\ \};\ \};}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_STDEXT\_SUPPORT}}
+\DoxyCodeLine{00121\ }
+\DoxyCodeLine{00122\ \textcolor{comment}{//\ allow\ to\ add\ new\ functors\ and\ specializations\ of\ functor\_traits\ from\ outside\ Eigen.}}
+\DoxyCodeLine{00123\ \textcolor{comment}{//\ this\ macro\ is\ really\ needed\ because\ functor\_traits\ must\ be\ specialized\ after\ it\ is\ declared\ but\ before\ it\ is\ used...}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#ifdef\ EIGEN\_FUNCTORS\_PLUGIN}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#include\ EIGEN\_FUNCTORS\_PLUGIN}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00130\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_STL\_FUNCTORS\_H}}
+
+\end{DoxyCode}

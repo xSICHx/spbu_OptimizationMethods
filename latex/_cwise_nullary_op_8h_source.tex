@@ -1,0 +1,429 @@
+\doxysection{Cwise\+Nullary\+Op.\+h}
+\hypertarget{_cwise_nullary_op_8h_source}{}\label{_cwise_nullary_op_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/CwiseNullaryOp.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/CwiseNullaryOp.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_CWISE\_NULLARY\_OP\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_CWISE\_NULLARY\_OP\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NullaryOp,\ \textcolor{keyword}{typename}\ PlainObjectType>}
+\DoxyCodeLine{00017\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp}}<NullaryOp,\ PlainObjectType>\ >\ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<PlainObjectType>}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ Flags\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<PlainObjectType>::Flags}}\ \&\ \mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}}
+\DoxyCodeLine{00021\ \ \ \};}
+\DoxyCodeLine{00022\ \};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \}\ \textcolor{comment}{//\ namespace\ internal}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ NullaryOp,\ \textcolor{keyword}{typename}\ PlainObjectType>}
+\DoxyCodeLine{00060\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__xpr__base}{internal::dense\_xpr\_base}}<\ CwiseNullaryOp<NullaryOp,\ PlainObjectType>\ >::type,\ \mbox{\hyperlink{class_eigen_1_1internal_1_1no__assignment__operator}{internal::no\_assignment\_operator}}}
+\DoxyCodeLine{00061\ \{}
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::dense\_xpr\_base<CwiseNullaryOp>::type\ Base;}
+\DoxyCodeLine{00065\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp}})}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00068\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp}}(Index\ rows,\ Index\ cols,\ \textcolor{keyword}{const}\ NullaryOp\&\ func\ =\ NullaryOp())}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ :\ m\_rows(rows),\ m\_cols(cols),\ m\_functor(func)}
+\DoxyCodeLine{00070\ \ \ \ \ \{}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ eigen\_assert(rows\ >=\ 0}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (RowsAtCompileTime\ ==\ Dynamic\ ||\ RowsAtCompileTime\ ==\ rows)}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \ cols\ >=\ 0}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (ColsAtCompileTime\ ==\ Dynamic\ ||\ ColsAtCompileTime\ ==\ cols));}
+\DoxyCodeLine{00075\ \ \ \ \ \}}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00077\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00078\ \ \ \ \ EIGEN\_STRONG\_INLINE\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_rows.value();\ \}}
+\DoxyCodeLine{00079\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00080\ \ \ \ \ EIGEN\_STRONG\_INLINE\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_cols.value();\ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00083\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{const}\ NullaryOp\&\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op_ac0c215c75760c38efc779b7175f7a0ca}{functor}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_functor;\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1variable__if__dynamic}{internal::variable\_if\_dynamic<Index,\ RowsAtCompileTime>}}\ m\_rows;}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1variable__if__dynamic}{internal::variable\_if\_dynamic<Index,\ ColsAtCompileTime>}}\ m\_cols;}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{const}\ NullaryOp\ m\_functor;}
+\DoxyCodeLine{00090\ \};}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00106\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00107\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ CustomNullaryOp>}
+\DoxyCodeLine{00108\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ CwiseNullaryOp<CustomNullaryOp,\ typename\ DenseBase<Derived>::PlainObject>}
+\DoxyCodeLine{00109\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(Index\ rows,\ Index\ cols,\ \textcolor{keyword}{const}\ CustomNullaryOp\&\ func)}
+\DoxyCodeLine{00110\ \{}
+\DoxyCodeLine{00111\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp<CustomNullaryOp,\ PlainObject>}}(rows,\ cols,\ func);}
+\DoxyCodeLine{00112\ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00132\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00133\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ CustomNullaryOp>}
+\DoxyCodeLine{00134\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp<CustomNullaryOp,\ typename\ DenseBase<Derived>::PlainObject}}>}
+\DoxyCodeLine{00135\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(Index\ size,\ \textcolor{keyword}{const}\ CustomNullaryOp\&\ func)}
+\DoxyCodeLine{00136\ \{}
+\DoxyCodeLine{00137\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00138\ \ \ \textcolor{keywordflow}{if}(RowsAtCompileTime\ ==\ 1)\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp<CustomNullaryOp,\ PlainObject>}}(1,\ size,\ func);}
+\DoxyCodeLine{00139\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp<CustomNullaryOp,\ PlainObject>}}(size,\ 1,\ func);}
+\DoxyCodeLine{00140\ \}}
+\DoxyCodeLine{00141\ }
+\DoxyCodeLine{00151\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00152\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ CustomNullaryOp>}
+\DoxyCodeLine{00153\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp<CustomNullaryOp,\ typename\ DenseBase<Derived>::PlainObject}}>}
+\DoxyCodeLine{00154\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(\textcolor{keyword}{const}\ CustomNullaryOp\&\ func)}
+\DoxyCodeLine{00155\ \{}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{CwiseNullaryOp<CustomNullaryOp,\ PlainObject>}}(RowsAtCompileTime,\ ColsAtCompileTime,\ func);}
+\DoxyCodeLine{00157\ \}}
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00172\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00173\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00174\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ab0ae1bfa72faedcaf53af81ca76c446b}{DenseBase<Derived>::Constant}}(Index\ rows,\ Index\ cols,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ value)}
+\DoxyCodeLine{00175\ \{}
+\DoxyCodeLine{00176\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(rows,\ cols,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__constant__op}{internal::scalar\_constant\_op<Scalar>}}(value));}
+\DoxyCodeLine{00177\ \}}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00194\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00195\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00196\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ab0ae1bfa72faedcaf53af81ca76c446b}{DenseBase<Derived>::Constant}}(Index\ size,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ value)}
+\DoxyCodeLine{00197\ \{}
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(size,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__constant__op}{internal::scalar\_constant\_op<Scalar>}}(value));}
+\DoxyCodeLine{00199\ \}}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00210\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00211\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00212\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ab0ae1bfa72faedcaf53af81ca76c446b}{DenseBase<Derived>::Constant}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ value)}
+\DoxyCodeLine{00213\ \{}
+\DoxyCodeLine{00214\ \ \ EIGEN\_STATIC\_ASSERT\_FIXED\_SIZE(Derived)}
+\DoxyCodeLine{00215\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(RowsAtCompileTime,\ ColsAtCompileTime,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__constant__op}{internal::scalar\_constant\_op<Scalar>}}(value));}
+\DoxyCodeLine{00216\ \}}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00222\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00223\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::RandomAccessLinSpacedReturnType}}}
+\DoxyCodeLine{00224\ \mbox{\hyperlink{class_eigen_1_1_dense_base_adf10fff4af9e2fc4367e3b3f3e733b66}{DenseBase<Derived>::LinSpaced}}(Sequential\_t,\ Index\ size,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ low,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ high)}
+\DoxyCodeLine{00225\ \{}
+\DoxyCodeLine{00226\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00227\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(size,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1linspaced__op}{internal::linspaced\_op<Scalar,PacketScalar>}}(low,high,size));}
+\DoxyCodeLine{00228\ \}}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00234\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00235\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::RandomAccessLinSpacedReturnType}}}
+\DoxyCodeLine{00236\ \mbox{\hyperlink{class_eigen_1_1_dense_base_adf10fff4af9e2fc4367e3b3f3e733b66}{DenseBase<Derived>::LinSpaced}}(Sequential\_t,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ low,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ high)}
+\DoxyCodeLine{00237\ \{}
+\DoxyCodeLine{00238\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00239\ \ \ EIGEN\_STATIC\_ASSERT\_FIXED\_SIZE(Derived)}
+\DoxyCodeLine{00240\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(Derived::SizeAtCompileTime,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1linspaced__op}{internal::linspaced\_op<Scalar,PacketScalar>}}(low,high,Derived::SizeAtCompileTime));}
+\DoxyCodeLine{00241\ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00266\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00267\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::RandomAccessLinSpacedReturnType}}}
+\DoxyCodeLine{00268\ \mbox{\hyperlink{class_eigen_1_1_dense_base_adf10fff4af9e2fc4367e3b3f3e733b66}{DenseBase<Derived>::LinSpaced}}(Index\ size,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ low,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ high)}
+\DoxyCodeLine{00269\ \{}
+\DoxyCodeLine{00270\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00271\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(size,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1linspaced__op}{internal::linspaced\_op<Scalar,PacketScalar>}}(low,high,size));}
+\DoxyCodeLine{00272\ \}}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00278\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00279\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::RandomAccessLinSpacedReturnType}}}
+\DoxyCodeLine{00280\ \mbox{\hyperlink{class_eigen_1_1_dense_base_adf10fff4af9e2fc4367e3b3f3e733b66}{DenseBase<Derived>::LinSpaced}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ low,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ high)}
+\DoxyCodeLine{00281\ \{}
+\DoxyCodeLine{00282\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00283\ \ \ EIGEN\_STATIC\_ASSERT\_FIXED\_SIZE(Derived)}
+\DoxyCodeLine{00284\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(Derived::SizeAtCompileTime,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1linspaced__op}{internal::linspaced\_op<Scalar,PacketScalar>}}(low,high,Derived::SizeAtCompileTime));}
+\DoxyCodeLine{00285\ \}}
+\DoxyCodeLine{00286\ }
+\DoxyCodeLine{00288\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00289\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_af9b150d48bc5e4366887ccb466e40c6b}{DenseBase<Derived>::isApproxToConstant}}}
+\DoxyCodeLine{00290\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ val,\ \textcolor{keyword}{const}\ RealScalar\&\ prec)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00291\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00292\ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::nested\_eval<Derived,1>::type}}\ self(derived());}
+\DoxyCodeLine{00293\ \ \ \textcolor{keywordflow}{for}(Index\ j\ =\ 0;\ j\ <\ cols();\ ++j)}
+\DoxyCodeLine{00294\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ rows();\ ++i)}
+\DoxyCodeLine{00295\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!internal::isApprox(self.coeff(i,\ j),\ val,\ prec))}
+\DoxyCodeLine{00296\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00297\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00298\ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00303\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00304\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a1ca84e4179b3e5081ed11d89bbd9e74f}{DenseBase<Derived>::isConstant}}}
+\DoxyCodeLine{00305\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ val,\ \textcolor{keyword}{const}\ RealScalar\&\ prec)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00306\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00307\ \ \ \textcolor{keywordflow}{return}\ isApproxToConstant(val,\ prec);}
+\DoxyCodeLine{00308\ \}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00314\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00315\ EIGEN\_STRONG\_INLINE\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a4886d2dd3f6e63bc636f48914d035f9b}{DenseBase<Derived>::fill}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ val)}
+\DoxyCodeLine{00316\ \{}
+\DoxyCodeLine{00317\ \ \ setConstant(val);}
+\DoxyCodeLine{00318\ \}}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00324\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00325\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5bd0159dd86325b3c2bc40e3df0e1da3}{DenseBase<Derived>::setConstant}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ val)}
+\DoxyCodeLine{00326\ \{}
+\DoxyCodeLine{00327\ \ \ \textcolor{keywordflow}{return}\ derived()\ =\ Constant(rows(),\ cols(),\ val);}
+\DoxyCodeLine{00328\ \}}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00339\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00340\ EIGEN\_STRONG\_INLINE\ Derived\&}
+\DoxyCodeLine{00341\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_a1c05835c33b159f170ec5d30e3d44d88}{PlainObjectBase<Derived>::setConstant}}(Index\ size,\ \textcolor{keyword}{const}\ Scalar\&\ val)}
+\DoxyCodeLine{00342\ \{}
+\DoxyCodeLine{00343\ \ \ resize(size);}
+\DoxyCodeLine{00344\ \ \ \textcolor{keywordflow}{return}\ setConstant(val);}
+\DoxyCodeLine{00345\ \}}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00358\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00359\ EIGEN\_STRONG\_INLINE\ Derived\&}
+\DoxyCodeLine{00360\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_a1c05835c33b159f170ec5d30e3d44d88}{PlainObjectBase<Derived>::setConstant}}(Index\ rows,\ Index\ cols,\ \textcolor{keyword}{const}\ Scalar\&\ val)}
+\DoxyCodeLine{00361\ \{}
+\DoxyCodeLine{00362\ \ \ resize(rows,\ cols);}
+\DoxyCodeLine{00363\ \ \ \textcolor{keywordflow}{return}\ setConstant(val);}
+\DoxyCodeLine{00364\ \}}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00382\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00383\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_dense_base_aeaf8f19c918c70092973704970a03239}{DenseBase<Derived>::setLinSpaced}}(Index\ newSize,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ low,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ high)}
+\DoxyCodeLine{00384\ \{}
+\DoxyCodeLine{00385\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00386\ \ \ \textcolor{keywordflow}{return}\ derived()\ =\ Derived::NullaryExpr(newSize,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1linspaced__op}{internal::linspaced\_op<Scalar,PacketScalar>}}(low,high,newSize));}
+\DoxyCodeLine{00387\ \}}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00402\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00403\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_dense_base_aeaf8f19c918c70092973704970a03239}{DenseBase<Derived>::setLinSpaced}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ low,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\&\ high)}
+\DoxyCodeLine{00404\ \{}
+\DoxyCodeLine{00405\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00406\ \ \ \textcolor{keywordflow}{return}\ setLinSpaced(size(),\ low,\ high);}
+\DoxyCodeLine{00407\ \}}
+\DoxyCodeLine{00408\ }
+\DoxyCodeLine{00409\ \textcolor{comment}{//\ zero:}}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00425\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00426\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00427\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ad2aaacdd651521e9797e84ce345f2831}{DenseBase<Derived>::Zero}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00428\ \{}
+\DoxyCodeLine{00429\ \ \ \textcolor{keywordflow}{return}\ Constant(rows,\ cols,\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(0));}
+\DoxyCodeLine{00430\ \}}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00448\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00449\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00450\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ad2aaacdd651521e9797e84ce345f2831}{DenseBase<Derived>::Zero}}(Index\ size)}
+\DoxyCodeLine{00451\ \{}
+\DoxyCodeLine{00452\ \ \ \textcolor{keywordflow}{return}\ Constant(size,\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(0));}
+\DoxyCodeLine{00453\ \}}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00465\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00466\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00467\ \mbox{\hyperlink{class_eigen_1_1_dense_base_ad2aaacdd651521e9797e84ce345f2831}{DenseBase<Derived>::Zero}}()}
+\DoxyCodeLine{00468\ \{}
+\DoxyCodeLine{00469\ \ \ \textcolor{keywordflow}{return}\ Constant(\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(0));}
+\DoxyCodeLine{00470\ \}}
+\DoxyCodeLine{00471\ }
+\DoxyCodeLine{00480\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00481\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_af36014ec300f53a65083057ed4e89822}{DenseBase<Derived>::isZero}}(\textcolor{keyword}{const}\ RealScalar\&\ prec)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00482\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00483\ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::nested\_eval<Derived,1>::type}}\ self(derived());}
+\DoxyCodeLine{00484\ \ \ \textcolor{keywordflow}{for}(Index\ j\ =\ 0;\ j\ <\ cols();\ ++j)}
+\DoxyCodeLine{00485\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ rows();\ ++i)}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!internal::isMuchSmallerThan(self.coeff(i,\ j),\ \textcolor{keyword}{static\_cast<}\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}\textcolor{keyword}{>}(1),\ prec))}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00488\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00489\ \}}
+\DoxyCodeLine{00490\ }
+\DoxyCodeLine{00498\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00499\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a00dda7dd6ba5960b3b77a91211dbee13}{DenseBase<Derived>::setZero}}()}
+\DoxyCodeLine{00500\ \{}
+\DoxyCodeLine{00501\ \ \ \textcolor{keywordflow}{return}\ setConstant(\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(0));}
+\DoxyCodeLine{00502\ \}}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00513\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00514\ EIGEN\_STRONG\_INLINE\ Derived\&}
+\DoxyCodeLine{00515\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_ab8b732ae4d45271b2532978ee13210d1}{PlainObjectBase<Derived>::setZero}}(Index\ newSize)}
+\DoxyCodeLine{00516\ \{}
+\DoxyCodeLine{00517\ \ \ resize(newSize);}
+\DoxyCodeLine{00518\ \ \ \textcolor{keywordflow}{return}\ setConstant(Scalar(0));}
+\DoxyCodeLine{00519\ \}}
+\DoxyCodeLine{00520\ }
+\DoxyCodeLine{00531\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00532\ EIGEN\_STRONG\_INLINE\ Derived\&}
+\DoxyCodeLine{00533\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_ab8b732ae4d45271b2532978ee13210d1}{PlainObjectBase<Derived>::setZero}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00534\ \{}
+\DoxyCodeLine{00535\ \ \ resize(rows,\ cols);}
+\DoxyCodeLine{00536\ \ \ \textcolor{keywordflow}{return}\ setConstant(Scalar(0));}
+\DoxyCodeLine{00537\ \}}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00539\ \textcolor{comment}{//\ ones:}}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00555\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00556\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00557\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a864a3e957343b818effdaeaeb08729a0}{DenseBase<Derived>::Ones}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00558\ \{}
+\DoxyCodeLine{00559\ \ \ \textcolor{keywordflow}{return}\ Constant(rows,\ cols,\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(1));}
+\DoxyCodeLine{00560\ \}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00578\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00579\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00580\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a864a3e957343b818effdaeaeb08729a0}{DenseBase<Derived>::Ones}}(Index\ newSize)}
+\DoxyCodeLine{00581\ \{}
+\DoxyCodeLine{00582\ \ \ \textcolor{keywordflow}{return}\ Constant(newSize,\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(1));}
+\DoxyCodeLine{00583\ \}}
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00595\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00596\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{DenseBase<Derived>::ConstantReturnType}}}
+\DoxyCodeLine{00597\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a864a3e957343b818effdaeaeb08729a0}{DenseBase<Derived>::Ones}}()}
+\DoxyCodeLine{00598\ \{}
+\DoxyCodeLine{00599\ \ \ \textcolor{keywordflow}{return}\ Constant(\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(1));}
+\DoxyCodeLine{00600\ \}}
+\DoxyCodeLine{00601\ }
+\DoxyCodeLine{00610\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00611\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_aa56d6b4477cd3c92a9cf42f4b96e47c2}{DenseBase<Derived>::isOnes}}}
+\DoxyCodeLine{00612\ (\textcolor{keyword}{const}\ RealScalar\&\ prec)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00613\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00614\ \ \ \textcolor{keywordflow}{return}\ isApproxToConstant(\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(1),\ prec);}
+\DoxyCodeLine{00615\ \}}
+\DoxyCodeLine{00616\ }
+\DoxyCodeLine{00624\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00625\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a9be6f81b837960fc7936bcc2c45b9363}{DenseBase<Derived>::setOnes}}()}
+\DoxyCodeLine{00626\ \{}
+\DoxyCodeLine{00627\ \ \ \textcolor{keywordflow}{return}\ setConstant(\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}(1));}
+\DoxyCodeLine{00628\ \}}
+\DoxyCodeLine{00629\ }
+\DoxyCodeLine{00639\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00640\ EIGEN\_STRONG\_INLINE\ Derived\&}
+\DoxyCodeLine{00641\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_ade14bb1d7c761c676fd2d019c44b47f3}{PlainObjectBase<Derived>::setOnes}}(Index\ newSize)}
+\DoxyCodeLine{00642\ \{}
+\DoxyCodeLine{00643\ \ \ resize(newSize);}
+\DoxyCodeLine{00644\ \ \ \textcolor{keywordflow}{return}\ setConstant(Scalar(1));}
+\DoxyCodeLine{00645\ \}}
+\DoxyCodeLine{00646\ }
+\DoxyCodeLine{00657\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00658\ EIGEN\_STRONG\_INLINE\ Derived\&}
+\DoxyCodeLine{00659\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_ade14bb1d7c761c676fd2d019c44b47f3}{PlainObjectBase<Derived>::setOnes}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00660\ \{}
+\DoxyCodeLine{00661\ \ \ resize(rows,\ cols);}
+\DoxyCodeLine{00662\ \ \ \textcolor{keywordflow}{return}\ setConstant(Scalar(1));}
+\DoxyCodeLine{00663\ \}}
+\DoxyCodeLine{00664\ }
+\DoxyCodeLine{00665\ \textcolor{comment}{//\ Identity:}}
+\DoxyCodeLine{00666\ }
+\DoxyCodeLine{00681\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00682\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{MatrixBase<Derived>::IdentityReturnType}}}
+\DoxyCodeLine{00683\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a040dec5c5a3525b649fb6e3a996bde6a}{MatrixBase<Derived>::Identity}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00684\ \{}
+\DoxyCodeLine{00685\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<Derived>::NullaryExpr}}(rows,\ cols,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__identity__op}{internal::scalar\_identity\_op<Scalar>}}());}
+\DoxyCodeLine{00686\ \}}
+\DoxyCodeLine{00687\ }
+\DoxyCodeLine{00698\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00699\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{MatrixBase<Derived>::IdentityReturnType}}}
+\DoxyCodeLine{00700\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a040dec5c5a3525b649fb6e3a996bde6a}{MatrixBase<Derived>::Identity}}()}
+\DoxyCodeLine{00701\ \{}
+\DoxyCodeLine{00702\ \ \ EIGEN\_STATIC\_ASSERT\_FIXED\_SIZE(Derived)}
+\DoxyCodeLine{00703\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>::NullaryExpr}}(RowsAtCompileTime,\ ColsAtCompileTime,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__identity__op}{internal::scalar\_identity\_op<Scalar>}}());}
+\DoxyCodeLine{00704\ \}}
+\DoxyCodeLine{00705\ }
+\DoxyCodeLine{00715\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00716\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a4ccbd8dfa06e9d47b9bf84711f8b9d40}{MatrixBase<Derived>::isIdentity}}}
+\DoxyCodeLine{00717\ (\textcolor{keyword}{const}\ RealScalar\&\ prec)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00718\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00719\ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::nested\_eval<Derived,1>::type}}\ self(derived());}
+\DoxyCodeLine{00720\ \ \ \textcolor{keywordflow}{for}(Index\ j\ =\ 0;\ j\ <\ cols();\ ++j)}
+\DoxyCodeLine{00721\ \ \ \{}
+\DoxyCodeLine{00722\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ rows();\ ++i)}
+\DoxyCodeLine{00723\ \ \ \ \ \{}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(i\ ==\ j)}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!internal::isApprox(self.coeff(i,\ j),\ \textcolor{keyword}{static\_cast<}Scalar\textcolor{keyword}{>}(1),\ prec))}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(!internal::isMuchSmallerThan(self.coeff(i,\ j),\ \textcolor{keyword}{static\_cast<}RealScalar\textcolor{keyword}{>}(1),\ prec))}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00734\ \ \ \ \ \}}
+\DoxyCodeLine{00735\ \ \ \}}
+\DoxyCodeLine{00736\ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00737\ \}}
+\DoxyCodeLine{00738\ }
+\DoxyCodeLine{00739\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00740\ }
+\DoxyCodeLine{00741\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived,\ \textcolor{keywordtype}{bool}\ Big\ =\ (Derived::SizeAtCompileTime>=16)>}
+\DoxyCodeLine{00742\ \textcolor{keyword}{struct}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1set_identity__impl}{setIdentity\_impl}}}
+\DoxyCodeLine{00743\ \{}
+\DoxyCodeLine{00744\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00745\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ Derived\&\ run(Derived\&\ m)}
+\DoxyCodeLine{00746\ \ \ \{}
+\DoxyCodeLine{00747\ \ \ \ \ \textcolor{keywordflow}{return}\ m\ =\ Derived::Identity(m.rows(),\ m.cols());}
+\DoxyCodeLine{00748\ \ \ \}}
+\DoxyCodeLine{00749\ \};}
+\DoxyCodeLine{00750\ }
+\DoxyCodeLine{00751\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00752\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1set_identity__impl}{setIdentity\_impl}}<Derived,\ true>}
+\DoxyCodeLine{00753\ \{}
+\DoxyCodeLine{00754\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00755\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ Derived\&\ run(Derived\&\ m)}
+\DoxyCodeLine{00756\ \ \ \{}
+\DoxyCodeLine{00757\ \ \ \ \ m.setZero();}
+\DoxyCodeLine{00758\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ numext::mini(m.rows(),\ m.cols());}
+\DoxyCodeLine{00759\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i\ =\ 0;\ i\ <\ size;\ ++i)\ m.coeffRef(i,i)\ =\ \textcolor{keyword}{typename}\ Derived::Scalar(1);}
+\DoxyCodeLine{00760\ \ \ \ \ \textcolor{keywordflow}{return}\ m;}
+\DoxyCodeLine{00761\ \ \ \}}
+\DoxyCodeLine{00762\ \};}
+\DoxyCodeLine{00763\ }
+\DoxyCodeLine{00764\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00765\ }
+\DoxyCodeLine{00773\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00774\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a306742007396d5350c7830b1c3bebfbc}{MatrixBase<Derived>::setIdentity}}()}
+\DoxyCodeLine{00775\ \{}
+\DoxyCodeLine{00776\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1set_identity__impl}{internal::setIdentity\_impl<Derived>::run}}(derived());}
+\DoxyCodeLine{00777\ \}}
+\DoxyCodeLine{00778\ }
+\DoxyCodeLine{00789\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00790\ EIGEN\_STRONG\_INLINE\ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a306742007396d5350c7830b1c3bebfbc}{MatrixBase<Derived>::setIdentity}}(Index\ rows,\ Index\ cols)}
+\DoxyCodeLine{00791\ \{}
+\DoxyCodeLine{00792\ \ \ derived().resize(rows,\ cols);}
+\DoxyCodeLine{00793\ \ \ \textcolor{keywordflow}{return}\ setIdentity();}
+\DoxyCodeLine{00794\ \}}
+\DoxyCodeLine{00795\ }
+\DoxyCodeLine{00802\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00803\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixBase<Derived>::BasisReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_ad28b888173c31bf111bff950ee7a7ac6}{MatrixBase<Derived>::Unit}}(Index\ newSize,\ Index\ i)}
+\DoxyCodeLine{00804\ \{}
+\DoxyCodeLine{00805\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00806\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_block}{BasisReturnType}}(SquareMatrixType::Identity(newSize,newSize),\ i);}
+\DoxyCodeLine{00807\ \}}
+\DoxyCodeLine{00808\ }
+\DoxyCodeLine{00817\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00818\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixBase<Derived>::BasisReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_ad28b888173c31bf111bff950ee7a7ac6}{MatrixBase<Derived>::Unit}}(Index\ i)}
+\DoxyCodeLine{00819\ \{}
+\DoxyCodeLine{00820\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived)}
+\DoxyCodeLine{00821\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_block}{BasisReturnType}}(SquareMatrixType::Identity(),i);}
+\DoxyCodeLine{00822\ \}}
+\DoxyCodeLine{00823\ }
+\DoxyCodeLine{00830\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00831\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixBase<Derived>::BasisReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a3738ca476bb8da822a88fc99e2278e45}{MatrixBase<Derived>::UnitX}}()}
+\DoxyCodeLine{00832\ \{\ \textcolor{keywordflow}{return}\ Derived::Unit(0);\ \}}
+\DoxyCodeLine{00833\ }
+\DoxyCodeLine{00840\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00841\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixBase<Derived>::BasisReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_ae9d96862654ea88a1cea066dbb894efc}{MatrixBase<Derived>::UnitY}}()}
+\DoxyCodeLine{00842\ \{\ \textcolor{keywordflow}{return}\ Derived::Unit(1);\ \}}
+\DoxyCodeLine{00843\ }
+\DoxyCodeLine{00850\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00851\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixBase<Derived>::BasisReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a8eb31f6df86be131b52451dd2e979bc9}{MatrixBase<Derived>::UnitZ}}()}
+\DoxyCodeLine{00852\ \{\ \textcolor{keywordflow}{return}\ Derived::Unit(2);\ \}}
+\DoxyCodeLine{00853\ }
+\DoxyCodeLine{00860\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00861\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixBase<Derived>::BasisReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a2e38a13a3c774415076efb6a4402113e}{MatrixBase<Derived>::UnitW}}()}
+\DoxyCodeLine{00862\ \{\ \textcolor{keywordflow}{return}\ Derived::Unit(3);\ \}}
+\DoxyCodeLine{00863\ }
+\DoxyCodeLine{00864\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00865\ }
+\DoxyCodeLine{00866\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_CWISE\_NULLARY\_OP\_H}}
+
+\end{DoxyCode}

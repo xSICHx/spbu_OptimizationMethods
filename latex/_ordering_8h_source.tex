@@ -1,0 +1,125 @@
+\doxysection{Ordering.\+h}
+\hypertarget{_ordering_8h_source}{}\label{_ordering_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/OrderingMethods/Ordering.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/OrderingMethods/Ordering.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \ }
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2012\ \ Désiré\ Nuentsa-\/Wakam\ <desire.nuentsa\_wakam@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_ORDERING\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_ORDERING\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00015\ \ \ }
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#include\ "{}Eigen\_Colamd.h"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>\ }
+\DoxyCodeLine{00027\ \textcolor{keywordtype}{void}\ ordering\_helper\_at\_plus\_a(\textcolor{keyword}{const}\ MatrixType\&\ A,\ MatrixType\&\ symmat)}
+\DoxyCodeLine{00028\ \{}
+\DoxyCodeLine{00029\ \ \ MatrixType\ C;}
+\DoxyCodeLine{00030\ \ \ C\ =\ A.transpose();\ \textcolor{comment}{//\ NOTE:\ Could\ be\ \ costly}}
+\DoxyCodeLine{00031\ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ C.rows();\ i++)\ }
+\DoxyCodeLine{00032\ \ \ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{typename}\ MatrixType::InnerIterator\ it(C,\ i);\ it;\ ++it)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ it.valueRef()\ =\ 0.0;}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \ \ symmat\ =\ C\ +\ A;}
+\DoxyCodeLine{00037\ \}}
+\DoxyCodeLine{00038\ \ \ \ \ }
+\DoxyCodeLine{00039\ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_MPL2\_ONLY}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ StorageIndex>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_a_m_d_ordering}{AMDOrdering}}}
+\DoxyCodeLine{00053\ \{}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix<Dynamic,\ Dynamic,\ StorageIndex>}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}};}
+\DoxyCodeLine{00056\ \ \ \ \ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_a_m_d_ordering_afce433557abcba9e49fa81581a58fa51}{operator()}}(\textcolor{keyword}{const}\ MatrixType\&\ mat,\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}}\&\ perm)}
+\DoxyCodeLine{00062\ \ \ \ \ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ symmetric\ pattern}}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{SparseMatrix<typename\ MatrixType::Scalar,\ ColMajor,\ StorageIndex>}}\ symm;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ internal::ordering\_helper\_at\_plus\_a(mat,symm);\ }
+\DoxyCodeLine{00066\ \ \ \ \ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ \textcolor{comment}{//\ Call\ the\ AMD\ routine\ }}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \textcolor{comment}{//m\_mat.prune(keep\_diag());}}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ internal::minimum\_degree\_ordering(symm,\ perm);}
+\DoxyCodeLine{00070\ \ \ \ \ \}}
+\DoxyCodeLine{00071\ \ \ \ \ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ SrcType,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ SrcUpLo>\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_a_m_d_ordering_a7f3fd7224b084f0f5655c97ea8eb6466}{operator()}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_sparse_self_adjoint_view}{SparseSelfAdjointView<SrcType,\ SrcUpLo>}}\&\ mat,\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}}\&\ perm)}
+\DoxyCodeLine{00075\ \ \ \ \ \{\ }
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{SparseMatrix<typename\ SrcType::Scalar,\ ColMajor,\ StorageIndex>}}\ C;\ C\ =\ mat;}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ }
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{comment}{//\ Call\ the\ AMD\ routine\ }}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \textcolor{comment}{//\ m\_mat.prune(keep\_diag());\ //Remove\ the\ diagonal\ elements\ }}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ internal::minimum\_degree\_ordering(C,\ perm);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ \};}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00084\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_MPL2\_ONLY}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ StorageIndex>}
+\DoxyCodeLine{00095\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_natural_ordering}{NaturalOrdering}}}
+\DoxyCodeLine{00096\ \{}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix<Dynamic,\ Dynamic,\ StorageIndex>}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}};}
+\DoxyCodeLine{00099\ \ \ \ \ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_natural_ordering_aa39e772105ed66da9e909f2a9385be37}{operator()}}(\textcolor{keyword}{const}\ MatrixType\&\ \textcolor{comment}{/*mat*/},\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}}\&\ perm)}
+\DoxyCodeLine{00103\ \ \ \ \ \{}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ perm.\mbox{\hyperlink{class_eigen_1_1_permutation_base_a0e0fda6e84d69e02432e4770359bb532}{resize}}(0);\ }
+\DoxyCodeLine{00105\ \ \ \ \ \}}
+\DoxyCodeLine{00106\ \ \ \ \ }
+\DoxyCodeLine{00107\ \};}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ StorageIndex>}
+\DoxyCodeLine{00118\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_c_o_l_a_m_d_ordering}{COLAMDOrdering}}}
+\DoxyCodeLine{00119\ \{}
+\DoxyCodeLine{00120\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix<Dynamic,\ Dynamic,\ StorageIndex>}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}};\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<StorageIndex,\ Dynamic,\ 1>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}};}
+\DoxyCodeLine{00123\ \ \ \ \ }
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_c_o_l_a_m_d_ordering_a708cb20191dcd79856d922f262405946}{operator()\ }}(\textcolor{keyword}{const}\ MatrixType\&\ mat,\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}}\&\ perm)}
+\DoxyCodeLine{00129\ \ \ \ \ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ eigen\_assert(mat.isCompressed()\ \&\&\ \textcolor{stringliteral}{"{}COLAMDOrdering\ requires\ a\ sparse\ matrix\ in\ compressed\ mode.\ Call\ .makeCompressed()\ before\ passing\ it\ to\ COLAMDOrdering"{}});}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ }
+\DoxyCodeLine{00132\ \ \ \ \ \ \ StorageIndex\ m\ =\ StorageIndex(mat.rows());}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ StorageIndex\ n\ =\ StorageIndex(mat.cols());}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ StorageIndex\ nnz\ =\ StorageIndex(mat.nonZeros());}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ \textcolor{comment}{//\ Get\ the\ recommended\ value\ of\ Alen\ to\ be\ used\ by\ colamd}}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ StorageIndex\ Alen\ =\ internal::colamd\_recommended(nnz,\ m,\ n);\ }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \textcolor{comment}{//\ Set\ the\ default\ parameters}}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ knobs\ [COLAMD\_KNOBS];\ }
+\DoxyCodeLine{00139\ \ \ \ \ \ \ StorageIndex\ stats\ [COLAMD\_STATS];}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ internal::colamd\_set\_defaults(knobs);}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\ p(n+1),\ A(Alen);\ }
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(StorageIndex\ i=0;\ i\ <=\ n;\ i++)\ \ \ p(i)\ =\ mat.outerIndexPtr()[i];}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(StorageIndex\ i=0;\ i\ <\ nnz;\ i++)\ \ A(i)\ =\ mat.innerIndexPtr()[i];}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{comment}{//\ Call\ Colamd\ routine\ to\ compute\ the\ ordering\ }}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ StorageIndex\ info\ =\ internal::colamd(m,\ n,\ Alen,\ A.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}}(),\ p.data(),\ knobs,\ stats);\ }
+\DoxyCodeLine{00147\ \ \ \ \ \ \ EIGEN\_UNUSED\_VARIABLE(info);}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ eigen\_assert(\ info\ \&\&\ \textcolor{stringliteral}{"{}COLAMD\ failed\ "{}}\ );}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ }
+\DoxyCodeLine{00150\ \ \ \ \ \ \ perm.\mbox{\hyperlink{class_eigen_1_1_permutation_base_a0e0fda6e84d69e02432e4770359bb532}{resize}}(n);}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (StorageIndex\ i\ =\ 0;\ i\ <\ n;\ i++)\ perm.\mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a98007089eb6cc1f8df83ae352e51e180}{indices}}()(p(i))\ =\ i;}
+\DoxyCodeLine{00152\ \ \ \ \ \}}
+\DoxyCodeLine{00153\ \};}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

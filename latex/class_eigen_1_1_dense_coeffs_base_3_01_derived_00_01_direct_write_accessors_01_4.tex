@@ -1,0 +1,375 @@
+\doxysection{Eigen\+::Dense\+Coeffs\+Base\texorpdfstring{$<$}{<} Derived, Direct\+Write\+Accessors \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4}{}\label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+
+
+Base class providing direct read/write coefficient access to matrices and arrays.  
+
+
+
+
+{\ttfamily \#include $<$Dense\+Coeffs\+Base.\+h$>$}
+
+Inheritance diagram for Eigen\+::Dense\+Coeffs\+Base\texorpdfstring{$<$}{<} Derived, Direct\+Write\+Accessors \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=4.000000cm]{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a745ec4019511a6e2d4e6ff7b947587fc}\label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a745ec4019511a6e2d4e6ff7b947587fc} 
+typedef \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base}{Dense\+Coeffs\+Base}}$<$ Derived, \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5dabcadf08230fb1a5ef7b3195745d3a458}{Write\+Accessors}} $>$ {\bfseries Base}
+\item 
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a87e23d8ff959a337104d617377dddd38}\label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a87e23d8ff959a337104d617377dddd38} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Scalar {\bfseries Scalar}
+\item 
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a46a4e0b5f1c5cda37e82f255a38a044b}\label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a46a4e0b5f1c5cda37e82f255a38a044b} 
+typedef \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::\+Real {\bfseries Real\+Scalar}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4}{Eigen\+::\+Dense\+Coeffs\+Base$<$ Derived, Write\+Accessors $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base}{Dense\+Coeffs\+Base}}$<$ Derived, \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5daa1f2b0e6a668b11f2958940965d2b572}{Read\+Only\+Accessors}} $>$ {\bfseries Base}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Storage\+Kind {\bfseries Storage\+Kind}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Scalar {\bfseries Scalar}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{internal\+::packet\+\_\+traits}}$<$ Scalar $>$\+::type {\bfseries Packet\+Scalar}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::\+Real {\bfseries Real\+Scalar}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4}{Eigen\+::\+Dense\+Coeffs\+Base$<$ Derived, Read\+Only\+Accessors $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Storage\+Kind {\bfseries Storage\+Kind}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Scalar {\bfseries Scalar}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{internal\+::packet\+\_\+traits}}$<$ Scalar $>$\+::type {\bfseries Packet\+Scalar}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal\+::conditional}}$<$ bool(\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Flags \&\mbox{\hyperlink{group__flags_gae2c323957f20dfdc6cb8f44428eaec1a}{Lvalue\+Bit}}), const\+Scalar \&, typenameinternal\+::conditional$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1is__arithmetic}{internal\+::is\+\_\+arithmetic}}$<$ Scalar $>$\+::value, Scalar, const\+Scalar $>$\+::type $>$\+::type {\bfseries Coeff\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1add__const__on__value__type__if__arithmetic}{internal\+::add\+\_\+const\+\_\+on\+\_\+value\+\_\+type\+\_\+if\+\_\+arithmetic}}$<$ typenameinternal\+::packet\+\_\+traits$<$ Scalar $>$\+::type $>$\+::type {\bfseries Packet\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Derived $>$ {\bfseries Base}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base$<$ Derived $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef Eigen\+::\+Index \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}
+\begin{DoxyCompactList}\small\item\em The interface type of indices. \end{DoxyCompactList}\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Storage\+Kind {\bfseries Storage\+Kind}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a28016205b69c3df8152680fea9390937}{inner\+Stride}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a024394b03623c6ce5a2aab5eb94d78a8}{outer\+Stride}} () const
+\item 
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ac816a66cc33a478c61a8531ba81f3b9b}\label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ac816a66cc33a478c61a8531ba81f3b9b} 
+Index {\bfseries stride} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a922802af1c7db5993a8af2fb7634592f}{row\+Stride}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_af7fa6b77bd024be97c02766261e52714}{col\+Stride}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a8141320ba8df384426c298b32b000d8e}{rows}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a7b0b45c7351847696c911ce8aa2abbdb}{cols}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ac2c9348df3bb9c0044dbae6c278a8977}{size}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a80808d9477b4dddab2613a5d8764d79e}{derived}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4}{Eigen\+::\+Dense\+Coeffs\+Base$<$ Derived, Write\+Accessors $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a5a2e2a300e243c61591222c6fb0874f3}{coeff\+Ref}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& {\bfseries coeff\+Ref\+By\+Outer\+Inner} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} inner)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a74094f5caace4db3698f49a1664331cd}{operator()}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_ad653f85668cbd0b53d2e96db0e922396}{coeff\+Ref}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a1f8a1f45390806b31758756910180774}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_aa6d7e2377bbf48903b42e0f3058bd87f}{operator()}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a196ee5a48c78c93f54fead2e44e5c8b5}{x}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a2c1d88c89e1ac9a903d0df96a6270452}{y}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a834f074e6650815d9bed38fb85bbd757}{z}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Scalar \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_af15673d3ae0e392670d370a386f213d9}{w}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_ad41647ef695f9a5a58a9a0f50e2ae064}{coeff}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_ad52344ad1f42852db71996590d2de0de}{coeff}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a8141320ba8df384426c298b32b000d8e}{rows}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a7b0b45c7351847696c911ce8aa2abbdb}{cols}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_ac2c9348df3bb9c0044dbae6c278a8977}{size}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a80808d9477b4dddab2613a5d8764d79e}{derived}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries row\+Index\+By\+Outer\+Inner} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} inner) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries col\+Index\+By\+Outer\+Inner} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} inner) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a36fb246141b6ea5ab5289d7eb6afdf6e}{x}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_af2cb257225cf4348136a37fa9333ccda}{y}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a9040af2dcad8961168daafe09c1b1dc4}{z}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4_a422892fbb6b2eecce243776c3b8452ab}{w}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4}{Eigen\+::\+Dense\+Coeffs\+Base$<$ Derived, Read\+Only\+Accessors $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries row\+Index\+By\+Outer\+Inner} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} inner) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries col\+Index\+By\+Outer\+Inner} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} inner) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_ad41647ef695f9a5a58a9a0f50e2ae064}{coeff}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} {\bfseries coeff\+By\+Outer\+Inner} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} inner) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a29ac34389e098ec963ebb2ebd351335a}{operator()}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_ad52344ad1f42852db71996590d2de0de}{coeff}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_ad26422dfa7b2bf859d4304663c36de10}{operator\mbox{[}$\,$\mbox{]}}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a679c7e69917baa1abf2c2f82725ae470}{operator()}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a36fb246141b6ea5ab5289d7eb6afdf6e}{x}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_af2cb257225cf4348136a37fa9333ccda}{y}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a9040af2dcad8961168daafe09c1b1dc4}{z}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Coeff\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a422892fbb6b2eecce243776c3b8452ab}{w}} () const
+\item 
+{\footnotesize template$<$int Load\+Mode$>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Packet\+Return\+Type}} {\bfseries packet} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col) const
+\item 
+{\footnotesize template$<$int Load\+Mode$>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Packet\+Return\+Type}} {\bfseries packet\+By\+Outer\+Inner} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} inner) const
+\item 
+{\footnotesize template$<$int Load\+Mode$>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Packet\+Return\+Type}} {\bfseries packet} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a8141320ba8df384426c298b32b000d8e}{rows}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a7b0b45c7351847696c911ce8aa2abbdb}{cols}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_ac2c9348df3bb9c0044dbae6c278a8977}{size}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4_a80808d9477b4dddab2613a5d8764d79e}{derived}} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base$<$ Derived $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Derived \& \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a80808d9477b4dddab2613a5d8764d79e}{derived}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries const\+\_\+cast\+\_\+derived} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Derived \& {\bfseries const\+\_\+derived} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a8141320ba8df384426c298b32b000d8e}{rows}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a7b0b45c7351847696c911ce8aa2abbdb}{cols}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{struct_eigen_1_1_eigen_base_ac2c9348df3bb9c0044dbae6c278a8977}{size}} () const
+\item 
+{\footnotesize template$<$typename Dest $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries eval\+To} (Dest \&dst) const
+\item 
+{\footnotesize template$<$typename Dest $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries add\+To} (Dest \&dst) const
+\item 
+{\footnotesize template$<$typename Dest $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries sub\+To} (Dest \&dst) const
+\item 
+{\footnotesize template$<$typename Dest $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries apply\+This\+On\+The\+Right} (Dest \&dst) const
+\item 
+{\footnotesize template$<$typename Dest $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries apply\+This\+On\+The\+Left} (Dest \&dst) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_read_only_accessors_01_4}{Eigen\+::\+Dense\+Coeffs\+Base$<$ Derived, Read\+Only\+Accessors $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries coeff\+Ref} ()
+\item 
+void {\bfseries coeff\+Ref\+By\+Outer\+Inner} ()
+\item 
+void {\bfseries write\+Packet} ()
+\item 
+void {\bfseries write\+Packet\+By\+Outer\+Inner} ()
+\item 
+void {\bfseries copy\+Coeff} ()
+\item 
+void {\bfseries copy\+Coeff\+By\+Outer\+Inner} ()
+\item 
+void {\bfseries copy\+Packet} ()
+\item 
+void {\bfseries copy\+Packet\+By\+Outer\+Inner} ()
+\item 
+void {\bfseries stride} ()
+\item 
+void {\bfseries inner\+Stride} ()
+\item 
+void {\bfseries outer\+Stride} ()
+\item 
+void {\bfseries row\+Stride} ()
+\item 
+void {\bfseries col\+Stride} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Derived$>$\newline
+class Eigen\+::\+Dense\+Coeffs\+Base$<$ Derived, Direct\+Write\+Accessors $>$}
+Base class providing direct read/write coefficient access to matrices and arrays. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Derived} & Type of the derived class \\
+\hline
+{\em \doxylink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5dacbe59d09ba2fdf8eac127bff1a1f0234}{Direct\+Write\+Accessors}} & Constant indicating direct access\\
+\hline
+\end{DoxyTemplParams}
+This class defines functions to work with strides which can be used to access entries directly. This class inherits \doxylink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_write_accessors_01_4}{Dense\+Coeffs\+Base$<$\+Derived, Write\+Accessors$>$} which defines functions to access entries read/write using {\ttfamily operator()}.
+
+\begin{DoxySeeAlso}{See also}
+\textbackslash{}blank Topic\+Class\+Hierarchy 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a7b0b45c7351847696c911ce8aa2abbdb}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!cols@{cols}}
+\index{cols@{cols}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{cols()}{cols()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a7b0b45c7351847696c911ce8aa2abbdb} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base}}$<$ Derived $>$\+::cols (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the number of columns. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a8141320ba8df384426c298b32b000d8e}{rows()}, Cols\+At\+Compile\+Time 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_af7fa6b77bd024be97c02766261e52714}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!colStride@{colStride}}
+\index{colStride@{colStride}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{colStride()}{colStride()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_af7fa6b77bd024be97c02766261e52714} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base}{Eigen\+::\+Dense\+Coeffs\+Base}}$<$ Derived, \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5dacbe59d09ba2fdf8eac127bff1a1f0234}{Direct\+Write\+Accessors}} $>$\+::col\+Stride (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the pointer increment between two consecutive columns.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+inner\+Stride(), outer\+Stride(), row\+Stride() 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ab4cf3e6bb046a94a46b69b857bd3dbc9}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!derived@{derived}}
+\index{derived@{derived}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{derived()}{derived()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ab4cf3e6bb046a94a46b69b857bd3dbc9} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base}}$<$ Derived $>$\+::derived (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+a reference to the derived object 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a80808d9477b4dddab2613a5d8764d79e}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!derived@{derived}}
+\index{derived@{derived}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{derived()}{derived()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a80808d9477b4dddab2613a5d8764d79e} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const Derived \& \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base}}$<$ Derived $>$\+::derived (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+a const reference to the derived object 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a28016205b69c3df8152680fea9390937}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!innerStride@{innerStride}}
+\index{innerStride@{innerStride}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{innerStride()}{innerStride()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a28016205b69c3df8152680fea9390937} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base}{Eigen\+::\+Dense\+Coeffs\+Base}}$<$ Derived, \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5dacbe59d09ba2fdf8eac127bff1a1f0234}{Direct\+Write\+Accessors}} $>$\+::inner\+Stride (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the pointer increment between two consecutive elements within a slice in the inner direction.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+outer\+Stride(), row\+Stride(), col\+Stride() 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a024394b03623c6ce5a2aab5eb94d78a8}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!outerStride@{outerStride}}
+\index{outerStride@{outerStride}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{outerStride()}{outerStride()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a024394b03623c6ce5a2aab5eb94d78a8} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base}{Eigen\+::\+Dense\+Coeffs\+Base}}$<$ Derived, \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5dacbe59d09ba2fdf8eac127bff1a1f0234}{Direct\+Write\+Accessors}} $>$\+::outer\+Stride (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the pointer increment between two consecutive inner slices (for example, between two consecutive columns in a column-\/major matrix).
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+inner\+Stride(), row\+Stride(), col\+Stride() 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a8141320ba8df384426c298b32b000d8e}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!rows@{rows}}
+\index{rows@{rows}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{rows()}{rows()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a8141320ba8df384426c298b32b000d8e} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base}}$<$ Derived $>$\+::rows (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the number of rows. 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a7b0b45c7351847696c911ce8aa2abbdb}{cols()}, Rows\+At\+Compile\+Time 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a922802af1c7db5993a8af2fb7634592f}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!rowStride@{rowStride}}
+\index{rowStride@{rowStride}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{rowStride()}{rowStride()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a922802af1c7db5993a8af2fb7634592f} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base}{Eigen\+::\+Dense\+Coeffs\+Base}}$<$ Derived, \mbox{\hyperlink{group__enums_gga9f93eac38eb83deb0e8dbd42ddf11d5dacbe59d09ba2fdf8eac127bff1a1f0234}{Direct\+Write\+Accessors}} $>$\+::row\+Stride (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the pointer increment between two consecutive rows.
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+inner\+Stride(), outer\+Stride(), col\+Stride() 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ac2c9348df3bb9c0044dbae6c278a8977}\index{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}!size@{size}}
+\index{size@{size}!Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$@{Eigen::DenseCoeffsBase$<$ Derived, DirectWriteAccessors $>$}}
+\doxysubsubsection{\texorpdfstring{size()}{size()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_ac2c9348df3bb9c0044dbae6c278a8977} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base}}$<$ Derived $>$\+::size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the number of coefficients, which is \doxylink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a8141320ba8df384426c298b32b000d8e}{rows()}\texorpdfstring{$\ast$}{*}cols(). 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a8141320ba8df384426c298b32b000d8e}{rows()}, \doxylink{class_eigen_1_1_dense_coeffs_base_3_01_derived_00_01_direct_write_accessors_01_4_a7b0b45c7351847696c911ce8aa2abbdb}{cols()}, Size\+At\+Compile\+Time. 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/Dense\+Coeffs\+Base.\+h\end{DoxyCompactItemize}

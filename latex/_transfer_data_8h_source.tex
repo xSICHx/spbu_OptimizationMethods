@@ -1,0 +1,113 @@
+\doxysection{Transfer\+Data.\+h}
+\hypertarget{_transfer_data_8h_source}{}\label{_transfer_data_8h_source}\index{OptimizationMethods/TransferData.h@{OptimizationMethods/TransferData.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}config.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_transfer_data}{TransferData}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00016\ \ \ \ \ std::shared\_ptr<VectorXd>\ curr\_point\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00017\ \ \ \ \ std::shared\_ptr<VectorXd>\ prev\_point\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00018\ \ \ \ \ std::shared\_ptr<VectorXd>\ curr\_gradient\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00019\ \ \ \ \ std::shared\_ptr<size\_t>\ curr\_iter\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00020\ \ \ \ \ std::shared\_ptr<double>\ curr\_f\_val\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00021\ \ \ \ \ std::shared\_ptr<double>\ prev\_f\_val\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00022\ \ \ \ \ std::shared\_ptr<double>\ alpha\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00023\ \ \ \ \ shared\_ptr<bool>\ flag\_in\_bound\ =\ \textcolor{keyword}{nullptr};\ \textcolor{comment}{//\ if\ overstepped\ =\ false}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{comment}{//\ getters}}
+\DoxyCodeLine{00027\ \ \ \ \ shared\_ptr<VectorXd>\ getCurrPoint()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ curr\_point;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ shared\_ptr<VectorXd>\ getPrevPoint()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ prev\_point;}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ shared\_ptr<VectorXd>\ getCurrGradient()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ curr\_gradient;}
+\DoxyCodeLine{00037\ \ \ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ shared\_ptr<size\_t>\ getCurrIter()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ curr\_iter;}
+\DoxyCodeLine{00041\ \ \ \ \ \}}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ \ \ shared\_ptr<double>\ getCurrFVal()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ curr\_f\_val;}
+\DoxyCodeLine{00045\ \ \ \ \ \}}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ shared\_ptr<double>\ getPrevFVal()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ prev\_f\_val;}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \ \ \ \ shared\_ptr<double>\ getAlpha()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ alpha;}
+\DoxyCodeLine{00053\ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ shared\_ptr<bool>\ getFlagInBound()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ flag\_in\_bound;}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{comment}{//\ setters}}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ setCurrPoint(\textcolor{keyword}{const}\ VectorXd\&\ point)\ \{}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ curr\_point\ =\ std::make\_shared<VectorXd>(point);}
+\DoxyCodeLine{00061\ \ \ \ \ \}}
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keywordtype}{void}\ setPrevPoint(\textcolor{keyword}{const}\ VectorXd\&\ point)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \ \ prev\_point\ =\ std::make\_shared<VectorXd>(point);}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{void}\ setCurrGradient(\textcolor{keyword}{const}\ VectorXd\&\ gradient)\ \{}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ \ \ curr\_gradient\ =\ std::make\_shared<VectorXd>(gradient);}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ setCurrIter(\textcolor{keyword}{const}\ \textcolor{keywordtype}{size\_t}\&\ iter)\ \{}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \ \ curr\_iter\ =\ std::make\_shared<size\_t>(iter);}
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{void}\ setCurrFVal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ val)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ curr\_f\_val\ =\ std::make\_shared<double>(val);}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{void}\ setPrevFVal(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ val)\ \{}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ \ \ prev\_f\_val\ =\ std::make\_shared<double>(val);}
+\DoxyCodeLine{00081\ \ \ \ \ \}}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{void}\ setAlpha(\textcolor{keyword}{const}\ \textcolor{keywordtype}{double}\&\ alpha\_val)\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \ \ alpha\ =\ std::make\_shared<double>(alpha\_val);}
+\DoxyCodeLine{00085\ \ \ \ \ \}}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{void}\ setFlagInBound(\textcolor{keyword}{const}\ \textcolor{keywordtype}{bool}\&\ flag)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \ \ flag\_in\_bound\ =\ make\_shared<bool>(flag);}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{void}\ print\_vec(VectorXd\&\ vec)\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ vec.size();\ ++i)}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ vec[i]\ <<\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ cout\ <<\ endl;}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{void}\ printData()\ \{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \ \ cout\ <<\ endl;}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Curr\_point:\ "{}};\ print\_vec(*curr\_point);}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Prev\_point:\ "{}};\ print\_vec(*prev\_point);}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (curr\_gradient\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Grad:\ "{}};\ print\_vec(*curr\_gradient);}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Iter:\ "{}}\ <<\ *curr\_iter\ <<\ endl;}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Curr\ F:\ "{}}\ <<\ *curr\_f\_val\ <<\ endl;}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Prev\ F:\ "{}}\ <<\ *prev\_f\_val\ <<\ endl;}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (alpha\ !=\ \textcolor{keyword}{nullptr})\ \{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \ \ \ \ cout\ <<\ \textcolor{stringliteral}{"{}Alpha:\ "{}}\ <<\ *alpha\ <<\ endl;}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ cout\ <<\ endl;}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \};}
+
+\end{DoxyCode}

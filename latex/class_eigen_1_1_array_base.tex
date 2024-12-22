@@ -1,0 +1,673 @@
+\doxysection{Eigen\+::Array\+Base\texorpdfstring{$<$}{<} Derived \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_eigen_1_1_array_base}{}\label{class_eigen_1_1_array_base}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+
+
+Base class for all 1D and 2D array, and related expressions.  
+
+
+
+
+{\ttfamily \#include $<$Array\+Base.\+h$>$}
+
+Inheritance diagram for Eigen\+::Array\+Base\texorpdfstring{$<$}{<} Derived \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_eigen_1_1_array_base}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}} \mbox{\hyperlink{class_eigen_1_1_array_base_a7c296f02281624d9c76eb864ab7209ce}{Storage\+Base\+Type}}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a31e98eccecba8ce3d219fd64d16132d8}\label{class_eigen_1_1_array_base_a31e98eccecba8ce3d219fd64d16132d8} 
+typedef \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}} {\bfseries Eigen\+\_\+\+Base\+Class\+For\+Specialization\+Of\+Global\+Math\+Func\+Impl}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a6d90135958acf6f7e1c40277ea7da2b7}\label{class_eigen_1_1_array_base_a6d90135958acf6f7e1c40277ea7da2b7} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Storage\+Kind {\bfseries Storage\+Kind}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a9d10903d33b230df8226b2adc0179c41}\label{class_eigen_1_1_array_base_a9d10903d33b230df8226b2adc0179c41} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Scalar {\bfseries Scalar}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a975bd48834ec3cb1c8436d3475b71939}\label{class_eigen_1_1_array_base_a975bd48834ec3cb1c8436d3475b71939} 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{internal\+::packet\+\_\+traits}}$<$ Scalar $>$\+::type {\bfseries Packet\+Scalar}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a33fdf1119ee1107d1e1905e624ca6e24}\label{class_eigen_1_1_array_base_a33fdf1119ee1107d1e1905e624ca6e24} 
+typedef \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::\+Real {\bfseries Real\+Scalar}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a1591f6f51796e6451a919c36431219a9}\label{class_eigen_1_1_array_base_a1591f6f51796e6451a919c36431219a9} 
+typedef \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Derived $>$ {\bfseries Base}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_aa9ee5eebe5ab23a22c8a8baeab8885e1}\label{class_eigen_1_1_array_base_aa9ee5eebe5ab23a22c8a8baeab8885e1} 
+typedef Base\+::\+Coeff\+Return\+Type {\bfseries Coeff\+Return\+Type}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a4283fed1d2cc1085789f53f1895a7550}\label{class_eigen_1_1_array_base_a4283fed1d2cc1085789f53f1895a7550} 
+typedef \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Base\+::\+Plain\+Object}} {\bfseries Plain\+Object}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a0ad30bd42492f9ef49084afdd0d5fe6e}\label{class_eigen_1_1_array_base_a0ad30bd42492f9ef49084afdd0d5fe6e} 
+typedef \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__constant__op}{internal\+::scalar\+\_\+constant\+\_\+op}}$<$ Scalar $>$, \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Plain\+Object}} $>$ {\bfseries Constant\+Return\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base$<$ Derived $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+enum \{ \newline
+\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4adb37c78ebbf15aa20b65c3b70415a1ab}{Rows\+At\+Compile\+Time}} = internal\+::traits\texorpdfstring{$<$}{<}Derived\texorpdfstring{$>$}{>}\+::Rows\+At\+Compile\+Time
+, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a787f85fd67ee5985917eb2cef6e70441}{Cols\+At\+Compile\+Time}} = internal\+::traits\texorpdfstring{$<$}{<}Derived\texorpdfstring{$>$}{>}\+::Cols\+At\+Compile\+Time
+, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a25cb495affdbd796198462b8ef06be91}{Size\+At\+Compile\+Time}}
+, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4ad2baadea085372837b0e80dc93be1306}{Max\+Rows\+At\+Compile\+Time}} = internal\+::traits\texorpdfstring{$<$}{<}Derived\texorpdfstring{$>$}{>}\+::Max\+Rows\+At\+Compile\+Time
+, \newline
+\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4acc3a41000cf1d29dd1a320b2a09d2a65}{Max\+Cols\+At\+Compile\+Time}} = internal\+::traits\texorpdfstring{$<$}{<}Derived\texorpdfstring{$>$}{>}\+::Max\+Cols\+At\+Compile\+Time
+, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a3a459062d39cb34452518f5f201161d2}{Max\+Size\+At\+Compile\+Time}}
+, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a1156955c8099c5072934b74c72654ed0}{Is\+Vector\+At\+Compile\+Time}}
+, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a7392c9b2ad41ba3c16fdc5306c04d581}{Flags}} = internal\+::traits\texorpdfstring{$<$}{<}Derived\texorpdfstring{$>$}{>}\+::Flags
+, \newline
+\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a406b6af91d61d348ba1c9764bdd66008}{Is\+Row\+Major}} = int(Flags) \& Row\+Major\+Bit
+, {\bfseries Inner\+Size\+At\+Compile\+Time}
+, {\bfseries Inner\+Stride\+At\+Compile\+Time} = internal\+::inner\+\_\+stride\+\_\+at\+\_\+compile\+\_\+time\texorpdfstring{$<$}{<}Derived\texorpdfstring{$>$}{>}\+::ret
+, {\bfseries Outer\+Stride\+At\+Compile\+Time} = internal\+::outer\+\_\+stride\+\_\+at\+\_\+compile\+\_\+time\texorpdfstring{$<$}{<}Derived\texorpdfstring{$>$}{>}\+::ret
+ \}
+\item 
+\Hypertarget{class_eigen_1_1_dense_base_a86241c772c74c04eeeb0480b99c5ab77}\label{class_eigen_1_1_dense_base_a86241c772c74c04eeeb0480b99c5ab77} 
+enum \{ {\bfseries Is\+Plain\+Object\+Base} = 0
+ \}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_inner_iterator}{Eigen\+::\+Inner\+Iterator}}$<$ Derived $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a4dc102b445d8fb48a28dfcd22323f649}{Inner\+Iterator}}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Storage\+Kind {\bfseries Storage\+Kind}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Storage\+Index \mbox{\hyperlink{class_eigen_1_1_dense_base_a2d1aba3f6c414715d830f760913c7e00}{Storage\+Index}}
+\begin{DoxyCompactList}\small\item\em The type used to store indices. \end{DoxyCompactList}\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\+::\+Scalar \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a9276182dab8236c33f1e7abf491d504d}{value\+\_\+type}}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::\+Real {\bfseries Real\+Scalar}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_dense_coeffs_base}{Dense\+Coeffs\+Base}}$<$ Derived $>$ {\bfseries Base}
+\item 
+typedef Base\+::\+Coeff\+Return\+Type {\bfseries Coeff\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1find__best__packet}{internal\+::find\+\_\+best\+\_\+packet}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a25cb495affdbd796198462b8ef06be91}{Size\+At\+Compile\+Time}} $>$\+::type {\bfseries Packet\+Scalar}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}$<$ typename \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}}, \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4adb37c78ebbf15aa20b65c3b70415a1ab}{\+::\+Rows\+At\+Compile\+Time}}, \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a787f85fd67ee5985917eb2cef6e70441}{\+::\+Cols\+At\+Compile\+Time}}, \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13ad0e7f67d40bcde3d41c12849b16ce6ea}{Auto\+Align}}\texorpdfstring{$\vert$}{|}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a7392c9b2ad41ba3c16fdc5306c04d581}{\+::\+Flags}} \&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{Row\+Major\+Bit}} ? \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{Row\+Major}} \+:\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{Col\+Major}}), \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4ad2baadea085372837b0e80dc93be1306}{\+::\+Max\+Rows\+At\+Compile\+Time}}, \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4acc3a41000cf1d29dd1a320b2a09d2a65}{\+::\+Max\+Cols\+At\+Compile\+Time}} $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_aa301ef39d63443e9ef0b84f47350116e}{Plain\+Matrix}}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_array}{Array}}$<$ typename \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}}, \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4adb37c78ebbf15aa20b65c3b70415a1ab}{\+::\+Rows\+At\+Compile\+Time}}, \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a787f85fd67ee5985917eb2cef6e70441}{\+::\+Cols\+At\+Compile\+Time}}, \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13ad0e7f67d40bcde3d41c12849b16ce6ea}{Auto\+Align}}\texorpdfstring{$\vert$}{|}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a7392c9b2ad41ba3c16fdc5306c04d581}{\+::\+Flags}} \&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{Row\+Major\+Bit}} ? \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{Row\+Major}} \+:\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{Col\+Major}}), \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4ad2baadea085372837b0e80dc93be1306}{\+::\+Max\+Rows\+At\+Compile\+Time}}, \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4acc3a41000cf1d29dd1a320b2a09d2a65}{\+::\+Max\+Cols\+At\+Compile\+Time}} $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a65328b7d6fc10a26ff6cd5801a6a44eb}{Plain\+Array}}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal\+::conditional}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal\+::is\+\_\+same}}$<$ typenameinternal\+::traits$<$ Derived $>$\+::\+Xpr\+Kind, \mbox{\hyperlink{struct_eigen_1_1_matrix_xpr}{Matrix\+Xpr}} $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{\+::value}}, \mbox{\hyperlink{class_eigen_1_1_dense_base_aa301ef39d63443e9ef0b84f47350116e}{Plain\+Matrix}}, \mbox{\hyperlink{class_eigen_1_1_dense_base_a65328b7d6fc10a26ff6cd5801a6a44eb}{Plain\+Array}} $>$\+::type \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}}
+\begin{DoxyCompactList}\small\item\em The plain matrix or array type corresponding to this expression. \end{DoxyCompactList}\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__constant__op}{internal\+::scalar\+\_\+constant\+\_\+op}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$, \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}} $>$ {\bfseries Constant\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1linspaced__op}{internal\+::linspaced\+\_\+op}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}, Packet\+Scalar $>$, \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}} $>$ {\bfseries Sequential\+Lin\+Spaced\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1linspaced__op}{internal\+::linspaced\+\_\+op}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}}, Packet\+Scalar $>$, \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}} $>$ {\bfseries Random\+Access\+Lin\+Spaced\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}$<$ typename \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ typename \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} $>$\+::\+Real, \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_aa6b6bf762bcb69972868f25ed4bcd6f4a787f85fd67ee5985917eb2cef6e70441}{\+::\+Cols\+At\+Compile\+Time}}, 1 $>$ {\bfseries Eigenvalues\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}$<$ Derived $>$ {\bfseries Transpose\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1add__const}{internal\+::add\+\_\+const}}$<$ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}$<$ const\+Derived $>$ $>$\+::type {\bfseries Const\+Transpose\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1add__const__on__value__type}{internal\+::add\+\_\+const\+\_\+on\+\_\+value\+\_\+type}}$<$ typenameinternal\+::eval$<$ Derived $>$\+::type $>$\+::type {\bfseries Eval\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Vectorwise\+Op}}$<$ Derived, \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}} $>$ {\bfseries Rowwise\+Return\+Type}
+\item 
+typedef const \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Vectorwise\+Op}}$<$ const Derived, \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}} $>$ {\bfseries Const\+Rowwise\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Vectorwise\+Op}}$<$ Derived, \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}} $>$ {\bfseries Colwise\+Return\+Type}
+\item 
+typedef const \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Vectorwise\+Op}}$<$ const Derived, \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}} $>$ {\bfseries Const\+Colwise\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__random__op}{internal\+::scalar\+\_\+random\+\_\+op}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$, \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}} $>$ {\bfseries Random\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_reverse}{Reverse}}$<$ Derived, \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a04fefd61992e941d509a57bc44c59794}{Both\+Directions}} $>$ {\bfseries Reverse\+Return\+Type}
+\item 
+typedef const \mbox{\hyperlink{class_eigen_1_1_reverse}{Reverse}}$<$ const Derived, \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a04fefd61992e941d509a57bc44c59794}{Both\+Directions}} $>$ {\bfseries Const\+Reverse\+Return\+Type}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_a41fba70bcd7e7a408da93207922f9616}{operator=}} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}} \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_a771edf6224c3d0841bfb93d16e4b9a4c}{operator=}} (const Scalar \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}})
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a093b90a811f78e658f58b5fa4f377290}\label{class_eigen_1_1_array_base_a093b90a811f78e658f58b5fa4f377290} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator+=} (const Scalar \&scalar)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a3eb9b4932f1b49a83565a80e056f607c}\label{class_eigen_1_1_array_base_a3eb9b4932f1b49a83565a80e056f607c} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator-\/=} (const Scalar \&scalar)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_ab4bac4291bfd0da16f768d32398e7752}\label{class_eigen_1_1_array_base_ab4bac4291bfd0da16f768d32398e7752} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator+=} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a6648eeebc4a9d407605410a7149f1a93}\label{class_eigen_1_1_array_base_a6648eeebc4a9d407605410a7149f1a93} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator-\/=} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a3fc54e548f88415c3582add526b62525}\label{class_eigen_1_1_array_base_a3fc54e548f88415c3582add526b62525} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a91860c840ac453449c1ac65fc61065f8}\label{class_eigen_1_1_array_base_a91860c840ac453449c1ac65fc61065f8} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator/=} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_ad1abbffbf82294aba2e9081a3b1252a5}\label{class_eigen_1_1_array_base_ad1abbffbf82294aba2e9081a3b1252a5} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Derived $>$ \& {\bfseries array} ()
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a2324f3efd02e3d8e6190262e31a95101}\label{class_eigen_1_1_array_base_a2324f3efd02e3d8e6190262e31a95101} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Derived $>$ \& {\bfseries array} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_matrix_wrapper}{Matrix\+Wrapper}}$<$ Derived $>$ \mbox{\hyperlink{class_eigen_1_1_array_base_a059ebdf0bcc64c26d4a314919f929a95}{matrix}} ()
+\item 
+\Hypertarget{class_eigen_1_1_array_base_acca537ea9c4fc3b1a4b54b5e401524af}\label{class_eigen_1_1_array_base_acca537ea9c4fc3b1a4b54b5e401524af} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_matrix_wrapper}{Matrix\+Wrapper}}$<$ const Derived $>$ {\bfseries matrix} () const
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_abe8b619cf149f97538957f3a393137c8}{operator-\/=}} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_ac18b8d3e961091623de01a20ae767e58}{operator+=}} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_a18089e6deb5b2d1199af231cf965fe9d}{operator\texorpdfstring{$\ast$}{*}=}} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_a8e63d051cfeb5ac2e84feace0a25b4bc}{operator/=}} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_af77c311668e195db2ed02014d80dd536}{lazy\+Assign}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_a581a7a353bd007b5352f11688e3bc5fa}{operator=}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base_aae79d5d0d95e60bf2e64d0dc3dfd66a4}{operator=}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}} \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a6462697d5a6fa3104f5f1213fdf9ff12}\label{class_eigen_1_1_array_base_a6462697d5a6fa3104f5f1213fdf9ff12} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a4f3c8f1d7d7fd061eb61b97c85b98e4b}\label{class_eigen_1_1_array_base_a4f3c8f1d7d7fd061eb61b97c85b98e4b} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_return_by_value}{Return\+By\+Value}}$<$ Other\+Derived $>$ \&func)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a8fdd498a76ab5e136e3c55b1412cd8c4}\label{class_eigen_1_1_array_base_a8fdd498a76ab5e136e3c55b1412cd8c4} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator+=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a5ce384b60166efd51356eb738f534144}\label{class_eigen_1_1_array_base_a5ce384b60166efd51356eb738f534144} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator-\/=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a3818026e7f0e46113f595701193cf78e}\label{class_eigen_1_1_array_base_a3818026e7f0e46113f595701193cf78e} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (const Scalar \&other)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a091046ea864d27b48247a247022acb53}\label{class_eigen_1_1_array_base_a091046ea864d27b48247a247022acb53} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator/=} (const Scalar \&other)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base$<$ Derived $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_base_ad5c2c3a2cfa0bb931dcc0743b9f57882}{non\+Zeros}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_base_ad78fff11f12aefa46318ae88b6efcc50}{outer\+Size}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Index \mbox{\hyperlink{class_eigen_1_1_dense_base_a57c6f5516aa86d4c22f382f1a069a319}{inner\+Size}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_a13027a493a68a13496610caf3d81bd3e}{resize}} (Index new\+Size)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_aef40c2ee48a85a799270c8258cc12b76}{resize}} (Index rows, Index cols)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_a581a7a353bd007b5352f11688e3bc5fa}{operator=}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_aae79d5d0d95e60bf2e64d0dc3dfd66a4}{operator=}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}} \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator+=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator-\/=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_return_by_value}{Return\+By\+Value}}$<$ Other\+Derived $>$ \&func)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_af77c311668e195db2ed02014d80dd536}{lazy\+Assign}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_comma_initializer}{Comma\+Initializer}}$<$ Derived $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a0e575eb0ba6cc6bc5f347872abd8509d}{operator$<$$<$}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&s)
+\item 
+{\footnotesize template$<$unsigned int Added, unsigned int Removed$>$ }\\EIGEN\+\_\+\+DEPRECATED const Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_ae2db4b4596edd1bf7e1c43ac2d306047}{flagged}} () const
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_comma_initializer}{Comma\+Initializer}}$<$ Derived $>$ {\bfseries operator$<$$<$} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ac8952c19644a4ac7e41bea45c19b909c}{transpose}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_diagonal}{Const\+Transpose\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a38c0b074cf93fc194bf91141287cee3f}{transpose}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_ac501bd942994af7a95d95bee7a16ad2a}{transpose\+In\+Place}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_a4886d2dd3f6e63bc636f48914d035f9b}{fill}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}})
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_a5bd0159dd86325b3c2bc40e3df0e1da3}{set\+Constant}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}})
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_aeaf8f19c918c70092973704970a03239}{set\+Lin\+Spaced}} (Index size, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&low, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&high)
+\begin{DoxyCompactList}\small\item\em Sets a linearly spaced vector. \end{DoxyCompactList}\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_aa01f13f49db756e456d4b0f2aeb08bb9}{set\+Lin\+Spaced}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&low, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&high)
+\begin{DoxyCompactList}\small\item\em Sets a linearly spaced vector. \end{DoxyCompactList}\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_a00dda7dd6ba5960b3b77a91211dbee13}{set\+Zero}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_a9be6f81b837960fc7936bcc2c45b9363}{set\+Ones}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_ac476e5852129ba32beaa1a8a3d7ee0db}{set\+Random}} ()
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC bool {\bfseries is\+Approx} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other, const Real\+Scalar \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::dummy\+\_\+precision()) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC bool {\bfseries is\+Much\+Smaller\+Than} (const Real\+Scalar \&other, const Real\+Scalar \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::dummy\+\_\+precision()) const
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC bool {\bfseries is\+Much\+Smaller\+Than} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other, const Real\+Scalar \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::dummy\+\_\+precision()) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC bool \mbox{\hyperlink{class_eigen_1_1_dense_base_af9b150d48bc5e4366887ccb466e40c6b}{is\+Approx\+To\+Constant}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}}, const Real\+Scalar \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::dummy\+\_\+precision()) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC bool \mbox{\hyperlink{class_eigen_1_1_dense_base_a1ca84e4179b3e5081ed11d89bbd9e74f}{is\+Constant}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}}, const Real\+Scalar \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::dummy\+\_\+precision()) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC bool \mbox{\hyperlink{class_eigen_1_1_dense_base_af36014ec300f53a65083057ed4e89822}{is\+Zero}} (const Real\+Scalar \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::dummy\+\_\+precision()) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC bool \mbox{\hyperlink{class_eigen_1_1_dense_base_aa56d6b4477cd3c92a9cf42f4b96e47c2}{is\+Ones}} (const Real\+Scalar \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::dummy\+\_\+precision()) const
+\item 
+bool \mbox{\hyperlink{class_eigen_1_1_dense_base_ab13d158c900560d3e1b25d85d2d33dd6}{has\+NaN}} () const
+\item 
+bool \mbox{\hyperlink{class_eigen_1_1_dense_base_af1e669fd3aaae50a4870dc1b8f3b8884}{all\+Finite}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries operator/=} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Eval\+Return\+Type \mbox{\hyperlink{class_eigen_1_1_dense_base_a5df64c66228ba75bbc66db2584185527}{eval}} () const
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_ab420d9d588ac443f5a1b1a7dceb12c90}{swap}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_aaab63cc56d30cc7c23a80304ab94ba2e}{swap}} (\mbox{\hyperlink{class_eigen_1_1_plain_object_base}{Plain\+Object\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_nest_by_value}{Nest\+By\+Value}}$<$ Derived $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a3e2761e2b6da74dba1d17b40cc918bf7}{nest\+By\+Value}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_force_aligned_access}{Force\+Aligned\+Access}}$<$ Derived $>$ {\bfseries force\+Aligned\+Access} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_force_aligned_access}{Force\+Aligned\+Access}}$<$ Derived $>$ {\bfseries force\+Aligned\+Access} ()
+\item 
+{\footnotesize template$<$bool Enable$>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal\+::conditional}}$<$ Enable, \mbox{\hyperlink{class_eigen_1_1_force_aligned_access}{Force\+Aligned\+Access}}$<$ Derived $>$, Derived \& $>$\+::type {\bfseries force\+Aligned\+Access\+If} () const
+\item 
+{\footnotesize template$<$bool Enable$>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal\+::conditional}}$<$ Enable, \mbox{\hyperlink{class_eigen_1_1_force_aligned_access}{Force\+Aligned\+Access}}$<$ Derived $>$, Derived \& $>$\+::type {\bfseries force\+Aligned\+Access\+If} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a4dee689c76ff86da9d8e49950604597b}{sum}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a89d85ac0cf349eb53481c148033459d7}{mean}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} {\bfseries trace} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a175ceb201923b4c6767770559e47e40e}{prod}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a6634944be3d4fef551b57ffad30467f2}{min\+Coeff}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ac0d151ec47eb7a44a3a5ba1587ddbeb4}{max\+Coeff}} () const
+\item 
+{\footnotesize template$<$typename Index\+Type $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a05044a037125e705d87bd28f678b914c}{min\+Coeff}} (Index\+Type \texorpdfstring{$\ast$}{*}row, Index\+Type \texorpdfstring{$\ast$}{*}col) const
+\item 
+{\footnotesize template$<$typename Index\+Type $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ab8318ab23b3d421b809fef0cb24f69e3}{max\+Coeff}} (Index\+Type \texorpdfstring{$\ast$}{*}row, Index\+Type \texorpdfstring{$\ast$}{*}col) const
+\item 
+{\footnotesize template$<$typename Index\+Type $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a7d6ebd550eaaee24fed7880c39ae3f35}{min\+Coeff}} (Index\+Type \texorpdfstring{$\ast$}{*}index) const
+\item 
+{\footnotesize template$<$typename Index\+Type $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ac7f03010f4e0891c90cdcfe123f45223}{max\+Coeff}} (Index\+Type \texorpdfstring{$\ast$}{*}index) const
+\item 
+{\footnotesize template$<$typename Binary\+Op $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} {\bfseries redux} (const Binary\+Op \&func) const
+\item 
+{\footnotesize template$<$typename Visitor $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_a7f73df3954a09c7ab0dca208b6b23ddd}{visit}} (Visitor \&func) const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_with_format}{With\+Format}}$<$ Derived $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a148e20e32aa3ceca13e0a49c2cc584fc}{format}} (const \mbox{\hyperlink{struct_eigen_1_1_i_o_format}{IOFormat}} \&fmt) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Coeff\+Return\+Type \mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}} () const
+\item 
+bool \mbox{\hyperlink{class_eigen_1_1_dense_base_ae42ab60296c120e9f45ce3b44e1761a4}{all}} () const
+\item 
+bool \mbox{\hyperlink{class_eigen_1_1_dense_base_abfbf4cb72dd577e62fbe035b1c53e695}{any}} () const
+\item 
+Index \mbox{\hyperlink{class_eigen_1_1_dense_base_a229be090c665b9bf7d1fcdfd1ab6e0c1}{count}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Const\+Rowwise\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_af9662cd704ffc16c5b88c7b2d331576f}{rowwise}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Rowwise\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a6daa3a3156ca0e0722bf78638e1c7f28}{rowwise}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Const\+Colwise\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a978724c07b70cb9b8fdef67a4de08788}{colwise}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_vectorwise_op}{Colwise\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a1c0e1b6067ec1de6cb8799da55aa7d30}{colwise}} ()
+\item 
+{\footnotesize template$<$typename Then\+Derived , typename Else\+Derived $>$ }\\const \mbox{\hyperlink{class_eigen_1_1_select}{Select}}$<$ Derived, Then\+Derived, Else\+Derived $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a65e78cfcbc9852e6923bebff4323ddca}{select}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Then\+Derived $>$ \&then\+Matrix, const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Else\+Derived $>$ \&else\+Matrix) const
+\item 
+{\footnotesize template$<$typename Then\+Derived $>$ }\\const \mbox{\hyperlink{class_eigen_1_1_select}{Select}}$<$ Derived, Then\+Derived, typename Then\+Derived\+::\+Constant\+Return\+Type $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a57ef09a843004095f84c198dd145641b}{select}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Then\+Derived $>$ \&then\+Matrix, const typename Then\+Derived\+::\+Scalar \&else\+Scalar) const
+\item 
+{\footnotesize template$<$typename Else\+Derived $>$ }\\const \mbox{\hyperlink{class_eigen_1_1_select}{Select}}$<$ Derived, typename Else\+Derived\+::\+Constant\+Return\+Type, Else\+Derived $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a9e8e78c75887d4539071a0b7a61ca103}{select}} (const typename Else\+Derived\+::\+Scalar \&then\+Scalar, const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Else\+Derived $>$ \&else\+Matrix) const
+\item 
+{\footnotesize template$<$int p$>$ }\\Real\+Scalar {\bfseries lp\+Norm} () const
+\item 
+{\footnotesize template$<$int Row\+Factor, int Col\+Factor$>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_replicate}{Replicate}}$<$ Derived, Row\+Factor, Col\+Factor $>$ {\bfseries replicate} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_replicate}{Replicate}}$<$ Derived, Dynamic, Dynamic $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_af9b5c151029f975956791322c5b7b919}{replicate}} (Index row\+Factor, Index col\+Factor) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_reverse}{Reverse\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a38ea394036d8b096abf322469c80198f}{reverse}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_reverse}{Const\+Reverse\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ada2ea028e35de0beef990fa0f6e3dee1}{reverse}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void \mbox{\hyperlink{class_eigen_1_1_dense_base_adb8045155ea45f7961fc2a5170e1d921}{reverse\+In\+Place}} ()
+\item 
+{\footnotesize template$<$typename Dest $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries eval\+To} (Dest \&) const
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& {\bfseries lazy\+Assign} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\\mbox{\hyperlink{struct_eigen_1_1_comma_initializer}{Comma\+Initializer}}$<$ Derived $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a0f0e34696162b34762b2bf4bd948f90c}{operator$<$$<$}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Custom\+Nullary\+Op $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ Custom\+Nullary\+Op, typename \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{\+::\+Plain\+Object}} $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a7f2df6a9d8aa0c6636d0057d81066083}{Nullary\+Expr}} (Index rows, Index cols, const Custom\+Nullary\+Op \&func)
+\item 
+{\footnotesize template$<$typename Custom\+Nullary\+Op $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ Custom\+Nullary\+Op, typename \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{\+::\+Plain\+Object}} $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a61760d24b08fc51f170e93c3428b50bf}{Nullary\+Expr}} (Index size, const Custom\+Nullary\+Op \&func)
+\item 
+{\footnotesize template$<$typename Custom\+Nullary\+Op $>$ }\\EIGEN\+\_\+\+STRONG\+\_\+\+INLINE const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ Custom\+Nullary\+Op, typename \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{\+::\+Plain\+Object}} $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_acfd6b321bc58b27d302114d4534f3df9}{Nullary\+Expr}} (const Custom\+Nullary\+Op \&func)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base_a58915510693d64164e567bd762e1032f}{operator=}} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\begin{DoxyCompactList}\small\item\em Copies the generic expression {\itshape other} into \texorpdfstring{$\ast$}{*}this. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\Derived \& {\bfseries operator+=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\Derived \& {\bfseries operator-\/=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\bool \mbox{\hyperlink{class_eigen_1_1_dense_base_a8848223bc635c9c10e7cc68ae343ad81}{is\+Approx}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other, const Real\+Scalar \&prec) const
+\item 
+{\footnotesize template$<$typename Derived $>$ }\\bool \mbox{\hyperlink{class_eigen_1_1_dense_base_adfca6ff4e473f68fbbeabbd03b7504a9}{is\+Much\+Smaller\+Than}} (const typename \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} $>$\+::\+Real \&other, const Real\+Scalar \&prec) const
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\bool \mbox{\hyperlink{class_eigen_1_1_dense_base_a7d61b8814a7547e88b25cba68b159f05}{is\+Much\+Smaller\+Than}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other, const Real\+Scalar \&prec) const
+\item 
+{\footnotesize template$<$typename Func $>$ }\\\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ Derived $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{\+::\+Scalar}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ad2ab5a8020dcd9d5986cb20d8a7ab213}{redux}} (const Func \&func) const
+\item 
+{\footnotesize template$<$int Row\+Factor, int Col\+Factor$>$ }\\const \mbox{\hyperlink{class_eigen_1_1_replicate}{Replicate}}$<$ Derived, Row\+Factor, Col\+Factor $>$ \mbox{\hyperlink{class_eigen_1_1_dense_base_a60dadfe80b813d808e91e4521c722a8e}{replicate}} () const
+\item 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\Derived \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_return_by_value}{Return\+By\+Value}}$<$ Other\+Derived $>$ \&other)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a47fd52ed7c3289cef4398e11792b1605}\label{class_eigen_1_1_array_base_a47fd52ed7c3289cef4398e11792b1605} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\Derived \& {\bfseries operator+=} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&)
+\item 
+\Hypertarget{class_eigen_1_1_array_base_a25807501fa5fa8d27567833b3b104353}\label{class_eigen_1_1_array_base_a25807501fa5fa8d27567833b3b104353} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\Derived \& {\bfseries operator-\/=} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base$<$ Derived $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_dense_base_ae966dfaa11cfd07e87da040b7a9d8216}{Dense\+Base}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Related Symbols}
+(Note that these are not member symbols.) \begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Derived , typename Scalar\+Exponent $>$ }\\\mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if}{internal\+::enable\+\_\+if}}$<$!(\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal\+::is\+\_\+same}}$<$ typename\+Derived\+::\+Scalar, Scalar\+Exponent $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{\+::value}})\&\&EIGEN\+\_\+\+SCALAR\+\_\+\+BINARY\+\_\+\+SUPPORTED(pow, typename\+Derived\+::\+Scalar, Scalar\+Exponent), const\+EIGEN\+\_\+\+EXPR\+\_\+\+BINARYOP\+\_\+\+SCALAR\+\_\+\+RETURN\+\_\+\+TYPE(Derived, Scalar\+Exponent, pow)$>$\+::type \mbox{\hyperlink{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}{pow}} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$ \&x, const Scalar\+Exponent \&exponent)
+\item 
+{\footnotesize template$<$typename Derived , typename Exponent\+Derived $>$ }\\const \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Eigen\+::\+Cwise\+Binary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__pow__op}{Eigen\+::internal\+::scalar\+\_\+pow\+\_\+op}}$<$ typename Derived\+::\+Scalar, typename Exponent\+Derived\+::\+Scalar $>$, const Derived, const Exponent\+Derived $>$ \mbox{\hyperlink{class_eigen_1_1_array_base_acb769e1ab1d809abb77c7ab98021ad81}{pow}} (const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$ \&x, const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Exponent\+Derived $>$ \&exponents)
+\item 
+{\footnotesize template$<$typename Scalar , typename Derived $>$ }\\\mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if}{internal\+::enable\+\_\+if}}$<$!(\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal\+::is\+\_\+same}}$<$ typename\+Derived\+::\+Scalar, Scalar $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{\+::value}})\&\&EIGEN\+\_\+\+SCALAR\+\_\+\+BINARY\+\_\+\+SUPPORTED(pow, Scalar, typename\+Derived\+::\+Scalar), const\+EIGEN\+\_\+\+SCALAR\+\_\+\+BINARYOP\+\_\+\+EXPR\+\_\+\+RETURN\+\_\+\+TYPE(Scalar, Derived, pow)$>$\+::type \mbox{\hyperlink{class_eigen_1_1_array_base_ac3088e463d75051e771e756f004a1fc4}{pow}} (const Scalar \&x, const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$ \&exponents)
+\end{DoxyCompactItemize}
+\doxysubsection*{Related Symbols inherited from \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base$<$ Derived $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$typename Derived $>$ }\\std\+::ostream \& \mbox{\hyperlink{class_eigen_1_1_dense_base_a3806d3f42de165878dace160e6aba40a}{operator$<$$<$}} (std\+::ostream \&s, const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Derived $>$ \&m)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Static Public Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base$<$ Derived $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ab0ae1bfa72faedcaf53af81ca76c446b}{Constant}} (Index rows, Index cols, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}})
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a396b2496533c42f1c2f1ff78bdea7cc9}{Constant}} (Index size, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}})
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a117f486ba2bcc011d5056715fa71b7e6}{Constant}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{value}})
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Sequential\+Lin\+Spaced\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_adf10fff4af9e2fc4367e3b3f3e733b66}{Lin\+Spaced}} (Sequential\+\_\+t, Index size, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&low, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&high)
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Random\+Access\+Lin\+Spaced\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_af650d990aeb5ef39582cfff935adeff1}{Lin\+Spaced}} (Index size, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&low, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&high)
+\begin{DoxyCompactList}\small\item\em Sets a linearly spaced vector. \end{DoxyCompactList}\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Sequential\+Lin\+Spaced\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a80e195b7c83899b6a535887abd692c56}{Lin\+Spaced}} (Sequential\+\_\+t, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&low, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&high)
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Random\+Access\+Lin\+Spaced\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_adca927bc3f8605805f8bb4f1a5eb4754}{Lin\+Spaced}} (const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&low, const \mbox{\hyperlink{class_eigen_1_1_dense_base_a5feed465b3a8e60c47e73ecce83e39a2}{Scalar}} \&high)
+\begin{DoxyCompactList}\small\item\em Sets a linearly spaced vector.    \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename Custom\+Nullary\+Op $>$ }\\static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ Custom\+Nullary\+Op, \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}} $>$ {\bfseries Nullary\+Expr} (Index rows, Index cols, const Custom\+Nullary\+Op \&func)
+\item 
+{\footnotesize template$<$typename Custom\+Nullary\+Op $>$ }\\static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ Custom\+Nullary\+Op, \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}} $>$ {\bfseries Nullary\+Expr} (Index size, const Custom\+Nullary\+Op \&func)
+\item 
+{\footnotesize template$<$typename Custom\+Nullary\+Op $>$ }\\static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ Custom\+Nullary\+Op, \mbox{\hyperlink{class_eigen_1_1_dense_base_ad871c3bef0abfc3673a6963d8201be21}{Plain\+Object}} $>$ {\bfseries Nullary\+Expr} (const Custom\+Nullary\+Op \&func)
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a905cb30de691190f85ad1abb97f65100}{Zero}} (Index rows, Index cols)
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a125c4b37508ecfe65c137810f195e42f}{Zero}} (Index size)
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ad2aaacdd651521e9797e84ce345f2831}{Zero}} ()
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a8804d0651dfbe4c5a2e4b236cc487151}{Ones}} (Index rows, Index cols)
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_aac062bc3ddf016ba1ed23d1beb3a0bca}{Ones}} (Index size)
+\item 
+static EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Constant\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a864a3e957343b818effdaeaeb08729a0}{Ones}} ()
+\item 
+static const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Random\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ae97f8d9d08f969c733c8144be6225756}{Random}} (Index rows, Index cols)
+\item 
+static const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Random\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_a7eb5f974a8f0b67eac7080db1da0e308}{Random}} (Index size)
+\item 
+static const \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Random\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_dense_base_ae814abb451b48ed872819192dc188c19}{Random}} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Derived$>$\newline
+class Eigen\+::\+Array\+Base$<$ Derived $>$}
+Base class for all 1D and 2D array, and related expressions. 
+
+An array is similar to a dense vector or matrix. While matrices are mathematical objects with well defined linear algebra operators, an array is just a collection of scalar values arranged in a one or two dimensionnal fashion. As the main consequence, all operations applied to an array are performed coefficient wise. Furthermore, arrays support scalar math functions of the c++ standard library (e.\+g., std\+::sin(x)), and convenient constructors allowing to easily write generic code working for both scalar values and arrays.
+
+This class is the base that is inherited by all array expression types.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Derived} & is the derived type, e.\+g., an array or an expression type.\\
+\hline
+\end{DoxyTemplParams}
+This class can be extended with the help of the plugin mechanism described on the page Topic\+Customizing\+\_\+\+Plugins by defining the preprocessor symbol {\ttfamily EIGEN\+\_\+\+ARRAYBASE\+\_\+\+PLUGIN}.
+
+\begin{DoxySeeAlso}{See also}
+class \doxylink{class_eigen_1_1_matrix_base}{Matrix\+Base}, Topic\+Class\+Hierarchy 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{class_eigen_1_1_array_base_a7c296f02281624d9c76eb864ab7209ce}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!StorageBaseType@{StorageBaseType}}
+\index{StorageBaseType@{StorageBaseType}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{StorageBaseType}{StorageBaseType}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_a7c296f02281624d9c76eb864ab7209ce} 
+template$<$typename Derived $>$ \\
+typedef \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}} \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::\+Storage\+Base\+Type}
+
+The base class for a given storage type. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_eigen_1_1_array_base_af77c311668e195db2ed02014d80dd536}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!lazyAssign@{lazyAssign}}
+\index{lazyAssign@{lazyAssign}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{lazyAssign()}{lazyAssign()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_af77c311668e195db2ed02014d80dd536} 
+template$<$typename Derived $>$ \\
+template$<$typename Other\+Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base}}$<$ Derived $>$\+::lazy\+Assign (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&}]{other}{}\end{DoxyParamCaption})}
+
+\textbackslash{}ínternal Copies {\itshape other} into \texorpdfstring{$\ast$}{*}this without evaluating other. \begin{DoxyReturn}{Returns}
+a reference to \texorpdfstring{$\ast$}{*}this. 
+\end{DoxyReturn}
+\begin{DoxyRefDesc}{Deprecated}
+\item[\mbox{\hyperlink{deprecated__deprecated000005}{Deprecated}}]\end{DoxyRefDesc}
+\Hypertarget{class_eigen_1_1_array_base_a059ebdf0bcc64c26d4a314919f929a95}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!matrix@{matrix}}
+\index{matrix@{matrix}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{matrix()}{matrix()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_a059ebdf0bcc64c26d4a314919f929a95} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_matrix_wrapper}{Matrix\+Wrapper}}$<$ Derived $>$ \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::matrix (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+an \doxylink{class_eigen_1_1_matrix_base}{Matrix } expression of this array 
+\end{DoxyReturn}
+\begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_matrix_base_a6bd01a3c94daf864579f14510aa320f8}{Matrix\+Base\+::array()} 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_array_base_a18089e6deb5b2d1199af231cf965fe9d}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator\texorpdfstring{$\ast$}{*}=@{operator\texorpdfstring{$\ast$}{*}=}}
+\index{operator\texorpdfstring{$\ast$}{*}=@{operator\texorpdfstring{$\ast$}{*}=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator\texorpdfstring{$\ast$}{*}=()}{operator*=()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_a18089e6deb5b2d1199af231cf965fe9d} 
+template$<$typename Derived $>$ \\
+template$<$typename Other\+Derived $>$ \\
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::operator\texorpdfstring{$\ast$}{*}= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&}]{other}{}\end{DoxyParamCaption})}
+
+replaces {\ttfamily \texorpdfstring{$\ast$}{*}this} by {\ttfamily \texorpdfstring{$\ast$}{*}this} \texorpdfstring{$\ast$}{*} {\itshape other} coefficient wise.
+
+\begin{DoxyReturn}{Returns}
+a reference to {\ttfamily \texorpdfstring{$\ast$}{*}this} 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_array_base_ac18b8d3e961091623de01a20ae767e58}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator+=@{operator+=}}
+\index{operator+=@{operator+=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator+=()}{operator+=()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_ac18b8d3e961091623de01a20ae767e58} 
+template$<$typename Derived $>$ \\
+template$<$typename Other\+Derived $>$ \\
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::operator+= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&}]{other}{}\end{DoxyParamCaption})}
+
+replaces {\ttfamily \texorpdfstring{$\ast$}{*}this} by {\ttfamily \texorpdfstring{$\ast$}{*}this} + {\itshape other}.
+
+\begin{DoxyReturn}{Returns}
+a reference to {\ttfamily \texorpdfstring{$\ast$}{*}this} 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_array_base_abe8b619cf149f97538957f3a393137c8}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator-\/=@{operator-\/=}}
+\index{operator-\/=@{operator-\/=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator-\/=()}{operator-=()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_abe8b619cf149f97538957f3a393137c8} 
+template$<$typename Derived $>$ \\
+template$<$typename Other\+Derived $>$ \\
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::operator-\/= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&}]{other}{}\end{DoxyParamCaption})}
+
+replaces {\ttfamily \texorpdfstring{$\ast$}{*}this} by {\ttfamily \texorpdfstring{$\ast$}{*}this} -\/ {\itshape other}.
+
+\begin{DoxyReturn}{Returns}
+a reference to {\ttfamily \texorpdfstring{$\ast$}{*}this} 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_array_base_a8e63d051cfeb5ac2e84feace0a25b4bc}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator/=@{operator/=}}
+\index{operator/=@{operator/=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator/=()}{operator/=()}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_a8e63d051cfeb5ac2e84feace0a25b4bc} 
+template$<$typename Derived $>$ \\
+template$<$typename Other\+Derived $>$ \\
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::operator/= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Other\+Derived $>$ \&}]{other}{}\end{DoxyParamCaption})}
+
+replaces {\ttfamily \texorpdfstring{$\ast$}{*}this} by {\ttfamily \texorpdfstring{$\ast$}{*}this} / {\itshape other} coefficient wise.
+
+\begin{DoxyReturn}{Returns}
+a reference to {\ttfamily \texorpdfstring{$\ast$}{*}this} 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_array_base_a41fba70bcd7e7a408da93207922f9616}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [1/4]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_a41fba70bcd7e7a408da93207922f9616} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Array\+Base}}$<$ Derived $>$ \&}]{other}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Special case of the template operator=, in order to prevent the compiler from generating a default operator= (issue hit with g++ 4.\+1) \Hypertarget{class_eigen_1_1_array_base_aae79d5d0d95e60bf2e64d0dc3dfd66a4}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [2/4]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_aae79d5d0d95e60bf2e64d0dc3dfd66a4} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base}}$<$ Derived $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}} \&}]{other}{}\end{DoxyParamCaption})}
+
+Special case of the template operator=, in order to prevent the compiler from generating a default operator= (issue hit with g++ 4.\+1) \Hypertarget{class_eigen_1_1_array_base_a581a7a353bd007b5352f11688e3bc5fa}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [3/4]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_a581a7a353bd007b5352f11688e3bc5fa} 
+template$<$typename Derived $>$ \\
+template$<$typename Other\+Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_dense_base}{Eigen\+::\+Dense\+Base}}$<$ Derived $>$\+::operator= (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&}]{other}{}\end{DoxyParamCaption})}
+
+Copies {\itshape other} into \texorpdfstring{$\ast$}{*}this. \begin{DoxyReturn}{Returns}
+a reference to \texorpdfstring{$\ast$}{*}this. 
+\end{DoxyReturn}
+\Hypertarget{class_eigen_1_1_array_base_a771edf6224c3d0841bfb93d16e4b9a4c}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!operator=@{operator=}}
+\index{operator=@{operator=}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{operator=()}{operator=()}\hspace{0.1cm}{\footnotesize\ttfamily [4/4]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_a771edf6224c3d0841bfb93d16e4b9a4c} 
+template$<$typename Derived $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC EIGEN\+\_\+\+STRONG\+\_\+\+INLINE Derived \& \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$\+::operator= (\begin{DoxyParamCaption}\item[{const Scalar \&}]{value}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set all the entries to {\itshape value}. \begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_dense_base_a5bd0159dd86325b3c2bc40e3df0e1da3}{Dense\+Base\+::set\+Constant()}, \doxylink{class_eigen_1_1_dense_base_a4886d2dd3f6e63bc636f48914d035f9b}{Dense\+Base\+::fill()} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Friends And Related Symbol Documentation}
+\Hypertarget{class_eigen_1_1_array_base_acb769e1ab1d809abb77c7ab98021ad81}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!pow@{pow}}
+\index{pow@{pow}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{pow()}{pow()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_acb769e1ab1d809abb77c7ab98021ad81} 
+template$<$typename Derived , typename Exponent\+Derived $>$ \\
+const \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Eigen\+::\+Cwise\+Binary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__pow__op}{Eigen\+::internal\+::scalar\+\_\+pow\+\_\+op}}$<$ typename Derived\+::\+Scalar, typename Exponent\+Derived\+::\+Scalar $>$, const Derived, const Exponent\+Derived $>$ pow (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$ \&}]{x}{, }\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Exponent\+Derived $>$ \&}]{exponents}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [related]}}
+
+\begin{DoxyReturn}{Returns}
+an expression of the coefficient-\/wise power of {\itshape x} to the given array of {\itshape exponents}.
+\end{DoxyReturn}
+This function computes the coefficient-\/wise power.
+
+Example\+: 
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+ Output\+: 
+\begin{DoxyVerbInclude}
+\end{DoxyVerbInclude}
+
+
+\begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}{Array\+Base\+::pow()} 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!pow@{pow}}
+\index{pow@{pow}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{pow()}{pow()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc} 
+template$<$typename Derived , typename Scalar\+Exponent $>$ \\
+\mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if}{internal\+::enable\+\_\+if}}$<$!(\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal\+::is\+\_\+same}}$<$ typename\+Derived\+::\+Scalar, Scalar\+Exponent $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{\+::value}})\&\&EIGEN\+\_\+\+SCALAR\+\_\+\+BINARY\+\_\+\+SUPPORTED(pow, typename\+Derived\+::\+Scalar, Scalar\+Exponent), const\+EIGEN\+\_\+\+EXPR\+\_\+\+BINARYOP\+\_\+\+SCALAR\+\_\+\+RETURN\+\_\+\+TYPE(Derived, Scalar\+Exponent, pow)$>$\+::type pow (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$ \&}]{x}{, }\item[{const Scalar\+Exponent \&}]{exponent}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [related]}}
+
+\begin{DoxyReturn}{Returns}
+an expression of the coefficient-\/wise power of {\itshape x} to the given constant {\itshape exponent}.
+\end{DoxyReturn}
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Scalar\+Exponent} & is the scalar type of {\itshape exponent}. It must be compatible with the scalar type of the given expression ({\ttfamily Derived\+::\+Scalar}).\\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}{Array\+Base\+::pow()} 
+\end{DoxySeeAlso}
+\Hypertarget{class_eigen_1_1_array_base_ac3088e463d75051e771e756f004a1fc4}\index{Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}!pow@{pow}}
+\index{pow@{pow}!Eigen::ArrayBase$<$ Derived $>$@{Eigen::ArrayBase$<$ Derived $>$}}
+\doxysubsubsection{\texorpdfstring{pow()}{pow()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily \label{class_eigen_1_1_array_base_ac3088e463d75051e771e756f004a1fc4} 
+template$<$typename Scalar , typename Derived $>$ \\
+\mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if}{internal\+::enable\+\_\+if}}$<$!(\mbox{\hyperlink{struct_eigen_1_1internal_1_1is__same}{internal\+::is\+\_\+same}}$<$ typename\+Derived\+::\+Scalar, Scalar $>$\mbox{\hyperlink{class_eigen_1_1_dense_base_a8da735a6bfc7012606acf787156d10a0}{\+::value}})\&\&EIGEN\+\_\+\+SCALAR\+\_\+\+BINARY\+\_\+\+SUPPORTED(pow, Scalar, typename\+Derived\+::\+Scalar), const\+EIGEN\+\_\+\+SCALAR\+\_\+\+BINARYOP\+\_\+\+EXPR\+\_\+\+RETURN\+\_\+\+TYPE(Scalar, Derived, pow)$>$\+::type pow (\begin{DoxyParamCaption}\item[{const Scalar \&}]{x}{, }\item[{const \mbox{\hyperlink{class_eigen_1_1_array_base}{Eigen\+::\+Array\+Base}}$<$ Derived $>$ \&}]{exponents}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [related]}}
+
+\begin{DoxyReturn}{Returns}
+an expression of the coefficient-\/wise power of the scalar {\itshape x} to the given array of {\itshape exponents}.
+\end{DoxyReturn}
+This function computes the coefficient-\/wise power between a scalar and an array of exponents.
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Scalar} & is the scalar type of {\itshape x}. It must be compatible with the scalar type of the given array expression ({\ttfamily Derived\+::\+Scalar}).\\
+\hline
+\end{DoxyTemplParams}
+Example\+: 
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+ Output\+: 
+\begin{DoxyVerbInclude}
+\end{DoxyVerbInclude}
+
+
+\begin{DoxySeeAlso}{See also}
+\doxylink{class_eigen_1_1_array_base_abe95915bd1ba19082d51bef9a50facdc}{Array\+Base\+::pow()} 
+\end{DoxySeeAlso}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/Array\+Base.\+h\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/util/Forward\+Declarations.\+h\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/Global\+Functions.\+h\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/Self\+Cwise\+Binary\+Op.\+h\end{DoxyCompactItemize}

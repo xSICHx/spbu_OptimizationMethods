@@ -1,0 +1,426 @@
+\doxysection{LLT.\+h}
+\hypertarget{_l_l_t_8h_source}{}\label{_l_l_t_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Cholesky/LLT.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Cholesky/LLT.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_LLT\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_LLT\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{int}\ UpLo>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_l_l_t___traits}{LLT\_Traits}};}
+\DoxyCodeLine{00017\ \}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00048\ \ \textcolor{comment}{/*\ HEY\ THIS\ DOX\ IS\ DISABLED\ BECAUSE\ THERE's\ A\ BUG\ EITHER\ HERE\ OR\ IN\ LDLT\ ABOUT\ THAT\ (OR\ BOTH)}}
+\DoxyCodeLine{00049\ \textcolor{comment}{\ \ *\ Note\ that\ during\ the\ decomposition,\ only\ the\ upper\ triangular\ part\ of\ A\ is\ considered.\ Therefore,}}
+\DoxyCodeLine{00050\ \textcolor{comment}{\ \ *\ the\ strict\ lower\ part\ does\ not\ have\ to\ store\ correct\ values.}}
+\DoxyCodeLine{00051\ \textcolor{comment}{\ \ */}}
+\DoxyCodeLine{00052\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT}}}
+\DoxyCodeLine{00053\ \{}
+\DoxyCodeLine{00054\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{typedef}\ \_MatrixType\ MatrixType;}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ RowsAtCompileTime\ =\ MatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ ColsAtCompileTime\ =\ MatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ MatrixType::MaxColsAtCompileTime}
+\DoxyCodeLine{00060\ \ \ \ \ \};}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ Scalar;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<typename\ MatrixType::Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{typedef}\ Eigen::Index\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a92da1480777f6d329eff0e91595bf14f}{Index}};\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ PacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{internal::packet\_traits<Scalar>::size}},}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ AlignmentMask\ =\ int(PacketSize)-\/1,}
+\DoxyCodeLine{00069\ \ \ \ \ \ \ UpLo\ =\ \_UpLo}
+\DoxyCodeLine{00070\ \ \ \ \ \};}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_l_l_t___traits}{internal::LLT\_Traits<MatrixType,UpLo>}}\ Traits;}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a136c4a75fb204b37d50bd153fba6aae7}{LLT}}()\ :\ m\_matrix(),\ m\_isInitialized(false)\ \{\}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_acfeb7d779fe759fd66afa7cc34022fcc}{LLT}}(\mbox{\hyperlink{class_eigen_1_1_l_l_t_a92da1480777f6d329eff0e91595bf14f}{Index}}\ size)\ :\ m\_matrix(size,\ size),}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ m\_isInitialized(false)\ \{\}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a136c4a75fb204b37d50bd153fba6aae7}{LLT}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ :\ m\_matrix(matrix.rows(),\ matrix.cols()),}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00095\ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ compute(matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());}
+\DoxyCodeLine{00097\ \ \ \ \ \}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a1200459d628a56bb4ea84ffdd706afdc}{LLT}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ :\ m\_matrix(matrix.derived()),}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00110\ \ \ \ \ \{}
+\DoxyCodeLine{00111\ \ \ \ \ \ \ compute(matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());}
+\DoxyCodeLine{00112\ \ \ \ \ \}}
+\DoxyCodeLine{00113\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ Traits::MatrixU\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a2ab17633f31165ca6bc5e372541c6c05}{matrixU}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00116\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Traits::getU(m\_matrix);}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ Traits::MatrixL\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a45239508f440b23e64db345137b0eb05}{matrixL}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00123\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ Traits::getL(m\_matrix);}
+\DoxyCodeLine{00126\ \ \ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<LLT,\ Rhs>}}}
+\DoxyCodeLine{00140\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_l_l_t_aa077b43d2ebe68f292004fbfc331a0e1}{solve}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Rhs>}}\&\ b)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00141\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ eigen\_assert(m\_matrix.rows()==b.rows()}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \textcolor{stringliteral}{"{}LLT::solve():\ invalid\ number\ of\ rows\ of\ the\ right\ hand\ side\ matrix\ b"{}});}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<LLT,\ Rhs>}}(*\textcolor{keyword}{this},\ b.derived());}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keywordtype}{void}\ solveInPlace(\mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>}}\ \&bAndX)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00152\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT}}\&\ compute(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix);}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00157\ \ \ \ \ RealScalar\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_ad0054dc68c225b543b76b2973eab0bdb}{rcond}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00158\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00160\ \ \ \ \ \ \ eigen\_assert(m\_info\ ==\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}}\ \&\&\ \textcolor{stringliteral}{"{}LLT\ failed\ because\ matrix\ appears\ to\ be\ negative"{}});}
+\DoxyCodeLine{00161\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ internal::rcond\_estimate\_helper(m\_l1\_norm,\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00162\ \ \ \ \ \}}
+\DoxyCodeLine{00163\ }
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ MatrixType\&\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_af25c416bd331ae8b7ad6cae835f894aa}{matrixLLT}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00169\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_matrix;}
+\DoxyCodeLine{00172\ \ \ \ \ \}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \ \ \ \ MatrixType\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a8b6ba1bc41811c50e65cac8db597d802}{reconstructedMatrix}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00182\ \ \ \ \ \mbox{\hyperlink{group__enums_ga85fad7b87587764e5cf6b513a9e0ee5e}{ComputationInfo}}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a5049f667afc146bf7dd740f058e8c8bb}{info}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00183\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_info;}
+\DoxyCodeLine{00186\ \ \ \ \ \}}
+\DoxyCodeLine{00187\ }
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT}}\&\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_aa9b0afd6f33de62eec6503978368d4ca}{adjoint}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};\ \};}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.rows();\ \}}
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a92da1480777f6d329eff0e91595bf14f}{Index}}\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.cols();\ \}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorType>}
+\DoxyCodeLine{00199\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a136c4a75fb204b37d50bd153fba6aae7}{LLT}}\ rankUpdate(\textcolor{keyword}{const}\ VectorType\&\ vec,\ \textcolor{keyword}{const}\ RealScalar\&\ sigma\ =\ 1);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00203\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00204\ \ \ \ \ \textcolor{keywordtype}{void}\ \_solve\_impl(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ check\_template\_parameters()}
+\DoxyCodeLine{00210\ \ \ \ \ \{}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_NON\_INTEGER(Scalar);}
+\DoxyCodeLine{00212\ \ \ \ \ \}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00218\ \ \ \ \ MatrixType\ m\_matrix;}
+\DoxyCodeLine{00219\ \ \ \ \ RealScalar\ m\_l1\_norm;}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_isInitialized;}
+\DoxyCodeLine{00221\ \ \ \ \ \mbox{\hyperlink{group__enums_ga85fad7b87587764e5cf6b513a9e0ee5e}{ComputationInfo}}\ m\_info;}
+\DoxyCodeLine{00222\ \};}
+\DoxyCodeLine{00223\ }
+\DoxyCodeLine{00224\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ UpLo>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace}};}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00228\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ VectorType>}
+\DoxyCodeLine{00229\ \textcolor{keyword}{static}\ Index\ llt\_rank\_update\_lower(MatrixType\&\ mat,\ \textcolor{keyword}{const}\ VectorType\&\ vec,\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\&\ sigma)}
+\DoxyCodeLine{00230\ \{}
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ Scalar;}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ RealScalar;}
+\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::ColXpr\ ColXpr;}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::remove\_all<ColXpr>::type\ ColXprCleaned;}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ ColXprCleaned::SegmentReturnType\ ColXprSegment;}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,Dynamic,1>}}\ TempVectorType;}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ TempVectorType::SegmentReturnType\ TempVecSegment;}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00240\ \ \ Index\ n\ =\ mat.cols();}
+\DoxyCodeLine{00241\ \ \ eigen\_assert(mat.rows()==n\ \&\&\ vec.size()==n);}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \ \ TempVectorType\ temp;}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \ \ \textcolor{keywordflow}{if}(sigma>0)}
+\DoxyCodeLine{00246\ \ \ \{}
+\DoxyCodeLine{00247\ \ \ \ \ \textcolor{comment}{//\ This\ version\ is\ based\ on\ Givens\ rotations.}}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{comment}{//\ It\ is\ faster\ than\ the\ other\ one\ below,\ but\ only\ works\ for\ updates,}}
+\DoxyCodeLine{00249\ \ \ \ \ \textcolor{comment}{//\ i.e.,\ for\ sigma\ >\ 0}}
+\DoxyCodeLine{00250\ \ \ \ \ temp\ =\ sqrt(sigma)\ *\ vec;}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=0;\ i<n;\ ++i)}
+\DoxyCodeLine{00253\ \ \ \ \ \{}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation<Scalar>}}\ g;}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ g.\mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_af73c81e9cc139b7e0d877ce553b02ec0}{makeGivens}}(mat(i,i),\ -\/temp(i),\ \&mat(i,i));}
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \ \ \ \ \ \ Index\ rs\ =\ n-\/i-\/1;}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(rs>0)}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ ColXprSegment\ x(mat.col(i).tail(rs));}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ TempVecSegment\ y(temp.tail(rs));}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ apply\_rotation\_in\_the\_plane(x,\ y,\ g);}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00267\ \ \ \{}
+\DoxyCodeLine{00268\ \ \ \ \ temp\ =\ vec;}
+\DoxyCodeLine{00269\ \ \ \ \ RealScalar\ beta\ =\ 1;}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j=0;\ j<n;\ ++j)}
+\DoxyCodeLine{00271\ \ \ \ \ \{}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ RealScalar\ Ljj\ =\ numext::real(mat.coeff(j,j));}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ RealScalar\ dj\ =\ numext::abs2(Ljj);}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ Scalar\ wj\ =\ temp.coeff(j);}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ RealScalar\ swj2\ =\ sigma*numext::abs2(wj);}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ RealScalar\ gamma\ =\ dj*beta\ +\ swj2;}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \ \ \ \ RealScalar\ x\ =\ dj\ +\ swj2/beta;}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (x<=RealScalar(0))}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ j;}
+\DoxyCodeLine{00281\ \ \ \ \ \ \ RealScalar\ nLjj\ =\ sqrt(x);}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ mat.coeffRef(j,j)\ =\ nLjj;}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ beta\ +=\ swj2/dj;}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \textcolor{comment}{//\ Update\ the\ terms\ of\ L}}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ Index\ rs\ =\ n-\/j-\/1;}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(rs)}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ temp.tail(rs)\ -\/=\ (wj/Ljj)\ *\ mat.col(j).tail(rs);}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(gamma\ !=\ 0)}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ mat.col(j).tail(rs)\ =\ (nLjj/Ljj)\ *\ mat.col(j).tail(rs)\ +\ (nLjj\ *\ sigma*numext::conj(wj)/gamma)*temp.tail(rs);}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00293\ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \}}
+\DoxyCodeLine{00295\ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00296\ \}}
+\DoxyCodeLine{00297\ }
+\DoxyCodeLine{00298\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace}}<Scalar,\ \mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}}>}
+\DoxyCodeLine{00299\ \{}
+\DoxyCodeLine{00300\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00301\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00302\ \ \ \textcolor{keyword}{static}\ Index\ unblocked(MatrixType\&\ mat)}
+\DoxyCodeLine{00303\ \ \ \{}
+\DoxyCodeLine{00304\ \ \ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \ \ eigen\_assert(mat.rows()==mat.cols());}
+\DoxyCodeLine{00307\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ mat.rows();}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k\ =\ 0;\ k\ <\ size;\ ++k)}
+\DoxyCodeLine{00309\ \ \ \ \ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ Index\ rs\ =\ size-\/k-\/1;\ \textcolor{comment}{//\ remaining\ size}}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixType,Dynamic,1>}}\ A21(mat,k+1,k,rs,1);}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixType,1,Dynamic>}}\ A10(mat,k,0,1,k);}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixType,Dynamic,Dynamic>}}\ A20(mat,k+1,0,rs,k);}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \ \ \ \ \ \ RealScalar\ x\ =\ numext::real(mat.coeff(k,k));}
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k>0)\ x\ -\/=\ A10.squaredNorm();}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (x<=RealScalar(0))}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ k;}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ mat.coeffRef(k,k)\ =\ x\ =\ sqrt(x);}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k>0\ \&\&\ rs>0)\ A21.noalias()\ -\/=\ A20\ *\ A10.adjoint();}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (rs>0)\ A21\ /=\ x;}
+\DoxyCodeLine{00323\ \ \ \ \ \}}
+\DoxyCodeLine{00324\ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00325\ \ \ \}}
+\DoxyCodeLine{00326\ }
+\DoxyCodeLine{00327\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00328\ \ \ \textcolor{keyword}{static}\ Index\ blocked(MatrixType\&\ m)}
+\DoxyCodeLine{00329\ \ \ \{}
+\DoxyCodeLine{00330\ \ \ \ \ eigen\_assert(m.rows()==m.cols());}
+\DoxyCodeLine{00331\ \ \ \ \ Index\ size\ =\ m.rows();}
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keywordflow}{if}(size<32)}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ unblocked(m);}
+\DoxyCodeLine{00334\ }
+\DoxyCodeLine{00335\ \ \ \ \ Index\ blockSize\ =\ size/8;}
+\DoxyCodeLine{00336\ \ \ \ \ blockSize\ =\ (blockSize/16)*16;}
+\DoxyCodeLine{00337\ \ \ \ \ blockSize\ =\ (std::min)((std::max)(blockSize,Index(8)),\ Index(128));}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ k=0;\ k<size;\ k+=blockSize)}
+\DoxyCodeLine{00340\ \ \ \ \ \{}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ \textcolor{comment}{//\ partition\ the\ matrix:}}
+\DoxyCodeLine{00342\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ A00\ |\ \ -\/\ \ |\ \ -\/}}
+\DoxyCodeLine{00343\ \ \ \ \ \ \ \textcolor{comment}{//\ lu\ \ =\ A10\ |\ A11\ |\ \ -\/}}
+\DoxyCodeLine{00344\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ A20\ |\ A21\ |\ A22}}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ Index\ bs\ =\ (std::min)(blockSize,\ size-\/k);}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ Index\ rs\ =\ size\ -\/\ k\ -\/\ bs;}
+\DoxyCodeLine{00347\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixType,Dynamic,Dynamic>}}\ A11(m,k,\ \ \ k,\ \ \ bs,bs);}
+\DoxyCodeLine{00348\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixType,Dynamic,Dynamic>}}\ A21(m,k+bs,k,\ \ \ rs,bs);}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixType,Dynamic,Dynamic>}}\ A22(m,k+bs,k+bs,rs,rs);}
+\DoxyCodeLine{00350\ }
+\DoxyCodeLine{00351\ \ \ \ \ \ \ Index\ ret;}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \textcolor{keywordflow}{if}((ret=unblocked(A11))>=0)\ \textcolor{keywordflow}{return}\ k+ret;}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(rs>0)\ A11.adjoint().template\ triangularView<Upper>().template\ solveInPlace<OnTheRight>(A21);}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(rs>0)\ A22.template\ selfadjointView<Lower>().rankUpdate(A21,\textcolor{keyword}{typename}\ NumTraits<RealScalar>::Literal(-\/1));\ \textcolor{comment}{//\ bottleneck}}
+\DoxyCodeLine{00355\ \ \ \ \ \}}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordflow}{return}\ -\/1;}
+\DoxyCodeLine{00357\ \ \ \}}
+\DoxyCodeLine{00358\ }
+\DoxyCodeLine{00359\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ VectorType>}
+\DoxyCodeLine{00360\ \ \ \textcolor{keyword}{static}\ Index\ rankUpdate(MatrixType\&\ mat,\ \textcolor{keyword}{const}\ VectorType\&\ vec,\ \textcolor{keyword}{const}\ RealScalar\&\ sigma)}
+\DoxyCodeLine{00361\ \ \ \{}
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keywordflow}{return}\ Eigen::internal::llt\_rank\_update\_lower(mat,\ vec,\ sigma);}
+\DoxyCodeLine{00363\ \ \ \}}
+\DoxyCodeLine{00364\ \};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace}}<Scalar,\ \mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}}>}
+\DoxyCodeLine{00367\ \{}
+\DoxyCodeLine{00368\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00371\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ Index\ unblocked(MatrixType\&\ mat)}
+\DoxyCodeLine{00372\ \ \ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<MatrixType>}}\ matt(mat);}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace<Scalar,\ Lower>::unblocked}}(matt);}
+\DoxyCodeLine{00375\ \ \ \}}
+\DoxyCodeLine{00376\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00377\ \ \ \textcolor{keyword}{static}\ EIGEN\_STRONG\_INLINE\ Index\ blocked(MatrixType\&\ mat)}
+\DoxyCodeLine{00378\ \ \ \{}
+\DoxyCodeLine{00379\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<MatrixType>}}\ matt(mat);}
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace<Scalar,\ Lower>::blocked}}(matt);}
+\DoxyCodeLine{00381\ \ \ \}}
+\DoxyCodeLine{00382\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ VectorType>}
+\DoxyCodeLine{00383\ \ \ \textcolor{keyword}{static}\ Index\ rankUpdate(MatrixType\&\ mat,\ \textcolor{keyword}{const}\ VectorType\&\ vec,\ \textcolor{keyword}{const}\ RealScalar\&\ sigma)}
+\DoxyCodeLine{00384\ \ \ \{}
+\DoxyCodeLine{00385\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose<MatrixType>}}\ matt(mat);}
+\DoxyCodeLine{00386\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace<Scalar,\ Lower>::rankUpdate}}(matt,\ vec.conjugate(),\ sigma);}
+\DoxyCodeLine{00387\ \ \ \}}
+\DoxyCodeLine{00388\ \};}
+\DoxyCodeLine{00389\ }
+\DoxyCodeLine{00390\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_l_l_t___traits}{LLT\_Traits}}<MatrixType,\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}}>}
+\DoxyCodeLine{00391\ \{}
+\DoxyCodeLine{00392\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{TriangularView<const\ MatrixType,\ Lower>}}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixL}};}
+\DoxyCodeLine{00393\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{TriangularView<const\ typename\ MatrixType::AdjointReturnType,\ Upper>}}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixU}};}
+\DoxyCodeLine{00394\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixL}}\ getL(\textcolor{keyword}{const}\ MatrixType\&\ m)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixL}}(m);\ \}}
+\DoxyCodeLine{00395\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixU}}\ getU(\textcolor{keyword}{const}\ MatrixType\&\ m)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixU}}(m.adjoint());\ \}}
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ inplace\_decomposition(MatrixType\&\ m)}
+\DoxyCodeLine{00397\ \ \ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace<typename\ MatrixType::Scalar,\ Lower>::blocked}}(m)==-\/1;\ \}}
+\DoxyCodeLine{00398\ \};}
+\DoxyCodeLine{00399\ }
+\DoxyCodeLine{00400\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_l_l_t___traits}{LLT\_Traits}}<MatrixType,\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}}>}
+\DoxyCodeLine{00401\ \{}
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{TriangularView<const\ typename\ MatrixType::AdjointReturnType,\ Lower>}}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixL}};}
+\DoxyCodeLine{00403\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{TriangularView<const\ MatrixType,\ Upper>}}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixU}};}
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixL}}\ getL(\textcolor{keyword}{const}\ MatrixType\&\ m)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixL}}(m.adjoint());\ \}}
+\DoxyCodeLine{00405\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixU}}\ getU(\textcolor{keyword}{const}\ MatrixType\&\ m)\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_triangular_view}{MatrixU}}(m);\ \}}
+\DoxyCodeLine{00406\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{bool}\ inplace\_decomposition(MatrixType\&\ m)}
+\DoxyCodeLine{00407\ \ \ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{llt\_inplace<typename\ MatrixType::Scalar,\ Upper>::blocked}}(m)==-\/1;\ \}}
+\DoxyCodeLine{00408\ \};}
+\DoxyCodeLine{00409\ }
+\DoxyCodeLine{00410\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00419\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo>}
+\DoxyCodeLine{00420\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00421\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<MatrixType,\_UpLo>}}\&\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<MatrixType,\_UpLo>::compute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ a)}
+\DoxyCodeLine{00422\ \{}
+\DoxyCodeLine{00423\ \ \ check\_template\_parameters();}
+\DoxyCodeLine{00424\ }
+\DoxyCodeLine{00425\ \ \ eigen\_assert(a.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a8141320ba8df384426c298b32b000d8e}{rows}}()==a.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a7b0b45c7351847696c911ce8aa2abbdb}{cols}}());}
+\DoxyCodeLine{00426\ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a92da1480777f6d329eff0e91595bf14f}{Index}}\ size\ =\ a.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a8141320ba8df384426c298b32b000d8e}{rows}}();}
+\DoxyCodeLine{00427\ \ \ m\_matrix.resize(size,\ size);}
+\DoxyCodeLine{00428\ \ \ m\_matrix\ =\ a.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00430\ \ \ \textcolor{comment}{//\ Compute\ matrix\ L1\ norm\ =\ max\ abs\ column\ sum.}}
+\DoxyCodeLine{00431\ \ \ m\_l1\_norm\ =\ RealScalar(0);}
+\DoxyCodeLine{00432\ \ \ \textcolor{comment}{//\ TODO\ move\ this\ code\ to\ SelfAdjointView}}
+\DoxyCodeLine{00433\ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{class_eigen_1_1_l_l_t_a92da1480777f6d329eff0e91595bf14f}{Index}}\ col\ =\ 0;\ col\ <\ size;\ ++col)\ \{}
+\DoxyCodeLine{00434\ \ \ \ \ RealScalar\ abs\_col\_sum;}
+\DoxyCodeLine{00435\ \ \ \ \ \textcolor{keywordflow}{if}\ (\_UpLo\ ==\ \mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}})}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ abs\_col\_sum\ =\ m\_matrix.col(col).tail(size\ -\/\ col).template\ lpNorm<1>()\ +\ m\_matrix.row(col).head(col).template\ lpNorm<1>();}
+\DoxyCodeLine{00437\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ abs\_col\_sum\ =\ m\_matrix.col(col).head(col).template\ lpNorm<1>()\ +\ m\_matrix.row(col).tail(size\ -\/\ col).template\ lpNorm<1>();}
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{keywordflow}{if}\ (abs\_col\_sum\ >\ m\_l1\_norm)}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ m\_l1\_norm\ =\ abs\_col\_sum;}
+\DoxyCodeLine{00441\ \ \ \}}
+\DoxyCodeLine{00442\ }
+\DoxyCodeLine{00443\ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00444\ \ \ \textcolor{keywordtype}{bool}\ ok\ =\ Traits::inplace\_decomposition(m\_matrix);}
+\DoxyCodeLine{00445\ \ \ m\_info\ =\ ok\ ?\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}}\ :\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea1c6e20706575a629b27a105f07f1883b}{NumericalIssue}};}
+\DoxyCodeLine{00446\ }
+\DoxyCodeLine{00447\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00448\ \}}
+\DoxyCodeLine{00449\ }
+\DoxyCodeLine{00455\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo>}
+\DoxyCodeLine{00456\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorType>}
+\DoxyCodeLine{00457\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<\_MatrixType,\_UpLo>}}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<\_MatrixType,\_UpLo>::rankUpdate}}(\textcolor{keyword}{const}\ VectorType\&\ v,\ \textcolor{keyword}{const}\ RealScalar\&\ sigma)}
+\DoxyCodeLine{00458\ \{}
+\DoxyCodeLine{00459\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(VectorType);}
+\DoxyCodeLine{00460\ \ \ eigen\_assert(v.size()==m\_matrix.cols());}
+\DoxyCodeLine{00461\ \ \ eigen\_assert(m\_isInitialized);}
+\DoxyCodeLine{00462\ \ \ \textcolor{keywordflow}{if}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1llt__inplace}{internal::llt\_inplace<typename\ MatrixType::Scalar,\ UpLo>::rankUpdate}}(m\_matrix,v,sigma)>=0)}
+\DoxyCodeLine{00463\ \ \ \ \ m\_info\ =\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea1c6e20706575a629b27a105f07f1883b}{NumericalIssue}};}
+\DoxyCodeLine{00464\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00465\ \ \ \ \ m\_info\ =\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}};}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00468\ \}}
+\DoxyCodeLine{00469\ }
+\DoxyCodeLine{00470\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00471\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType,\textcolor{keywordtype}{int}\ \_UpLo>}
+\DoxyCodeLine{00472\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00473\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<\_MatrixType,\_UpLo>::\_solve\_impl}}(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00474\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00475\ \ \ dst\ =\ rhs;}
+\DoxyCodeLine{00476\ \ \ solveInPlace(dst);}
+\DoxyCodeLine{00477\ \}}
+\DoxyCodeLine{00478\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00490\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo>}
+\DoxyCodeLine{00491\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00492\ \textcolor{keywordtype}{void}\ LLT<MatrixType,\_UpLo>::solveInPlace(MatrixBase<Derived>\ \&bAndX)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00493\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00494\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00495\ \ \ eigen\_assert(m\_matrix.rows()==bAndX.rows());}
+\DoxyCodeLine{00496\ \ \ matrixL().solveInPlace(bAndX);}
+\DoxyCodeLine{00497\ \ \ matrixU().solveInPlace(bAndX);}
+\DoxyCodeLine{00498\ \}}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00503\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo>}
+\DoxyCodeLine{00504\ MatrixType\ \mbox{\hyperlink{class_eigen_1_1_l_l_t_a8b6ba1bc41811c50e65cac8db597d802}{LLT<MatrixType,\_UpLo>::reconstructedMatrix}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00505\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00506\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LLT\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00507\ \ \ \textcolor{keywordflow}{return}\ matrixL()\ *\ matrixL().adjoint().toDenseMatrix();}
+\DoxyCodeLine{00508\ \}}
+\DoxyCodeLine{00509\ }
+\DoxyCodeLine{00514\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00515\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<typename\ MatrixBase<Derived>::PlainObject}}>}
+\DoxyCodeLine{00516\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a90c45f7a30265df792d5aeaddead2635}{MatrixBase<Derived>::llt}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00517\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00518\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<PlainObject>}}(derived());}
+\DoxyCodeLine{00519\ \}}
+\DoxyCodeLine{00520\ }
+\DoxyCodeLine{00525\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ UpLo>}
+\DoxyCodeLine{00526\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<typename\ SelfAdjointView<MatrixType,\ UpLo>::PlainObject}},\ UpLo>}
+\DoxyCodeLine{00527\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_view_a405e810491642a7f7b785f2ad6f93619}{SelfAdjointView<MatrixType,\ UpLo>::llt}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00528\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00529\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_l_l_t}{LLT<PlainObject,UpLo>}}(m\_matrix);}
+\DoxyCodeLine{00530\ \}}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_LLT\_H}}
+
+\end{DoxyCode}

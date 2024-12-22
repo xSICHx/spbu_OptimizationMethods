@@ -1,0 +1,23 @@
+\doxysection{Stop\+Criterion\+Area.\+h}
+\hypertarget{_stop_criterion_area_8h_source}{}\label{_stop_criterion_area_8h_source}\index{OptimizationMethods/StopCriterionArea.h@{OptimizationMethods/StopCriterionArea.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}StopCriterion.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_stop_criterion_area}{StopCriterionArea}}\ :}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{public}\ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}\ \textcolor{comment}{//virtual\ для\ предотвращения\ постоянной\ инициализации n\_max\ }}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00020\ \ \ \ \ \mbox{\hyperlink{class_stop_criterion_area}{StopCriterionArea}}(\textcolor{keywordtype}{size\_t}\ \_n\_max)\ :\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}(\_n\_max)\ \{\};}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{bool}\ check(\mbox{\hyperlink{class_transfer_data}{TransferData}}\&\ data)\textcolor{keyword}{\ const\ override\ }\{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (data.getFlagInBound()\ ==\ \textcolor{keyword}{nullptr})}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ flag\_in\_area\ =\ *data.getFlagInBound();}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ flag\_in\_area;}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ }
+
+\end{DoxyCode}

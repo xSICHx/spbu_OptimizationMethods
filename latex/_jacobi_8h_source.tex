@@ -1,0 +1,368 @@
+\doxysection{Jacobi.\+h}
+\hypertarget{_jacobi_8h_source}{}\label{_jacobi_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Jacobi/Jacobi.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Jacobi/Jacobi.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_JACOBI\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_JACOBI\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation}}}
+\DoxyCodeLine{00035\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00040\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a38fec2c4da529ef3d05ff37b848b4227}{JacobiRotation}}()\ \{\}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00043\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a3e8b5dc0a56f7a2d0f788b1ccb1547cb}{JacobiRotation}}(\textcolor{keyword}{const}\ Scalar\&\ c,\ \textcolor{keyword}{const}\ Scalar\&\ s)\ :\ m\_c(c),\ m\_s(s)\ \{\}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ \ \ Scalar\&\ c()\ \{\ \textcolor{keywordflow}{return}\ m\_c;\ \}}
+\DoxyCodeLine{00046\ \ \ \ \ Scalar\ c()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_c;\ \}}
+\DoxyCodeLine{00047\ \ \ \ \ Scalar\&\ s()\ \{\ \textcolor{keywordflow}{return}\ m\_s;\ \}}
+\DoxyCodeLine{00048\ \ \ \ \ Scalar\ s()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_s;\ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation}}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_ada8389f291839964d7b481464f0e4e94}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation}}\&\ other)}
+\DoxyCodeLine{00052\ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keyword}{using\ }numext::conj;}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a38fec2c4da529ef3d05ff37b848b4227}{JacobiRotation}}(m\_c\ *\ other.m\_c\ -\/\ conj(m\_s)\ *\ other.m\_s,}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ conj(m\_c\ *\ conj(other.m\_s)\ +\ conj(m\_s)\ *\ conj(other.m\_c)));}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00059\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation}}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_ab40e9cdc4582593511e57ee896e055a2}{transpose}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keyword}{using\ }numext::conj;\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a38fec2c4da529ef3d05ff37b848b4227}{JacobiRotation}}(m\_c,\ -\/conj(m\_s));\ \}}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00062\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation}}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a89c8ea615f8fa77ddd5810a1e5fde4da}{adjoint}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keyword}{using\ }numext::conj;\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a38fec2c4da529ef3d05ff37b848b4227}{JacobiRotation}}(conj(m\_c),\ -\/m\_s);\ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a69076401f22e883dc76b6ff9074ac669}{makeJacobi}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>}}\&,\ Index\ p,\ Index\ q);}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a69076401f22e883dc76b6ff9074ac669}{makeJacobi}}(\textcolor{keyword}{const}\ RealScalar\&\ x,\ \textcolor{keyword}{const}\ Scalar\&\ y,\ \textcolor{keyword}{const}\ RealScalar\&\ z);}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_af73c81e9cc139b7e0d877ce553b02ec0}{makeGivens}}(\textcolor{keyword}{const}\ Scalar\&\ p,\ \textcolor{keyword}{const}\ Scalar\&\ q,\ Scalar*\ z=0);}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_af73c81e9cc139b7e0d877ce553b02ec0}{makeGivens}}(\textcolor{keyword}{const}\ Scalar\&\ p,\ \textcolor{keyword}{const}\ Scalar\&\ q,\ Scalar*\ z,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::true\_type}});}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_af73c81e9cc139b7e0d877ce553b02ec0}{makeGivens}}(\textcolor{keyword}{const}\ Scalar\&\ p,\ \textcolor{keyword}{const}\ Scalar\&\ q,\ Scalar*\ z,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1false__type}{internal::false\_type}});}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ Scalar\ m\_c,\ m\_s;}
+\DoxyCodeLine{00075\ \};}
+\DoxyCodeLine{00076\ }
+\DoxyCodeLine{00082\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00083\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a69076401f22e883dc76b6ff9074ac669}{JacobiRotation<Scalar>::makeJacobi}}(\textcolor{keyword}{const}\ RealScalar\&\ x,\ \textcolor{keyword}{const}\ Scalar\&\ y,\ \textcolor{keyword}{const}\ RealScalar\&\ z)}
+\DoxyCodeLine{00084\ \{}
+\DoxyCodeLine{00085\ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00087\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00088\ \ \ RealScalar\ deno\ =\ RealScalar(2)*abs(y);}
+\DoxyCodeLine{00089\ \ \ \textcolor{keywordflow}{if}(deno\ <\ (std::numeric\_limits<RealScalar>::min)())}
+\DoxyCodeLine{00090\ \ \ \{}
+\DoxyCodeLine{00091\ \ \ \ \ m\_c\ =\ Scalar(1);}
+\DoxyCodeLine{00092\ \ \ \ \ m\_s\ =\ Scalar(0);}
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00094\ \ \ \}}
+\DoxyCodeLine{00095\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00096\ \ \ \{}
+\DoxyCodeLine{00097\ \ \ \ \ RealScalar\ tau\ =\ (x-\/z)/deno;}
+\DoxyCodeLine{00098\ \ \ \ \ RealScalar\ w\ =\ sqrt(numext::abs2(tau)\ +\ RealScalar(1));}
+\DoxyCodeLine{00099\ \ \ \ \ RealScalar\ t;}
+\DoxyCodeLine{00100\ \ \ \ \ \textcolor{keywordflow}{if}(tau>RealScalar(0))}
+\DoxyCodeLine{00101\ \ \ \ \ \{}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ t\ =\ RealScalar(1)\ /\ (tau\ +\ w);}
+\DoxyCodeLine{00103\ \ \ \ \ \}}
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00105\ \ \ \ \ \{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ t\ =\ RealScalar(1)\ /\ (tau\ -\/\ w);}
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ RealScalar\ sign\_t\ =\ t\ >\ RealScalar(0)\ ?\ RealScalar(1)\ :\ RealScalar(-\/1);}
+\DoxyCodeLine{00109\ \ \ \ \ RealScalar\ n\ =\ RealScalar(1)\ /\ sqrt(numext::abs2(t)+RealScalar(1));}
+\DoxyCodeLine{00110\ \ \ \ \ m\_s\ =\ -\/\ sign\_t\ *\ (numext::conj(y)\ /\ abs(y))\ *\ abs(t)\ *\ n;}
+\DoxyCodeLine{00111\ \ \ \ \ m\_c\ =\ n;}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00125\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00126\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00127\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_a69076401f22e883dc76b6ff9074ac669}{JacobiRotation<Scalar>::makeJacobi}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>}}\&\ m,\ Index\ p,\ Index\ q)}
+\DoxyCodeLine{00128\ \{}
+\DoxyCodeLine{00129\ \ \ \textcolor{keywordflow}{return}\ makeJacobi(numext::real(m.coeff(p,p)),\ m.coeff(p,q),\ numext::real(m.coeff(q,q)));}
+\DoxyCodeLine{00130\ \}}
+\DoxyCodeLine{00131\ }
+\DoxyCodeLine{00148\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00149\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_af73c81e9cc139b7e0d877ce553b02ec0}{JacobiRotation<Scalar>::makeGivens}}(\textcolor{keyword}{const}\ Scalar\&\ p,\ \textcolor{keyword}{const}\ Scalar\&\ q,\ Scalar*\ z)}
+\DoxyCodeLine{00150\ \{}
+\DoxyCodeLine{00151\ \ \ makeGivens(p,\ q,\ z,\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional}}<\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::IsComplex}},\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::true\_type}},\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1false__type}{internal::false\_type}}>::type());}
+\DoxyCodeLine{00152\ \}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \textcolor{comment}{//\ specialization\ for\ complexes}}
+\DoxyCodeLine{00156\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00157\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_af73c81e9cc139b7e0d877ce553b02ec0}{JacobiRotation<Scalar>::makeGivens}}(\textcolor{keyword}{const}\ Scalar\&\ p,\ \textcolor{keyword}{const}\ Scalar\&\ q,\ Scalar*\ r,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::true\_type}})}
+\DoxyCodeLine{00158\ \{}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{using\ }numext::conj;}
+\DoxyCodeLine{00162\ \ \ }
+\DoxyCodeLine{00163\ \ \ \textcolor{keywordflow}{if}(q==Scalar(0))}
+\DoxyCodeLine{00164\ \ \ \{}
+\DoxyCodeLine{00165\ \ \ \ \ m\_c\ =\ numext::real(p)<0\ ?\ Scalar(-\/1)\ :\ Scalar(1);}
+\DoxyCodeLine{00166\ \ \ \ \ m\_s\ =\ 0;}
+\DoxyCodeLine{00167\ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ m\_c\ *\ p;}
+\DoxyCodeLine{00168\ \ \ \}}
+\DoxyCodeLine{00169\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(p==Scalar(0))}
+\DoxyCodeLine{00170\ \ \ \{}
+\DoxyCodeLine{00171\ \ \ \ \ m\_c\ =\ 0;}
+\DoxyCodeLine{00172\ \ \ \ \ m\_s\ =\ -\/q/abs(q);}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ abs(q);}
+\DoxyCodeLine{00174\ \ \ \}}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00176\ \ \ \{}
+\DoxyCodeLine{00177\ \ \ \ \ RealScalar\ p1\ =\ numext::norm1(p);}
+\DoxyCodeLine{00178\ \ \ \ \ RealScalar\ q1\ =\ numext::norm1(q);}
+\DoxyCodeLine{00179\ \ \ \ \ \textcolor{keywordflow}{if}(p1>=q1)}
+\DoxyCodeLine{00180\ \ \ \ \ \{}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ Scalar\ ps\ =\ p\ /\ p1;}
+\DoxyCodeLine{00182\ \ \ \ \ \ \ RealScalar\ p2\ =\ numext::abs2(ps);}
+\DoxyCodeLine{00183\ \ \ \ \ \ \ Scalar\ qs\ =\ q\ /\ p1;}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ RealScalar\ q2\ =\ numext::abs2(qs);}
+\DoxyCodeLine{00185\ }
+\DoxyCodeLine{00186\ \ \ \ \ \ \ RealScalar\ u\ =\ sqrt(RealScalar(1)\ +\ q2/p2);}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(numext::real(p)<RealScalar(0))}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ u\ =\ -\/u;}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \ \ \ \ \ \ m\_c\ =\ Scalar(1)/u;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ m\_s\ =\ -\/qs*conj(ps)*(m\_c/p2);}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ p\ *\ u;}
+\DoxyCodeLine{00193\ \ \ \ \ \}}
+\DoxyCodeLine{00194\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00195\ \ \ \ \ \{}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ Scalar\ ps\ =\ p\ /\ q1;}
+\DoxyCodeLine{00197\ \ \ \ \ \ \ RealScalar\ p2\ =\ numext::abs2(ps);}
+\DoxyCodeLine{00198\ \ \ \ \ \ \ Scalar\ qs\ =\ q\ /\ q1;}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ RealScalar\ q2\ =\ numext::abs2(qs);}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \ \ RealScalar\ u\ =\ q1\ *\ sqrt(p2\ +\ q2);}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(numext::real(p)<RealScalar(0))}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ u\ =\ -\/u;}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \ \ p1\ =\ abs(p);}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ ps\ =\ p/p1;}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ m\_c\ =\ p1/u;}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ m\_s\ =\ -\/conj(ps)\ *\ (q/u);}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ ps\ *\ u;}
+\DoxyCodeLine{00210\ \ \ \ \ \}}
+\DoxyCodeLine{00211\ \ \ \}}
+\DoxyCodeLine{00212\ \}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \textcolor{comment}{//\ specialization\ for\ reals}}
+\DoxyCodeLine{00215\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00216\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_af73c81e9cc139b7e0d877ce553b02ec0}{JacobiRotation<Scalar>::makeGivens}}(\textcolor{keyword}{const}\ Scalar\&\ p,\ \textcolor{keyword}{const}\ Scalar\&\ q,\ Scalar*\ r,\ internal::false\_type)}
+\DoxyCodeLine{00217\ \{}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00219\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00220\ \ \ \textcolor{keywordflow}{if}(q==Scalar(0))}
+\DoxyCodeLine{00221\ \ \ \{}
+\DoxyCodeLine{00222\ \ \ \ \ m\_c\ =\ p<Scalar(0)\ ?\ Scalar(-\/1)\ :\ Scalar(1);}
+\DoxyCodeLine{00223\ \ \ \ \ m\_s\ =\ Scalar(0);}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ abs(p);}
+\DoxyCodeLine{00225\ \ \ \}}
+\DoxyCodeLine{00226\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(p==Scalar(0))}
+\DoxyCodeLine{00227\ \ \ \{}
+\DoxyCodeLine{00228\ \ \ \ \ m\_c\ =\ Scalar(0);}
+\DoxyCodeLine{00229\ \ \ \ \ m\_s\ =\ q<Scalar(0)\ ?\ Scalar(1)\ :\ Scalar(-\/1);}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ abs(q);}
+\DoxyCodeLine{00231\ \ \ \}}
+\DoxyCodeLine{00232\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(abs(p)\ >\ abs(q))}
+\DoxyCodeLine{00233\ \ \ \{}
+\DoxyCodeLine{00234\ \ \ \ \ Scalar\ t\ =\ q/p;}
+\DoxyCodeLine{00235\ \ \ \ \ Scalar\ u\ =\ sqrt(Scalar(1)\ +\ numext::abs2(t));}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordflow}{if}(p<Scalar(0))}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ u\ =\ -\/u;}
+\DoxyCodeLine{00238\ \ \ \ \ m\_c\ =\ Scalar(1)/u;}
+\DoxyCodeLine{00239\ \ \ \ \ m\_s\ =\ -\/t\ *\ m\_c;}
+\DoxyCodeLine{00240\ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ p\ *\ u;}
+\DoxyCodeLine{00241\ \ \ \}}
+\DoxyCodeLine{00242\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00243\ \ \ \{}
+\DoxyCodeLine{00244\ \ \ \ \ Scalar\ t\ =\ p/q;}
+\DoxyCodeLine{00245\ \ \ \ \ Scalar\ u\ =\ sqrt(Scalar(1)\ +\ numext::abs2(t));}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keywordflow}{if}(q<Scalar(0))}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ u\ =\ -\/u;}
+\DoxyCodeLine{00248\ \ \ \ \ m\_s\ =\ -\/Scalar(1)/u;}
+\DoxyCodeLine{00249\ \ \ \ \ m\_c\ =\ -\/t\ *\ m\_s;}
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keywordflow}{if}(r)\ *r\ =\ q\ *\ u;}
+\DoxyCodeLine{00251\ \ \ \}}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \}}
+\DoxyCodeLine{00254\ }
+\DoxyCodeLine{00255\ \textcolor{comment}{/****************************************************************************************}}
+\DoxyCodeLine{00256\ \textcolor{comment}{*\ \ \ Implementation\ of\ MatrixBase\ methods}}
+\DoxyCodeLine{00257\ \textcolor{comment}{****************************************************************************************/}}
+\DoxyCodeLine{00258\ }
+\DoxyCodeLine{00259\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00266\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorX,\ \textcolor{keyword}{typename}\ VectorY,\ \textcolor{keyword}{typename}\ OtherScalar>}
+\DoxyCodeLine{00267\ \textcolor{keywordtype}{void}\ apply\_rotation\_in\_the\_plane(DenseBase<VectorX>\&\ xpr\_x,\ DenseBase<VectorY>\&\ xpr\_y,\ \textcolor{keyword}{const}\ JacobiRotation<OtherScalar>\&\ j);}
+\DoxyCodeLine{00268\ \}}
+\DoxyCodeLine{00269\ }
+\DoxyCodeLine{00276\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00277\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherScalar>}
+\DoxyCodeLine{00278\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a3a08ad41e81d8ad4a37b5d5c7490e765}{MatrixBase<Derived>::applyOnTheLeft}}(Index\ p,\ Index\ q,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation<OtherScalar>}}\&\ j)}
+\DoxyCodeLine{00279\ \{}
+\DoxyCodeLine{00280\ \ \ RowXpr\ x(this-\/>row(p));}
+\DoxyCodeLine{00281\ \ \ RowXpr\ y(this-\/>row(q));}
+\DoxyCodeLine{00282\ \ \ internal::apply\_rotation\_in\_the\_plane(x,\ y,\ j);}
+\DoxyCodeLine{00283\ \}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00291\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00292\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherScalar>}
+\DoxyCodeLine{00293\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a45d91752925d2757fc8058a293b15462}{MatrixBase<Derived>::applyOnTheRight}}(Index\ p,\ Index\ q,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation<OtherScalar>}}\&\ j)}
+\DoxyCodeLine{00294\ \{}
+\DoxyCodeLine{00295\ \ \ ColXpr\ x(this-\/>col(p));}
+\DoxyCodeLine{00296\ \ \ ColXpr\ y(this-\/>col(q));}
+\DoxyCodeLine{00297\ \ \ internal::apply\_rotation\_in\_the\_plane(x,\ y,\ j.\mbox{\hyperlink{class_eigen_1_1_jacobi_rotation_ab40e9cdc4582593511e57ee896e055a2}{transpose}}());}
+\DoxyCodeLine{00298\ \}}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00301\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ VectorX,\ \textcolor{keyword}{typename}\ VectorY,\ \textcolor{keyword}{typename}\ OtherScalar>}
+\DoxyCodeLine{00302\ \textcolor{keywordtype}{void}\ \textcolor{comment}{/*EIGEN\_DONT\_INLINE*/}\ apply\_rotation\_in\_the\_plane(\mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<VectorX>}}\&\ xpr\_x,\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<VectorY>}}\&\ xpr\_y,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_jacobi_rotation}{JacobiRotation<OtherScalar>}}\&\ j)}
+\DoxyCodeLine{00303\ \{}
+\DoxyCodeLine{00304\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VectorX::Scalar\ Scalar;}
+\DoxyCodeLine{00305\ \ \ \textcolor{keyword}{enum}\ \{\ PacketSize\ =\ packet\_traits<Scalar>::size\ \};}
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ packet\_traits<Scalar>::type\ Packet;}
+\DoxyCodeLine{00307\ \ \ eigen\_assert(xpr\_x.size()\ ==\ xpr\_y.size());}
+\DoxyCodeLine{00308\ \ \ Index\ size\ =\ xpr\_x.size();}
+\DoxyCodeLine{00309\ \ \ Index\ incrx\ =\ xpr\_x.derived().innerStride();}
+\DoxyCodeLine{00310\ \ \ Index\ incry\ =\ xpr\_y.derived().innerStride();}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \ \ Scalar*\ EIGEN\_RESTRICT\ x\ =\ \&xpr\_x.derived().coeffRef(0);}
+\DoxyCodeLine{00313\ \ \ Scalar*\ EIGEN\_RESTRICT\ y\ =\ \&xpr\_y.derived().coeffRef(0);}
+\DoxyCodeLine{00314\ \ \ }
+\DoxyCodeLine{00315\ \ \ OtherScalar\ c\ =\ j.c();}
+\DoxyCodeLine{00316\ \ \ OtherScalar\ s\ =\ j.s();}
+\DoxyCodeLine{00317\ \ \ \textcolor{keywordflow}{if}\ (c==OtherScalar(1)\ \&\&\ s==OtherScalar(0))}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00319\ }
+\DoxyCodeLine{00320\ \textcolor{comment}{\ \ /***\ dynamic-\/size\ vectorized\ paths\ ***/}}
+\DoxyCodeLine{00321\ }
+\DoxyCodeLine{00322\ \ \ \textcolor{keywordflow}{if}(VectorX::SizeAtCompileTime\ ==\ Dynamic\ \&\&}
+\DoxyCodeLine{00323\ \ \ \ \ (VectorX::Flags\ \&\ VectorY::Flags\ \&\ \mbox{\hyperlink{group__flags_ga1a306a438e1ab074e8be59512e887b9f}{PacketAccessBit}})\ \&\&}
+\DoxyCodeLine{00324\ \ \ \ \ ((incrx==1\ \&\&\ incry==1)\ ||\ PacketSize\ ==\ 1))}
+\DoxyCodeLine{00325\ \ \ \{}
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{comment}{//\ both\ vectors\ are\ sequentially\ stored\ in\ memory\ =>\ vectorization}}
+\DoxyCodeLine{00327\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ Peeling\ =\ 2\ \};}
+\DoxyCodeLine{00328\ }
+\DoxyCodeLine{00329\ \ \ \ \ Index\ alignedStart\ =\ internal::first\_default\_aligned(y,\ size);}
+\DoxyCodeLine{00330\ \ \ \ \ Index\ alignedEnd\ =\ alignedStart\ +\ ((size-\/alignedStart)/PacketSize)*PacketSize;}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keyword}{const}\ Packet\ pc\ =\ pset1<Packet>(c);}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keyword}{const}\ Packet\ ps\ =\ pset1<Packet>(s);}
+\DoxyCodeLine{00334\ \ \ \ \ conj\_helper<Packet,Packet,NumTraits<Scalar>::IsComplex,\textcolor{keyword}{false}>\ pcj;}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=0;\ i<alignedStart;\ ++i)}
+\DoxyCodeLine{00337\ \ \ \ \ \{}
+\DoxyCodeLine{00338\ \ \ \ \ \ \ Scalar\ xi\ =\ x[i];}
+\DoxyCodeLine{00339\ \ \ \ \ \ \ Scalar\ yi\ =\ y[i];}
+\DoxyCodeLine{00340\ \ \ \ \ \ \ x[i]\ =\ \ c\ *\ xi\ +\ numext::conj(s)\ *\ yi;}
+\DoxyCodeLine{00341\ \ \ \ \ \ \ y[i]\ =\ -\/s\ *\ xi\ +\ numext::conj(c)\ *\ yi;}
+\DoxyCodeLine{00342\ \ \ \ \ \}}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00344\ \ \ \ \ Scalar*\ EIGEN\_RESTRICT\ px\ =\ x\ +\ alignedStart;}
+\DoxyCodeLine{00345\ \ \ \ \ Scalar*\ EIGEN\_RESTRICT\ py\ =\ y\ +\ alignedStart;}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keywordflow}{if}(internal::first\_default\_aligned(x,\ size)==alignedStart)}
+\DoxyCodeLine{00348\ \ \ \ \ \{}
+\DoxyCodeLine{00349\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=alignedStart;\ i<alignedEnd;\ i+=PacketSize)}
+\DoxyCodeLine{00350\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00351\ \ \ \ \ \ \ \ \ Packet\ xi\ =\ pload<Packet>(px);}
+\DoxyCodeLine{00352\ \ \ \ \ \ \ \ \ Packet\ yi\ =\ pload<Packet>(py);}
+\DoxyCodeLine{00353\ \ \ \ \ \ \ \ \ pstore(px,\ padd(pmul(pc,xi),pcj.pmul(ps,yi)));}
+\DoxyCodeLine{00354\ \ \ \ \ \ \ \ \ pstore(py,\ psub(pcj.pmul(pc,yi),pmul(ps,xi)));}
+\DoxyCodeLine{00355\ \ \ \ \ \ \ \ \ px\ +=\ PacketSize;}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ \ \ py\ +=\ PacketSize;}
+\DoxyCodeLine{00357\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00358\ \ \ \ \ \}}
+\DoxyCodeLine{00359\ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00360\ \ \ \ \ \{}
+\DoxyCodeLine{00361\ \ \ \ \ \ \ Index\ peelingEnd\ =\ alignedStart\ +\ ((size-\/alignedStart)/(Peeling*PacketSize))*(Peeling*PacketSize);}
+\DoxyCodeLine{00362\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=alignedStart;\ i<peelingEnd;\ i+=Peeling*PacketSize)}
+\DoxyCodeLine{00363\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00364\ \ \ \ \ \ \ \ \ Packet\ xi\ \ \ =\ ploadu<Packet>(px);}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ \ \ Packet\ xi1\ \ =\ ploadu<Packet>(px+PacketSize);}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \ \ Packet\ yi\ \ \ =\ pload\ <Packet>(py);}
+\DoxyCodeLine{00367\ \ \ \ \ \ \ \ \ Packet\ yi1\ \ =\ pload\ <Packet>(py+PacketSize);}
+\DoxyCodeLine{00368\ \ \ \ \ \ \ \ \ pstoreu(px,\ padd(pmul(pc,xi),pcj.pmul(ps,yi)));}
+\DoxyCodeLine{00369\ \ \ \ \ \ \ \ \ pstoreu(px+PacketSize,\ padd(pmul(pc,xi1),pcj.pmul(ps,yi1)));}
+\DoxyCodeLine{00370\ \ \ \ \ \ \ \ \ pstore\ (py,\ psub(pcj.pmul(pc,yi),pmul(ps,xi)));}
+\DoxyCodeLine{00371\ \ \ \ \ \ \ \ \ pstore\ (py+PacketSize,\ psub(pcj.pmul(pc,yi1),pmul(ps,xi1)));}
+\DoxyCodeLine{00372\ \ \ \ \ \ \ \ \ px\ +=\ Peeling*PacketSize;}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \ \ py\ +=\ Peeling*PacketSize;}
+\DoxyCodeLine{00374\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00375\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(alignedEnd!=peelingEnd)}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ \ \ Packet\ xi\ =\ ploadu<Packet>(x+peelingEnd);}
+\DoxyCodeLine{00378\ \ \ \ \ \ \ \ \ Packet\ yi\ =\ pload\ <Packet>(y+peelingEnd);}
+\DoxyCodeLine{00379\ \ \ \ \ \ \ \ \ pstoreu(x+peelingEnd,\ padd(pmul(pc,xi),pcj.pmul(ps,yi)));}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ \ \ pstore\ (y+peelingEnd,\ psub(pcj.pmul(pc,yi),pmul(ps,xi)));}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00382\ \ \ \ \ \}}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=alignedEnd;\ i<size;\ ++i)}
+\DoxyCodeLine{00385\ \ \ \ \ \{}
+\DoxyCodeLine{00386\ \ \ \ \ \ \ Scalar\ xi\ =\ x[i];}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ Scalar\ yi\ =\ y[i];}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ x[i]\ =\ \ c\ *\ xi\ +\ numext::conj(s)\ *\ yi;}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ y[i]\ =\ -\/s\ *\ xi\ +\ numext::conj(c)\ *\ yi;}
+\DoxyCodeLine{00390\ \ \ \ \ \}}
+\DoxyCodeLine{00391\ \ \ \}}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \textcolor{comment}{\ \ /***\ fixed-\/size\ vectorized\ path\ ***/}}
+\DoxyCodeLine{00394\ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(VectorX::SizeAtCompileTime\ !=\ Dynamic\ \&\&}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \ \ (VectorX::Flags\ \&\ VectorY::Flags\ \&\ \mbox{\hyperlink{group__flags_ga1a306a438e1ab074e8be59512e887b9f}{PacketAccessBit}})\ \&\&}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ \ \ (EIGEN\_PLAIN\_ENUM\_MIN(evaluator<VectorX>::Alignment,\ evaluator<VectorY>::Alignment)>0))\ \textcolor{comment}{//\ FIXME\ should\ be\ compared\ to\ the\ required\ alignment}}
+\DoxyCodeLine{00397\ \ \ \{}
+\DoxyCodeLine{00398\ \ \ \ \ \textcolor{keyword}{const}\ Packet\ pc\ =\ pset1<Packet>(c);}
+\DoxyCodeLine{00399\ \ \ \ \ \textcolor{keyword}{const}\ Packet\ ps\ =\ pset1<Packet>(s);}
+\DoxyCodeLine{00400\ \ \ \ \ conj\_helper<Packet,Packet,NumTraits<Scalar>::IsComplex,\textcolor{keyword}{false}>\ pcj;}
+\DoxyCodeLine{00401\ \ \ \ \ Scalar*\ EIGEN\_RESTRICT\ px\ =\ x;}
+\DoxyCodeLine{00402\ \ \ \ \ Scalar*\ EIGEN\_RESTRICT\ py\ =\ y;}
+\DoxyCodeLine{00403\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=0;\ i<size;\ i+=PacketSize)}
+\DoxyCodeLine{00404\ \ \ \ \ \{}
+\DoxyCodeLine{00405\ \ \ \ \ \ \ Packet\ xi\ =\ pload<Packet>(px);}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ Packet\ yi\ =\ pload<Packet>(py);}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ pstore(px,\ padd(pmul(pc,xi),pcj.pmul(ps,yi)));}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ pstore(py,\ psub(pcj.pmul(pc,yi),pmul(ps,xi)));}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ px\ +=\ PacketSize;}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ py\ +=\ PacketSize;}
+\DoxyCodeLine{00411\ \ \ \ \ \}}
+\DoxyCodeLine{00412\ \ \ \}}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00414\ \textcolor{comment}{\ \ /***\ non-\/vectorized\ path\ ***/}}
+\DoxyCodeLine{00415\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00416\ \ \ \{}
+\DoxyCodeLine{00417\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=0;\ i<size;\ ++i)}
+\DoxyCodeLine{00418\ \ \ \ \ \{}
+\DoxyCodeLine{00419\ \ \ \ \ \ \ Scalar\ xi\ =\ *x;}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ Scalar\ yi\ =\ *y;}
+\DoxyCodeLine{00421\ \ \ \ \ \ \ *x\ =\ \ c\ *\ xi\ +\ numext::conj(s)\ *\ yi;}
+\DoxyCodeLine{00422\ \ \ \ \ \ \ *y\ =\ -\/s\ *\ xi\ +\ numext::conj(c)\ *\ yi;}
+\DoxyCodeLine{00423\ \ \ \ \ \ \ x\ +=\ incrx;}
+\DoxyCodeLine{00424\ \ \ \ \ \ \ y\ +=\ incry;}
+\DoxyCodeLine{00425\ \ \ \ \ \}}
+\DoxyCodeLine{00426\ \ \ \}}
+\DoxyCodeLine{00427\ \}}
+\DoxyCodeLine{00428\ }
+\DoxyCodeLine{00429\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_JACOBI\_H}}
+
+\end{DoxyCode}

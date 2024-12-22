@@ -1,0 +1,495 @@
+\doxysection{Permutation\+Matrix.\+h}
+\hypertarget{_permutation_matrix_8h_source}{}\label{_permutation_matrix_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/PermutationMatrix.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/PermutationMatrix.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009-\/2015\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PERMUTATIONMATRIX\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_PERMUTATIONMATRIX\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{enum}\ PermPermProduct\_t\ \{PermPermProduct\};}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00045\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00046\ \textcolor{keyword}{class\ }PermutationBase\ :\ \textcolor{keyword}{public}\ EigenBase<Derived>}
+\DoxyCodeLine{00047\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{typedef}\ internal::traits<Derived>\ Traits;}
+\DoxyCodeLine{00049\ \ \ \ \ \textcolor{keyword}{typedef}\ EigenBase<Derived>\ Base;}
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ Flags\ =\ Traits::Flags,}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ RowsAtCompileTime\ =\ Traits::RowsAtCompileTime,}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ ColsAtCompileTime\ =\ Traits::ColsAtCompileTime,}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ MaxRowsAtCompileTime\ =\ Traits::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ Traits::MaxColsAtCompileTime}
+\DoxyCodeLine{00060\ \ \ \ \ \};}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{typedef}\ Matrix<StorageIndex,RowsAtCompileTime,ColsAtCompileTime,0,MaxRowsAtCompileTime,MaxColsAtCompileTime>}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \ DenseMatrixType;}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{typedef}\ PermutationMatrix<IndicesType::SizeAtCompileTime,IndicesType::MaxSizeAtCompileTime,StorageIndex>}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \ \ \ \ PlainPermutationType;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{typedef}\ PlainPermutationType\ PlainObject;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{Base::derived}};}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{typedef}\ Inverse<Derived>\ InverseReturnType;}
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{void}\ Scalar;}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00074\ \ \ \ \ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a72373e5ca0baf2a077a20217f8441524}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00075\ \ \ \ \ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}()\ =\ other.indices();}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00078\ \ \ \ \ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00082\ \ \ \ \ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ae7537ef38a8973bf57b0d1e8eddc449a}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<OtherDerived>}}\&\ tr)}
+\DoxyCodeLine{00083\ \ \ \ \ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a6805bb75fd7966ea71895c24ff196444}{setIdentity}}(tr.\mbox{\hyperlink{class_eigen_1_1_transpositions_base_a6888d6261a9cc24ee8607496e610a5a3}{size}}());}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k=\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}()-\/1;\ k>=0;\ -\/-\/k)}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a36e528b78d3fee2f299728015b841c27}{applyTranspositionOnTheRight}}(k,tr.\mbox{\hyperlink{class_eigen_1_1_transpositions_base_ac025c1c77dfa5019d1f5aa71ad21cebd}{coeff}}(k));}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00088\ \ \ \ \ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00094\ \ \ \ \ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a6855760963d82e6dfa100be506254d35}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase}}\&\ other)}
+\DoxyCodeLine{00095\ \ \ \ \ \{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}()\ =\ other.indices();}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_acd7ed28ee514287f933de8467768925b}{rows}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}(\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}());\ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a26961ef6cfef586d412054ee5a20d430}{cols}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}(\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}());\ \}}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}(\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}());\ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DenseDerived>}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordtype}{void}\ evalTo(\mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<DenseDerived>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00113\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ other.\mbox{\hyperlink{class_eigen_1_1_dense_base_a00dda7dd6ba5960b3b77a91211dbee13}{setZero}}();}
+\DoxyCodeLine{00115\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i=0;\ i<\mbox{\hyperlink{class_eigen_1_1_permutation_base_acd7ed28ee514287f933de8467768925b}{rows}}();\ ++i)}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \ \ other.coeffRef(\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeff(i),i)\ =\ \textcolor{keyword}{typename}\ DenseDerived::Scalar(1);}
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00124\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{DenseMatrixType}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_addfa91a2c2c69c76159f1091368a505f}{toDenseMatrix}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00125\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00130\ \ \ \ \ \textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}().indices();\ \}}
+\DoxyCodeLine{00132\ \ \ \ \ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a75b2bc5f10588a11f7a2005a9fa3ec3b}{indices}}()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}().indices();\ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a0e0fda6e84d69e02432e4770359bb532}{resize}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ newSize)}
+\DoxyCodeLine{00137\ \ \ \ \ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().resize(newSize);}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00142\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a6805bb75fd7966ea71895c24ff196444}{setIdentity}}()}
+\DoxyCodeLine{00143\ \ \ \ \ \{}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ StorageIndex\ n\ =\ StorageIndex(\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}());}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(StorageIndex\ i\ =\ 0;\ i\ <\ n;\ ++i)}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeffRef(i)\ =\ i;}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a830a80511a61634ef437795916f7f8da}{setIdentity}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ newSize)}
+\DoxyCodeLine{00152\ \ \ \ \ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a0e0fda6e84d69e02432e4770359bb532}{resize}}(newSize);}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a6805bb75fd7966ea71895c24ff196444}{setIdentity}}();}
+\DoxyCodeLine{00155\ \ \ \ \ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00166\ \ \ \ \ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a09386d22a8b9e2f23fe839790a6e6106}{applyTranspositionOnTheLeft}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ i,\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ j)}
+\DoxyCodeLine{00167\ \ \ \ \ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ eigen\_assert(i>=0\ \&\&\ j>=0\ \&\&\ i<\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}()\ \&\&\ j<\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}());}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k\ =\ 0;\ k\ <\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}();\ ++k)}
+\DoxyCodeLine{00170\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00171\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeff(k)\ ==\ i)\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeffRef(k)\ =\ StorageIndex(j);}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeff(k)\ ==\ j)\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeffRef(k)\ =\ StorageIndex(i);}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00175\ \ \ \ \ \}}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00185\ \ \ \ \ Derived\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a36e528b78d3fee2f299728015b841c27}{applyTranspositionOnTheRight}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ i,\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ j)}
+\DoxyCodeLine{00186\ \ \ \ \ \{}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ eigen\_assert(i>=0\ \&\&\ j>=0\ \&\&\ i<\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}()\ \&\&\ j<\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}());}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ std::swap(\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeffRef(i),\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeffRef(j));}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00190\ \ \ \ \ \}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00196\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{InverseReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_adb9af427f317202366c2832876064eb3}{inverse}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00197\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{InverseReturnType}}(\mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());\ \}}
+\DoxyCodeLine{00202\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{InverseReturnType}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a05805e9f4182eec3f6632e1c765b5ffe}{transpose}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00203\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{InverseReturnType}}(\mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());\ \}}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \textcolor{comment}{\ \ \ \ /****\ multiplication\ helpers\ to\ hopefully\ get\ RVO\ ****/}}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ }
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00209\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00210\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keywordtype}{void}\ assignTranspose(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00212\ \ \ \ \ \{}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i=0;\ i<\mbox{\hyperlink{class_eigen_1_1_permutation_base_acd7ed28ee514287f933de8467768925b}{rows}}();++i)\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeffRef(other.indices().coeff(i))\ =\ i;}
+\DoxyCodeLine{00214\ \ \ \ \ \}}
+\DoxyCodeLine{00215\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordtype}{void}\ assignProduct(\textcolor{keyword}{const}\ Lhs\&\ lhs,\ \textcolor{keyword}{const}\ Rhs\&\ rhs)}
+\DoxyCodeLine{00217\ \ \ \ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ eigen\_assert(lhs.cols()\ ==\ rhs.rows());}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ i=0;\ i<\mbox{\hyperlink{class_eigen_1_1_permutation_base_acd7ed28ee514287f933de8467768925b}{rows}}();++i)\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeffRef(i)\ =\ lhs.indices().coeff(rhs.indices().coeff(i));}
+\DoxyCodeLine{00220\ \ \ \ \ \}}
+\DoxyCodeLine{00221\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00224\ }
+\DoxyCodeLine{00229\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00230\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PlainPermutationType}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ae81574e059f6b9b7de2ea747fd346a1b}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<Other>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00231\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PlainPermutationType}}(internal::PermPermProduct,\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}(),\ other.derived());\ \}}
+\DoxyCodeLine{00232\ }
+\DoxyCodeLine{00237\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00238\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PlainPermutationType}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a865e88989a76b7e92f39bad5250b89c4}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse_impl}{InverseImpl<Other,PermutationStorage>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00239\ \textcolor{keyword}{\ \ \ \ }\{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PlainPermutationType}}(internal::PermPermProduct,\ *\textcolor{keyword}{this},\ other.eval());\ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00245\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>\ \textcolor{keyword}{friend}}
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PlainPermutationType}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a3f404810659d5095a6db906a4728ddfb}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse_impl}{InverseImpl<Other,\ PermutationStorage>}}\&\ other,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase}}\&\ perm)}
+\DoxyCodeLine{00247\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PlainPermutationType}}(internal::PermPermProduct,\ other.eval(),\ perm);\ \}}
+\DoxyCodeLine{00248\ \ \ \ \ }
+\DoxyCodeLine{00253\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a1fc7a5823544700c2e0795e87f9c6d09}{determinant}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00254\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ res\ =\ 1;}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ n\ =\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}();}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<bool,RowsAtCompileTime,1,0,MaxRowsAtCompileTime>}}\ mask(n);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ mask.fill(\textcolor{keyword}{false});}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ r\ =\ 0;}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \textcolor{keywordflow}{while}(r\ <\ n)}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ search\ for\ the\ next\ seed}}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}(r<n\ \&\&\ mask[r])\ r++;}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(r>=n)}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ we\ got\ one,\ let's\ follow\ it\ until\ we\ are\ back\ to\ the\ seed}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k0\ =\ r++;}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ mask.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(k0)\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ k=\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeff(k0);\ k!=k0;\ k=\mbox{\hyperlink{class_eigen_1_1_permutation_base_abd284362a216d00e7dc751641645cd04}{indices}}().coeff(k))}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ \ \ mask.\mbox{\hyperlink{class_eigen_1_1_matrix_ad6ab241435124b11a3921df752d28daf}{coeffRef}}(k)\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ res\ =\ -\/res;}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00276\ \ \ \ \ \}}
+\DoxyCodeLine{00277\ }
+\DoxyCodeLine{00278\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \};}
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00283\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex>}
+\DoxyCodeLine{00284\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}<SizeAtCompileTime,\ MaxSizeAtCompileTime,\ \_StorageIndex>\ >}
+\DoxyCodeLine{00285\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Matrix<\_StorageIndex,SizeAtCompileTime,SizeAtCompileTime,0,MaxSizeAtCompileTime,MaxSizeAtCompileTime>\ >}
+\DoxyCodeLine{00286\ \{}
+\DoxyCodeLine{00287\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_permutation_storage}{PermutationStorage}}\ \mbox{\hyperlink{struct_eigen_1_1_permutation_storage}{StorageKind}};}
+\DoxyCodeLine{00288\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<\_StorageIndex,\ SizeAtCompileTime,\ 1,\ 0,\ MaxSizeAtCompileTime,\ 1>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndicesType}};}
+\DoxyCodeLine{00289\ \ \ \textcolor{keyword}{typedef}\ \_StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00290\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{void}\ Scalar;}
+\DoxyCodeLine{00291\ \};}
+\DoxyCodeLine{00292\ \}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00307\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex>}
+\DoxyCodeLine{00308\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase}}<PermutationMatrix<SizeAtCompileTime,\ MaxSizeAtCompileTime,\ \_StorageIndex>\ >}
+\DoxyCodeLine{00309\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<PermutationMatrix>}}\ Base;}
+\DoxyCodeLine{00311\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<PermutationMatrix>}}\ Traits;}
+\DoxyCodeLine{00312\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00313\ }
+\DoxyCodeLine{00314\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}\&\ Nested;}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00316\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00317\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00318\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00319\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}()}
+\DoxyCodeLine{00322\ \ \ \ \ \{\}}
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00326\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_aa6ad58e426610b7d4433f602bf0f01b9}{PermutationMatrix}}(Index\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}})\ :\ m\_indices(\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}})}
+\DoxyCodeLine{00327\ \ \ \ \ \{}
+\DoxyCodeLine{00328\ \ \ \ \ \ \ eigen\_internal\_assert(\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}\ <=\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<StorageIndex>::highest}}());}
+\DoxyCodeLine{00329\ \ \ \ \ \}}
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00332\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00333\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_aeb2df9d7ae7193de11870be72e2d5a18}{PermutationMatrix}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ :\ m\_indices(other.\mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a98007089eb6cc1f8df83ae352e51e180}{indices}}())\ \{\}}
+\DoxyCodeLine{00335\ }
+\DoxyCodeLine{00336\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00339\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_ab5d8afcd6ea17943decd0a86943700ed}{PermutationMatrix}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}\&\ other)\ :\ m\_indices(other.\mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a98007089eb6cc1f8df83ae352e51e180}{indices}}())\ \{\}}
+\DoxyCodeLine{00340\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00341\ }
+\DoxyCodeLine{00349\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00350\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a623121c6f087283ed30af474917db217}{PermutationMatrix}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Other>}}\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a98007089eb6cc1f8df83ae352e51e180}{indices}})\ :\ m\_indices(\mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a98007089eb6cc1f8df83ae352e51e180}{indices}})}
+\DoxyCodeLine{00351\ \ \ \ \ \{\}}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a598c1860caed798aa73b773f7322836b}{PermutationMatrix}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<Other>}}\&\ tr)}
+\DoxyCodeLine{00356\ \ \ \ \ \ \ :\ m\_indices(tr.\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}())}
+\DoxyCodeLine{00357\ \ \ \ \ \{}
+\DoxyCodeLine{00358\ \ \ \ \ \ \ *\textcolor{keyword}{this}\ =\ tr;}
+\DoxyCodeLine{00359\ \ \ \ \ \}}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00363\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a31b2cb62ca8784c877a96b734cf01b54}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<Other>}}\&\ other)}
+\DoxyCodeLine{00364\ \ \ \ \ \{}
+\DoxyCodeLine{00365\ \ \ \ \ \ \ m\_indices\ =\ other.indices();}
+\DoxyCodeLine{00366\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00367\ \ \ \ \ \}}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00371\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a45427a2fbb99380c4db7574ad93b1064}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<Other>}}\&\ tr)}
+\DoxyCodeLine{00372\ \ \ \ \ \{}
+\DoxyCodeLine{00373\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base_a72373e5ca0baf2a077a20217f8441524}{Base::operator=}}(tr.derived());}
+\DoxyCodeLine{00374\ \ \ \ \ \}}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00380\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a3426608cf0c02f940e0260f38782d137}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}\&\ other)}
+\DoxyCodeLine{00381\ \ \ \ \ \{}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ m\_indices\ =\ other.m\_indices;}
+\DoxyCodeLine{00383\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00384\ \ \ \ \ \}}
+\DoxyCodeLine{00385\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00386\ }
+\DoxyCodeLine{00388\ \ \ \ \ \textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a98007089eb6cc1f8df83ae352e51e180}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00390\ \ \ \ \ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix_ab3c732a23bb4def0de3ff7a9e6e48026}{indices}}()\ \{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00391\ }
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \textcolor{comment}{\ \ \ \ /****\ multiplication\ helpers\ to\ hopefully\ get\ RVO\ ****/}}
+\DoxyCodeLine{00394\ }
+\DoxyCodeLine{00395\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00396\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00397\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse_impl}{InverseImpl<Other,PermutationStorage>}}\&\ other)}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ :\ m\_indices(other.\mbox{\hyperlink{class_eigen_1_1_permutation_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}().nestedExpression().\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}())}
+\DoxyCodeLine{00399\ \ \ \ \ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ eigen\_internal\_assert(m\_indices.size()\ <=\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<StorageIndex>::highest}}());}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ StorageIndex\ end\ =\ StorageIndex(m\_indices.size());}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (StorageIndex\ i=0;\ i<end;++i)}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ m\_indices.coeffRef(other.derived().nestedExpression().indices().coeff(i))\ =\ i;}
+\DoxyCodeLine{00404\ \ \ \ \ \}}
+\DoxyCodeLine{00405\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00406\ \ \ \ \ PermutationMatrix(internal::PermPermProduct\_t,\ \textcolor{keyword}{const}\ Lhs\&\ lhs,\ \textcolor{keyword}{const}\ Rhs\&\ rhs)}
+\DoxyCodeLine{00407\ \ \ \ \ \ \ :\ m\_indices(lhs.\mbox{\hyperlink{class_eigen_1_1_permutation_matrix_a98007089eb6cc1f8df83ae352e51e180}{indices}}().\mbox{\hyperlink{class_eigen_1_1_permutation_base_a2216f9ce7b453ac39c46ff0323daeac9}{size}}())}
+\DoxyCodeLine{00408\ \ \ \ \ \{}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ Base::assignProduct(lhs,rhs);}
+\DoxyCodeLine{00410\ \ \ \ \ \}}
+\DoxyCodeLine{00411\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00412\ }
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \ \ IndicesType\ m\_indices;}
+\DoxyCodeLine{00416\ \};}
+\DoxyCodeLine{00417\ }
+\DoxyCodeLine{00418\ }
+\DoxyCodeLine{00419\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00420\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex,\ \textcolor{keywordtype}{int}\ \_PacketAccess>}
+\DoxyCodeLine{00421\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}<SizeAtCompileTime,\ MaxSizeAtCompileTime,\ \_StorageIndex>,\_PacketAccess>\ >}
+\DoxyCodeLine{00422\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Matrix<\_StorageIndex,SizeAtCompileTime,SizeAtCompileTime,0,MaxSizeAtCompileTime,MaxSizeAtCompileTime>\ >}
+\DoxyCodeLine{00423\ \{}
+\DoxyCodeLine{00424\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_permutation_storage}{PermutationStorage}}\ \mbox{\hyperlink{struct_eigen_1_1_permutation_storage}{StorageKind}};}
+\DoxyCodeLine{00425\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<const\ Matrix<\_StorageIndex,\ SizeAtCompileTime,\ 1,\ 0,\ MaxSizeAtCompileTime,\ 1>}},\ \_PacketAccess>\ \mbox{\hyperlink{class_eigen_1_1_map}{IndicesType}};}
+\DoxyCodeLine{00426\ \ \ \textcolor{keyword}{typedef}\ \_StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00427\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{void}\ Scalar;}
+\DoxyCodeLine{00428\ \};}
+\DoxyCodeLine{00429\ \}}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ SizeAtCompileTime,\ \textcolor{keywordtype}{int}\ MaxSizeAtCompileTime,\ \textcolor{keyword}{typename}\ \_StorageIndex,\ \textcolor{keywordtype}{int}\ \_PacketAccess>}
+\DoxyCodeLine{00432\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix}}<SizeAtCompileTime,\ MaxSizeAtCompileTime,\ \_StorageIndex>,\_PacketAccess>}
+\DoxyCodeLine{00433\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase}}<Map<PermutationMatrix<SizeAtCompileTime,\ MaxSizeAtCompileTime,\ \_StorageIndex>,\_PacketAccess>\ >}
+\DoxyCodeLine{00434\ \{}
+\DoxyCodeLine{00435\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<Map>}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{Base}};}
+\DoxyCodeLine{00436\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<Map>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{Traits}};}
+\DoxyCodeLine{00437\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00441\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ IndicesType::Scalar\ StorageIndex;}
+\DoxyCodeLine{00442\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00443\ }
+\DoxyCodeLine{00444\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_map_ad73cee91c293989adb4f63c9e58c4144}{Map}}(\textcolor{keyword}{const}\ StorageIndex*\ indicesPtr)}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ :\ m\_indices(indicesPtr)}
+\DoxyCodeLine{00446\ \ \ \ \ \{\}}
+\DoxyCodeLine{00447\ }
+\DoxyCodeLine{00448\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_map_ad73cee91c293989adb4f63c9e58c4144}{Map}}(\textcolor{keyword}{const}\ StorageIndex*\ indicesPtr,\ Index\ size)}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ :\ m\_indices(indicesPtr,size)}
+\DoxyCodeLine{00450\ \ \ \ \ \{\}}
+\DoxyCodeLine{00451\ }
+\DoxyCodeLine{00453\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00454\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_permutation_matrix_3_01_size_at_compile_time_00_01_max_size_at_compile_2f9d18bf0084dbfb13fbbfe14adaf22d_abef42a5c672f19fc778b189cb90b078c}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<Other>}}\&\ other)}
+\DoxyCodeLine{00455\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ Base::operator=(other.derived());\ \}}
+\DoxyCodeLine{00456\ }
+\DoxyCodeLine{00458\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Other>}
+\DoxyCodeLine{00459\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_permutation_matrix_3_01_size_at_compile_time_00_01_max_size_at_compile_2f9d18bf0084dbfb13fbbfe14adaf22d_a0b46324c6ab7996ce53ba2bec53c5b42}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transpositions_base}{TranspositionsBase<Other>}}\&\ tr)}
+\DoxyCodeLine{00460\ \ \ \ \ \{\ \textcolor{keywordflow}{return}\ Base::operator=(tr.derived());\ \}}
+\DoxyCodeLine{00461\ }
+\DoxyCodeLine{00462\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00466\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_permutation_matrix_3_01_size_at_compile_time_00_01_max_size_at_compile_2f9d18bf0084dbfb13fbbfe14adaf22d_a022b666816fbb688c7154e0d27528cce}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}\&\ other)}
+\DoxyCodeLine{00467\ \ \ \ \ \{}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ m\_indices\ =\ other.m\_indices;}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00470\ \ \ \ \ \}}
+\DoxyCodeLine{00471\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00472\ }
+\DoxyCodeLine{00474\ \ \ \ \ \textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_permutation_matrix_3_01_size_at_compile_time_00_01_max_size_at_compile_2f9d18bf0084dbfb13fbbfe14adaf22d_af194db74eb44c00fe67029f52ce05c67}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00476\ \ \ \ \ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_map_3_01_permutation_matrix_3_01_size_at_compile_time_00_01_max_size_at_compile_2f9d18bf0084dbfb13fbbfe14adaf22d_a4c0e4267a5b90bc28e43599edca7d403}{indices}}()\ \{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00477\ }
+\DoxyCodeLine{00478\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00479\ }
+\DoxyCodeLine{00480\ \ \ \ \ IndicesType\ m\_indices;}
+\DoxyCodeLine{00481\ \};}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_IndicesType>\ \textcolor{keyword}{class\ }TranspositionsWrapper;}
+\DoxyCodeLine{00484\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00485\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_IndicesType>}
+\DoxyCodeLine{00486\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_permutation_wrapper}{PermutationWrapper}}<\_IndicesType>\ >}
+\DoxyCodeLine{00487\ \{}
+\DoxyCodeLine{00488\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_permutation_storage}{PermutationStorage}}\ \mbox{\hyperlink{struct_eigen_1_1_permutation_storage}{StorageKind}};}
+\DoxyCodeLine{00489\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{void}\ Scalar;}
+\DoxyCodeLine{00490\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \_IndicesType::Scalar\ StorageIndex;}
+\DoxyCodeLine{00491\ \ \ \textcolor{keyword}{typedef}\ \_IndicesType\ IndicesType;}
+\DoxyCodeLine{00492\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00493\ \ \ \ \ RowsAtCompileTime\ =\ \_IndicesType::SizeAtCompileTime,}
+\DoxyCodeLine{00494\ \ \ \ \ ColsAtCompileTime\ =\ \_IndicesType::SizeAtCompileTime,}
+\DoxyCodeLine{00495\ \ \ \ \ MaxRowsAtCompileTime\ =\ IndicesType::MaxSizeAtCompileTime,}
+\DoxyCodeLine{00496\ \ \ \ \ MaxColsAtCompileTime\ =\ IndicesType::MaxSizeAtCompileTime,}
+\DoxyCodeLine{00497\ \ \ \ \ Flags\ =\ 0}
+\DoxyCodeLine{00498\ \ \ \};}
+\DoxyCodeLine{00499\ \};}
+\DoxyCodeLine{00500\ \}}
+\DoxyCodeLine{00501\ }
+\DoxyCodeLine{00513\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_IndicesType>}
+\DoxyCodeLine{00514\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_permutation_wrapper}{PermutationWrapper}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase}}<PermutationWrapper<\_IndicesType>\ >}
+\DoxyCodeLine{00515\ \{}
+\DoxyCodeLine{00516\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_base}{PermutationBase<PermutationWrapper>}}\ Base;}
+\DoxyCodeLine{00517\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<PermutationWrapper>}}\ Traits;}
+\DoxyCodeLine{00518\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00521\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Traits::IndicesType\ IndicesType;}
+\DoxyCodeLine{00522\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_permutation_wrapper}{PermutationWrapper}}(\textcolor{keyword}{const}\ IndicesType\&\ \mbox{\hyperlink{class_eigen_1_1_permutation_wrapper_a7dfc096ce8ea327402db23ba0b05229d}{indices}})}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ :\ m\_indices(\mbox{\hyperlink{class_eigen_1_1_permutation_wrapper_a7dfc096ce8ea327402db23ba0b05229d}{indices}})}
+\DoxyCodeLine{00526\ \ \ \ \ \{\}}
+\DoxyCodeLine{00527\ }
+\DoxyCodeLine{00529\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ internal::remove\_all<typename\ IndicesType::Nested>::type\&}
+\DoxyCodeLine{00530\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_permutation_wrapper_a7dfc096ce8ea327402db23ba0b05229d}{indices}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_indices;\ \}}
+\DoxyCodeLine{00531\ }
+\DoxyCodeLine{00532\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00533\ }
+\DoxyCodeLine{00534\ \ \ \ \ \textcolor{keyword}{typename}\ IndicesType::Nested\ m\_indices;}
+\DoxyCodeLine{00535\ \};}
+\DoxyCodeLine{00536\ }
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00540\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixDerived,\ \textcolor{keyword}{typename}\ PermutationDerived>}
+\DoxyCodeLine{00541\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00542\ \textcolor{keyword}{const}\ Product<MatrixDerived,\ PermutationDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00543\ operator*(\textcolor{keyword}{const}\ MatrixBase<MatrixDerived>\ \&matrix,}
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ PermutationBase<PermutationDerived>\&\ permutation)}
+\DoxyCodeLine{00545\ \{}
+\DoxyCodeLine{00546\ \ \ \textcolor{keywordflow}{return}\ Product<MatrixDerived,\ PermutationDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ (matrix.derived(),\ permutation.derived());}
+\DoxyCodeLine{00548\ \}}
+\DoxyCodeLine{00549\ }
+\DoxyCodeLine{00552\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ PermutationDerived,\ \textcolor{keyword}{typename}\ MatrixDerived>}
+\DoxyCodeLine{00553\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00554\ \textcolor{keyword}{const}\ Product<PermutationDerived,\ MatrixDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00555\ operator*(\textcolor{keyword}{const}\ PermutationBase<PermutationDerived>\ \&permutation,}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ MatrixBase<MatrixDerived>\&\ matrix)}
+\DoxyCodeLine{00557\ \{}
+\DoxyCodeLine{00558\ \ \ \textcolor{keywordflow}{return}\ Product<PermutationDerived,\ MatrixDerived,\ AliasFreeProduct>}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ (permutation.derived(),\ matrix.derived());}
+\DoxyCodeLine{00560\ \}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ PermutationType>}
+\DoxyCodeLine{00564\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_inverse_impl}{InverseImpl}}<PermutationType,\ \mbox{\hyperlink{struct_eigen_1_1_permutation_storage}{PermutationStorage}}>}
+\DoxyCodeLine{00565\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase}}<Inverse<PermutationType>\ >}
+\DoxyCodeLine{00566\ \{}
+\DoxyCodeLine{00567\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ PermutationType::PlainPermutationType\ PlainPermutationType;}
+\DoxyCodeLine{00568\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<PermutationType>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{PermTraits}};}
+\DoxyCodeLine{00569\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00570\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_inverse_impl}{InverseImpl}}()\ \{\}}
+\DoxyCodeLine{00571\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00572\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<PermutationType>}}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{InverseType}};}
+\DoxyCodeLine{00573\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase}}<\mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<PermutationType>}}\ >::derived;}
+\DoxyCodeLine{00574\ }
+\DoxyCodeLine{00575\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ PermutationType::DenseMatrixType\ DenseMatrixType;}
+\DoxyCodeLine{00577\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00578\ \ \ \ \ \ \ RowsAtCompileTime\ =\ PermTraits::RowsAtCompileTime,}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ ColsAtCompileTime\ =\ PermTraits::ColsAtCompileTime,}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ MaxRowsAtCompileTime\ =\ PermTraits::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ PermTraits::MaxColsAtCompileTime}
+\DoxyCodeLine{00582\ \ \ \ \ \};}
+\DoxyCodeLine{00583\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00584\ }
+\DoxyCodeLine{00585\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00586\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DenseDerived>}
+\DoxyCodeLine{00587\ \ \ \ \ \textcolor{keywordtype}{void}\ evalTo(\mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<DenseDerived>}}\&\ other)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00588\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00589\ \ \ \ \ \ \ other.\mbox{\hyperlink{class_eigen_1_1_dense_base_a00dda7dd6ba5960b3b77a91211dbee13}{setZero}}();}
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}\ i=0;\ i<derived().rows();++i)}
+\DoxyCodeLine{00591\ \ \ \ \ \ \ \ \ other.coeffRef(i,\ derived().nestedExpression().indices().coeff(i))\ =\ \textcolor{keyword}{typename}\ DenseDerived::Scalar(1);}
+\DoxyCodeLine{00592\ \ \ \ \ \}}
+\DoxyCodeLine{00593\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00596\ \ \ \ \ PlainPermutationType\ \mbox{\hyperlink{class_eigen_1_1_inverse_impl_3_01_permutation_type_00_01_permutation_storage_01_4_a9048319f60dc98831ddfd25a5f7d69a7}{eval}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ derived();\ \}}
+\DoxyCodeLine{00597\ }
+\DoxyCodeLine{00598\ \ \ \ \ DenseMatrixType\ toDenseMatrix()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ derived();\ \}}
+\DoxyCodeLine{00599\ }
+\DoxyCodeLine{00602\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>\ \textcolor{keyword}{friend}}
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{keyword}{const}\ Product<OtherDerived,\ InverseType,\ AliasFreeProduct>}
+\DoxyCodeLine{00604\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_inverse_impl_3_01_permutation_type_00_01_permutation_storage_01_4_acea3412c1e6940543dabad0696be23d2}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<OtherDerived>}}\&\ matrix,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{InverseType}}\&\ trPerm)}
+\DoxyCodeLine{00605\ \ \ \ \ \{}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<OtherDerived,\ InverseType,\ AliasFreeProduct>}}(matrix.derived(),\ trPerm.derived());}
+\DoxyCodeLine{00607\ \ \ \ \ \}}
+\DoxyCodeLine{00608\ }
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<InverseType,\ OtherDerived,\ AliasFreeProduct>}}}
+\DoxyCodeLine{00613\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_inverse_impl_3_01_permutation_type_00_01_permutation_storage_01_4_aa55cf54a2c8ead1a70f5e4f7779824c5}{operator*}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<OtherDerived>}}\&\ matrix)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00614\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<InverseType,\ OtherDerived,\ AliasFreeProduct>}}(derived(),\ matrix.derived());}
+\DoxyCodeLine{00616\ \ \ \ \ \}}
+\DoxyCodeLine{00617\ \};}
+\DoxyCodeLine{00618\ }
+\DoxyCodeLine{00619\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00620\ \textcolor{keyword}{const}\ PermutationWrapper<const\ Derived>\ MatrixBase<Derived>::asPermutation()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00621\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00622\ \ \ \textcolor{keywordflow}{return}\ derived();}
+\DoxyCodeLine{00623\ \}}
+\DoxyCodeLine{00624\ }
+\DoxyCodeLine{00625\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00626\ }
+\DoxyCodeLine{00627\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment_kind}{AssignmentKind}}<\mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}},\mbox{\hyperlink{struct_eigen_1_1_permutation_shape}{PermutationShape}}>\ \{\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_eigen_base2_eigen_base}{EigenBase2EigenBase}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_eigen_base2_eigen_base}{Kind}};\ \};}
+\DoxyCodeLine{00628\ }
+\DoxyCodeLine{00629\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00630\ }
+\DoxyCodeLine{00631\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00633\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_PERMUTATIONMATRIX\_H}}
+
+\end{DoxyCode}

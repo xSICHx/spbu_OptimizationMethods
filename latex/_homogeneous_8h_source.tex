@@ -1,0 +1,434 @@
+\doxysection{Homogeneous.\+h}
+\hypertarget{_homogeneous_8h_source}{}\label{_homogeneous_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Geometry/Homogeneous.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Geometry/Homogeneous.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2009-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_HOMOGENEOUS\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_HOMOGENEOUS\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00033\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<MatrixType,Direction>\ >}
+\DoxyCodeLine{00034\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<MatrixType>}
+\DoxyCodeLine{00035\ \{}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<MatrixType>::StorageKind}}\ StorageKind;}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ref\_selector<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{MatrixTypeNested}};}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_reference<MatrixTypeNested>::type\ \_MatrixTypeNested;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00040\ \ \ \ \ RowsPlusOne\ =\ (MatrixType::RowsAtCompileTime\ !=\ Dynamic)\ ?}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}(MatrixType::RowsAtCompileTime)\ +\ 1\ :\ Dynamic,}
+\DoxyCodeLine{00042\ \ \ \ \ ColsPlusOne\ =\ (MatrixType::ColsAtCompileTime\ !=\ Dynamic)\ ?}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}(MatrixType::ColsAtCompileTime)\ +\ 1\ :\ Dynamic,}
+\DoxyCodeLine{00044\ \ \ \ \ RowsAtCompileTime\ =\ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}\ \ ?\ \ RowsPlusOne\ :\ MatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00045\ \ \ \ \ ColsAtCompileTime\ =\ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}\ ?\ ColsPlusOne\ :\ MatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00046\ \ \ \ \ MaxRowsAtCompileTime\ =\ RowsAtCompileTime,}
+\DoxyCodeLine{00047\ \ \ \ \ MaxColsAtCompileTime\ =\ ColsAtCompileTime,}
+\DoxyCodeLine{00048\ \ \ \ \ TmpFlags\ =\ \_MatrixTypeNested::Flags\ \&\ HereditaryBits,}
+\DoxyCodeLine{00049\ \ \ \ \ Flags\ =\ ColsAtCompileTime==1\ ?\ (TmpFlags\ \&\ \string~RowMajorBit)}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ :\ RowsAtCompileTime==1\ ?\ (TmpFlags\ |\ \mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}})}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \ \ :\ TmpFlags}
+\DoxyCodeLine{00052\ \ \ \};}
+\DoxyCodeLine{00053\ \};}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keyword}{typename}\ Lhs>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__impl}{homogeneous\_left\_product\_impl}};}
+\DoxyCodeLine{00056\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keyword}{typename}\ Rhs>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__right__product__impl}{homogeneous\_right\_product\_impl}};}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keywordtype}{int}\ \_Direction>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}}
+\DoxyCodeLine{00061\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase}}<Homogeneous<MatrixType,\_Direction>\ >,\ \mbox{\hyperlink{class_eigen_1_1internal_1_1no__assignment__operator}{internal::no\_assignment\_operator}}}
+\DoxyCodeLine{00062\ \{}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{typedef}\ MatrixType\ NestedExpression;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ Direction\ =\ \_Direction\ \};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Homogeneous>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Base}};}
+\DoxyCodeLine{00069\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}})}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}(\textcolor{keyword}{const}\ MatrixType\&\ matrix)}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ :\ m\_matrix(matrix)}
+\DoxyCodeLine{00073\ \ \ \ \ \{\}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.rows()\ +\ (int(Direction)==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}\ \ \ ?\ 1\ :\ 0);\ \}}
+\DoxyCodeLine{00076\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.cols()\ +\ (int(Direction)==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}\ ?\ 1\ :\ 0);\ \}}
+\DoxyCodeLine{00077\ \ \ \ \ }
+\DoxyCodeLine{00078\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{const}\ NestedExpression\&\ nestedExpression()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix;\ \}}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00081\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Homogeneous,Rhs>}}}
+\DoxyCodeLine{00082\ \ \ \ \ operator*\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Rhs>}}\&\ rhs)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00083\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00084\ \ \ \ \ \ \ eigen\_assert(\textcolor{keywordtype}{int}(Direction)==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}});}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Homogeneous,Rhs>}}(*\textcolor{keyword}{this},rhs.derived());}
+\DoxyCodeLine{00086\ \ \ \ \ \}}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs>\ \textcolor{keyword}{friend}}
+\DoxyCodeLine{00089\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Lhs,Homogeneous>}}}
+\DoxyCodeLine{00090\ \ \ \ \ operator*\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Lhs>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}\&\ rhs)}
+\DoxyCodeLine{00091\ \ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ eigen\_assert(\textcolor{keywordtype}{int}(Direction)==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}});}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Lhs,Homogeneous>}}(lhs.derived(),rhs);}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ Dim,\ \textcolor{keywordtype}{int}\ Mode,\ \textcolor{keywordtype}{int}\ Options>\ \textcolor{keyword}{friend}}
+\DoxyCodeLine{00097\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Transform<Scalar,Dim,Mode,Options>}},\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}\ >}
+\DoxyCodeLine{00098\ \ \ \ \ operator*\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transform}{Transform<Scalar,Dim,Mode,Options>}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}\&\ rhs)}
+\DoxyCodeLine{00099\ \ \ \ \ \{}
+\DoxyCodeLine{00100\ \ \ \ \ \ \ eigen\_assert(\textcolor{keywordtype}{int}(Direction)==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}});}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Transform<Scalar,Dim,Mode,Options>}},\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}>(lhs,rhs);}
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00105\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1result__of}{internal::result\_of}}<Func(Scalar,Scalar)>::type}
+\DoxyCodeLine{00106\ \ \ \ \ redux(\textcolor{keyword}{const}\ Func\&\ func)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00107\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ func(m\_matrix.redux(func),\ Scalar(1));}
+\DoxyCodeLine{00109\ \ \ \ \ \}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keyword}{typename}\ MatrixType::Nested\ m\_matrix;}
+\DoxyCodeLine{00113\ \};}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00128\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00129\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{MatrixBase<Derived>::HomogeneousReturnType}}}
+\DoxyCodeLine{00130\ \mbox{\hyperlink{group___geometry___module_ga8cd24704519bf35e1724e1915d477a35}{MatrixBase<Derived>::homogeneous}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00131\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00132\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived);}
+\DoxyCodeLine{00133\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{HomogeneousReturnType}}(derived());}
+\DoxyCodeLine{00134\ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00146\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ExpressionType,\ \textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00147\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<ExpressionType,Direction>}}}
+\DoxyCodeLine{00148\ \mbox{\hyperlink{group___geometry___module_ga7ae337c185a1de2343f12be4577c75fc}{VectorwiseOp<ExpressionType,Direction>::homogeneous}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00149\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00150\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{HomogeneousReturnType}}(\_expression());}
+\DoxyCodeLine{00151\ \}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00170\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00171\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Derived>::HNormalizedReturnType}}}
+\DoxyCodeLine{00172\ \mbox{\hyperlink{group___geometry___module_gad7e913733107a9a1b61bff95ec9c03dd}{MatrixBase<Derived>::hnormalized}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00173\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00174\ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_ONLY(Derived);}
+\DoxyCodeLine{00175\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_block}{ConstStartMinusOne}}(derived(),0,0,}
+\DoxyCodeLine{00176\ \ \ \ \ ColsAtCompileTime==1?size()-\/1:1,}
+\DoxyCodeLine{00177\ \ \ \ \ ColsAtCompileTime==1?1:size()-\/1)\ /\ coeff(size()-\/1);}
+\DoxyCodeLine{00178\ \}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00194\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ExpressionType,\ \textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00195\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{VectorwiseOp<ExpressionType,Direction>::HNormalizedReturnType}}}
+\DoxyCodeLine{00196\ \mbox{\hyperlink{group___geometry___module_ga8d3b6f7178b905b0e4418fd4900c4463}{VectorwiseOp<ExpressionType,Direction>::hnormalized}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00197\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00198\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_block}{HNormalized\_Block}}(\_expression(),0,0,}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}\ \ \ ?\ \_expression().rows()-\/1\ :\ \_expression().rows(),}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}\ ?\ \_expression().cols()-\/1\ :\ \_expression().cols()).cwiseQuotient(}
+\DoxyCodeLine{00201\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_replicate}{Replicate}}<\mbox{\hyperlink{class_eigen_1_1_block}{HNormalized\_Factors}},}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}\ \ \ ?\ HNormalized\_SizeMinusOne\ :\ 1,}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}\ ?\ HNormalized\_SizeMinusOne\ :\ 1>}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ (\mbox{\hyperlink{class_eigen_1_1_block}{HNormalized\_Factors}}(\_expression(),}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}\ \ \ \ ?\ \_expression().rows()-\/1:0,}
+\DoxyCodeLine{00206\ \ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}\ \ ?\ \_expression().cols()-\/1:0,}
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}\ \ \ \ ?\ 1\ :\ \_expression().rows(),}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}\ \ ?\ 1\ :\ \_expression().cols()),}
+\DoxyCodeLine{00209\ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}\ \ \ ?\ \_expression().rows()-\/1\ :\ 1,}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ Direction==\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}\ ?\ \_expression().cols()-\/1\ :\ 1));}
+\DoxyCodeLine{00211\ \}}
+\DoxyCodeLine{00212\ }
+\DoxyCodeLine{00213\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00214\ }
+\DoxyCodeLine{00215\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixOrTransformType>}
+\DoxyCodeLine{00216\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1take__matrix__for__product}{take\_matrix\_for\_product}}}
+\DoxyCodeLine{00217\ \{}
+\DoxyCodeLine{00218\ \ \ \textcolor{keyword}{typedef}\ MatrixOrTransformType\ type;}
+\DoxyCodeLine{00219\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ type\&\ run(\textcolor{keyword}{const}\ type\ \&x)\ \{\ \textcolor{keywordflow}{return}\ x;\ \}}
+\DoxyCodeLine{00220\ \};}
+\DoxyCodeLine{00221\ }
+\DoxyCodeLine{00222\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ Dim,\ \textcolor{keywordtype}{int}\ Mode,\textcolor{keywordtype}{int}\ Options>}
+\DoxyCodeLine{00223\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1take__matrix__for__product}{take\_matrix\_for\_product}}<\mbox{\hyperlink{class_eigen_1_1_transform}{Transform}}<Scalar,\ Dim,\ Mode,\ Options>\ >}
+\DoxyCodeLine{00224\ \{}
+\DoxyCodeLine{00225\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transform}{Transform<Scalar,\ Dim,\ Mode,\ Options>}}\ \mbox{\hyperlink{class_eigen_1_1_transform}{TransformType}};}
+\DoxyCodeLine{00226\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_diagonal}{internal::add\_const<typename\ TransformType::ConstAffinePart>::type}}\ \mbox{\hyperlink{class_eigen_1_1_diagonal}{type}};}
+\DoxyCodeLine{00227\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \mbox{\hyperlink{class_eigen_1_1_diagonal}{type}}\ run\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transform}{TransformType}}\&\ x)\ \{\ \textcolor{keywordflow}{return}\ x.\mbox{\hyperlink{class_eigen_1_1_transform_a88c996ca4cccf46ab4d520b7d99c332b}{affine}}();\ \}}
+\DoxyCodeLine{00228\ \};}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ Dim,\ \textcolor{keywordtype}{int}\ Options>}
+\DoxyCodeLine{00231\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1take__matrix__for__product}{take\_matrix\_for\_product}}<\mbox{\hyperlink{class_eigen_1_1_transform}{Transform}}<Scalar,\ Dim,\ \mbox{\hyperlink{group__enums_ggaee59a86102f150923b0cac6d4ff05107a0f7338b8672884554e8642bce9e44183}{Projective}},\ Options>\ >}
+\DoxyCodeLine{00232\ \{}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transform}{Transform<Scalar,\ Dim,\ Projective,\ Options>}}\ \mbox{\hyperlink{class_eigen_1_1_transform}{TransformType}};}
+\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{TransformType::MatrixType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{type}};}
+\DoxyCodeLine{00235\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{type}}\&\ run\ (\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transform}{TransformType}}\&\ x)\ \{\ \textcolor{keywordflow}{return}\ x.\mbox{\hyperlink{class_eigen_1_1_transform_a8a5d077e6e87e7d0a1f347fbc4d52a6e}{matrix}}();\ \}}
+\DoxyCodeLine{00236\ \};}
+\DoxyCodeLine{00237\ }
+\DoxyCodeLine{00238\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keyword}{typename}\ Lhs>}
+\DoxyCodeLine{00239\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__impl}{homogeneous\_left\_product\_impl}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<MatrixType,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}>,Lhs>\ >}
+\DoxyCodeLine{00240\ \{}
+\DoxyCodeLine{00241\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ take\_matrix\_for\_product<Lhs>::type\ LhsMatrixType;}
+\DoxyCodeLine{00242\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_all<MatrixType>::type\ MatrixTypeCleaned;}
+\DoxyCodeLine{00243\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_all<LhsMatrixType>::type\ LhsMatrixTypeCleaned;}
+\DoxyCodeLine{00244\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1make__proper__matrix__type}{make\_proper\_matrix\_type}}<}
+\DoxyCodeLine{00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<MatrixTypeCleaned>::Scalar}},}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LhsMatrixTypeCleaned::RowsAtCompileTime,}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MatrixTypeCleaned::ColsAtCompileTime,}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MatrixTypeCleaned::PlainObject::Options,}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LhsMatrixTypeCleaned::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MatrixTypeCleaned::MaxColsAtCompileTime>::type\ \mbox{\hyperlink{class_eigen_1_1_matrix}{ReturnType}};}
+\DoxyCodeLine{00251\ \};}
+\DoxyCodeLine{00252\ }
+\DoxyCodeLine{00253\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keyword}{typename}\ Lhs>}
+\DoxyCodeLine{00254\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__impl}{homogeneous\_left\_product\_impl}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<MatrixType,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}>,Lhs>}
+\DoxyCodeLine{00255\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_return_by_value}{ReturnByValue}}<homogeneous\_left\_product\_impl<Homogeneous<MatrixType,Vertical>,Lhs>\ >}
+\DoxyCodeLine{00256\ \{}
+\DoxyCodeLine{00257\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<homogeneous\_left\_product\_impl>::LhsMatrixType}}\ LhsMatrixType;}
+\DoxyCodeLine{00258\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_all<LhsMatrixType>::type\ LhsMatrixTypeCleaned;}
+\DoxyCodeLine{00259\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_all<typename\ LhsMatrixTypeCleaned::Nested>::type\ LhsMatrixTypeNested;}
+\DoxyCodeLine{00260\ \ \ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__impl}{homogeneous\_left\_product\_impl}}(\textcolor{keyword}{const}\ Lhs\&\ lhs,\ \textcolor{keyword}{const}\ MatrixType\&\ rhs)}
+\DoxyCodeLine{00261\ \ \ \ \ :\ m\_lhs(\mbox{\hyperlink{struct_eigen_1_1internal_1_1take__matrix__for__product}{take\_matrix\_for\_product<Lhs>::run}}(lhs)),}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ m\_rhs(rhs)}
+\DoxyCodeLine{00263\ \ \ \{\}}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00265\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_lhs.rows();\ \}}
+\DoxyCodeLine{00266\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_rhs.cols();\ \}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>\ EIGEN\_DEVICE\_FUNC\ \textcolor{keywordtype}{void}\ evalTo(Dest\&\ dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00269\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00270\ \ \ \ \ \textcolor{comment}{//\ FIXME\ investigate\ how\ to\ allow\ lazy\ evaluation\ of\ this\ product\ when\ possible}}
+\DoxyCodeLine{00271\ \ \ \ \ dst\ =\ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}<\textcolor{keyword}{const}\ LhsMatrixTypeNested,}
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LhsMatrixTypeNested::RowsAtCompileTime,}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LhsMatrixTypeNested::ColsAtCompileTime==Dynamic?Dynamic:LhsMatrixTypeNested::ColsAtCompileTime-\/1>}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \ \ \ \ (m\_lhs,0,0,m\_lhs.rows(),m\_lhs.cols()-\/1)\ *\ m\_rhs;}
+\DoxyCodeLine{00275\ \ \ \ \ dst\ +=\ m\_lhs.col(m\_lhs.cols()-\/1).rowwise()}
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ \ \ \ \ .template\ replicate<MatrixType::ColsAtCompileTime>(m\_rhs.cols());}
+\DoxyCodeLine{00277\ \ \ \}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \ \ \textcolor{keyword}{typename}\ LhsMatrixTypeCleaned::Nested\ m\_lhs;}
+\DoxyCodeLine{00280\ \ \ \textcolor{keyword}{typename}\ MatrixType::Nested\ m\_rhs;}
+\DoxyCodeLine{00281\ \};}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00284\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__right__product__impl}{homogeneous\_right\_product\_impl}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<MatrixType,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}>,Rhs>\ >}
+\DoxyCodeLine{00285\ \{}
+\DoxyCodeLine{00286\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1make__proper__matrix__type}{make\_proper\_matrix\_type<typename\ traits<MatrixType>::Scalar}},}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Rhs::ColsAtCompileTime,}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MatrixType::PlainObject::Options,}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ MatrixType::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Rhs::MaxColsAtCompileTime>::type\ \mbox{\hyperlink{class_eigen_1_1_matrix}{ReturnType}};}
+\DoxyCodeLine{00292\ \};}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00295\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__right__product__impl}{homogeneous\_right\_product\_impl}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<MatrixType,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}>,Rhs>}
+\DoxyCodeLine{00296\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_return_by_value}{ReturnByValue}}<homogeneous\_right\_product\_impl<Homogeneous<MatrixType,Horizontal>,Rhs>\ >}
+\DoxyCodeLine{00297\ \{}
+\DoxyCodeLine{00298\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_all<typename\ Rhs::Nested>::type\ RhsNested;}
+\DoxyCodeLine{00299\ \ \ EIGEN\_DEVICE\_FUNC\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__right__product__impl}{homogeneous\_right\_product\_impl}}(\textcolor{keyword}{const}\ MatrixType\&\ lhs,\ \textcolor{keyword}{const}\ Rhs\&\ rhs)}
+\DoxyCodeLine{00300\ \ \ \ \ :\ m\_lhs(lhs),\ m\_rhs(rhs)}
+\DoxyCodeLine{00301\ \ \ \{\}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_lhs.rows();\ \}}
+\DoxyCodeLine{00304\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_rhs.cols();\ \}}
+\DoxyCodeLine{00305\ }
+\DoxyCodeLine{00306\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>\ EIGEN\_DEVICE\_FUNC\ \textcolor{keywordtype}{void}\ evalTo(Dest\&\ dst)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00307\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00308\ \ \ \ \ \textcolor{comment}{//\ FIXME\ investigate\ how\ to\ allow\ lazy\ evaluation\ of\ this\ product\ when\ possible}}
+\DoxyCodeLine{00309\ \ \ \ \ dst\ =\ m\_lhs\ *\ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}<\textcolor{keyword}{const}\ RhsNested,}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ RhsNested::RowsAtCompileTime==Dynamic?Dynamic:RhsNested::RowsAtCompileTime-\/1,}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ RhsNested::ColsAtCompileTime>}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ (m\_rhs,0,0,m\_rhs.rows()-\/1,m\_rhs.cols());}
+\DoxyCodeLine{00313\ \ \ \ \ dst\ +=\ m\_rhs.row(m\_rhs.rows()-\/1).colwise()}
+\DoxyCodeLine{00314\ \ \ \ \ \ \ \ \ \ \ \ \ .template\ replicate<MatrixType::RowsAtCompileTime>(m\_lhs.rows());}
+\DoxyCodeLine{00315\ \ \ \}}
+\DoxyCodeLine{00316\ }
+\DoxyCodeLine{00317\ \ \ \textcolor{keyword}{typename}\ MatrixType::Nested\ m\_lhs;}
+\DoxyCodeLine{00318\ \ \ \textcolor{keyword}{typename}\ Rhs::Nested\ m\_rhs;}
+\DoxyCodeLine{00319\ \};}
+\DoxyCodeLine{00320\ }
+\DoxyCodeLine{00321\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ArgType,\textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00322\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator__traits}{evaluator\_traits}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<ArgType,Direction>\ >}
+\DoxyCodeLine{00323\ \{}
+\DoxyCodeLine{00324\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_index_based}{storage\_kind\_to\_evaluator\_kind<typename\ ArgType::StorageKind>::Kind}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_index_based}{Kind}};}
+\DoxyCodeLine{00325\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}}\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{Shape}};\ \ }
+\DoxyCodeLine{00326\ \};}
+\DoxyCodeLine{00327\ }
+\DoxyCodeLine{00328\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment_kind}{AssignmentKind}}<\mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}},\mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}}>\ \{\ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Kind}};\ \};}
+\DoxyCodeLine{00329\ }
+\DoxyCodeLine{00330\ }
+\DoxyCodeLine{00331\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ArgType,\textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00332\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1unary__evaluator}{unary\_evaluator}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<ArgType,Direction>,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_index_based}{IndexBased}}>}
+\DoxyCodeLine{00333\ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{evaluator}}<typename\ Homogeneous<ArgType,Direction>::PlainObject\ >}
+\DoxyCodeLine{00334\ \{}
+\DoxyCodeLine{00335\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<ArgType,Direction>}}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{XprType}};}
+\DoxyCodeLine{00336\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{XprType::PlainObject}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PlainObject}};}
+\DoxyCodeLine{00337\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{evaluator<PlainObject>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{Base}};}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1unary__evaluator}{unary\_evaluator}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{XprType}}\&\ op)}
+\DoxyCodeLine{00340\ \ \ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{Base}}(),\ m\_temp(op)}
+\DoxyCodeLine{00341\ \ \ \{}
+\DoxyCodeLine{00342\ \ \ \ \ ::new\ (\textcolor{keyword}{static\_cast<}\mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{Base}}*\textcolor{keyword}{>}(\textcolor{keyword}{this}))\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{Base}}(m\_temp);}
+\DoxyCodeLine{00343\ \ \ \}}
+\DoxyCodeLine{00344\ }
+\DoxyCodeLine{00345\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00346\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{PlainObject}}\ m\_temp;}
+\DoxyCodeLine{00347\ \};}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00349\ \textcolor{comment}{//\ dense\ =\ homogeneous}}
+\DoxyCodeLine{00350\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ ArgType,\ \textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00351\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment}{Assignment}}<DstXprType,\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<ArgType,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}>,\ internal::\mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{assign\_op}}<Scalar,typename\ ArgType::Scalar>,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}}>}
+\DoxyCodeLine{00352\ \{}
+\DoxyCodeLine{00353\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<ArgType,Vertical>}}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{SrcXprType}};}
+\DoxyCodeLine{00354\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{SrcXprType}}\ \&src,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<Scalar,typename\ ArgType::Scalar>}}\ \&)}
+\DoxyCodeLine{00355\ \ \ \{}
+\DoxyCodeLine{00356\ \ \ \ \ Index\ dstRows\ =\ src.rows();}
+\DoxyCodeLine{00357\ \ \ \ \ Index\ dstCols\ =\ src.cols();}
+\DoxyCodeLine{00358\ \ \ \ \ \textcolor{keywordflow}{if}((dst.rows()!=dstRows)\ ||\ (dst.cols()!=dstCols))}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ dst.resize(dstRows,\ dstCols);}
+\DoxyCodeLine{00360\ }
+\DoxyCodeLine{00361\ \ \ \ \ dst.template\ topRows<ArgType::RowsAtCompileTime>(src.nestedExpression().rows())\ =\ src.nestedExpression();}
+\DoxyCodeLine{00362\ \ \ \ \ dst.row(dst.rows()-\/1).setOnes();}
+\DoxyCodeLine{00363\ \ \ \}}
+\DoxyCodeLine{00364\ \};}
+\DoxyCodeLine{00365\ }
+\DoxyCodeLine{00366\ \textcolor{comment}{//\ dense\ =\ homogeneous}}
+\DoxyCodeLine{00367\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ ArgType,\ \textcolor{keyword}{typename}\ Scalar>}
+\DoxyCodeLine{00368\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment}{Assignment}}<DstXprType,\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<ArgType,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}>,\ internal::\mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{assign\_op}}<Scalar,typename\ ArgType::Scalar>,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}}>}
+\DoxyCodeLine{00369\ \{}
+\DoxyCodeLine{00370\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<ArgType,Horizontal>}}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{SrcXprType}};}
+\DoxyCodeLine{00371\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{SrcXprType}}\ \&src,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<Scalar,typename\ ArgType::Scalar>}}\ \&)}
+\DoxyCodeLine{00372\ \ \ \{}
+\DoxyCodeLine{00373\ \ \ \ \ Index\ dstRows\ =\ src.rows();}
+\DoxyCodeLine{00374\ \ \ \ \ Index\ dstCols\ =\ src.cols();}
+\DoxyCodeLine{00375\ \ \ \ \ \textcolor{keywordflow}{if}((dst.rows()!=dstRows)\ ||\ (dst.cols()!=dstCols))}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ dst.resize(dstRows,\ dstCols);}
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00378\ \ \ \ \ dst.template\ leftCols<ArgType::ColsAtCompileTime>(src.nestedExpression().cols())\ =\ src.nestedExpression();}
+\DoxyCodeLine{00379\ \ \ \ \ dst.col(dst.cols()-\/1).setOnes();}
+\DoxyCodeLine{00380\ \ \ \}}
+\DoxyCodeLine{00381\ \};}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ LhsArg,\ \textcolor{keyword}{typename}\ Rhs,\ \textcolor{keywordtype}{int}\ ProductTag>}
+\DoxyCodeLine{00384\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__product__impl}{generic\_product\_impl}}<\mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<LhsArg,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}>,\ Rhs,\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}},\ \mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}},\ ProductTag>}
+\DoxyCodeLine{00385\ \{}
+\DoxyCodeLine{00386\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00387\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ evalTo(Dest\&\ dst,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<LhsArg,Horizontal>}}\&\ lhs,\ \textcolor{keyword}{const}\ Rhs\&\ rhs)}
+\DoxyCodeLine{00388\ \ \ \{}
+\DoxyCodeLine{00389\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__right__product__impl}{homogeneous\_right\_product\_impl<Homogeneous<LhsArg,Horizontal>}},\ Rhs>(lhs.nestedExpression(),\ rhs).evalTo(dst);}
+\DoxyCodeLine{00390\ \ \ \}}
+\DoxyCodeLine{00391\ \};}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00394\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__right__product__refactoring__helper}{homogeneous\_right\_product\_refactoring\_helper}}}
+\DoxyCodeLine{00395\ \{}
+\DoxyCodeLine{00396\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00397\ \ \ \ \ Dim\ \ =\ Lhs::ColsAtCompileTime,}
+\DoxyCodeLine{00398\ \ \ \ \ Rows\ =\ Lhs::RowsAtCompileTime}
+\DoxyCodeLine{00399\ \ \ \};}
+\DoxyCodeLine{00400\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Rhs::template\ ConstNRowsBlockXpr<Dim>::Type\ \ \ \ \ \ \ \ \ \ LinearBlockConst;}
+\DoxyCodeLine{00401\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_const<LinearBlockConst>::type\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LinearBlock;}
+\DoxyCodeLine{00402\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Rhs::ConstRowXpr\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ConstantColumn;}
+\DoxyCodeLine{00403\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_replicate}{Replicate<const\ ConstantColumn,Rows,1>}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_replicate}{ConstantBlock}};}
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Lhs,LinearBlock,LazyProduct>}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_product}{LinearProduct}};}
+\DoxyCodeLine{00405\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{CwiseBinaryOp<internal::scalar\_sum\_op<typename\ Lhs::Scalar,typename\ Rhs::Scalar>}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{LinearProduct}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_replicate}{ConstantBlock}}>\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Xpr}};}
+\DoxyCodeLine{00406\ \};}
+\DoxyCodeLine{00407\ }
+\DoxyCodeLine{00408\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs,\ \textcolor{keywordtype}{int}\ ProductTag>}
+\DoxyCodeLine{00409\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1product__evaluator}{product\_evaluator}}<\mbox{\hyperlink{class_eigen_1_1_product}{Product}}<Lhs,\ Rhs,\ LazyProduct>,\ ProductTag,\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}},\ \mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}}>}
+\DoxyCodeLine{00410\ \ :\ \textcolor{keyword}{public}\ evaluator<typename\ homogeneous\_right\_product\_refactoring\_helper<typename\ Lhs::NestedExpression,Rhs>::Xpr>}
+\DoxyCodeLine{00411\ \{}
+\DoxyCodeLine{00412\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Lhs,\ Rhs,\ LazyProduct>}}\ XprType;}
+\DoxyCodeLine{00413\ \ \ \textcolor{keyword}{typedef}\ homogeneous\_right\_product\_refactoring\_helper<typename\ Lhs::NestedExpression,Rhs>\ helper;}
+\DoxyCodeLine{00414\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ helper::ConstantBlock\ ConstantBlock;}
+\DoxyCodeLine{00415\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ helper::Xpr\ RefactoredXpr;}
+\DoxyCodeLine{00416\ \ \ \textcolor{keyword}{typedef}\ evaluator<RefactoredXpr>\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{Base}};}
+\DoxyCodeLine{00417\ \ \ }
+\DoxyCodeLine{00418\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ product\_evaluator(\textcolor{keyword}{const}\ XprType\&\ xpr)}
+\DoxyCodeLine{00419\ \ \ \ \ :\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{Base}}(\ \ xpr.lhs().nestedExpression()\ .lazyProduct(\ \ xpr.rhs().template\ topRows<helper::Dim>(xpr.lhs().nestedExpression().cols())\ )}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ \ \ \ \ \ \ +\ ConstantBlock(xpr.rhs().row(xpr.rhs().rows()-\/1),xpr.lhs().rows(),\ 1)\ )}
+\DoxyCodeLine{00421\ \ \ \{\}}
+\DoxyCodeLine{00422\ \};}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00424\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ RhsArg,\ \textcolor{keywordtype}{int}\ ProductTag>}
+\DoxyCodeLine{00425\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__product__impl}{generic\_product\_impl}}<Lhs,\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<RhsArg,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}>,\ \mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}},\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}},\ ProductTag>}
+\DoxyCodeLine{00426\ \{}
+\DoxyCodeLine{00427\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00428\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ evalTo(Dest\&\ dst,\ \textcolor{keyword}{const}\ Lhs\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<RhsArg,Vertical>}}\&\ rhs)}
+\DoxyCodeLine{00429\ \ \ \{}
+\DoxyCodeLine{00430\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__impl}{homogeneous\_left\_product\_impl<Homogeneous<RhsArg,Vertical>}},\ Lhs>(lhs,\ rhs.nestedExpression()).evalTo(dst);}
+\DoxyCodeLine{00431\ \ \ \}}
+\DoxyCodeLine{00432\ \};}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00434\ \textcolor{comment}{//\ TODO:\ the\ following\ specialization\ is\ to\ address\ a\ regression\ from\ 3.2\ to\ 3.3}}
+\DoxyCodeLine{00435\ \textcolor{comment}{//\ In\ the\ future,\ this\ path\ should\ be\ optimized.}}
+\DoxyCodeLine{00436\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ RhsArg,\ \textcolor{keywordtype}{int}\ ProductTag>}
+\DoxyCodeLine{00437\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__product__impl}{generic\_product\_impl}}<Lhs,\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<RhsArg,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}>,\ \mbox{\hyperlink{struct_eigen_1_1_triangular_shape}{TriangularShape}},\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}},\ ProductTag>}
+\DoxyCodeLine{00438\ \{}
+\DoxyCodeLine{00439\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00440\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ evalTo(Dest\&\ dst,\ \textcolor{keyword}{const}\ Lhs\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<RhsArg,Vertical>}}\&\ rhs)}
+\DoxyCodeLine{00441\ \ \ \{}
+\DoxyCodeLine{00442\ \ \ \ \ dst.noalias()\ =\ lhs\ *\ rhs.\mbox{\hyperlink{class_eigen_1_1_matrix_base_a5df64c66228ba75bbc66db2584185527}{eval}}();}
+\DoxyCodeLine{00443\ \ \ \}}
+\DoxyCodeLine{00444\ \};}
+\DoxyCodeLine{00445\ }
+\DoxyCodeLine{00446\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00447\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__refactoring__helper}{homogeneous\_left\_product\_refactoring\_helper}}}
+\DoxyCodeLine{00448\ \{}
+\DoxyCodeLine{00449\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00450\ \ \ \ \ Dim\ =\ Rhs::RowsAtCompileTime,}
+\DoxyCodeLine{00451\ \ \ \ \ Cols\ =\ Rhs::ColsAtCompileTime}
+\DoxyCodeLine{00452\ \ \ \};}
+\DoxyCodeLine{00453\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Lhs::template\ ConstNColsBlockXpr<Dim>::Type\ \ \ \ \ \ \ \ \ \ LinearBlockConst;}
+\DoxyCodeLine{00454\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_const<LinearBlockConst>::type\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ LinearBlock;}
+\DoxyCodeLine{00455\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Lhs::ConstColXpr\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ConstantColumn;}
+\DoxyCodeLine{00456\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_replicate}{Replicate<const\ ConstantColumn,1,Cols>}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_replicate}{ConstantBlock}};}
+\DoxyCodeLine{00457\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<LinearBlock,Rhs,LazyProduct>}}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_product}{LinearProduct}};}
+\DoxyCodeLine{00458\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{CwiseBinaryOp<internal::scalar\_sum\_op<typename\ Lhs::Scalar,typename\ Rhs::Scalar>}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{LinearProduct}},\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_replicate}{ConstantBlock}}>\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{Xpr}};}
+\DoxyCodeLine{00459\ \};}
+\DoxyCodeLine{00460\ }
+\DoxyCodeLine{00461\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Lhs,\ \textcolor{keyword}{typename}\ Rhs,\ \textcolor{keywordtype}{int}\ ProductTag>}
+\DoxyCodeLine{00462\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1product__evaluator}{product\_evaluator}}<\mbox{\hyperlink{class_eigen_1_1_product}{Product}}<Lhs,\ Rhs,\ LazyProduct>,\ ProductTag,\ \mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}},\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}}>}
+\DoxyCodeLine{00463\ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{evaluator}}<typename\ homogeneous\_left\_product\_refactoring\_helper<Lhs,typename\ Rhs::NestedExpression>::Xpr>}
+\DoxyCodeLine{00464\ \{}
+\DoxyCodeLine{00465\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_product}{Product<Lhs,\ Rhs,\ LazyProduct>}}\ \mbox{\hyperlink{class_eigen_1_1_product}{XprType}};}
+\DoxyCodeLine{00466\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__refactoring__helper}{homogeneous\_left\_product\_refactoring\_helper<Lhs,typename\ Rhs::NestedExpression>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__refactoring__helper}{helper}};}
+\DoxyCodeLine{00467\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_replicate}{helper::ConstantBlock}}\ \mbox{\hyperlink{class_eigen_1_1_replicate}{ConstantBlock}};}
+\DoxyCodeLine{00468\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{helper::Xpr}}\ \mbox{\hyperlink{class_eigen_1_1_cwise_binary_op}{RefactoredXpr}};}
+\DoxyCodeLine{00469\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{evaluator<RefactoredXpr>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{Base}};}
+\DoxyCodeLine{00470\ \ \ }
+\DoxyCodeLine{00471\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1product__evaluator}{product\_evaluator}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_product}{XprType}}\&\ xpr)}
+\DoxyCodeLine{00472\ \ \ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1evaluator}{Base}}(\ \ \ xpr.lhs().template\ leftCols<helper::Dim>(xpr.rhs().nestedExpression().rows())\ .lazyProduct(\ xpr.rhs().nestedExpression()\ )}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ +\ \mbox{\hyperlink{class_eigen_1_1_replicate}{ConstantBlock}}(xpr.lhs().col(xpr.lhs().cols()-\/1),1,xpr.rhs().cols())\ )}
+\DoxyCodeLine{00474\ \ \ \{\}}
+\DoxyCodeLine{00475\ \};}
+\DoxyCodeLine{00476\ }
+\DoxyCodeLine{00477\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ Dim,\ \textcolor{keywordtype}{int}\ Mode,\textcolor{keywordtype}{int}\ Options,\ \textcolor{keyword}{typename}\ RhsArg,\ \textcolor{keywordtype}{int}\ ProductTag>}
+\DoxyCodeLine{00478\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__product__impl}{generic\_product\_impl}}<\mbox{\hyperlink{class_eigen_1_1_transform}{Transform}}<Scalar,Dim,Mode,Options>,\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous}}<RhsArg,\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}>,\ \mbox{\hyperlink{struct_eigen_1_1_dense_shape}{DenseShape}},\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}},\ ProductTag>}
+\DoxyCodeLine{00479\ \{}
+\DoxyCodeLine{00480\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transform}{Transform<Scalar,Dim,Mode,Options>}}\ \mbox{\hyperlink{class_eigen_1_1_transform}{TransformType}};}
+\DoxyCodeLine{00481\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00482\ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ evalTo(Dest\&\ dst,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_transform}{TransformType}}\&\ lhs,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_homogeneous}{Homogeneous<RhsArg,Vertical>}}\&\ rhs)}
+\DoxyCodeLine{00483\ \ \ \{}
+\DoxyCodeLine{00484\ \ \ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1homogeneous__left__product__impl}{homogeneous\_left\_product\_impl<Homogeneous<RhsArg,Vertical>}},\ \mbox{\hyperlink{class_eigen_1_1_transform}{TransformType}}>(lhs,\ rhs.nestedExpression()).evalTo(dst);}
+\DoxyCodeLine{00485\ \ \ \}}
+\DoxyCodeLine{00486\ \};}
+\DoxyCodeLine{00487\ }
+\DoxyCodeLine{00488\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ExpressionType,\ \textcolor{keywordtype}{int}\ S\textcolor{keywordtype}{id}e,\ \textcolor{keywordtype}{bool}\ Transposed>}
+\DoxyCodeLine{00489\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1permutation__matrix__product}{permutation\_matrix\_product}}<ExpressionType,\ Side,\ Transposed,\ \mbox{\hyperlink{struct_eigen_1_1_homogeneous_shape}{HomogeneousShape}}>}
+\DoxyCodeLine{00490\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1permutation__matrix__product}{permutation\_matrix\_product}}<ExpressionType,\ Side,\ Transposed,\ DenseShape>}
+\DoxyCodeLine{00491\ \{\};}
+\DoxyCodeLine{00492\ }
+\DoxyCodeLine{00493\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00494\ }
+\DoxyCodeLine{00495\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00496\ }
+\DoxyCodeLine{00497\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_HOMOGENEOUS\_H}}
+
+\end{DoxyCode}

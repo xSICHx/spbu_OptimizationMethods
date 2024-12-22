@@ -1,0 +1,465 @@
+\doxysection{Partial\+Piv\+LU.\+h}
+\hypertarget{_partial_piv_l_u_8h_source}{}\label{_partial_piv_l_u_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/LU/PartialPivLU.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/LU/PartialPivLU.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2006-\/2009\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARTIALLU\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_PARTIALLU\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU}}<\_MatrixType>\ >}
+\DoxyCodeLine{00018\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\_MatrixType>}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_matrix_xpr}{MatrixXpr}}\ \mbox{\hyperlink{struct_eigen_1_1_matrix_xpr}{XprKind}};}
+\DoxyCodeLine{00021\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_solver_storage}{SolverStorage}}\ \mbox{\hyperlink{struct_eigen_1_1_solver_storage}{StorageKind}};}
+\DoxyCodeLine{00022\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<\_MatrixType>}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{BaseTraits}};}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ Flags\ =\ BaseTraits::Flags\ \&\ \mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}},}
+\DoxyCodeLine{00025\ \ \ \ \ CoeffReadCost\ =\ Dynamic}
+\DoxyCodeLine{00026\ \ \ \};}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00030\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if__ref}{enable\_if\_ref}};}
+\DoxyCodeLine{00031\ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ \ \ typedef\ Derived\ type;}}
+\DoxyCodeLine{00033\ \textcolor{comment}{//\ \};}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00036\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1enable__if__ref}{enable\_if\_ref}}<\mbox{\hyperlink{class_eigen_1_1_ref}{Ref}}<T>,Derived>\ \{}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{typedef}\ Derived\ type;}
+\DoxyCodeLine{00038\ \};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00075\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU}}}
+\DoxyCodeLine{00076\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_solver_base}{SolverBase}}<PartialPivLU<\_MatrixType>\ >}
+\DoxyCodeLine{00077\ \{}
+\DoxyCodeLine{00078\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keyword}{typedef}\ \_MatrixType\ MatrixType;}
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_solver_base}{SolverBase<PartialPivLU>}}\ \mbox{\hyperlink{class_eigen_1_1_solver_base}{Base}};}
+\DoxyCodeLine{00082\ \ \ \ \ EIGEN\_GENERIC\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU}})}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{comment}{//\ FIXME\ StorageIndex\ defined\ in\ EIGEN\_GENERIC\_PUBLIC\_INTERFACE\ should\ be\ int}}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ MaxRowsAtCompileTime\ =\ MatrixType::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ MatrixType::MaxColsAtCompileTime}
+\DoxyCodeLine{00087\ \ \ \ \ \};}
+\DoxyCodeLine{00088\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationMatrix<RowsAtCompileTime,\ MaxRowsAtCompileTime>}}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}};}
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_transpositions}{Transpositions<RowsAtCompileTime,\ MaxRowsAtCompileTime>}}\ \mbox{\hyperlink{class_eigen_1_1_transpositions}{TranspositionType}};}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::PlainObject\ PlainObject;}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00098\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU}}();}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU}}(Index\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_ac2c9348df3bb9c0044dbae6c278a8977}{size}});}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix);}
+\DoxyCodeLine{00117\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix);}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00129\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU}}\&\ compute(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)\ \{}
+\DoxyCodeLine{00130\ \ \ \ \ \ \ m\_lu\ =\ matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}();}
+\DoxyCodeLine{00131\ \ \ \ \ \ \ compute();}
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00133\ \ \ \ \ \}}
+\DoxyCodeLine{00134\ }
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ MatrixType\&\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a7550e6f9b8bbed1c0d9238d616c0d364}{matrixLU}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00142\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}PartialPivLU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_lu;}
+\DoxyCodeLine{00145\ \ \ \ \ \}}
+\DoxyCodeLine{00146\ }
+\DoxyCodeLine{00149\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{PermutationType}}\&\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a331c643f74610e5cdc122dec159a98e3}{permutationP}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00150\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00151\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}PartialPivLU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_p;}
+\DoxyCodeLine{00153\ \ \ \ \ \}}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00172\ \ \ \ \ \textcolor{comment}{//\ FIXME\ this\ is\ a\ copy-\/paste\ of\ the\ base-\/class\ member\ to\ add\ the\ isInitialized\ assertion.}}
+\DoxyCodeLine{00173\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs>}
+\DoxyCodeLine{00174\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<PartialPivLU,\ Rhs>}}}
+\DoxyCodeLine{00175\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a27b1d4328fee23519e655fbbcb93d5ea}{solve}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Rhs>}}\&\ b)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00176\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00177\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}PartialPivLU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_solve}{Solve<PartialPivLU,\ Rhs>}}(*\textcolor{keyword}{this},\ b.derived());}
+\DoxyCodeLine{00179\ \ \ \ \ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keyword}{inline}\ RealScalar\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a472b46d5d9ff7c328e1dccc13805f690}{rcond}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00185\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}PartialPivLU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ internal::rcond\_estimate\_helper(m\_l1\_norm,\ *\textcolor{keyword}{this});}
+\DoxyCodeLine{00188\ \ \ \ \ \}}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00197\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<PartialPivLU>}}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a251cf261b4ad7b8a4407d0c1762b4d7b}{inverse}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00198\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}PartialPivLU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00200\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<PartialPivLU>}}(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00201\ \ \ \ \ \}}
+\DoxyCodeLine{00202\ }
+\DoxyCodeLine{00216\ \ \ \ \ Scalar\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a54c3d39c9b46ff485a8d2140b9b23193}{determinant}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00217\ }
+\DoxyCodeLine{00218\ \ \ \ \ MatrixType\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_aba7f1ee83537b0d240ebf206503a4920}{reconstructedMatrix}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_lu.rows();\ \}}
+\DoxyCodeLine{00221\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_lu.cols();\ \}}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00224\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00225\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{void}\ \_solve\_impl(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00227\ \ \ \ \ \ \textcolor{comment}{/*\ The\ decomposition\ PA\ =\ LU\ can\ be\ rewritten\ as\ A\ =\ P\string^\{-\/1\}\ L\ U.}}
+\DoxyCodeLine{00228\ \textcolor{comment}{\ \ \ \ \ \ *\ So\ we\ proceed\ as\ follows:}}
+\DoxyCodeLine{00229\ \textcolor{comment}{\ \ \ \ \ \ *\ Step\ 1:\ compute\ c\ =\ Pb.}}
+\DoxyCodeLine{00230\ \textcolor{comment}{\ \ \ \ \ \ *\ Step\ 2:\ replace\ c\ by\ the\ solution\ x\ to\ Lx\ =\ c.}}
+\DoxyCodeLine{00231\ \textcolor{comment}{\ \ \ \ \ \ *\ Step\ 3:\ replace\ c\ by\ the\ solution\ x\ to\ Ux\ =\ c.}}
+\DoxyCodeLine{00232\ \textcolor{comment}{\ \ \ \ \ \ */}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00234\ \ \ \ \ \ \ eigen\_assert(rhs.rows()\ ==\ m\_lu.rows());}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 1}}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ dst\ =\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a331c643f74610e5cdc122dec159a98e3}{permutationP}}()\ *\ rhs;}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 2}}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ m\_lu.template\ triangularView<UnitLower>().solveInPlace(dst);}
+\DoxyCodeLine{00241\ }
+\DoxyCodeLine{00242\ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 3}}
+\DoxyCodeLine{00243\ \ \ \ \ \ \ m\_lu.template\ triangularView<Upper>().solveInPlace(dst);}
+\DoxyCodeLine{00244\ \ \ \ \ \}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{bool}\ Conjugate,\ \textcolor{keyword}{typename}\ RhsType,\ \textcolor{keyword}{typename}\ DstType>}
+\DoxyCodeLine{00247\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00248\ \ \ \ \ \textcolor{keywordtype}{void}\ \_solve\_impl\_transposed(\textcolor{keyword}{const}\ RhsType\ \&rhs,\ DstType\ \&dst)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00249\ \ \ \ \ \ \textcolor{comment}{/*\ The\ decomposition\ PA\ =\ LU\ can\ be\ rewritten\ as\ A\ =\ P\string^\{-\/1\}\ L\ U.}}
+\DoxyCodeLine{00250\ \textcolor{comment}{\ \ \ \ \ \ *\ So\ we\ proceed\ as\ follows:}}
+\DoxyCodeLine{00251\ \textcolor{comment}{\ \ \ \ \ \ *\ Step\ 1:\ compute\ c\ =\ Pb.}}
+\DoxyCodeLine{00252\ \textcolor{comment}{\ \ \ \ \ \ *\ Step\ 2:\ replace\ c\ by\ the\ solution\ x\ to\ Lx\ =\ c.}}
+\DoxyCodeLine{00253\ \textcolor{comment}{\ \ \ \ \ \ *\ Step\ 3:\ replace\ c\ by\ the\ solution\ x\ to\ Ux\ =\ c.}}
+\DoxyCodeLine{00254\ \textcolor{comment}{\ \ \ \ \ \ */}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ \ \ \ \ \ \ eigen\_assert(rhs.rows()\ ==\ m\_lu.cols());}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (Conjugate)\ \{}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 1}}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ dst\ =\ m\_lu.template\ triangularView<Upper>().adjoint().solve(rhs);}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 2}}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ m\_lu.template\ triangularView<UnitLower>().adjoint().solveInPlace(dst);}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 1}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ dst\ =\ m\_lu.template\ triangularView<Upper>().transpose().solve(rhs);}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 2}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ m\_lu.template\ triangularView<UnitLower>().transpose().solveInPlace(dst);}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \textcolor{comment}{//\ Step\ 3}}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ dst\ =\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a331c643f74610e5cdc122dec159a98e3}{permutationP}}().\mbox{\hyperlink{class_eigen_1_1_permutation_base_a05805e9f4182eec3f6632e1c765b5ffe}{transpose}}()\ *\ dst;}
+\DoxyCodeLine{00271\ \ \ \ \ \}}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00273\ }
+\DoxyCodeLine{00274\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00275\ }
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ check\_template\_parameters()}
+\DoxyCodeLine{00277\ \ \ \ \ \{}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_NON\_INTEGER(Scalar);}
+\DoxyCodeLine{00279\ \ \ \ \ \}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keywordtype}{void}\ compute();}
+\DoxyCodeLine{00282\ }
+\DoxyCodeLine{00283\ \ \ \ \ MatrixType\ m\_lu;}
+\DoxyCodeLine{00284\ \ \ \ \ PermutationType\ m\_p;}
+\DoxyCodeLine{00285\ \ \ \ \ TranspositionType\ m\_rowsTranspositions;}
+\DoxyCodeLine{00286\ \ \ \ \ RealScalar\ m\_l1\_norm;}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{keywordtype}{signed}\ \textcolor{keywordtype}{char}\ m\_det\_p;}
+\DoxyCodeLine{00288\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_isInitialized;}
+\DoxyCodeLine{00289\ \};}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00292\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU<MatrixType>::PartialPivLU}}()}
+\DoxyCodeLine{00293\ \ \ :\ m\_lu(),}
+\DoxyCodeLine{00294\ \ \ \ \ m\_p(),}
+\DoxyCodeLine{00295\ \ \ \ \ m\_rowsTranspositions(),}
+\DoxyCodeLine{00296\ \ \ \ \ m\_l1\_norm(0),}
+\DoxyCodeLine{00297\ \ \ \ \ m\_det\_p(0),}
+\DoxyCodeLine{00298\ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00299\ \{}
+\DoxyCodeLine{00300\ \}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00303\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU<MatrixType>::PartialPivLU}}(Index\ size)}
+\DoxyCodeLine{00304\ \ \ :\ m\_lu(size,\ size),}
+\DoxyCodeLine{00305\ \ \ \ \ m\_p(size),}
+\DoxyCodeLine{00306\ \ \ \ \ m\_rowsTranspositions(size),}
+\DoxyCodeLine{00307\ \ \ \ \ m\_l1\_norm(0),}
+\DoxyCodeLine{00308\ \ \ \ \ m\_det\_p(0),}
+\DoxyCodeLine{00309\ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00310\ \{}
+\DoxyCodeLine{00311\ \}}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00313\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00314\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00315\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU<MatrixType>::PartialPivLU}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00316\ \ \ :\ m\_lu(matrix.rows(),matrix.cols()),}
+\DoxyCodeLine{00317\ \ \ \ \ m\_p(matrix.rows()),}
+\DoxyCodeLine{00318\ \ \ \ \ m\_rowsTranspositions(matrix.rows()),}
+\DoxyCodeLine{00319\ \ \ \ \ m\_l1\_norm(0),}
+\DoxyCodeLine{00320\ \ \ \ \ m\_det\_p(0),}
+\DoxyCodeLine{00321\ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00322\ \{}
+\DoxyCodeLine{00323\ \ \ compute(matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}());}
+\DoxyCodeLine{00324\ \}}
+\DoxyCodeLine{00325\ }
+\DoxyCodeLine{00326\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00327\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00328\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a5c04818d354f94a98786d8a44cb709c6}{PartialPivLU<MatrixType>::PartialPivLU}}(\mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix)}
+\DoxyCodeLine{00329\ \ \ :\ m\_lu(matrix.derived()),}
+\DoxyCodeLine{00330\ \ \ \ \ m\_p(matrix.rows()),}
+\DoxyCodeLine{00331\ \ \ \ \ m\_rowsTranspositions(matrix.rows()),}
+\DoxyCodeLine{00332\ \ \ \ \ m\_l1\_norm(0),}
+\DoxyCodeLine{00333\ \ \ \ \ m\_det\_p(0),}
+\DoxyCodeLine{00334\ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00335\ \{}
+\DoxyCodeLine{00336\ \ \ compute();}
+\DoxyCodeLine{00337\ \}}
+\DoxyCodeLine{00338\ }
+\DoxyCodeLine{00339\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00340\ }
+\DoxyCodeLine{00342\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ StorageOrder,\ \textcolor{keyword}{typename}\ PivIndex>}
+\DoxyCodeLine{00343\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1partial__lu__impl}{partial\_lu\_impl}}}
+\DoxyCodeLine{00344\ \{}
+\DoxyCodeLine{00345\ \ \ \textcolor{comment}{//\ FIXME\ add\ a\ stride\ to\ Map,\ so\ that\ the\ following\ mapping\ becomes\ easier,}}
+\DoxyCodeLine{00346\ \ \ \textcolor{comment}{//\ another\ option\ would\ be\ to\ create\ an\ expression\ being\ able\ to\ automatically}}
+\DoxyCodeLine{00347\ \ \ \textcolor{comment}{//\ warp\ any\ Map,\ Matrix,\ and\ Block\ expressions\ as\ a\ unique\ type,\ but\ since\ that's\ exactly}}
+\DoxyCodeLine{00348\ \ \ \textcolor{comment}{//\ a\ Map\ +\ stride,\ why\ not\ adding\ a\ stride\ to\ Map,\ and\ convenient\ ctors\ from\ a\ Matrix,}}
+\DoxyCodeLine{00349\ \ \ \textcolor{comment}{//\ and\ Block.}}
+\DoxyCodeLine{00350\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_map}{Map<Matrix<Scalar,\ Dynamic,\ Dynamic,\ StorageOrder>}}\ >\ \mbox{\hyperlink{class_eigen_1_1_map}{MapLU}};}
+\DoxyCodeLine{00351\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MapLU,\ Dynamic,\ Dynamic>}}\ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixType}};}
+\DoxyCodeLine{00352\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_block}{Block<MatrixType,Dynamic,Dynamic>}}\ \mbox{\hyperlink{class_eigen_1_1_block}{BlockType}};}
+\DoxyCodeLine{00353\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ RealScalar;}
+\DoxyCodeLine{00354\ }
+\DoxyCodeLine{00365\ \ \ \textcolor{keyword}{static}\ Index\ unblocked\_lu(\mbox{\hyperlink{class_eigen_1_1_block}{MatrixType}}\&\ lu,\ PivIndex*\ row\_transpositions,\ PivIndex\&\ nb\_transpositions)}
+\DoxyCodeLine{00366\ \ \ \{}
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__score__coeff__op}{scalar\_score\_coeff\_op<Scalar>}}\ Scoring;}
+\DoxyCodeLine{00368\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Scoring::result\_type\ Score;}
+\DoxyCodeLine{00369\ \ \ \ \ \textcolor{keyword}{const}\ Index\ rows\ =\ lu.rows();}
+\DoxyCodeLine{00370\ \ \ \ \ \textcolor{keyword}{const}\ Index\ cols\ =\ lu.cols();}
+\DoxyCodeLine{00371\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ (std::min)(rows,cols);}
+\DoxyCodeLine{00372\ \ \ \ \ nb\_transpositions\ =\ 0;}
+\DoxyCodeLine{00373\ \ \ \ \ Index\ first\_zero\_pivot\ =\ -\/1;}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k\ =\ 0;\ k\ <\ size;\ ++k)}
+\DoxyCodeLine{00375\ \ \ \ \ \{}
+\DoxyCodeLine{00376\ \ \ \ \ \ \ Index\ rrows\ =\ rows-\/k-\/1;}
+\DoxyCodeLine{00377\ \ \ \ \ \ \ Index\ rcols\ =\ cols-\/k-\/1;}
+\DoxyCodeLine{00378\ }
+\DoxyCodeLine{00379\ \ \ \ \ \ \ Index\ row\_of\_biggest\_in\_col;}
+\DoxyCodeLine{00380\ \ \ \ \ \ \ Score\ biggest\_in\_corner}
+\DoxyCodeLine{00381\ \ \ \ \ \ \ \ \ =\ lu.col(k).tail(rows-\/k).unaryExpr(Scoring()).maxCoeff(\&row\_of\_biggest\_in\_col);}
+\DoxyCodeLine{00382\ \ \ \ \ \ \ row\_of\_biggest\_in\_col\ +=\ k;}
+\DoxyCodeLine{00383\ }
+\DoxyCodeLine{00384\ \ \ \ \ \ \ row\_transpositions[k]\ =\ PivIndex(row\_of\_biggest\_in\_col);}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00386\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(biggest\_in\_corner\ !=\ Score(0))}
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00388\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(k\ !=\ row\_of\_biggest\_in\_col)}
+\DoxyCodeLine{00389\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00390\ \ \ \ \ \ \ \ \ \ \ lu.row(k).swap(lu.row(row\_of\_biggest\_in\_col));}
+\DoxyCodeLine{00391\ \ \ \ \ \ \ \ \ \ \ ++nb\_transpositions;}
+\DoxyCodeLine{00392\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00393\ }
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ FIXME\ shall\ we\ introduce\ a\ safe\ quotient\ expression\ in\ cas\ 1/lu.coeff(k,k)}}
+\DoxyCodeLine{00395\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ overflow\ but\ not\ the\ actual\ quotient?}}
+\DoxyCodeLine{00396\ \ \ \ \ \ \ \ \ lu.col(k).tail(rrows)\ /=\ lu.coeff(k,k);}
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00398\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}(first\_zero\_pivot==-\/1)}
+\DoxyCodeLine{00399\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00400\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ pivot\ is\ exactly\ zero,\ we\ record\ the\ index\ of\ the\ first\ pivot\ which\ is\ exactly\ 0,}}
+\DoxyCodeLine{00401\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ and\ continue\ the\ factorization\ such\ we\ still\ have\ A\ =\ PLU}}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ first\_zero\_pivot\ =\ k;}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00405\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(k<rows-\/1)}
+\DoxyCodeLine{00406\ \ \ \ \ \ \ \ \ lu.bottomRightCorner(rrows,rcols).noalias()\ -\/=\ lu.col(k).tail(rrows)\ *\ lu.row(k).tail(rcols);}
+\DoxyCodeLine{00407\ \ \ \ \ \}}
+\DoxyCodeLine{00408\ \ \ \ \ \textcolor{keywordflow}{return}\ first\_zero\_pivot;}
+\DoxyCodeLine{00409\ \ \ \}}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00426\ \ \ \textcolor{keyword}{static}\ Index\ blocked\_lu(Index\ rows,\ Index\ cols,\ Scalar*\ lu\_data,\ Index\ luStride,\ PivIndex*\ row\_transpositions,\ PivIndex\&\ nb\_transpositions,\ Index\ maxBlockSize=256)}
+\DoxyCodeLine{00427\ \ \ \{}
+\DoxyCodeLine{00428\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{MapLU}}\ lu1(lu\_data,StorageOrder==\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}}?rows:luStride,StorageOrder==\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}}?luStride:cols);}
+\DoxyCodeLine{00429\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{MatrixType}}\ lu(lu1,0,0,rows,cols);}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ (std::min)(rows,cols);}
+\DoxyCodeLine{00432\ }
+\DoxyCodeLine{00433\ \ \ \ \ \textcolor{comment}{//\ if\ the\ matrix\ is\ too\ small,\ no\ blocking:}}
+\DoxyCodeLine{00434\ \ \ \ \ \textcolor{keywordflow}{if}(size<=16)}
+\DoxyCodeLine{00435\ \ \ \ \ \{}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ unblocked\_lu(lu,\ row\_transpositions,\ nb\_transpositions);}
+\DoxyCodeLine{00437\ \ \ \ \ \}}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \ \ \ \ \textcolor{comment}{//\ automatically\ adjust\ the\ number\ of\ subdivisions\ to\ the\ size}}
+\DoxyCodeLine{00440\ \ \ \ \ \textcolor{comment}{//\ of\ the\ matrix\ so\ that\ there\ is\ enough\ sub\ blocks:}}
+\DoxyCodeLine{00441\ \ \ \ \ Index\ blockSize;}
+\DoxyCodeLine{00442\ \ \ \ \ \{}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ blockSize\ =\ size/8;}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ blockSize\ =\ (blockSize/16)*16;}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ blockSize\ =\ (std::min)((std::max)(blockSize,Index(8)),\ maxBlockSize);}
+\DoxyCodeLine{00446\ \ \ \ \ \}}
+\DoxyCodeLine{00447\ }
+\DoxyCodeLine{00448\ \ \ \ \ nb\_transpositions\ =\ 0;}
+\DoxyCodeLine{00449\ \ \ \ \ Index\ first\_zero\_pivot\ =\ -\/1;}
+\DoxyCodeLine{00450\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ k\ =\ 0;\ k\ <\ size;\ k+=blockSize)}
+\DoxyCodeLine{00451\ \ \ \ \ \{}
+\DoxyCodeLine{00452\ \ \ \ \ \ \ Index\ bs\ =\ (std::min)(size-\/k,blockSize);\ \textcolor{comment}{//\ actual\ size\ of\ the\ block}}
+\DoxyCodeLine{00453\ \ \ \ \ \ \ Index\ trows\ =\ rows\ -\/\ k\ -\/\ bs;\ \textcolor{comment}{//\ trailing\ rows}}
+\DoxyCodeLine{00454\ \ \ \ \ \ \ Index\ tsize\ =\ size\ -\/\ k\ -\/\ bs;\ \textcolor{comment}{//\ trailing\ size}}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \ \ \ \ \ \ \textcolor{comment}{//\ partition\ the\ matrix:}}
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ A00\ |\ A01\ |\ A02}}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \textcolor{comment}{//\ lu\ \ =\ A\_0\ |\ A\_1\ |\ A\_2\ =\ \ A10\ |\ A11\ |\ A12}}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ A20\ |\ A21\ |\ A22}}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{BlockType}}\ A\_0(lu,0,0,rows,k);}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{BlockType}}\ A\_2(lu,0,k+bs,rows,tsize);}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{BlockType}}\ A11(lu,k,k,bs,bs);}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{BlockType}}\ A12(lu,k,k+bs,bs,tsize);}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{BlockType}}\ A21(lu,k+bs,k,trows,bs);}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_block}{BlockType}}\ A22(lu,k+bs,k+bs,trows,tsize);}
+\DoxyCodeLine{00466\ }
+\DoxyCodeLine{00467\ \ \ \ \ \ \ PivIndex\ nb\_transpositions\_in\_panel;}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \textcolor{comment}{//\ recursively\ call\ the\ blocked\ LU\ algorithm\ on\ [A11\string^T\ A21\string^T]\string^T}}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \textcolor{comment}{//\ with\ a\ very\ small\ blocking\ size:}}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ Index\ ret\ =\ blocked\_lu(trows+bs,\ bs,\ \&lu.coeffRef(k,k),\ luStride,}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ row\_transpositions+k,\ nb\_transpositions\_in\_panel,\ 16);}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(ret>=0\ \&\&\ first\_zero\_pivot==-\/1)}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ first\_zero\_pivot\ =\ k+ret;}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \ \ \ \ \ \ nb\_transpositions\ +=\ nb\_transpositions\_in\_panel;}
+\DoxyCodeLine{00476\ \ \ \ \ \ \ \textcolor{comment}{//\ update\ permutations\ and\ apply\ them\ to\ A\_0}}
+\DoxyCodeLine{00477\ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=k;\ i<k+bs;\ ++i)}
+\DoxyCodeLine{00478\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00479\ \ \ \ \ \ \ \ \ Index\ piv\ =\ (row\_transpositions[i]\ +=\ internal::convert\_index<PivIndex>(k));}
+\DoxyCodeLine{00480\ \ \ \ \ \ \ \ \ A\_0.row(i).swap(A\_0.row(piv));}
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00482\ }
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \textcolor{keywordflow}{if}(trows)}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ apply\ permutations\ to\ A\_2}}
+\DoxyCodeLine{00486\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}(Index\ i=k;i<k+bs;\ ++i)}
+\DoxyCodeLine{00487\ \ \ \ \ \ \ \ \ \ \ A\_2.row(i).swap(A\_2.row(row\_transpositions[i]));}
+\DoxyCodeLine{00488\ }
+\DoxyCodeLine{00489\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ A12\ =\ A11\string^-\/1\ A12}}
+\DoxyCodeLine{00490\ \ \ \ \ \ \ \ \ A11.template\ triangularView<UnitLower>().solveInPlace(A12);}
+\DoxyCodeLine{00491\ }
+\DoxyCodeLine{00492\ \ \ \ \ \ \ \ \ A22.noalias()\ -\/=\ A21\ *\ A12;}
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00494\ \ \ \ \ \}}
+\DoxyCodeLine{00495\ \ \ \ \ \textcolor{keywordflow}{return}\ first\_zero\_pivot;}
+\DoxyCodeLine{00496\ \ \ \}}
+\DoxyCodeLine{00497\ \};}
+\DoxyCodeLine{00498\ }
+\DoxyCodeLine{00501\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ TranspositionType>}
+\DoxyCodeLine{00502\ \textcolor{keywordtype}{void}\ partial\_lu\_inplace(MatrixType\&\ lu,\ TranspositionType\&\ row\_transpositions,\ \textcolor{keyword}{typename}\ TranspositionType::StorageIndex\&\ nb\_transpositions)}
+\DoxyCodeLine{00503\ \{}
+\DoxyCodeLine{00504\ \ \ eigen\_assert(lu.cols()\ ==\ row\_transpositions.size());}
+\DoxyCodeLine{00505\ \ \ eigen\_assert((\&row\_transpositions.coeffRef(1)-\/\&row\_transpositions.coeffRef(0))\ ==\ 1);}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00507\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1partial__lu__impl}{partial\_lu\_impl}}}
+\DoxyCodeLine{00508\ \ \ \ \ <\textcolor{keyword}{typename}\ MatrixType::Scalar,\ MatrixType::Flags\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}?\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{RowMajor}}:\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{ColMajor}},\ \textcolor{keyword}{typename}\ TranspositionType::StorageIndex>}
+\DoxyCodeLine{00509\ \ \ \ \ ::blocked\_lu(lu.rows(),\ lu.cols(),\ \&lu.coeffRef(0,0),\ lu.outerStride(),\ \&row\_transpositions.coeffRef(0),\ nb\_transpositions);}
+\DoxyCodeLine{00510\ \}}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00513\ }
+\DoxyCodeLine{00514\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00515\ \textcolor{keywordtype}{void}\ PartialPivLU<MatrixType>::compute()}
+\DoxyCodeLine{00516\ \{}
+\DoxyCodeLine{00517\ \ \ check\_template\_parameters();}
+\DoxyCodeLine{00518\ }
+\DoxyCodeLine{00519\ \ \ \textcolor{comment}{//\ the\ row\ permutation\ is\ stored\ as\ int\ indices,\ so\ just\ to\ be\ sure:}}
+\DoxyCodeLine{00520\ \ \ eigen\_assert(m\_lu.rows()<NumTraits<int>::highest());}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ \ \ m\_l1\_norm\ =\ m\_lu.cwiseAbs().colwise().sum().maxCoeff();}
+\DoxyCodeLine{00523\ }
+\DoxyCodeLine{00524\ \ \ eigen\_assert(m\_lu.rows()\ ==\ m\_lu.cols()\ \&\&\ \textcolor{stringliteral}{"{}PartialPivLU\ is\ only\ for\ square\ (and\ moreover\ invertible)\ matrices"{}});}
+\DoxyCodeLine{00525\ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ m\_lu.rows();}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \ \ m\_rowsTranspositions.resize(size);}
+\DoxyCodeLine{00528\ }
+\DoxyCodeLine{00529\ \ \ \textcolor{keyword}{typename}\ TranspositionType::StorageIndex\ nb\_transpositions;}
+\DoxyCodeLine{00530\ \ \ internal::partial\_lu\_inplace(m\_lu,\ m\_rowsTranspositions,\ nb\_transpositions);}
+\DoxyCodeLine{00531\ \ \ m\_det\_p\ =\ (nb\_transpositions\%2)\ ?\ -\/1\ :\ 1;}
+\DoxyCodeLine{00532\ }
+\DoxyCodeLine{00533\ \ \ m\_p\ =\ m\_rowsTranspositions;}
+\DoxyCodeLine{00534\ }
+\DoxyCodeLine{00535\ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00536\ \}}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00539\ \textcolor{keyword}{typename}\ PartialPivLU<MatrixType>::Scalar\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_a54c3d39c9b46ff485a8d2140b9b23193}{PartialPivLU<MatrixType>::determinant}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00540\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00541\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}PartialPivLU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00542\ \ \ \textcolor{keywordflow}{return}\ Scalar(m\_det\_p)\ *\ m\_lu.diagonal().prod();}
+\DoxyCodeLine{00543\ \}}
+\DoxyCodeLine{00544\ }
+\DoxyCodeLine{00548\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00549\ MatrixType\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u_aba7f1ee83537b0d240ebf206503a4920}{PartialPivLU<MatrixType>::reconstructedMatrix}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00550\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00551\ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}LU\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00552\ \ \ \textcolor{comment}{//\ LU}}
+\DoxyCodeLine{00553\ \ \ MatrixType\ res\ =\ m\_lu.template\ triangularView<UnitLower>().toDenseMatrix()}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ m\_lu.template\ triangularView<Upper>();}
+\DoxyCodeLine{00555\ }
+\DoxyCodeLine{00556\ \ \ \textcolor{comment}{//\ P\string^\{-\/1\}(LU)}}
+\DoxyCodeLine{00557\ \ \ res\ =\ m\_p.inverse()\ *\ res;}
+\DoxyCodeLine{00558\ }
+\DoxyCodeLine{00559\ \ \ \textcolor{keywordflow}{return}\ res;}
+\DoxyCodeLine{00560\ \}}
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00562\ \textcolor{comment}{/*****\ Implementation\ details\ *****************************************************/}}
+\DoxyCodeLine{00563\ }
+\DoxyCodeLine{00564\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00565\ }
+\DoxyCodeLine{00566\ \textcolor{comment}{/*****\ Implementation\ of\ inverse()\ *****************************************************/}}
+\DoxyCodeLine{00567\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DstXprType,\ \textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00568\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1_assignment}{Assignment}}<DstXprType,\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse}}<\mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU}}<MatrixType>\ >,\ internal::\mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{assign\_op}}<typename\ DstXprType::Scalar,typename\ PartialPivLU<MatrixType>::Scalar>,\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1_dense2_dense}{Dense2Dense}}>}
+\DoxyCodeLine{00569\ \{}
+\DoxyCodeLine{00570\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU<MatrixType>}}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{LuType}};}
+\DoxyCodeLine{00571\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{Inverse<LuType>}}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{SrcXprType}};}
+\DoxyCodeLine{00572\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(DstXprType\ \&dst,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_inverse}{SrcXprType}}\ \&src,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1assign__op}{internal::assign\_op<typename\ DstXprType::Scalar,typename\ LuType::Scalar>}}\ \&)}
+\DoxyCodeLine{00573\ \ \ \{}
+\DoxyCodeLine{00574\ \ \ \ \ dst\ =\ src.nestedExpression().solve(MatrixType::Identity(src.rows(),\ src.cols()));}
+\DoxyCodeLine{00575\ \ \ \}}
+\DoxyCodeLine{00576\ \};}
+\DoxyCodeLine{00577\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00578\ }
+\DoxyCodeLine{00579\ \textcolor{comment}{/********\ MatrixBase\ methods\ *******/}}
+\DoxyCodeLine{00580\ }
+\DoxyCodeLine{00587\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00588\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU<typename\ MatrixBase<Derived>::PlainObject}}>}
+\DoxyCodeLine{00589\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_a6199d8aaf26c1b8ac3097fdfa7733a1e}{MatrixBase<Derived>::partialPivLu}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00590\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00591\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU<PlainObject>}}(eval());}
+\DoxyCodeLine{00592\ \}}
+\DoxyCodeLine{00593\ }
+\DoxyCodeLine{00602\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00603\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU<typename\ MatrixBase<Derived>::PlainObject}}>}
+\DoxyCodeLine{00604\ \mbox{\hyperlink{class_eigen_1_1_matrix_base_afb312afbfe960cbda67811552d876fae}{MatrixBase<Derived>::lu}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00605\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00606\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_partial_piv_l_u}{PartialPivLU<PlainObject>}}(eval());}
+\DoxyCodeLine{00607\ \}}
+\DoxyCodeLine{00608\ }
+\DoxyCodeLine{00609\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00610\ }
+\DoxyCodeLine{00611\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_PARTIALLU\_H}}
+
+\end{DoxyCode}

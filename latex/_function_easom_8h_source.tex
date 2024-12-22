@@ -1,0 +1,33 @@
+\doxysection{Function\+Easom.\+h}
+\hypertarget{_function_easom_8h_source}{}\label{_function_easom_8h_source}\index{OptimizationMethods/FunctionEasom.h@{OptimizationMethods/FunctionEasom.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Function.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_function_easom}{FunctionEasom}}\ :}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_function}{Function}}}
+\DoxyCodeLine{00012\ \{}
+\DoxyCodeLine{00013\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00014\ \ \ \ \ \mbox{\hyperlink{class_function_easom}{\string~FunctionEasom}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ getDim()\textcolor{keyword}{\ const\ override\ }\{\ \textcolor{keywordflow}{return}\ 4;\ \}}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{string}\ getName()\textcolor{keyword}{\ const\ override\ }\{\ }
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}-\/cos(x1)\ *\ cos(x2)\ *\ cos(x3)\ *\ cos(x4)\ *\ exp(-\/((x1\ -\/\ pi)\string^2\ +\ (x2\ -\/\ pi)\string^2\ +\ (x3\ -\/\ pi)\string^2\ +\ (x4\ -\/\ pi)\string^2)\ /\ 16)"{}};}
+\DoxyCodeLine{00019\ \ \ \ \ \}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ point\_type\ operator()(\textcolor{keyword}{const}\ VectorXd\&\ x)\textcolor{keyword}{\ const\ override\ }\{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ term1\ =\ -\/cos(x(0))\ *\ cos(x(1))\ *\ cos(x(2))\ *\ cos(x(3));}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ term2\ =\ exp(-\/((x(0)\ -\/\ M\_PI)\ *\ (x(0)\ -\/\ M\_PI)\ +}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ (x(1)\ -\/\ M\_PI)\ *\ (x(1)\ -\/\ M\_PI)\ +}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ (x(2)\ -\/\ M\_PI)\ *\ (x(2)\ -\/\ M\_PI)\ +}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ (x(3)\ -\/\ M\_PI)\ *\ (x(3)\ -\/\ M\_PI))\ /\ 16.0);}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ term1\ *\ term2;}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \};}
+\DoxyCodeLine{00031\ }
+
+\end{DoxyCode}

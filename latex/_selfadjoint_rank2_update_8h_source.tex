@@ -1,0 +1,99 @@
+\doxysection{Selfadjoint\+Rank2\+Update.\+h}
+\hypertarget{_selfadjoint_rank2_update_8h_source}{}\label{_selfadjoint_rank2_update_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/products/SelfadjointRank2Update.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/products/SelfadjointRank2Update.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_SELFADJOINTRANK2UPTADE\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_SELFADJOINTRANK2UPTADE\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{/*\ Optimized\ selfadjoint\ matrix\ +=\ alpha\ *\ uv'\ +\ conj(alpha)*vu'}}
+\DoxyCodeLine{00018\ \textcolor{comment}{\ *\ It\ corresponds\ to\ the\ Level2\ syr2\ BLAS\ routine}}
+\DoxyCodeLine{00019\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ UType,\ \textcolor{keyword}{typename}\ VType,\ \textcolor{keywordtype}{int}\ UpLo>}
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1selfadjoint__rank2__update__selector}{selfadjoint\_rank2\_update\_selector}};}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ UType,\ \textcolor{keyword}{typename}\ VType>}
+\DoxyCodeLine{00025\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1selfadjoint__rank2__update__selector}{selfadjoint\_rank2\_update\_selector}}<Scalar,Index,UType,VType,\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}}>}
+\DoxyCodeLine{00026\ \{}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(Scalar*\ mat,\ Index\ stride,\ \textcolor{keyword}{const}\ UType\&\ u,\ \textcolor{keyword}{const}\ VType\&\ v,\ \textcolor{keyword}{const}\ Scalar\&\ alpha)}
+\DoxyCodeLine{00028\ \ \ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ u.size();}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i=0;\ i<size;\ ++i)}
+\DoxyCodeLine{00031\ \ \ \ \ \{}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map<Matrix<Scalar,Dynamic,1>}}\ >(mat+stride*i+i,\ size-\/i)\ +=}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (numext::conj(alpha)\ *\ numext::conj(u.coeff(i)))\ *\ v.tail(size-\/i)}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\ (alpha\ *\ numext::conj(v.coeff(i)))\ *\ u.tail(size-\/i);}
+\DoxyCodeLine{00035\ \ \ \ \ \}}
+\DoxyCodeLine{00036\ \ \ \}}
+\DoxyCodeLine{00037\ \};}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index,\ \textcolor{keyword}{typename}\ UType,\ \textcolor{keyword}{typename}\ VType>}
+\DoxyCodeLine{00040\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1selfadjoint__rank2__update__selector}{selfadjoint\_rank2\_update\_selector}}<Scalar,Index,UType,VType,\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}}>}
+\DoxyCodeLine{00041\ \{}
+\DoxyCodeLine{00042\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(Scalar*\ mat,\ Index\ stride,\ \textcolor{keyword}{const}\ UType\&\ u,\ \textcolor{keyword}{const}\ VType\&\ v,\ \textcolor{keyword}{const}\ Scalar\&\ alpha)}
+\DoxyCodeLine{00043\ \ \ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{const}\ Index\ size\ =\ u.size();}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i=0;\ i<size;\ ++i)}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,Dynamic,1>}}\ >(mat+stride*i,\ i+1)\ +=}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (numext::conj(alpha)\ \ *\ numext::conj(u.coeff(i)))\ *\ v.head(i+1)}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ +\ (alpha\ *\ numext::conj(v.coeff(i)))\ *\ u.head(i+1);}
+\DoxyCodeLine{00049\ \ \ \}}
+\DoxyCodeLine{00050\ \};}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00052\ \textcolor{keyword}{template}<\textcolor{keywordtype}{bool}\ Cond,\ \textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1conj__expr__if}{conj\_expr\_if}}}
+\DoxyCodeLine{00053\ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{conditional}}<!Cond,\ const\ T\&,}
+\DoxyCodeLine{00054\ \ \ \ \ \ \ CwiseUnaryOp<scalar\_conjugate\_op<typename\ traits<T>::Scalar>,T>\ >\ \{\};}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ UpLo>}
+\DoxyCodeLine{00059\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ DerivedU,\ \textcolor{keyword}{typename}\ DerivedV>}
+\DoxyCodeLine{00060\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_view}{SelfAdjointView<MatrixType,UpLo>}}\&\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_view}{SelfAdjointView<MatrixType,UpLo>}}}
+\DoxyCodeLine{00061\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_view}{::rankUpdate}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<DerivedU>}}\&\ u,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<DerivedV>}}\&\ v,\ \textcolor{keyword}{const}\ Scalar\&\ alpha)}
+\DoxyCodeLine{00062\ \{}
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1blas__traits}{internal::blas\_traits<DerivedU>}}\ UBlasTraits;}
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ UBlasTraits::DirectLinearAccessType\ ActualUType;}
+\DoxyCodeLine{00065\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::remove\_all<ActualUType>::type\ \_ActualUType;}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{typename}\ internal::add\_const\_on\_value\_type<ActualUType>::type\ actualU\ =\ UBlasTraits::extract(u.derived());}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1blas__traits}{internal::blas\_traits<DerivedV>}}\ VBlasTraits;}
+\DoxyCodeLine{00069\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ VBlasTraits::DirectLinearAccessType\ ActualVType;}
+\DoxyCodeLine{00070\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::remove\_all<ActualVType>::type\ \_ActualVType;}
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{typename}\ internal::add\_const\_on\_value\_type<ActualVType>::type\ actualV\ =\ VBlasTraits::extract(v.derived());}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{comment}{//\ If\ MatrixType\ is\ row\ major,\ then\ we\ use\ the\ routine\ for\ lower\ triangular\ in\ the\ upper\ triangular\ case\ and}}
+\DoxyCodeLine{00074\ \ \ \textcolor{comment}{//\ vice\ versa,\ and\ take\ the\ complex\ conjugate\ of\ all\ coefficients\ and\ vector\ entries.}}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00076\ \ \ \textcolor{keyword}{enum}\ \{\ IsRowMajor\ =\ (\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<MatrixType>::Flags}}\&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}})\ ?\ 1\ :\ 0\ \};}
+\DoxyCodeLine{00077\ \ \ Scalar\ actualAlpha\ =\ alpha\ *\ UBlasTraits::extractScalarFactor(u.derived())}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ *\ numext::conj(VBlasTraits::extractScalarFactor(v.derived()));}
+\DoxyCodeLine{00079\ \ \ \textcolor{keywordflow}{if}\ (IsRowMajor)}
+\DoxyCodeLine{00080\ \ \ \ \ actualAlpha\ =\ numext::conj(actualAlpha);}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1remove__all}{internal::remove\_all<typename\ internal::conj\_expr\_if<IsRowMajor\ \string^\ UBlasTraits::NeedToConjugate,\_ActualUType>::type}}>::type\ UType;}
+\DoxyCodeLine{00083\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1remove__all}{internal::remove\_all<typename\ internal::conj\_expr\_if<IsRowMajor\ \string^\ VBlasTraits::NeedToConjugate,\_ActualVType>::type}}>::type\ VType;}
+\DoxyCodeLine{00084\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1selfadjoint__rank2__update__selector}{internal::selfadjoint\_rank2\_update\_selector}}<Scalar,\ Index,\ UType,\ VType,}
+\DoxyCodeLine{00085\ \ \ \ \ (IsRowMajor\ ?\ int(UpLo==\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}}\ ?\ \mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}}\ :\ \mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}})\ :\ UpLo)>}
+\DoxyCodeLine{00086\ \ \ \ \ ::run(\_expression().const\_cast\_derived().data(),\_expression().outerStride(),UType(actualU),VType(actualV),actualAlpha);}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00089\ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_SELFADJOINTRANK2UPTADE\_H}}
+
+\end{DoxyCode}

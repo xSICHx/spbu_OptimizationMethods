@@ -1,0 +1,78 @@
+\doxysection{Transfer\+Data Class Reference}
+\hypertarget{class_transfer_data}{}\label{class_transfer_data}\index{TransferData@{TransferData}}
+
+
+A class to manage and transfer optimization data points, gradients, and other related information.  
+
+
+
+
+{\ttfamily \#include $<$Transfer\+Data.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_transfer_data_a1ac9209fdffd016b967c0ac22fdcf907}\label{class_transfer_data_a1ac9209fdffd016b967c0ac22fdcf907} 
+shared\+\_\+ptr$<$ Vector\+Xd $>$ {\bfseries get\+Curr\+Point} () const
+\item 
+\Hypertarget{class_transfer_data_a7f31109b8faabafb971ce080b9e6a77b}\label{class_transfer_data_a7f31109b8faabafb971ce080b9e6a77b} 
+shared\+\_\+ptr$<$ Vector\+Xd $>$ {\bfseries get\+Prev\+Point} () const
+\item 
+\Hypertarget{class_transfer_data_af03df7bc55b0e05b4d5a539665ba7f5b}\label{class_transfer_data_af03df7bc55b0e05b4d5a539665ba7f5b} 
+shared\+\_\+ptr$<$ Vector\+Xd $>$ {\bfseries get\+Curr\+Gradient} () const
+\item 
+\Hypertarget{class_transfer_data_ab8e4a9e8d9ef21442e5bb16dd23ec9f7}\label{class_transfer_data_ab8e4a9e8d9ef21442e5bb16dd23ec9f7} 
+shared\+\_\+ptr$<$ size\+\_\+t $>$ {\bfseries get\+Curr\+Iter} () const
+\item 
+\Hypertarget{class_transfer_data_a2d7b9debdadfde76e800c91973841fe4}\label{class_transfer_data_a2d7b9debdadfde76e800c91973841fe4} 
+shared\+\_\+ptr$<$ double $>$ {\bfseries get\+Curr\+FVal} () const
+\item 
+\Hypertarget{class_transfer_data_a8ad2114b72c57a7fe71fa36fb9e3151b}\label{class_transfer_data_a8ad2114b72c57a7fe71fa36fb9e3151b} 
+shared\+\_\+ptr$<$ double $>$ {\bfseries get\+Prev\+FVal} () const
+\item 
+\Hypertarget{class_transfer_data_a4e15469143eef63ae8a35583c2461adc}\label{class_transfer_data_a4e15469143eef63ae8a35583c2461adc} 
+shared\+\_\+ptr$<$ double $>$ {\bfseries get\+Alpha} () const
+\item 
+\Hypertarget{class_transfer_data_a977b8751042e986bc4f95496c20c11e5}\label{class_transfer_data_a977b8751042e986bc4f95496c20c11e5} 
+shared\+\_\+ptr$<$ bool $>$ {\bfseries get\+Flag\+In\+Bound} () const
+\item 
+\Hypertarget{class_transfer_data_abdc07281892c3d8691e04e6191d19f62}\label{class_transfer_data_abdc07281892c3d8691e04e6191d19f62} 
+void {\bfseries set\+Curr\+Point} (const Vector\+Xd \&point)
+\item 
+\Hypertarget{class_transfer_data_a4a0b543b8734ee626af3e51aa595668d}\label{class_transfer_data_a4a0b543b8734ee626af3e51aa595668d} 
+void {\bfseries set\+Prev\+Point} (const Vector\+Xd \&point)
+\item 
+\Hypertarget{class_transfer_data_ad63ccc2ae89d97fbf8dd1a966e8031e0}\label{class_transfer_data_ad63ccc2ae89d97fbf8dd1a966e8031e0} 
+void {\bfseries set\+Curr\+Gradient} (const Vector\+Xd \&gradient)
+\item 
+\Hypertarget{class_transfer_data_a5af38d38c96e070765c11fdcdd2994d1}\label{class_transfer_data_a5af38d38c96e070765c11fdcdd2994d1} 
+void {\bfseries set\+Curr\+Iter} (const size\+\_\+t \&iter)
+\item 
+\Hypertarget{class_transfer_data_a2447b981547fe5f0ef4b117910fd2f42}\label{class_transfer_data_a2447b981547fe5f0ef4b117910fd2f42} 
+void {\bfseries set\+Curr\+FVal} (const double \&val)
+\item 
+\Hypertarget{class_transfer_data_afd64f040fba8ec98ecb3efa6c4ceafab}\label{class_transfer_data_afd64f040fba8ec98ecb3efa6c4ceafab} 
+void {\bfseries set\+Prev\+FVal} (const double \&val)
+\item 
+\Hypertarget{class_transfer_data_ab376d2d93dd03b458cd488ea284b3b41}\label{class_transfer_data_ab376d2d93dd03b458cd488ea284b3b41} 
+void {\bfseries set\+Alpha} (const double \&alpha\+\_\+val)
+\item 
+\Hypertarget{class_transfer_data_a478a64ca0480e738c0eb509d25608aa8}\label{class_transfer_data_a478a64ca0480e738c0eb509d25608aa8} 
+void {\bfseries set\+Flag\+In\+Bound} (const bool \&flag)
+\item 
+\Hypertarget{class_transfer_data_a973686d658776fc7643b74221f96fdcc}\label{class_transfer_data_a973686d658776fc7643b74221f96fdcc} 
+void {\bfseries print\+\_\+vec} (Vector\+Xd \&vec)
+\item 
+\Hypertarget{class_transfer_data_aa93835f71bf3dc158c3ef369c0f09231}\label{class_transfer_data_aa93835f71bf3dc158c3ef369c0f09231} 
+void {\bfseries print\+Data} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class to manage and transfer optimization data points, gradients, and other related information. 
+
+This class encapsulates various data points and parameters used in optimization methods, providing getter and setter methods for each data member. It also includes utility functions to print the data. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Transfer\+Data.\+h\end{DoxyCompactItemize}

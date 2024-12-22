@@ -1,0 +1,131 @@
+\chapter{Optimization Methods Package}
+\hypertarget{index}{}\label{index}\index{Optimization Methods Package@{Optimization Methods Package}}
+The {\bfseries{Optimization Methods}} package provides a flexible framework for optimization tasks, supporting both console input and programmatic usage. It includes various optimization algorithms (e.\+g., Newton\textquotesingle{}s method, Random Search) and allows users to define functions, initial points, and stopping criteria.\hypertarget{index_autotoc_md0}{}\doxysubsection{\texorpdfstring{Features}{Features}}\label{index_autotoc_md0}
+
+\begin{DoxyItemize}
+\item {\bfseries{Console Input}}\+: Interactive console interface for selecting functions, dimensions, initial points, and optimization methods.
+\item {\bfseries{Programmatic Usage}}\+: Direct integration into C++ programs for automated optimization tasks.
+\item {\bfseries{Support for Multiple Dimensions}}\+: Handles optimization in 1D to 4D spaces.
+\item {\bfseries{Customizable Stopping Criteria}}\+: Supports maximum iterations, function value changes, and gradient-\/based criteria.
+\end{DoxyItemize}\hypertarget{index_autotoc_md1}{}\doxysubsection{\texorpdfstring{Example Usage}{Example Usage}}\label{index_autotoc_md1}
+\hypertarget{index_autotoc_md2}{}\doxysubsubsection{\texorpdfstring{Console Input Example}{Console Input Example}}\label{index_autotoc_md2}
+The following example demonstrates how to use the console interface to perform optimization\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keywordtype}{int}\ main()\ \{}
+\DoxyCodeLine{\ \ \ \ initializeRandomGenerator(100);}
+\DoxyCodeLine{\ \ \ \ consoleInput();}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{\}}
+
+\end{DoxyCode}
+
+
+{\bfseries{Console Output Example}}\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{Enter\ the\ dimension\ of\ the\ space\ (from\ 1\ to\ 4):\ 2}
+\DoxyCodeLine{Available\ functions\ for\ dimension\ 2:}
+\DoxyCodeLine{0:\ 5*x\string^2\ -\/\ 6*x*y\ +\ 5*y\string^2}
+\DoxyCodeLine{1:\ |x+y|+3*|y-\/x|}
+\DoxyCodeLine{2:\ (1-\/x)\string^2\ +\ 100*(y-\/x\string^2)\string^2}
+\DoxyCodeLine{Enter\ the\ function\ number:\ 2}
+\DoxyCodeLine{You\ selected\ the\ function:\ (1-\/x)\string^2\ +\ 100*(y-\/x\string^2)\string^2}
+\DoxyCodeLine{Enter\ two\ numbers\ for\ row\ 1\ (first\ <\ second):}
+\DoxyCodeLine{\ \ First:\ -\/5}
+\DoxyCodeLine{\ \ Second:\ 3}
+\DoxyCodeLine{Enter\ two\ numbers\ for\ row\ 2\ (first\ <\ second):}
+\DoxyCodeLine{\ \ First:\ -\/3}
+\DoxyCodeLine{\ \ Second:\ 5}
+\DoxyCodeLine{You\ have\ entered\ the\ following\ n-\/dimensional\ cube:}
+\DoxyCodeLine{-\/5\ \ 3}
+\DoxyCodeLine{-\/3\ \ 5}
+\DoxyCodeLine{Enter\ initial\ point:}
+\DoxyCodeLine{Enter\ point\ for\ 0\ dimension\ :-\/1.35}
+\DoxyCodeLine{Enter\ point\ for\ 1\ dimension\ :2}
+\DoxyCodeLine{Enter\ the\ maximum\ of\ iterations:\ 10000}
+\DoxyCodeLine{Enter\ eps:0.0001}
+\DoxyCodeLine{Available\ criterions\ :}
+\DoxyCodeLine{0:\ max\ iteration}
+\DoxyCodeLine{1:\ |f\_curr\ -\/\ f\_prev|/|f\_curr|\ >=\ eps}
+\DoxyCodeLine{2:\ |f\_curr\ -\/\ f\_prev|\ >=\ eps}
+\DoxyCodeLine{Enter\ the\ criterion\ number:\ 2}
+\DoxyCodeLine{You\ selected\ the\ criterion:\ |f\_curr\ -\/\ f\_prev|\ >=\ eps}
+\DoxyCodeLine{Available\ optimize\ methods:}
+\DoxyCodeLine{0:\ Newton}
+\DoxyCodeLine{1:\ Random\ Search}
+\DoxyCodeLine{Enter\ the\ optimize\ method\ number:\ 0}
+\DoxyCodeLine{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}
+\DoxyCodeLine{}
+\DoxyCodeLine{Curr\_point:\ -\/1.36701\ 2.00156}
+\DoxyCodeLine{Prev\_point:\ -\/1.35\ 2}
+\DoxyCodeLine{Grad:\ 91.1569\ 35.501}
+\DoxyCodeLine{Iter:\ 1}
+\DoxyCodeLine{Curr\ F:\ 7.36725}
+\DoxyCodeLine{Prev\ F:\ 8.67312}
+\DoxyCodeLine{Alpha:\ 0.25}
+\DoxyCodeLine{}
+\DoxyCodeLine{Curr\_point:\ 0.99686\ 0.994655}
+\DoxyCodeLine{Prev\_point:\ 0.996784\ 0.994814}
+\DoxyCodeLine{Grad:\ -\/0.494944\ 0.248042}
+\DoxyCodeLine{Iter:\ 168}
+\DoxyCodeLine{Curr\ F:\ 9.5451e-\/05}
+\DoxyCodeLine{Prev\ F:\ 0.000162916}
+\DoxyCodeLine{Alpha:\ 0.25}
+\DoxyCodeLine{}
+\DoxyCodeLine{-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md3}{}\doxysubsubsection{\texorpdfstring{Programmatic Usage Example}{Programmatic Usage Example}}\label{index_autotoc_md3}
+The following example demonstrates how to use the package programmatically\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/"{}}\ <<\ endl;}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}Newton\ test\ not\ in\ area"{}}\ <<\ endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}Function:\ x\string^2\ +\ y\string^4"{}}\ <<\ endl;}
+\DoxyCodeLine{\mbox{\hyperlink{class_function_test}{FunctionTest}}\ f1;}
+\DoxyCodeLine{}
+\DoxyCodeLine{VectorXd\ point(2);}
+\DoxyCodeLine{point[0]\ =\ 2;\ point[1]\ =\ 1;}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}Point:\ "{}}\ <<\ point[0]\ <<\ \textcolor{stringliteral}{"{}\ "{}}\ <<\ point[1]\ <<\ endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{point\_type\ f1\_point\ =\ f1(point);}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}Function\ in\ point:\ "{}}\ <<\ f1\_point\ <<\ endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{VectorXd\ f1\_grad\ =\ f1.getGradient(point);}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}Gradient\ in\ point:\ "{}};}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ f1\_grad.size();\ i++)\ \{}
+\DoxyCodeLine{\ \ \ \ cout\ <<\ f1\_grad[i]\ <<\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{cout\ <<\ endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{MatrixXd\ f1\_hessian\ =\ f1.getHessianMatrix(point);}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}Hessian\ in\ point:\ "{}}\ <<\ endl;}
+\DoxyCodeLine{\textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ f1\_hessian.rows();\ i++)\ \{}
+\DoxyCodeLine{\ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ f1\_hessian.cols();\ j++)\ \{}
+\DoxyCodeLine{\ \ \ \ \ \ \ \ cout\ <<\ f1\_hessian(i,\ j)\ <<\ \textcolor{stringliteral}{"{}\ "{}};}
+\DoxyCodeLine{\ \ \ \ \}}
+\DoxyCodeLine{\ \ \ \ cout\ <<\ endl;}
+\DoxyCodeLine{\}}
+\DoxyCodeLine{cout\ <<\ endl;}
+\DoxyCodeLine{}
+\DoxyCodeLine{MatrixXd\ ar(2,\ 2);}
+\DoxyCodeLine{ar(0,\ 0)\ =\ -\/3;\ ar(0,\ 1)\ =\ -\/1;\ ar(1,\ 0)\ =\ -\/5;\ ar(1,\ 1)\ =\ 8;}
+\DoxyCodeLine{\mbox{\hyperlink{class_area}{Area}}\ area(ar);}
+\DoxyCodeLine{\mbox{\hyperlink{class_function_test}{FunctionTest}}\ f;}
+\DoxyCodeLine{}
+\DoxyCodeLine{\mbox{\hyperlink{class_stop_criterion_f_eps}{StopCriterionFEps}}\ stop(10000,\ 1e-\/5);}
+\DoxyCodeLine{\mbox{\hyperlink{class_opt_method_newton}{OptMethodNewton}}\ opt(1e-\/2);}
+\DoxyCodeLine{opt.optimize(area,\ f,\ stop);}
+\DoxyCodeLine{cout\ <<\ \textcolor{stringliteral}{"{}-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/"{}}\ <<\ endl\ <<\ endl;}
+
+\end{DoxyCode}
+\hypertarget{index_autotoc_md4}{}\doxysubsection{\texorpdfstring{Contact}{Contact}}\label{index_autotoc_md4}
+For questions or feedback, please contact\+:
+\begin{DoxyItemize}
+\item Email\+: \href{mailto:example@example.com}{\texttt{ example@example.\+com}}
+\item Git\+Hub\+: \href{https://github.com/myproject}{\texttt{ Optimization Methods Repository}}
+\end{DoxyItemize}\hypertarget{index_license}{}\doxysection{\texorpdfstring{License}{License}}\label{index_license}
+This project is licensed under the MIT License. 

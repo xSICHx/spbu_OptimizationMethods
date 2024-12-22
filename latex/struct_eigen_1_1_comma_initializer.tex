@@ -1,0 +1,88 @@
+\doxysection{Eigen\+::Comma\+Initializer\texorpdfstring{$<$}{<} Matrix\+Type \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{struct_eigen_1_1_comma_initializer}{}\label{struct_eigen_1_1_comma_initializer}\index{Eigen::CommaInitializer$<$ MatrixType $>$@{Eigen::CommaInitializer$<$ MatrixType $>$}}
+
+
+Helper class used by the comma initializer operator.  
+
+
+
+
+{\ttfamily \#include $<$Comma\+Initializer.\+h$>$}
+
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_acc8e5abf91497957374912ccd73fb593}\label{struct_eigen_1_1_comma_initializer_acc8e5abf91497957374912ccd73fb593} 
+typedef Xpr\+Type\+::\+Scalar {\bfseries Scalar}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_ac33648b940b3c040845d3ce5ffd16b46}\label{struct_eigen_1_1_comma_initializer_ac33648b940b3c040845d3ce5ffd16b46} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC {\bfseries Comma\+Initializer} (Xpr\+Type \&xpr, const Scalar \&s)
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_ae49fed423bc9575a26001dab91a23150}\label{struct_eigen_1_1_comma_initializer_ae49fed423bc9575a26001dab91a23150} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC {\bfseries Comma\+Initializer} (Xpr\+Type \&xpr, const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_a93b2ee5dc122b408128a10c7bf6666a0}\label{struct_eigen_1_1_comma_initializer_a93b2ee5dc122b408128a10c7bf6666a0} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC {\bfseries Comma\+Initializer} (const \mbox{\hyperlink{struct_eigen_1_1_comma_initializer}{Comma\+Initializer}} \&o)
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_a1ea66c51725c17c5c60e241a14ce2c0f}\label{struct_eigen_1_1_comma_initializer_a1ea66c51725c17c5c60e241a14ce2c0f} 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_comma_initializer}{Comma\+Initializer}} \& {\bfseries operator,} (const Scalar \&s)
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_ab91fa908335197aebd6ac25b785a7125}\label{struct_eigen_1_1_comma_initializer_ab91fa908335197aebd6ac25b785a7125} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_comma_initializer}{Comma\+Initializer}} \& {\bfseries operator,} (const \mbox{\hyperlink{class_eigen_1_1_dense_base}{Dense\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Xpr\+Type \& \mbox{\hyperlink{struct_eigen_1_1_comma_initializer_a0a5f314faf23d0d5ebccfcc29a20779c}{finished}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_a882093eac821fac09b05bc6e88b3d3d3}\label{struct_eigen_1_1_comma_initializer_a882093eac821fac09b05bc6e88b3d3d3} 
+Xpr\+Type \& {\bfseries m\+\_\+xpr}
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_a4566a1e9fad17ce8c696e34ecb96f210}\label{struct_eigen_1_1_comma_initializer_a4566a1e9fad17ce8c696e34ecb96f210} 
+Index {\bfseries m\+\_\+row}
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_aae001bf712615385173f9bb525b74afa}\label{struct_eigen_1_1_comma_initializer_aae001bf712615385173f9bb525b74afa} 
+Index {\bfseries m\+\_\+col}
+\item 
+\Hypertarget{struct_eigen_1_1_comma_initializer_a61dcf8d63166aa1c15f6044a276cf94f}\label{struct_eigen_1_1_comma_initializer_a61dcf8d63166aa1c15f6044a276cf94f} 
+Index {\bfseries m\+\_\+current\+Block\+Rows}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename Matrix\+Type$>$\newline
+class Eigen\+::\+Comma\+Initializer$<$ Matrix\+Type $>$}
+Helper class used by the comma initializer operator. 
+
+This class is internally used to implement the comma initializer feature. It is the return type of \doxylink{class_eigen_1_1_dense_base_a0e575eb0ba6cc6bc5f347872abd8509d}{Matrix\+Base\+::operator$<$$<$}, and most of the time this is the only way it is used.
+
+\begin{DoxySeeAlso}{See also}
+\textbackslash{}blank \doxylink{class_eigen_1_1_dense_base_MatrixBaseCommaInitRef}{Matrix\+Base\+::operator\texorpdfstring{$<$}{<}\texorpdfstring{$<$}{<}}, \doxylink{struct_eigen_1_1_comma_initializer_a0a5f314faf23d0d5ebccfcc29a20779c}{Comma\+Initializer\+::finished()} 
+\end{DoxySeeAlso}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{struct_eigen_1_1_comma_initializer_a0a5f314faf23d0d5ebccfcc29a20779c}\index{Eigen::CommaInitializer$<$ MatrixType $>$@{Eigen::CommaInitializer$<$ MatrixType $>$}!finished@{finished}}
+\index{finished@{finished}!Eigen::CommaInitializer$<$ MatrixType $>$@{Eigen::CommaInitializer$<$ MatrixType $>$}}
+\doxysubsubsection{\texorpdfstring{finished()}{finished()}}
+{\footnotesize\ttfamily \label{struct_eigen_1_1_comma_initializer_a0a5f314faf23d0d5ebccfcc29a20779c} 
+template$<$typename Matrix\+Type $>$ \\
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC Xpr\+Type \& \mbox{\hyperlink{struct_eigen_1_1_comma_initializer}{Eigen\+::\+Comma\+Initializer}}$<$ Matrix\+Type $>$\+::finished (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+the built matrix once all its coefficients have been set. Calling finished is 100\% optional. Its purpose is to write expressions like this\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{quaternion.fromRotationMatrix((Matrix3f()\ <<\ axis0,\ axis1,\ axis2).\mbox{\hyperlink{struct_eigen_1_1_comma_initializer_a0a5f314faf23d0d5ebccfcc29a20779c}{finished}}());}
+
+\end{DoxyCode}
+ 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/Comma\+Initializer.\+h\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Core/util/Forward\+Declarations.\+h\end{DoxyCompactItemize}

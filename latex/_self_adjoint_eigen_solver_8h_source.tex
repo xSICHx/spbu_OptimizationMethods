@@ -1,0 +1,613 @@
+\doxysection{Self\+Adjoint\+Eigen\+Solver.\+h}
+\hypertarget{_self_adjoint_eigen_solver_8h_source}{}\label{_self_adjoint_eigen_solver_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2010\ Jitse\ Niesen\ <jitse@maths.leeds.ac.uk>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_SELFADJOINTEIGENSOLVER\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_SELFADJOINTEIGENSOLVER\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ "{}./Tridiagonalization.h"{}}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>}
+\DoxyCodeLine{00019\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_generalized_self_adjoint_eigen_solver}{GeneralizedSelfAdjointEigenSolver}};}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00022\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ SolverType,\textcolor{keywordtype}{int}\ Size,\textcolor{keywordtype}{bool}\ IsComplex>\ \textcolor{keyword}{struct\ }direct\_selfadjoint\_eigenvalues;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ DiagType,\ \textcolor{keyword}{typename}\ SubDiagType>}
+\DoxyCodeLine{00024\ \mbox{\hyperlink{group__enums_ga85fad7b87587764e5cf6b513a9e0ee5e}{ComputationInfo}}\ computeFromTridiagonal\_impl(DiagType\&\ diag,\ SubDiagType\&\ subdiag,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a8a59ab7734b6eae2754fd78bc7c3a360}{Index}}\ maxIterations,\ \textcolor{keywordtype}{bool}\ computeEigenvectors,\ MatrixType\&\ eivec);}
+\DoxyCodeLine{00025\ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00070\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_MatrixType>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver}}}
+\DoxyCodeLine{00071\ \{}
+\DoxyCodeLine{00072\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00073\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{typedef}\ \_MatrixType\ MatrixType;}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ Size\ =\ MatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ ColsAtCompileTime\ =\ MatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ Options\ =\ MatrixType::Options,}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ MaxColsAtCompileTime\ =\ MatrixType::MaxColsAtCompileTime}
+\DoxyCodeLine{00080\ \ \ \ \ \};}
+\DoxyCodeLine{00081\ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a0bfcedf4245b6846007ca4f01e4feb1f}{Scalar}};}
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keyword}{typedef}\ Eigen::Index\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a8a59ab7734b6eae2754fd78bc7c3a360}{Index}};\ }
+\DoxyCodeLine{00085\ \ \ \ \ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,Size,Size,ColMajor,MaxColsAtCompileTime,MaxColsAtCompileTime>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{EigenvectorsType}};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a5dae5f422a3c71060e6bd31332bf64fd}{RealScalar}};}
+\DoxyCodeLine{00095\ \ \ \ \ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1direct__selfadjoint__eigenvalues}{internal::direct\_selfadjoint\_eigenvalues}}<\mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver}},Size,\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<\mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a0bfcedf4245b6846007ca4f01e4feb1f}{Scalar}}>::IsComplex>;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00103\ \ \ \ \ typedef\ typename\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1plain__col__type}{internal::plain\_col\_type}}<MatrixType,\ RealScalar>::type\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RealVectorType}};}
+\DoxyCodeLine{00104\ \ \ \ \ typedef\ \mbox{\hyperlink{class_eigen_1_1_tridiagonalization}{Tridiagonalization}}<MatrixType>\ \mbox{\hyperlink{class_eigen_1_1_tridiagonalization}{TridiagonalizationType}};}
+\DoxyCodeLine{00105\ \ \ \ \ typedef\ typename\ \mbox{\hyperlink{class_eigen_1_1_matrix}{TridiagonalizationType::SubDiagonalType}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{SubDiagonalType}};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00117\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00118\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver}}()}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ :\ m\_eivec(),}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \ \ \ \ m\_eivalues(),}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ \ \ \ \ m\_subdiag(),}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00123\ \ \ \ \ \{\ \}}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00137\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_af20f466a4c29477271e91841e3382b27}{SelfAdjointEigenSolver}}(\mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a8a59ab7734b6eae2754fd78bc7c3a360}{Index}}\ size)}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ :\ m\_eivec(size,\ size),}
+\DoxyCodeLine{00140\ \ \ \ \ \ \ \ \ \ \ m\_eivalues(size),}
+\DoxyCodeLine{00141\ \ \ \ \ \ \ \ \ \ \ m\_subdiag(size\ >\ 1\ ?\ size\ -\/\ 1\ :\ 1),}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00143\ \ \ \ \ \{\}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00160\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00161\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_ade694ed7b0a4d9da9480cedc849be76f}{SelfAdjointEigenSolver}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix,\ \textcolor{keywordtype}{int}\ options\ =\ \mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}})}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ :\ m\_eivec(matrix.rows(),\ matrix.cols()),}
+\DoxyCodeLine{00164\ \ \ \ \ \ \ \ \ m\_eivalues(matrix.cols()),}
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ m\_subdiag(matrix.rows()\ >\ 1\ ?\ matrix.rows()\ -\/\ 1\ :\ 1),}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ m\_isInitialized(false)}
+\DoxyCodeLine{00167\ \ \ \ \ \{}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_aca7cecd3847bfea28e5984ab1c9e3921}{compute}}(matrix.\mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}}(),\ options);}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00202\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00203\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver}}\&\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_aca7cecd3847bfea28e5984ab1c9e3921}{compute}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<InputType>}}\&\ matrix,\ \textcolor{keywordtype}{int}\ options\ =\ \mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}});}
+\DoxyCodeLine{00204\ \ \ \ \ }
+\DoxyCodeLine{00223\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00224\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver}}\&\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a40b0a68841d6176b1ab98743cc82bef4}{computeDirect}}(\textcolor{keyword}{const}\ MatrixType\&\ matrix,\ \textcolor{keywordtype}{int}\ options\ =\ \mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}});}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00238\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver}}\&\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a297893df7098c43278d385e4d4e23fe4}{computeFromTridiagonal}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RealVectorType}}\&\ diag,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{SubDiagonalType}}\&\ subdiag\ ,\ \textcolor{keywordtype}{int}\ options=\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}});}
+\DoxyCodeLine{00239\ }
+\DoxyCodeLine{00258\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00259\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{EigenvectorsType}}\&\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_aa6e650f65298c05b78942df39f6c9388}{eigenvectors}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00260\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}SelfAdjointEigenSolver\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ eigen\_assert(m\_eigenvectorsOk\ \&\&\ \textcolor{stringliteral}{"{}The\ eigenvectors\ have\ not\ been\ computed\ together\ with\ the\ eigenvalues."{}});}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_eivec;}
+\DoxyCodeLine{00264\ \ \ \ \ \}}
+\DoxyCodeLine{00265\ }
+\DoxyCodeLine{00281\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RealVectorType}}\&\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_aea708eb6ecf37fcaa7d415fec2892d60}{eigenvalues}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00283\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}SelfAdjointEigenSolver\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_eivalues;}
+\DoxyCodeLine{00286\ \ \ \ \ \}}
+\DoxyCodeLine{00287\ }
+\DoxyCodeLine{00305\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00306\ \ \ \ \ MatrixType\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a5c5158fd86366081bdabec38112c2c8a}{operatorSqrt}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00307\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}SelfAdjointEigenSolver\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ eigen\_assert(m\_eigenvectorsOk\ \&\&\ \textcolor{stringliteral}{"{}The\ eigenvectors\ have\ not\ been\ computed\ together\ with\ the\ eigenvalues."{}});}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_eivec\ *\ m\_eivalues.cwiseSqrt().asDiagonal()\ *\ m\_eivec.adjoint();}
+\DoxyCodeLine{00311\ \ \ \ \ \}}
+\DoxyCodeLine{00312\ }
+\DoxyCodeLine{00330\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00331\ \ \ \ \ MatrixType\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a71fe0aea0b22d176efcea556c5c160f5}{operatorInverseSqrt}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00332\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00333\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}SelfAdjointEigenSolver\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00334\ \ \ \ \ \ \ eigen\_assert(m\_eigenvectorsOk\ \&\&\ \textcolor{stringliteral}{"{}The\ eigenvectors\ have\ not\ been\ computed\ together\ with\ the\ eigenvalues."{}});}
+\DoxyCodeLine{00335\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_eivec\ *\ m\_eivalues.cwiseInverse().cwiseSqrt().asDiagonal()\ *\ m\_eivec.adjoint();}
+\DoxyCodeLine{00336\ \ \ \ \ \}}
+\DoxyCodeLine{00337\ }
+\DoxyCodeLine{00342\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00343\ \ \ \ \ \mbox{\hyperlink{group__enums_ga85fad7b87587764e5cf6b513a9e0ee5e}{ComputationInfo}}\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a56bd59b85a6f6f00ff7bff307ad0e015}{info}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00344\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00345\ \ \ \ \ \ \ eigen\_assert(m\_isInitialized\ \&\&\ \textcolor{stringliteral}{"{}SelfAdjointEigenSolver\ is\ not\ initialized."{}});}
+\DoxyCodeLine{00346\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_info;}
+\DoxyCodeLine{00347\ \ \ \ \ \}}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00354\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a9ba10b83f095b18dbea345db7304acfa}{m\_maxIterations}}\ =\ 30;}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00356\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00357\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ check\_template\_parameters()}
+\DoxyCodeLine{00358\ \ \ \ \ \{}
+\DoxyCodeLine{00359\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_NON\_INTEGER(\mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a0bfcedf4245b6846007ca4f01e4feb1f}{Scalar}});}
+\DoxyCodeLine{00360\ \ \ \ \ \}}
+\DoxyCodeLine{00361\ \ \ \ \ }
+\DoxyCodeLine{00362\ \ \ \ \ EigenvectorsType\ m\_eivec;}
+\DoxyCodeLine{00363\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver_a7de905f63891e06c1b14242dbefa58d5}{RealVectorType}}\ m\_eivalues;}
+\DoxyCodeLine{00364\ \ \ \ \ \textcolor{keyword}{typename}\ TridiagonalizationType::SubDiagonalType\ m\_subdiag;}
+\DoxyCodeLine{00365\ \ \ \ \ \mbox{\hyperlink{group__enums_ga85fad7b87587764e5cf6b513a9e0ee5e}{ComputationInfo}}\ m\_info;}
+\DoxyCodeLine{00366\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_isInitialized;}
+\DoxyCodeLine{00367\ \ \ \ \ \textcolor{keywordtype}{bool}\ m\_eigenvectorsOk;}
+\DoxyCodeLine{00368\ \};}
+\DoxyCodeLine{00369\ }
+\DoxyCodeLine{00370\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00391\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ StorageOrder,\textcolor{keyword}{typename}\ RealScalar,\ \textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index>}
+\DoxyCodeLine{00392\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00393\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ tridiagonal\_qr\_step(RealScalar*\ diag,\ RealScalar*\ subdiag,\ Index\ start,\ Index\ end,\ Scalar*\ matrixQ,\ Index\ n);}
+\DoxyCodeLine{00394\ \}}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00396\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00397\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ InputType>}
+\DoxyCodeLine{00398\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00399\ SelfAdjointEigenSolver<MatrixType>\&\ SelfAdjointEigenSolver<MatrixType>}
+\DoxyCodeLine{00400\ ::compute(\textcolor{keyword}{const}\ EigenBase<InputType>\&\ a\_matrix,\ \textcolor{keywordtype}{int}\ options)}
+\DoxyCodeLine{00401\ \{}
+\DoxyCodeLine{00402\ \ \ check\_template\_parameters();}
+\DoxyCodeLine{00403\ \ \ }
+\DoxyCodeLine{00404\ \ \ \textcolor{keyword}{const}\ InputType\ \&matrix(a\_matrix.derived());}
+\DoxyCodeLine{00405\ \ \ }
+\DoxyCodeLine{00406\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00407\ \ \ eigen\_assert(matrix.cols()\ ==\ matrix.rows());}
+\DoxyCodeLine{00408\ \ \ eigen\_assert((options\&\string~(EigVecMask|GenEigMask))==0}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ \ \ \&\&\ (options\&EigVecMask)!=EigVecMask}
+\DoxyCodeLine{00410\ \ \ \ \ \ \ \ \ \ \ \&\&\ \textcolor{stringliteral}{"{}invalid\ option\ parameter"{}});}
+\DoxyCodeLine{00411\ \ \ \textcolor{keywordtype}{bool}\ computeEigenvectors\ =\ (options\&\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}})==\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}};}
+\DoxyCodeLine{00412\ \ \ Index\ n\ =\ matrix.cols();}
+\DoxyCodeLine{00413\ \ \ m\_eivalues.resize(n,1);}
+\DoxyCodeLine{00414\ }
+\DoxyCodeLine{00415\ \ \ \textcolor{keywordflow}{if}(n==1)}
+\DoxyCodeLine{00416\ \ \ \{}
+\DoxyCodeLine{00417\ \ \ \ \ m\_eivec\ =\ matrix;}
+\DoxyCodeLine{00418\ \ \ \ \ m\_eivalues.coeffRef(0,0)\ =\ numext::real(m\_eivec.coeff(0,0));}
+\DoxyCodeLine{00419\ \ \ \ \ \textcolor{keywordflow}{if}(computeEigenvectors)}
+\DoxyCodeLine{00420\ \ \ \ \ \ \ m\_eivec.setOnes(n,n);}
+\DoxyCodeLine{00421\ \ \ \ \ m\_info\ =\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}};}
+\DoxyCodeLine{00422\ \ \ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00423\ \ \ \ \ m\_eigenvectorsOk\ =\ computeEigenvectors;}
+\DoxyCodeLine{00424\ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00425\ \ \ \}}
+\DoxyCodeLine{00426\ }
+\DoxyCodeLine{00427\ \ \ \textcolor{comment}{//\ declare\ some\ aliases}}
+\DoxyCodeLine{00428\ \ \ RealVectorType\&\ diag\ =\ m\_eivalues;}
+\DoxyCodeLine{00429\ \ \ EigenvectorsType\&\ mat\ =\ m\_eivec;}
+\DoxyCodeLine{00430\ }
+\DoxyCodeLine{00431\ \ \ \textcolor{comment}{//\ map\ the\ matrix\ coefficients\ to\ [-\/1:1]\ to\ avoid\ over-\/\ and\ underflow.}}
+\DoxyCodeLine{00432\ \ \ mat\ =\ matrix.template\ triangularView<Lower>();}
+\DoxyCodeLine{00433\ \ \ RealScalar\ scale\ =\ mat.cwiseAbs().maxCoeff();}
+\DoxyCodeLine{00434\ \ \ \textcolor{keywordflow}{if}(scale==RealScalar(0))\ scale\ =\ RealScalar(1);}
+\DoxyCodeLine{00435\ \ \ mat.template\ triangularView<Lower>()\ /=\ scale;}
+\DoxyCodeLine{00436\ \ \ m\_subdiag.resize(n-\/1);}
+\DoxyCodeLine{00437\ \ \ internal::tridiagonalization\_inplace(mat,\ diag,\ m\_subdiag,\ computeEigenvectors);}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00439\ \ \ m\_info\ =\ internal::computeFromTridiagonal\_impl(diag,\ m\_subdiag,\ m\_maxIterations,\ computeEigenvectors,\ m\_eivec);}
+\DoxyCodeLine{00440\ \ \ }
+\DoxyCodeLine{00441\ \ \ \textcolor{comment}{//\ scale\ back\ the\ eigen\ values}}
+\DoxyCodeLine{00442\ \ \ m\_eivalues\ *=\ scale;}
+\DoxyCodeLine{00443\ }
+\DoxyCodeLine{00444\ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00445\ \ \ m\_eigenvectorsOk\ =\ computeEigenvectors;}
+\DoxyCodeLine{00446\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00447\ \}}
+\DoxyCodeLine{00448\ }
+\DoxyCodeLine{00449\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00450\ SelfAdjointEigenSolver<MatrixType>\&\ SelfAdjointEigenSolver<MatrixType>}
+\DoxyCodeLine{00451\ ::computeFromTridiagonal(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{RealVectorType}}\&\ diag,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{SubDiagonalType}}\&\ subdiag\ ,\ \textcolor{keywordtype}{int}\ options)}
+\DoxyCodeLine{00452\ \{}
+\DoxyCodeLine{00453\ \ \ \textcolor{comment}{//TODO\ :\ Add\ an\ option\ to\ scale\ the\ values\ beforehand}}
+\DoxyCodeLine{00454\ \ \ \textcolor{keywordtype}{bool}\ computeEigenvectors\ =\ (options\&\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}})==\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}};}
+\DoxyCodeLine{00455\ }
+\DoxyCodeLine{00456\ \ \ m\_eivalues\ =\ diag;}
+\DoxyCodeLine{00457\ \ \ m\_subdiag\ =\ subdiag;}
+\DoxyCodeLine{00458\ \ \ \textcolor{keywordflow}{if}\ (computeEigenvectors)}
+\DoxyCodeLine{00459\ \ \ \{}
+\DoxyCodeLine{00460\ \ \ \ \ m\_eivec.setIdentity(diag.size(),\ diag.size());}
+\DoxyCodeLine{00461\ \ \ \}}
+\DoxyCodeLine{00462\ \ \ m\_info\ =\ internal::computeFromTridiagonal\_impl(m\_eivalues,\ m\_subdiag,\ m\_maxIterations,\ computeEigenvectors,\ m\_eivec);}
+\DoxyCodeLine{00463\ }
+\DoxyCodeLine{00464\ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00465\ \ \ m\_eigenvectorsOk\ =\ computeEigenvectors;}
+\DoxyCodeLine{00466\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00467\ \}}
+\DoxyCodeLine{00468\ }
+\DoxyCodeLine{00469\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00481\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ DiagType,\ \textcolor{keyword}{typename}\ SubDiagType>}
+\DoxyCodeLine{00482\ \mbox{\hyperlink{group__enums_ga85fad7b87587764e5cf6b513a9e0ee5e}{ComputationInfo}}\ computeFromTridiagonal\_impl(DiagType\&\ diag,\ SubDiagType\&\ subdiag,\ \textcolor{keyword}{const}\ Index\ maxIterations,\ \textcolor{keywordtype}{bool}\ computeEigenvectors,\ MatrixType\&\ eivec)}
+\DoxyCodeLine{00483\ \{}
+\DoxyCodeLine{00484\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00485\ }
+\DoxyCodeLine{00486\ \ \ \mbox{\hyperlink{group__enums_ga85fad7b87587764e5cf6b513a9e0ee5e}{ComputationInfo}}\ info;}
+\DoxyCodeLine{00487\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ Scalar;}
+\DoxyCodeLine{00488\ }
+\DoxyCodeLine{00489\ \ \ Index\ n\ =\ diag.size();}
+\DoxyCodeLine{00490\ \ \ Index\ end\ =\ n-\/1;}
+\DoxyCodeLine{00491\ \ \ Index\ start\ =\ 0;}
+\DoxyCodeLine{00492\ \ \ Index\ iter\ =\ 0;\ \textcolor{comment}{//\ total\ number\ of\ iterations}}
+\DoxyCodeLine{00493\ \ \ }
+\DoxyCodeLine{00494\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ DiagType::RealScalar\ RealScalar;}
+\DoxyCodeLine{00495\ \ \ \textcolor{keyword}{const}\ RealScalar\ considerAsZero\ =\ (std::numeric\_limits<RealScalar>::min)();}
+\DoxyCodeLine{00496\ \ \ \textcolor{keyword}{const}\ RealScalar\ precision\ =\ RealScalar(2)*\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<RealScalar>::epsilon}}();}
+\DoxyCodeLine{00497\ \ \ }
+\DoxyCodeLine{00498\ \ \ \textcolor{keywordflow}{while}\ (end>0)}
+\DoxyCodeLine{00499\ \ \ \{}
+\DoxyCodeLine{00500\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i\ =\ start;\ i<end;\ ++i)}
+\DoxyCodeLine{00501\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (internal::isMuchSmallerThan(abs(subdiag[i]),(abs(diag[i])+abs(diag[i+1])),precision)\ ||\ abs(subdiag[i])\ <=\ considerAsZero)}
+\DoxyCodeLine{00502\ \ \ \ \ \ \ \ \ subdiag[i]\ =\ 0;}
+\DoxyCodeLine{00503\ }
+\DoxyCodeLine{00504\ \ \ \ \ \textcolor{comment}{//\ find\ the\ largest\ unreduced\ block}}
+\DoxyCodeLine{00505\ \ \ \ \ \textcolor{keywordflow}{while}\ (end>0\ \&\&\ subdiag[end-\/1]==RealScalar(0))}
+\DoxyCodeLine{00506\ \ \ \ \ \{}
+\DoxyCodeLine{00507\ \ \ \ \ \ \ end-\/-\/;}
+\DoxyCodeLine{00508\ \ \ \ \ \}}
+\DoxyCodeLine{00509\ \ \ \ \ \textcolor{keywordflow}{if}\ (end<=0)}
+\DoxyCodeLine{00510\ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00511\ }
+\DoxyCodeLine{00512\ \ \ \ \ \textcolor{comment}{//\ if\ we\ spent\ too\ many\ iterations,\ we\ give\ up}}
+\DoxyCodeLine{00513\ \ \ \ \ iter++;}
+\DoxyCodeLine{00514\ \ \ \ \ \textcolor{keywordflow}{if}(iter\ >\ maxIterations\ *\ n)\ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00515\ }
+\DoxyCodeLine{00516\ \ \ \ \ start\ =\ end\ -\/\ 1;}
+\DoxyCodeLine{00517\ \ \ \ \ \textcolor{keywordflow}{while}\ (start>0\ \&\&\ subdiag[start-\/1]!=0)}
+\DoxyCodeLine{00518\ \ \ \ \ \ \ start-\/-\/;}
+\DoxyCodeLine{00519\ }
+\DoxyCodeLine{00520\ \ \ \ \ internal::tridiagonal\_qr\_step<MatrixType::Flags\&RowMajorBit\ ?\ RowMajor\ :\ ColMajor>(diag.data(),\ subdiag.data(),\ start,\ end,\ computeEigenvectors\ ?\ eivec.data()\ :\ (Scalar*)0,\ n);}
+\DoxyCodeLine{00521\ \ \ \}}
+\DoxyCodeLine{00522\ \ \ \textcolor{keywordflow}{if}\ (iter\ <=\ maxIterations\ *\ n)}
+\DoxyCodeLine{00523\ \ \ \ \ info\ =\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}};}
+\DoxyCodeLine{00524\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00525\ \ \ \ \ info\ =\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea6a68dfb88a8336108a30588bdf356c57}{NoConvergence}};}
+\DoxyCodeLine{00526\ }
+\DoxyCodeLine{00527\ \ \ \textcolor{comment}{//\ Sort\ eigenvalues\ and\ corresponding\ vectors.}}
+\DoxyCodeLine{00528\ \ \ \textcolor{comment}{//\ TODO\ make\ the\ sort\ optional\ ?}}
+\DoxyCodeLine{00529\ \ \ \textcolor{comment}{//\ TODO\ use\ a\ better\ sort\ algorithm\ !!}}
+\DoxyCodeLine{00530\ \ \ \textcolor{keywordflow}{if}\ (info\ ==\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}})}
+\DoxyCodeLine{00531\ \ \ \{}
+\DoxyCodeLine{00532\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i\ =\ 0;\ i\ <\ n-\/1;\ ++i)}
+\DoxyCodeLine{00533\ \ \ \ \ \{}
+\DoxyCodeLine{00534\ \ \ \ \ \ \ Index\ k;}
+\DoxyCodeLine{00535\ \ \ \ \ \ \ diag.segment(i,n-\/i).minCoeff(\&k);}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ >\ 0)}
+\DoxyCodeLine{00537\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ std::swap(diag[i],\ diag[k+i]);}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(computeEigenvectors)}
+\DoxyCodeLine{00540\ \ \ \ \ \ \ \ \ \ \ eivec.col(i).swap(eivec.col(k+i));}
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00542\ \ \ \ \ \}}
+\DoxyCodeLine{00543\ \ \ \}}
+\DoxyCodeLine{00544\ \ \ \textcolor{keywordflow}{return}\ info;}
+\DoxyCodeLine{00545\ \}}
+\DoxyCodeLine{00546\ \ \ }
+\DoxyCodeLine{00547\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ SolverType,\textcolor{keywordtype}{int}\ Size,\textcolor{keywordtype}{bool}\ IsComplex>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1direct__selfadjoint__eigenvalues}{direct\_selfadjoint\_eigenvalues}}}
+\DoxyCodeLine{00548\ \{}
+\DoxyCodeLine{00549\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00550\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ run(SolverType\&\ eig,\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ SolverType::MatrixType\&\ A,\ \textcolor{keywordtype}{int}\ options)}
+\DoxyCodeLine{00551\ \ \ \{\ eig.compute(A,options);\ \}}
+\DoxyCodeLine{00552\ \};}
+\DoxyCodeLine{00553\ }
+\DoxyCodeLine{00554\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ SolverType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1direct__selfadjoint__eigenvalues}{direct\_selfadjoint\_eigenvalues}}<SolverType,3,false>}
+\DoxyCodeLine{00555\ \{}
+\DoxyCodeLine{00556\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::MatrixType\ MatrixType;}
+\DoxyCodeLine{00557\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::RealVectorType\ VectorType;}
+\DoxyCodeLine{00558\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::Scalar\ Scalar;}
+\DoxyCodeLine{00559\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::EigenvectorsType\ EigenvectorsType;}
+\DoxyCodeLine{00560\ \ \ }
+\DoxyCodeLine{00561\ }
+\DoxyCodeLine{00566\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00567\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ computeRoots(\textcolor{keyword}{const}\ MatrixType\&\ m,\ VectorType\&\ roots)}
+\DoxyCodeLine{00568\ \ \ \{}
+\DoxyCodeLine{00569\ \ \ \ \ EIGEN\_USING\_STD\_MATH(sqrt)}
+\DoxyCodeLine{00570\ \ \ \ \ EIGEN\_USING\_STD\_MATH(atan2)}
+\DoxyCodeLine{00571\ \ \ \ \ EIGEN\_USING\_STD\_MATH(cos)}
+\DoxyCodeLine{00572\ \ \ \ \ EIGEN\_USING\_STD\_MATH(sin)}
+\DoxyCodeLine{00573\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ s\_inv3\ =\ Scalar(1)/Scalar(3);}
+\DoxyCodeLine{00574\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ s\_sqrt3\ =\ sqrt(Scalar(3));}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00576\ \ \ \ \ \textcolor{comment}{//\ The\ characteristic\ equation\ is\ x\string^3\ -\/\ c2*x\string^2\ +\ c1*x\ -\/\ c0\ =\ 0.\ \ The}}
+\DoxyCodeLine{00577\ \ \ \ \ \textcolor{comment}{//\ eigenvalues\ are\ the\ roots\ to\ this\ equation,\ all\ guaranteed\ to\ be}}
+\DoxyCodeLine{00578\ \ \ \ \ \textcolor{comment}{//\ real-\/valued,\ because\ the\ matrix\ is\ symmetric.}}
+\DoxyCodeLine{00579\ \ \ \ \ Scalar\ c0\ =\ m(0,0)*m(1,1)*m(2,2)\ +\ Scalar(2)*m(1,0)*m(2,0)*m(2,1)\ -\/\ m(0,0)*m(2,1)*m(2,1)\ -\/\ m(1,1)*m(2,0)*m(2,0)\ -\/\ m(2,2)*m(1,0)*m(1,0);}
+\DoxyCodeLine{00580\ \ \ \ \ Scalar\ c1\ =\ m(0,0)*m(1,1)\ -\/\ m(1,0)*m(1,0)\ +\ m(0,0)*m(2,2)\ -\/\ m(2,0)*m(2,0)\ +\ m(1,1)*m(2,2)\ -\/\ m(2,1)*m(2,1);}
+\DoxyCodeLine{00581\ \ \ \ \ Scalar\ c2\ =\ m(0,0)\ +\ m(1,1)\ +\ m(2,2);}
+\DoxyCodeLine{00582\ }
+\DoxyCodeLine{00583\ \ \ \ \ \textcolor{comment}{//\ Construct\ the\ parameters\ used\ in\ classifying\ the\ roots\ of\ the\ equation}}
+\DoxyCodeLine{00584\ \ \ \ \ \textcolor{comment}{//\ and\ in\ solving\ the\ equation\ for\ the\ roots\ in\ closed\ form.}}
+\DoxyCodeLine{00585\ \ \ \ \ Scalar\ c2\_over\_3\ =\ c2*s\_inv3;}
+\DoxyCodeLine{00586\ \ \ \ \ Scalar\ a\_over\_3\ =\ (c2*c2\_over\_3\ -\/\ c1)*s\_inv3;}
+\DoxyCodeLine{00587\ \ \ \ \ a\_over\_3\ =\ numext::maxi(a\_over\_3,\ Scalar(0));}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \ \ \ \ Scalar\ half\_b\ =\ Scalar(0.5)*(c0\ +\ c2\_over\_3*(Scalar(2)*c2\_over\_3*c2\_over\_3\ -\/\ c1));}
+\DoxyCodeLine{00590\ }
+\DoxyCodeLine{00591\ \ \ \ \ Scalar\ q\ =\ a\_over\_3*a\_over\_3*a\_over\_3\ -\/\ half\_b*half\_b;}
+\DoxyCodeLine{00592\ \ \ \ \ q\ =\ numext::maxi(q,\ Scalar(0));}
+\DoxyCodeLine{00593\ }
+\DoxyCodeLine{00594\ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ eigenvalues\ by\ solving\ for\ the\ roots\ of\ the\ polynomial.}}
+\DoxyCodeLine{00595\ \ \ \ \ Scalar\ rho\ =\ sqrt(a\_over\_3);}
+\DoxyCodeLine{00596\ \ \ \ \ Scalar\ theta\ =\ atan2(sqrt(q),half\_b)*s\_inv3;\ \ \textcolor{comment}{//\ since\ sqrt(q)\ >\ 0,\ atan2\ is\ in\ [0,\ pi]\ and\ theta\ is\ in\ [0,\ pi/3]}}
+\DoxyCodeLine{00597\ \ \ \ \ Scalar\ cos\_theta\ =\ cos(theta);}
+\DoxyCodeLine{00598\ \ \ \ \ Scalar\ sin\_theta\ =\ sin(theta);}
+\DoxyCodeLine{00599\ \ \ \ \ \textcolor{comment}{//\ roots\ are\ already\ sorted,\ since\ cos\ is\ monotonically\ decreasing\ on\ [0,\ pi]}}
+\DoxyCodeLine{00600\ \ \ \ \ roots(0)\ =\ c2\_over\_3\ -\/\ rho*(cos\_theta\ +\ s\_sqrt3*sin\_theta);\ \textcolor{comment}{//\ ==\ 2*rho*cos(theta+2pi/3)}}
+\DoxyCodeLine{00601\ \ \ \ \ roots(1)\ =\ c2\_over\_3\ -\/\ rho*(cos\_theta\ -\/\ s\_sqrt3*sin\_theta);\ \textcolor{comment}{//\ ==\ 2*rho*cos(theta+\ pi/3)}}
+\DoxyCodeLine{00602\ \ \ \ \ roots(2)\ =\ c2\_over\_3\ +\ Scalar(2)*rho*cos\_theta;}
+\DoxyCodeLine{00603\ \ \ \}}
+\DoxyCodeLine{00604\ }
+\DoxyCodeLine{00605\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00606\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ extract\_kernel(MatrixType\&\ mat,\ \mbox{\hyperlink{class_eigen_1_1_ref}{Ref<VectorType>}}\ res,\ \mbox{\hyperlink{class_eigen_1_1_ref}{Ref<VectorType>}}\ representative)}
+\DoxyCodeLine{00607\ \ \ \{}
+\DoxyCodeLine{00608\ \ \ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00609\ \ \ \ \ Index\ i0;}
+\DoxyCodeLine{00610\ \ \ \ \ \textcolor{comment}{//\ Find\ non-\/zero\ column\ i0\ (by\ construction,\ there\ must\ exist\ a\ non\ zero\ coefficient\ on\ the\ diagonal):}}
+\DoxyCodeLine{00611\ \ \ \ \ mat.diagonal().cwiseAbs().maxCoeff(\&i0);}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{comment}{//\ mat.col(i0)\ is\ a\ good\ candidate\ for\ an\ orthogonal\ vector\ to\ the\ current\ eigenvector,}}
+\DoxyCodeLine{00613\ \ \ \ \ \textcolor{comment}{//\ so\ let's\ save\ it:}}
+\DoxyCodeLine{00614\ \ \ \ \ representative\ =\ mat.col(i0);}
+\DoxyCodeLine{00615\ \ \ \ \ Scalar\ n0,\ n1;}
+\DoxyCodeLine{00616\ \ \ \ \ VectorType\ c0,\ c1;}
+\DoxyCodeLine{00617\ \ \ \ \ n0\ =\ (c0\ =\ representative.cross(mat.col((i0+1)\%3))).squaredNorm();}
+\DoxyCodeLine{00618\ \ \ \ \ n1\ =\ (c1\ =\ representative.cross(mat.col((i0+2)\%3))).squaredNorm();}
+\DoxyCodeLine{00619\ \ \ \ \ \textcolor{keywordflow}{if}(n0>n1)\ res\ =\ c0/std::sqrt(n0);}
+\DoxyCodeLine{00620\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \ \ \ \ res\ =\ c1/std::sqrt(n1);}
+\DoxyCodeLine{00621\ }
+\DoxyCodeLine{00622\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00623\ \ \ \}}
+\DoxyCodeLine{00624\ }
+\DoxyCodeLine{00625\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00626\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ run(SolverType\&\ solver,\ \textcolor{keyword}{const}\ MatrixType\&\ mat,\ \textcolor{keywordtype}{int}\ options)}
+\DoxyCodeLine{00627\ \ \ \{}
+\DoxyCodeLine{00628\ \ \ \ \ eigen\_assert(mat.cols()\ ==\ 3\ \&\&\ mat.cols()\ ==\ mat.rows());}
+\DoxyCodeLine{00629\ \ \ \ \ eigen\_assert((options\&\string~(EigVecMask|GenEigMask))==0}
+\DoxyCodeLine{00630\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (options\&EigVecMask)!=EigVecMask}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \textcolor{stringliteral}{"{}invalid\ option\ parameter"{}});}
+\DoxyCodeLine{00632\ \ \ \ \ \textcolor{keywordtype}{bool}\ computeEigenvectors\ =\ (options\&\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}})==\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}};}
+\DoxyCodeLine{00633\ \ \ \ \ }
+\DoxyCodeLine{00634\ \ \ \ \ EigenvectorsType\&\ eivecs\ =\ solver.m\_eivec;}
+\DoxyCodeLine{00635\ \ \ \ \ VectorType\&\ eivals\ =\ solver.m\_eivalues;}
+\DoxyCodeLine{00636\ \ \ }
+\DoxyCodeLine{00637\ \ \ \ \ \textcolor{comment}{//\ Shift\ the\ matrix\ to\ the\ mean\ eigenvalue\ and\ map\ the\ matrix\ coefficients\ to\ [-\/1:1]\ to\ avoid\ over-\/\ and\ underflow.}}
+\DoxyCodeLine{00638\ \ \ \ \ Scalar\ shift\ =\ mat.trace()\ /\ Scalar(3);}
+\DoxyCodeLine{00639\ \ \ \ \ \textcolor{comment}{//\ TODO\ Avoid\ this\ copy.\ Currently\ it\ is\ necessary\ to\ suppress\ bogus\ values\ when\ determining\ maxCoeff\ and\ for\ computing\ the\ eigenvectors\ later}}
+\DoxyCodeLine{00640\ \ \ \ \ MatrixType\ scaledMat\ =\ mat.template\ selfadjointView<Lower>();}
+\DoxyCodeLine{00641\ \ \ \ \ scaledMat.diagonal().array()\ -\/=\ shift;}
+\DoxyCodeLine{00642\ \ \ \ \ Scalar\ scale\ =\ scaledMat.cwiseAbs().maxCoeff();}
+\DoxyCodeLine{00643\ \ \ \ \ \textcolor{keywordflow}{if}(scale\ >\ 0)\ scaledMat\ /=\ scale;\ \ \ \textcolor{comment}{//\ TODO\ for\ scale==0\ we\ could\ save\ the\ remaining\ operations}}
+\DoxyCodeLine{00644\ }
+\DoxyCodeLine{00645\ \ \ \ \ \textcolor{comment}{//\ compute\ the\ eigenvalues}}
+\DoxyCodeLine{00646\ \ \ \ \ computeRoots(scaledMat,eivals);}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00648\ \ \ \ \ \textcolor{comment}{//\ compute\ the\ eigenvectors}}
+\DoxyCodeLine{00649\ \ \ \ \ \textcolor{keywordflow}{if}(computeEigenvectors)}
+\DoxyCodeLine{00650\ \ \ \ \ \{}
+\DoxyCodeLine{00651\ \ \ \ \ \ \ \textcolor{keywordflow}{if}((eivals(2)-\/eivals(0))<=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Eigen::NumTraits<Scalar>::epsilon}}())}
+\DoxyCodeLine{00652\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00653\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ All\ three\ eigenvalues\ are\ numerically\ the\ same}}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \ \ eivecs.setIdentity();}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ MatrixType\ tmp;}
+\DoxyCodeLine{00659\ \ \ \ \ \ \ \ \ tmp\ =\ scaledMat;}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00661\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ eigenvector\ of\ the\ most\ distinct\ eigenvalue}}
+\DoxyCodeLine{00662\ \ \ \ \ \ \ \ \ Scalar\ d0\ =\ eivals(2)\ -\/\ eivals(1);}
+\DoxyCodeLine{00663\ \ \ \ \ \ \ \ \ Scalar\ d1\ =\ eivals(1)\ -\/\ eivals(0);}
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \ \ Index\ k(0),\ l(2);}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(d0\ >\ d1)}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \ \ numext::swap(k,l);}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \ \ d0\ =\ d1;}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00670\ }
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ eigenvector\ of\ index\ k}}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \ \ tmp.diagonal().array\ ()\ -\/=\ eivals(k);}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ By\ construction,\ 'tmp'\ is\ of\ rank\ 2,\ and\ its\ kernel\ corresponds\ to\ the\ respective\ eigenvector.}}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ extract\_kernel(tmp,\ eivecs.col(k),\ eivecs.col(l));}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ eigenvector\ of\ index\ l}}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(d0<=2*\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Eigen::NumTraits<Scalar>::epsilon}}()*d1)}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ If\ d0\ is\ too\ small,\ then\ the\ two\ other\ eigenvalues\ are\ numerically\ the\ same,}}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ and\ thus\ we\ only\ have\ to\ ortho-\/normalize\ the\ near\ orthogonal\ vector\ we\ saved\ above.}}
+\DoxyCodeLine{00683\ \ \ \ \ \ \ \ \ \ \ eivecs.col(l)\ -\/=\ eivecs.col(k).dot(eivecs.col(l))*eivecs.col(l);}
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \ \ eivecs.col(l).normalize();}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \ \ tmp\ =\ scaledMat;}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \ \ tmp.diagonal().array\ ()\ -\/=\ eivals(l);}
+\DoxyCodeLine{00690\ }
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \ \ \ \ VectorType\ dummy;}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ \ \ extract\_kernel(tmp,\ eivecs.col(l),\ dummy);}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00694\ }
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Compute\ last\ eigenvector\ from\ the\ other\ two}}
+\DoxyCodeLine{00696\ \ \ \ \ \ \ \ \ eivecs.col(1)\ =\ eivecs.col(2).cross(eivecs.col(0)).normalized();}
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00698\ \ \ \ \ \}}
+\DoxyCodeLine{00699\ }
+\DoxyCodeLine{00700\ \ \ \ \ \textcolor{comment}{//\ Rescale\ back\ to\ the\ original\ size.}}
+\DoxyCodeLine{00701\ \ \ \ \ eivals\ *=\ scale;}
+\DoxyCodeLine{00702\ \ \ \ \ eivals.array()\ +=\ shift;}
+\DoxyCodeLine{00703\ \ \ \ \ }
+\DoxyCodeLine{00704\ \ \ \ \ solver.m\_info\ =\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}};}
+\DoxyCodeLine{00705\ \ \ \ \ solver.m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00706\ \ \ \ \ solver.m\_eigenvectorsOk\ =\ computeEigenvectors;}
+\DoxyCodeLine{00707\ \ \ \}}
+\DoxyCodeLine{00708\ \};}
+\DoxyCodeLine{00709\ }
+\DoxyCodeLine{00710\ \textcolor{comment}{//\ 2x2\ direct\ eigenvalues\ decomposition,\ code\ from\ Hauke\ Heibel}}
+\DoxyCodeLine{00711\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ SolverType>\ }
+\DoxyCodeLine{00712\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1direct__selfadjoint__eigenvalues}{direct\_selfadjoint\_eigenvalues}}<SolverType,2,false>}
+\DoxyCodeLine{00713\ \{}
+\DoxyCodeLine{00714\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::MatrixType\ MatrixType;}
+\DoxyCodeLine{00715\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::RealVectorType\ VectorType;}
+\DoxyCodeLine{00716\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::Scalar\ Scalar;}
+\DoxyCodeLine{00717\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ SolverType::EigenvectorsType\ EigenvectorsType;}
+\DoxyCodeLine{00718\ \ \ }
+\DoxyCodeLine{00719\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00720\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ computeRoots(\textcolor{keyword}{const}\ MatrixType\&\ m,\ VectorType\&\ roots)}
+\DoxyCodeLine{00721\ \ \ \{}
+\DoxyCodeLine{00722\ \ \ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00723\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ t0\ =\ Scalar(0.5)\ *\ sqrt(\ numext::abs2(m(0,0)-\/m(1,1))\ +\ Scalar(4)*numext::abs2(m(1,0)));}
+\DoxyCodeLine{00724\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ t1\ =\ Scalar(0.5)\ *\ (m(0,0)\ +\ m(1,1));}
+\DoxyCodeLine{00725\ \ \ \ \ roots(0)\ =\ t1\ -\/\ t0;}
+\DoxyCodeLine{00726\ \ \ \ \ roots(1)\ =\ t1\ +\ t0;}
+\DoxyCodeLine{00727\ \ \ \}}
+\DoxyCodeLine{00728\ \ \ }
+\DoxyCodeLine{00729\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00730\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ run(SolverType\&\ solver,\ \textcolor{keyword}{const}\ MatrixType\&\ mat,\ \textcolor{keywordtype}{int}\ options)}
+\DoxyCodeLine{00731\ \ \ \{}
+\DoxyCodeLine{00732\ \ \ \ \ EIGEN\_USING\_STD\_MATH(sqrt);}
+\DoxyCodeLine{00733\ \ \ \ \ EIGEN\_USING\_STD\_MATH(abs);}
+\DoxyCodeLine{00734\ \ \ \ \ }
+\DoxyCodeLine{00735\ \ \ \ \ eigen\_assert(mat.cols()\ ==\ 2\ \&\&\ mat.cols()\ ==\ mat.rows());}
+\DoxyCodeLine{00736\ \ \ \ \ eigen\_assert((options\&\string~(EigVecMask|GenEigMask))==0}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (options\&EigVecMask)!=EigVecMask}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \textcolor{stringliteral}{"{}invalid\ option\ parameter"{}});}
+\DoxyCodeLine{00739\ \ \ \ \ \textcolor{keywordtype}{bool}\ computeEigenvectors\ =\ (options\&\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}})==\mbox{\hyperlink{group__enums_ggae3e239fb70022eb8747994cf5d68b4a9a7f7d17fba3c9bb92158e346d5979d0f4}{ComputeEigenvectors}};}
+\DoxyCodeLine{00740\ \ \ \ \ }
+\DoxyCodeLine{00741\ \ \ \ \ EigenvectorsType\&\ eivecs\ =\ solver.m\_eivec;}
+\DoxyCodeLine{00742\ \ \ \ \ VectorType\&\ eivals\ =\ solver.m\_eivalues;}
+\DoxyCodeLine{00743\ \ \ }
+\DoxyCodeLine{00744\ \ \ \ \ \textcolor{comment}{//\ Shift\ the\ matrix\ to\ the\ mean\ eigenvalue\ and\ map\ the\ matrix\ coefficients\ to\ [-\/1:1]\ to\ avoid\ over-\/\ and\ underflow.}}
+\DoxyCodeLine{00745\ \ \ \ \ Scalar\ shift\ =\ mat.trace()\ /\ Scalar(2);}
+\DoxyCodeLine{00746\ \ \ \ \ MatrixType\ scaledMat\ =\ mat;}
+\DoxyCodeLine{00747\ \ \ \ \ scaledMat.coeffRef(0,1)\ =\ mat.coeff(1,0);}
+\DoxyCodeLine{00748\ \ \ \ \ scaledMat.diagonal().array()\ -\/=\ shift;}
+\DoxyCodeLine{00749\ \ \ \ \ Scalar\ scale\ =\ scaledMat.cwiseAbs().maxCoeff();}
+\DoxyCodeLine{00750\ \ \ \ \ \textcolor{keywordflow}{if}(scale\ >\ Scalar(0))}
+\DoxyCodeLine{00751\ \ \ \ \ \ \ scaledMat\ /=\ scale;}
+\DoxyCodeLine{00752\ }
+\DoxyCodeLine{00753\ \ \ \ \ \textcolor{comment}{//\ Compute\ the\ eigenvalues}}
+\DoxyCodeLine{00754\ \ \ \ \ computeRoots(scaledMat,eivals);}
+\DoxyCodeLine{00755\ }
+\DoxyCodeLine{00756\ \ \ \ \ \textcolor{comment}{//\ compute\ the\ eigen\ vectors}}
+\DoxyCodeLine{00757\ \ \ \ \ \textcolor{keywordflow}{if}(computeEigenvectors)}
+\DoxyCodeLine{00758\ \ \ \ \ \{}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \textcolor{keywordflow}{if}((eivals(1)-\/eivals(0))<=abs(eivals(1))*\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Eigen::NumTraits<Scalar>::epsilon}}())}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00761\ \ \ \ \ \ \ \ \ eivecs.setIdentity();}
+\DoxyCodeLine{00762\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00764\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00765\ \ \ \ \ \ \ \ \ scaledMat.diagonal().array\ ()\ -\/=\ eivals(1);}
+\DoxyCodeLine{00766\ \ \ \ \ \ \ \ \ Scalar\ a2\ =\ numext::abs2(scaledMat(0,0));}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \ \ Scalar\ c2\ =\ numext::abs2(scaledMat(1,1));}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ \ \ Scalar\ b2\ =\ numext::abs2(scaledMat(1,0));}
+\DoxyCodeLine{00769\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}(a2>c2)}
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ \ \ eivecs.col(1)\ <<\ -\/scaledMat(1,0),\ scaledMat(0,0);}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \ \ \ \ eivecs.col(1)\ /=\ sqrt(a2+b2);}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \ \ \ \ eivecs.col(1)\ <<\ -\/scaledMat(1,1),\ scaledMat(1,0);}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \ \ \ \ eivecs.col(1)\ /=\ sqrt(c2+b2);}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00779\ }
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ eivecs.col(0)\ <<\ eivecs.col(1).unitOrthogonal();}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00782\ \ \ \ \ \}}
+\DoxyCodeLine{00783\ }
+\DoxyCodeLine{00784\ \ \ \ \ \textcolor{comment}{//\ Rescale\ back\ to\ the\ original\ size.}}
+\DoxyCodeLine{00785\ \ \ \ \ eivals\ *=\ scale;}
+\DoxyCodeLine{00786\ \ \ \ \ eivals.array()\ +=\ shift;}
+\DoxyCodeLine{00787\ }
+\DoxyCodeLine{00788\ \ \ \ \ solver.m\_info\ =\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}};}
+\DoxyCodeLine{00789\ \ \ \ \ solver.m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00790\ \ \ \ \ solver.m\_eigenvectorsOk\ =\ computeEigenvectors;}
+\DoxyCodeLine{00791\ \ \ \}}
+\DoxyCodeLine{00792\ \};}
+\DoxyCodeLine{00793\ }
+\DoxyCodeLine{00794\ \}}
+\DoxyCodeLine{00795\ }
+\DoxyCodeLine{00796\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00797\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00798\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver<MatrixType>}}\&\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{SelfAdjointEigenSolver<MatrixType>}}}
+\DoxyCodeLine{00799\ \mbox{\hyperlink{class_eigen_1_1_self_adjoint_eigen_solver}{::computeDirect}}(\textcolor{keyword}{const}\ MatrixType\&\ matrix,\ \textcolor{keywordtype}{int}\ options)}
+\DoxyCodeLine{00800\ \{}
+\DoxyCodeLine{00801\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1direct__selfadjoint__eigenvalues}{internal::direct\_selfadjoint\_eigenvalues<SelfAdjointEigenSolver,Size,NumTraits<Scalar>::IsComplex}}>::run(*\textcolor{keyword}{this},matrix,options);}
+\DoxyCodeLine{00802\ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00803\ \}}
+\DoxyCodeLine{00804\ }
+\DoxyCodeLine{00805\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00806\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ StorageOrder,\textcolor{keyword}{typename}\ RealScalar,\ \textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index>}
+\DoxyCodeLine{00807\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00808\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ tridiagonal\_qr\_step(RealScalar*\ diag,\ RealScalar*\ subdiag,\ Index\ start,\ Index\ end,\ Scalar*\ matrixQ,\ Index\ n)}
+\DoxyCodeLine{00809\ \{}
+\DoxyCodeLine{00810\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00811\ \ \ RealScalar\ td\ =\ (diag[end-\/1]\ -\/\ diag[end])*RealScalar(0.5);}
+\DoxyCodeLine{00812\ \ \ RealScalar\ e\ =\ subdiag[end-\/1];}
+\DoxyCodeLine{00813\ \ \ \textcolor{comment}{//\ Note\ that\ thanks\ to\ scaling,\ e\string^2\ or\ td\string^2\ cannot\ overflow,\ however\ they\ can\ still}}
+\DoxyCodeLine{00814\ \ \ \textcolor{comment}{//\ underflow\ thus\ leading\ to\ inf/NaN\ values\ when\ using\ the\ following\ commented\ code:}}
+\DoxyCodeLine{00815\ \textcolor{comment}{//\ \ \ RealScalar\ e2\ =\ numext::abs2(subdiag[end-\/1]);}}
+\DoxyCodeLine{00816\ \textcolor{comment}{//\ \ \ RealScalar\ mu\ =\ diag[end]\ -\/\ e2\ /\ (td\ +\ (td>0\ ?\ 1\ :\ -\/1)\ *\ sqrt(td*td\ +\ e2));}}
+\DoxyCodeLine{00817\ \ \ \textcolor{comment}{//\ This\ explain\ the\ following,\ somewhat\ more\ complicated,\ version:}}
+\DoxyCodeLine{00818\ \ \ RealScalar\ mu\ =\ diag[end];}
+\DoxyCodeLine{00819\ \ \ \textcolor{keywordflow}{if}(td==RealScalar(0))}
+\DoxyCodeLine{00820\ \ \ \ \ mu\ -\/=\ abs(e);}
+\DoxyCodeLine{00821\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00822\ \ \ \{}
+\DoxyCodeLine{00823\ \ \ \ \ RealScalar\ e2\ =\ numext::abs2(subdiag[end-\/1]);}
+\DoxyCodeLine{00824\ \ \ \ \ RealScalar\ h\ =\ numext::hypot(td,e);}
+\DoxyCodeLine{00825\ \ \ \ \ \textcolor{keywordflow}{if}(e2==RealScalar(0))\ mu\ -\/=\ (e\ /\ (td\ +\ (td>RealScalar(0)\ ?\ RealScalar(1)\ :\ RealScalar(-\/1))))\ *\ (e\ /\ h);}
+\DoxyCodeLine{00826\ \ \ \ \ \textcolor{keywordflow}{else}\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ mu\ -\/=\ e2\ /\ (td\ +\ (td>RealScalar(0)\ ?\ h\ :\ -\/h));}
+\DoxyCodeLine{00827\ \ \ \}}
+\DoxyCodeLine{00828\ \ \ }
+\DoxyCodeLine{00829\ \ \ RealScalar\ x\ =\ diag[start]\ -\/\ mu;}
+\DoxyCodeLine{00830\ \ \ RealScalar\ z\ =\ subdiag[start];}
+\DoxyCodeLine{00831\ \ \ \textcolor{keywordflow}{for}\ (Index\ k\ =\ start;\ k\ <\ end;\ ++k)}
+\DoxyCodeLine{00832\ \ \ \{}
+\DoxyCodeLine{00833\ \ \ \ \ JacobiRotation<RealScalar>\ rot;}
+\DoxyCodeLine{00834\ \ \ \ \ rot.makeGivens(x,\ z);}
+\DoxyCodeLine{00835\ }
+\DoxyCodeLine{00836\ \ \ \ \ \textcolor{comment}{//\ do\ T\ =\ G'\ T\ G}}
+\DoxyCodeLine{00837\ \ \ \ \ RealScalar\ sdk\ =\ rot.s()\ *\ diag[k]\ +\ rot.c()\ *\ subdiag[k];}
+\DoxyCodeLine{00838\ \ \ \ \ RealScalar\ dkp1\ =\ rot.s()\ *\ subdiag[k]\ +\ rot.c()\ *\ diag[k+1];}
+\DoxyCodeLine{00839\ }
+\DoxyCodeLine{00840\ \ \ \ \ diag[k]\ =\ rot.c()\ *\ (rot.c()\ *\ diag[k]\ -\/\ rot.s()\ *\ subdiag[k])\ -\/\ rot.s()\ *\ (rot.c()\ *\ subdiag[k]\ -\/\ rot.s()\ *\ diag[k+1]);}
+\DoxyCodeLine{00841\ \ \ \ \ diag[k+1]\ =\ rot.s()\ *\ sdk\ +\ rot.c()\ *\ dkp1;}
+\DoxyCodeLine{00842\ \ \ \ \ subdiag[k]\ =\ rot.c()\ *\ sdk\ -\/\ rot.s()\ *\ dkp1;}
+\DoxyCodeLine{00843\ \ \ \ \ }
+\DoxyCodeLine{00844\ }
+\DoxyCodeLine{00845\ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ >\ start)}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ subdiag[k\ -\/\ 1]\ =\ rot.c()\ *\ subdiag[k-\/1]\ -\/\ rot.s()\ *\ z;}
+\DoxyCodeLine{00847\ }
+\DoxyCodeLine{00848\ \ \ \ \ x\ =\ subdiag[k];}
+\DoxyCodeLine{00849\ }
+\DoxyCodeLine{00850\ \ \ \ \ \textcolor{keywordflow}{if}\ (k\ <\ end\ -\/\ 1)}
+\DoxyCodeLine{00851\ \ \ \ \ \{}
+\DoxyCodeLine{00852\ \ \ \ \ \ \ z\ =\ -\/rot.s()\ *\ subdiag[k+1];}
+\DoxyCodeLine{00853\ \ \ \ \ \ \ subdiag[k\ +\ 1]\ =\ rot.c()\ *\ subdiag[k+1];}
+\DoxyCodeLine{00854\ \ \ \ \ \}}
+\DoxyCodeLine{00855\ \ \ \ \ }
+\DoxyCodeLine{00856\ \ \ \ \ \textcolor{comment}{//\ apply\ the\ givens\ rotation\ to\ the\ unit\ matrix\ Q\ =\ Q\ *\ G}}
+\DoxyCodeLine{00857\ \ \ \ \ \textcolor{keywordflow}{if}\ (matrixQ)}
+\DoxyCodeLine{00858\ \ \ \ \ \{}
+\DoxyCodeLine{00859\ \ \ \ \ \ \ \textcolor{comment}{//\ FIXME\ if\ StorageOrder\ ==\ RowMajor\ this\ operation\ is\ not\ very\ efficient}}
+\DoxyCodeLine{00860\ \ \ \ \ \ \ Map<Matrix<Scalar,Dynamic,Dynamic,StorageOrder>\ >\ q(matrixQ,n,n);}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ q.applyOnTheRight(k,k+1,rot);}
+\DoxyCodeLine{00862\ \ \ \ \ \}}
+\DoxyCodeLine{00863\ \ \ \}}
+\DoxyCodeLine{00864\ \}}
+\DoxyCodeLine{00865\ }
+\DoxyCodeLine{00866\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00867\ }
+\DoxyCodeLine{00868\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00869\ }
+\DoxyCodeLine{00870\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_SELFADJOINTEIGENSOLVER\_H}}
+
+\end{DoxyCode}

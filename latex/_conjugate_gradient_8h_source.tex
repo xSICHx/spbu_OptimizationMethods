@@ -1,0 +1,182 @@
+\doxysection{Conjugate\+Gradient.\+h}
+\hypertarget{_conjugate_gradient_8h_source}{}\label{_conjugate_gradient_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/IterativeLinearSolvers/ConjugateGradient.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2011-\/2014\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_CONJUGATE\_GRADIENT\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_CONJUGATE\_GRADIENT\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00026\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ Rhs,\ \textcolor{keyword}{typename}\ Dest,\ \textcolor{keyword}{typename}\ Preconditioner>}
+\DoxyCodeLine{00027\ EIGEN\_DONT\_INLINE}
+\DoxyCodeLine{00028\ \textcolor{keywordtype}{void}\ conjugate\_gradient(\textcolor{keyword}{const}\ MatrixType\&\ mat,\ \textcolor{keyword}{const}\ Rhs\&\ rhs,\ Dest\&\ x,}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ Preconditioner\&\ precond,\ Index\&\ iters,}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Dest::RealScalar\&\ tol\_error)}
+\DoxyCodeLine{00031\ \{}
+\DoxyCodeLine{00032\ \ \ \textcolor{keyword}{using\ }std::sqrt;}
+\DoxyCodeLine{00033\ \ \ \textcolor{keyword}{using\ }std::abs;}
+\DoxyCodeLine{00034\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Dest::RealScalar\ RealScalar;}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Dest::Scalar\ Scalar;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{typedef}\ Matrix<Scalar,Dynamic,1>\ VectorType;}
+\DoxyCodeLine{00037\ \ \ }
+\DoxyCodeLine{00038\ \ \ RealScalar\ tol\ =\ tol\_error;}
+\DoxyCodeLine{00039\ \ \ Index\ maxIters\ =\ iters;}
+\DoxyCodeLine{00040\ \ \ }
+\DoxyCodeLine{00041\ \ \ Index\ n\ =\ mat.cols();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00043\ \ \ VectorType\ residual\ =\ rhs\ -\/\ mat\ *\ x;\ \textcolor{comment}{//initial\ residual}}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ \ \ RealScalar\ rhsNorm2\ =\ rhs.squaredNorm();}
+\DoxyCodeLine{00046\ \ \ \textcolor{keywordflow}{if}(rhsNorm2\ ==\ 0)\ }
+\DoxyCodeLine{00047\ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ x.setZero();}
+\DoxyCodeLine{00049\ \ \ \ \ iters\ =\ 0;}
+\DoxyCodeLine{00050\ \ \ \ \ tol\_error\ =\ 0;}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00052\ \ \ \}}
+\DoxyCodeLine{00053\ \ \ RealScalar\ threshold\ =\ tol*tol*rhsNorm2;}
+\DoxyCodeLine{00054\ \ \ RealScalar\ residualNorm2\ =\ residual.squaredNorm();}
+\DoxyCodeLine{00055\ \ \ \textcolor{keywordflow}{if}\ (residualNorm2\ <\ threshold)}
+\DoxyCodeLine{00056\ \ \ \{}
+\DoxyCodeLine{00057\ \ \ \ \ iters\ =\ 0;}
+\DoxyCodeLine{00058\ \ \ \ \ tol\_error\ =\ sqrt(residualNorm2\ /\ rhsNorm2);}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00060\ \ \ \}}
+\DoxyCodeLine{00061\ \ \ }
+\DoxyCodeLine{00062\ \ \ VectorType\ p(n);}
+\DoxyCodeLine{00063\ \ \ p\ =\ precond.solve(residual);\ \ \ \ \ \ \textcolor{comment}{//\ initial\ search\ direction}}
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00065\ \ \ VectorType\ z(n),\ tmp(n);}
+\DoxyCodeLine{00066\ \ \ RealScalar\ absNew\ =\ numext::real(residual.dot(p));\ \ \textcolor{comment}{//\ the\ square\ of\ the\ absolute\ value\ of\ r\ scaled\ by\ invM}}
+\DoxyCodeLine{00067\ \ \ Index\ i\ =\ 0;}
+\DoxyCodeLine{00068\ \ \ \textcolor{keywordflow}{while}(i\ <\ maxIters)}
+\DoxyCodeLine{00069\ \ \ \{}
+\DoxyCodeLine{00070\ \ \ \ \ tmp.noalias()\ =\ mat\ *\ p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ bottleneck\ of\ the\ algorithm}}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ Scalar\ alpha\ =\ absNew\ /\ p.dot(tmp);\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ the\ amount\ we\ travel\ on\ dir}}
+\DoxyCodeLine{00073\ \ \ \ \ x\ +=\ alpha\ *\ p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ solution}}
+\DoxyCodeLine{00074\ \ \ \ \ residual\ -\/=\ alpha\ *\ tmp;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ residual}}
+\DoxyCodeLine{00075\ \ \ \ \ }
+\DoxyCodeLine{00076\ \ \ \ \ residualNorm2\ =\ residual.squaredNorm();}
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordflow}{if}(residualNorm2\ <\ threshold)}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{break};}
+\DoxyCodeLine{00079\ \ \ \ \ }
+\DoxyCodeLine{00080\ \ \ \ \ z\ =\ precond.solve(residual);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ approximately\ solve\ for\ "{}A\ z\ =\ residual"{}}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ RealScalar\ absOld\ =\ absNew;}
+\DoxyCodeLine{00083\ \ \ \ \ absNew\ =\ numext::real(residual.dot(z));\ \ \ \ \ \textcolor{comment}{//\ update\ the\ absolute\ value\ of\ r}}
+\DoxyCodeLine{00084\ \ \ \ \ RealScalar\ beta\ =\ absNew\ /\ absOld;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ calculate\ the\ Gram-\/Schmidt\ value\ used\ to\ create\ the\ new\ search\ direction}}
+\DoxyCodeLine{00085\ \ \ \ \ p\ =\ z\ +\ beta\ *\ p;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ update\ search\ direction}}
+\DoxyCodeLine{00086\ \ \ \ \ i++;}
+\DoxyCodeLine{00087\ \ \ \}}
+\DoxyCodeLine{00088\ \ \ tol\_error\ =\ sqrt(residualNorm2\ /\ rhsNorm2);}
+\DoxyCodeLine{00089\ \ \ iters\ =\ i;}
+\DoxyCodeLine{00090\ \}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \}}
+\DoxyCodeLine{00093\ }
+\DoxyCodeLine{00094\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ \_MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo=\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}},}
+\DoxyCodeLine{00095\ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \_Preconditioner\ =\ DiagonalPreconditioner<typename\ \_MatrixType::Scalar>\ >}
+\DoxyCodeLine{00096\ \textcolor{keyword}{class\ }ConjugateGradient;}
+\DoxyCodeLine{00097\ }
+\DoxyCodeLine{00098\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ \_MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo,\ \textcolor{keyword}{typename}\ \_Preconditioner>}
+\DoxyCodeLine{00101\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_conjugate_gradient}{ConjugateGradient}}<\_MatrixType,\_UpLo,\_Preconditioner>\ >}
+\DoxyCodeLine{00102\ \{}
+\DoxyCodeLine{00103\ \ \ \textcolor{keyword}{typedef}\ \_MatrixType\ MatrixType;}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{typedef}\ \_Preconditioner\ Preconditioner;}
+\DoxyCodeLine{00105\ \};}
+\DoxyCodeLine{00106\ }
+\DoxyCodeLine{00107\ \}}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00156\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ \_MatrixType,\ \textcolor{keywordtype}{int}\ \_UpLo,\ \textcolor{keyword}{typename}\ \_Preconditioner>}
+\DoxyCodeLine{00157\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_conjugate_gradient}{ConjugateGradient}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_iterative_solver_base}{IterativeSolverBase}}<ConjugateGradient<\_MatrixType,\_UpLo,\_Preconditioner>\ >}
+\DoxyCodeLine{00158\ \{}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_iterative_solver_base}{IterativeSolverBase<ConjugateGradient>}}\ \mbox{\hyperlink{class_eigen_1_1_iterative_solver_base}{Base}};}
+\DoxyCodeLine{00160\ \ \ \textcolor{keyword}{using\ }Base::matrix;}
+\DoxyCodeLine{00161\ \ \ \textcolor{keyword}{using\ }Base::m\_error;}
+\DoxyCodeLine{00162\ \ \ \textcolor{keyword}{using\ }Base::m\_iterations;}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{using\ }Base::m\_info;}
+\DoxyCodeLine{00164\ \ \ \textcolor{keyword}{using\ }Base::m\_isInitialized;}
+\DoxyCodeLine{00165\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00166\ \ \ \textcolor{keyword}{typedef}\ \_MatrixType\ MatrixType;}
+\DoxyCodeLine{00167\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ Scalar;}
+\DoxyCodeLine{00168\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::RealScalar\ RealScalar;}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{typedef}\ \_Preconditioner\ Preconditioner;}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00172\ \ \ \ \ UpLo\ =\ \_UpLo}
+\DoxyCodeLine{00173\ \ \ \};}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00178\ \ \ \mbox{\hyperlink{class_eigen_1_1_conjugate_gradient_a92a9656ca9fa4da240194f89229255eb}{ConjugateGradient}}()\ :\ \mbox{\hyperlink{class_eigen_1_1_iterative_solver_base}{Base}}()\ \{\}}
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixDerived>}
+\DoxyCodeLine{00191\ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_conjugate_gradient_ac10f778fcd137eca1f6057c8ddd3d644}{ConjugateGradient}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<MatrixDerived>}}\&\ A)\ :\ \mbox{\hyperlink{class_eigen_1_1_iterative_solver_base}{Base}}(A.derived())\ \{\}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \ \ \mbox{\hyperlink{class_eigen_1_1_conjugate_gradient}{\string~ConjugateGradient}}()\ \{\}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs,\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00197\ \ \ \textcolor{keywordtype}{void}\ \_solve\_with\_guess\_impl(\textcolor{keyword}{const}\ Rhs\&\ b,\ Dest\&\ x)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00198\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00199\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Base::MatrixWrapper\ MatrixWrapper;}
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Base::ActualMatrixType\ ActualMatrixType;}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00202\ \ \ \ \ \ \ TransposeInput\ \ =\ \ \ (!MatrixWrapper::MatrixFree)}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \ (UpLo==(\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}}|\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}}))}
+\DoxyCodeLine{00204\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \ (!MatrixType::IsRowMajor)}
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ \ (!NumTraits<Scalar>::IsComplex)}
+\DoxyCodeLine{00206\ \ \ \ \ \};}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::conditional<TransposeInput,Transpose<const\ ActualMatrixType>,\ ActualMatrixType\ \textcolor{keyword}{const}\&>::type\ RowMajorWrapper;}
+\DoxyCodeLine{00208\ \ \ \ \ EIGEN\_STATIC\_ASSERT(EIGEN\_IMPLIES(MatrixWrapper::MatrixFree,UpLo==(\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}}|\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}})),MATRIX\_FREE\_CONJUGATE\_GRADIENT\_IS\_COMPATIBLE\_WITH\_UPPER\_UNION\_LOWER\_MODE\_ONLY);}
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::conditional<UpLo==(\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}}|\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}}),}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ RowMajorWrapper,}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ MatrixWrapper::template\ ConstSelfAdjointViewReturnType<UpLo>::Type}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ >::type\ SelfAdjointWrapper;}
+\DoxyCodeLine{00213\ \ \ \ \ m\_iterations\ =\ \mbox{\hyperlink{class_eigen_1_1_iterative_solver_base_a168a74c8dceb6233b220031fdd756ba0}{Base::maxIterations}}();}
+\DoxyCodeLine{00214\ \ \ \ \ m\_error\ =\ Base::m\_tolerance;}
+\DoxyCodeLine{00215\ }
+\DoxyCodeLine{00216\ \ \ \ \ \textcolor{keywordflow}{for}(Index\ j=0;\ j<b.cols();\ ++j)}
+\DoxyCodeLine{00217\ \ \ \ \ \{}
+\DoxyCodeLine{00218\ \ \ \ \ \ \ m\_iterations\ =\ \mbox{\hyperlink{class_eigen_1_1_iterative_solver_base_a168a74c8dceb6233b220031fdd756ba0}{Base::maxIterations}}();}
+\DoxyCodeLine{00219\ \ \ \ \ \ \ m\_error\ =\ Base::m\_tolerance;}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00221\ \ \ \ \ \ \ \textcolor{keyword}{typename}\ Dest::ColXpr\ xj(x,j);}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ RowMajorWrapper\ row\_mat(matrix());}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ internal::conjugate\_gradient(SelfAdjointWrapper(row\_mat),\ b.col(j),\ xj,\ Base::m\_preconditioner,\ m\_iterations,\ m\_error);}
+\DoxyCodeLine{00224\ \ \ \ \ \}}
+\DoxyCodeLine{00225\ }
+\DoxyCodeLine{00226\ \ \ \ \ m\_isInitialized\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00227\ \ \ \ \ m\_info\ =\ m\_error\ <=\ Base::m\_tolerance\ ?\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea671a2aeb0f527802806a441d58a80fcf}{Success}}\ :\ \mbox{\hyperlink{group__enums_gga85fad7b87587764e5cf6b513a9e0ee5ea6a68dfb88a8336108a30588bdf356c57}{NoConvergence}};}
+\DoxyCodeLine{00228\ \ \ \}}
+\DoxyCodeLine{00229\ \ \ }
+\DoxyCodeLine{00231\ \ \ \textcolor{keyword}{using\ }Base::\_solve\_impl;}
+\DoxyCodeLine{00232\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Rhs,\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00233\ \ \ \textcolor{keywordtype}{void}\ \_solve\_impl(\textcolor{keyword}{const}\ MatrixBase<Rhs>\&\ b,\ Dest\&\ x)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00234\ \textcolor{keyword}{\ \ }\{}
+\DoxyCodeLine{00235\ \ \ \ \ x.setZero();}
+\DoxyCodeLine{00236\ \ \ \ \ \_solve\_with\_guess\_impl(b.derived(),x);}
+\DoxyCodeLine{00237\ \ \ \}}
+\DoxyCodeLine{00238\ }
+\DoxyCodeLine{00239\ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \};}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00244\ }
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_CONJUGATE\_GRADIENT\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,210 @@
+\doxysection{Num\+Traits.\+h}
+\hypertarget{_num_traits_8h_source}{}\label{_num_traits_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/NumTraits.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/NumTraits.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2006-\/2010\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_NUMTRAITS\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_NUMTRAITS\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ default\ implementation\ of\ digits10(),\ based\ on\ numeric\_limits\ if\ specialized,}}
+\DoxyCodeLine{00018\ \textcolor{comment}{//\ 0\ for\ integer\ types,\ and\ log10(epsilon())\ otherwise.}}
+\DoxyCodeLine{00019\ \textcolor{keyword}{template}<\ \textcolor{keyword}{typename}\ T,}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ use\_numeric\_limits\ =\ std::numeric\_limits<T>::is\_specialized,}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ is\_integer\ =\ NumTraits<T>::IsInteger>}
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1default__digits10__impl}{default\_digits10\_impl}}}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ run()\ \{\ \textcolor{keywordflow}{return}\ std::numeric\_limits<T>::digits10;\ \}}
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00028\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1default__digits10__impl}{default\_digits10\_impl}}<T,false,false>\ \textcolor{comment}{//\ Floating\ point}}
+\DoxyCodeLine{00029\ \{}
+\DoxyCodeLine{00030\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ run()\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{using\ }std::log10;}
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{using\ }std::ceil;}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<T>::Real\ Real;}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordflow}{return}\ int(ceil(-\/log10(\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Real>::epsilon}}())));}
+\DoxyCodeLine{00035\ \ \ \}}
+\DoxyCodeLine{00036\ \};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00039\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1default__digits10__impl}{default\_digits10\_impl}}<T,false,true>\ \textcolor{comment}{//\ Integer}}
+\DoxyCodeLine{00040\ \{}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ run()\ \{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00042\ \};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00088\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_generic_num_traits}{GenericNumTraits}}}
+\DoxyCodeLine{00089\ \{}
+\DoxyCodeLine{00090\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00091\ \ \ \ \ IsInteger\ =\ std::numeric\_limits<T>::is\_integer,}
+\DoxyCodeLine{00092\ \ \ \ \ IsSigned\ =\ std::numeric\_limits<T>::is\_signed,}
+\DoxyCodeLine{00093\ \ \ \ \ IsComplex\ =\ 0,}
+\DoxyCodeLine{00094\ \ \ \ \ RequireInitialization\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1is__arithmetic}{internal::is\_arithmetic<T>::value}}\ ?\ 0\ :\ 1,}
+\DoxyCodeLine{00095\ \ \ \ \ ReadCost\ =\ 1,}
+\DoxyCodeLine{00096\ \ \ \ \ AddCost\ =\ 1,}
+\DoxyCodeLine{00097\ \ \ \ \ MulCost\ =\ 1}
+\DoxyCodeLine{00098\ \ \ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \textcolor{keyword}{typedef}\ T\ Real;}
+\DoxyCodeLine{00101\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional}}<}
+\DoxyCodeLine{00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ IsInteger,}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal::conditional}}<\textcolor{keyword}{sizeof}(T)<=2,\ \textcolor{keywordtype}{float},\ \textcolor{keywordtype}{double}>::type,}
+\DoxyCodeLine{00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ T}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ >::type\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{NonInteger}};}
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{typedef}\ T\ Nested;}
+\DoxyCodeLine{00107\ \ \ \textcolor{keyword}{typedef}\ T\ Literal;}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00110\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Real\ epsilon()}
+\DoxyCodeLine{00111\ \ \ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \textcolor{keywordflow}{return}\ numext::numeric\_limits<T>::epsilon();}
+\DoxyCodeLine{00113\ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00116\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ digits10()}
+\DoxyCodeLine{00117\ \ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1default__digits10__impl}{internal::default\_digits10\_impl<T>::run}}();}
+\DoxyCodeLine{00119\ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00121\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00122\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Real\ dummy\_precision()}
+\DoxyCodeLine{00123\ \ \ \{}
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{comment}{//\ make\ sure\ to\ override\ this\ for\ floating-\/point\ types}}
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordflow}{return}\ Real(0);}
+\DoxyCodeLine{00126\ \ \ \}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00130\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ highest()\ \{}
+\DoxyCodeLine{00131\ \ \ \ \ \textcolor{keywordflow}{return}\ (numext::numeric\_limits<T>::max)();}
+\DoxyCodeLine{00132\ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00135\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ lowest()\ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \textcolor{keywordflow}{return}\ IsInteger\ ?\ (numext::numeric\_limits<T>::min)()\ :\ (-\/(numext::numeric\_limits<T>::max)());}
+\DoxyCodeLine{00137\ \ \ \}}
+\DoxyCodeLine{00138\ }
+\DoxyCodeLine{00139\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00140\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ infinity()\ \{}
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordflow}{return}\ numext::numeric\_limits<T>::infinity();}
+\DoxyCodeLine{00142\ \ \ \}}
+\DoxyCodeLine{00143\ }
+\DoxyCodeLine{00144\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00145\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ T\ quiet\_NaN()\ \{}
+\DoxyCodeLine{00146\ \ \ \ \ \textcolor{keywordflow}{return}\ numext::numeric\_limits<T>::quiet\_NaN();}
+\DoxyCodeLine{00147\ \ \ \}}
+\DoxyCodeLine{00148\ \};}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}\ :\ \mbox{\hyperlink{struct_eigen_1_1_generic_num_traits}{GenericNumTraits}}<T>}
+\DoxyCodeLine{00151\ \{\};}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<float>}
+\DoxyCodeLine{00154\ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1_generic_num_traits}{GenericNumTraits}}<float>}
+\DoxyCodeLine{00155\ \{}
+\DoxyCodeLine{00156\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00157\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{float}\ dummy\_precision()\ \{\ \textcolor{keywordflow}{return}\ 1e-\/5f;\ \}}
+\DoxyCodeLine{00158\ \};}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<double>\ :\ \mbox{\hyperlink{struct_eigen_1_1_generic_num_traits}{GenericNumTraits}}<double>}
+\DoxyCodeLine{00161\ \{}
+\DoxyCodeLine{00162\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{double}\ dummy\_precision()\ \{\ \textcolor{keywordflow}{return}\ 1e-\/12;\ \}}
+\DoxyCodeLine{00164\ \};}
+\DoxyCodeLine{00165\ }
+\DoxyCodeLine{00166\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<long\ double>}
+\DoxyCodeLine{00167\ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1_generic_num_traits}{GenericNumTraits}}<long\ double>}
+\DoxyCodeLine{00168\ \{}
+\DoxyCodeLine{00169\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{long}\ \textcolor{keywordtype}{double}\ dummy\_precision()\ \{\ \textcolor{keywordflow}{return}\ 1e-\/15l;\ \}}
+\DoxyCodeLine{00170\ \};}
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Real>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<std::complex<\_Real>\ >}
+\DoxyCodeLine{00173\ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1_generic_num_traits}{GenericNumTraits}}<std::complex<\_Real>\ >}
+\DoxyCodeLine{00174\ \{}
+\DoxyCodeLine{00175\ \ \ \textcolor{keyword}{typedef}\ \_Real\ Real;}
+\DoxyCodeLine{00176\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<\_Real>::Literal\ Literal;}
+\DoxyCodeLine{00177\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ IsComplex\ =\ 1,}
+\DoxyCodeLine{00179\ \ \ \ \ RequireInitialization\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<\_Real>::RequireInitialization}},}
+\DoxyCodeLine{00180\ \ \ \ \ ReadCost\ =\ 2\ *\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<\_Real>::ReadCost}},}
+\DoxyCodeLine{00181\ \ \ \ \ AddCost\ =\ 2\ *\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Real>::AddCost}},}
+\DoxyCodeLine{00182\ \ \ \ \ MulCost\ =\ 4\ *\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Real>::MulCost}}\ +\ 2\ *\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Real>::AddCost}}}
+\DoxyCodeLine{00183\ \ \ \};}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00186\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Real\ epsilon()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Real>::epsilon}}();\ \}}
+\DoxyCodeLine{00187\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00188\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ Real\ dummy\_precision()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Real>::dummy\_precision}}();\ \}}
+\DoxyCodeLine{00189\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00190\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ digits10()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Real>::digits10}}();\ \}}
+\DoxyCodeLine{00191\ \};}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keywordtype}{int}\ Rows,\ \textcolor{keywordtype}{int}\ Cols,\ \textcolor{keywordtype}{int}\ Options,\ \textcolor{keywordtype}{int}\ MaxRows,\ \textcolor{keywordtype}{int}\ MaxCols>}
+\DoxyCodeLine{00194\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<\mbox{\hyperlink{class_eigen_1_1_array}{Array}}<Scalar,\ Rows,\ Cols,\ Options,\ MaxRows,\ MaxCols>\ >}
+\DoxyCodeLine{00195\ \{}
+\DoxyCodeLine{00196\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_array}{Array<Scalar,\ Rows,\ Cols,\ Options,\ MaxRows,\ MaxCols>}}\ \mbox{\hyperlink{class_eigen_1_1_array}{ArrayType}};}
+\DoxyCodeLine{00197\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Real\ RealScalar;}
+\DoxyCodeLine{00198\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_array}{Array<RealScalar,\ Rows,\ Cols,\ Options,\ MaxRows,\ MaxCols>}}\ \mbox{\hyperlink{class_eigen_1_1_array}{Real}};}
+\DoxyCodeLine{00199\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{NumTraits<Scalar>::NonInteger}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{NonIntegerScalar}};}
+\DoxyCodeLine{00200\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_array}{Array<NonIntegerScalar,\ Rows,\ Cols,\ Options,\ MaxRows,\ MaxCols>}}\ \mbox{\hyperlink{class_eigen_1_1_array}{NonInteger}};}
+\DoxyCodeLine{00201\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_array}{ArrayType}}\ \&\ \mbox{\hyperlink{class_eigen_1_1_array}{Nested}};}
+\DoxyCodeLine{00202\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ NumTraits<Scalar>::Literal\ Literal;}
+\DoxyCodeLine{00203\ }
+\DoxyCodeLine{00204\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00205\ \ \ \ \ IsComplex\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::IsComplex}},}
+\DoxyCodeLine{00206\ \ \ \ \ IsInteger\ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::IsInteger}},}
+\DoxyCodeLine{00207\ \ \ \ \ IsSigned\ \ =\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::IsSigned}},}
+\DoxyCodeLine{00208\ \ \ \ \ RequireInitialization\ =\ 1,}
+\DoxyCodeLine{00209\ \ \ \ \ ReadCost\ =\ ArrayType::SizeAtCompileTime==Dynamic\ ?\ HugeCost\ :\ ArrayType::SizeAtCompileTime\ *\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::ReadCost}},}
+\DoxyCodeLine{00210\ \ \ \ \ AddCost\ \ =\ ArrayType::SizeAtCompileTime==Dynamic\ ?\ HugeCost\ :\ ArrayType::SizeAtCompileTime\ *\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::AddCost}},}
+\DoxyCodeLine{00211\ \ \ \ \ MulCost\ \ =\ ArrayType::SizeAtCompileTime==Dynamic\ ?\ HugeCost\ :\ ArrayType::SizeAtCompileTime\ *\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<Scalar>::MulCost}}}
+\DoxyCodeLine{00212\ \ \ \};}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00215\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ RealScalar\ epsilon()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<RealScalar>::epsilon}}();\ \}}
+\DoxyCodeLine{00216\ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ RealScalar\ dummy\_precision()\ \{\ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits<RealScalar>::dummy\_precision}}();\ \}}
+\DoxyCodeLine{00218\ \};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<std::string>}
+\DoxyCodeLine{00221\ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1_generic_num_traits}{GenericNumTraits}}<std::string>}
+\DoxyCodeLine{00222\ \{}
+\DoxyCodeLine{00223\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00224\ \ \ \ \ RequireInitialization\ =\ 1,}
+\DoxyCodeLine{00225\ \ \ \ \ ReadCost\ =\ HugeCost,}
+\DoxyCodeLine{00226\ \ \ \ \ AddCost\ \ =\ HugeCost,}
+\DoxyCodeLine{00227\ \ \ \ \ MulCost\ \ =\ HugeCost}
+\DoxyCodeLine{00228\ \ \ \};}
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{int}\ digits10()\ \{\ \textcolor{keywordflow}{return}\ 0;\ \}}
+\DoxyCodeLine{00231\ }
+\DoxyCodeLine{00232\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00233\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ std::string\ epsilon();}
+\DoxyCodeLine{00234\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ std::string\ dummy\_precision();}
+\DoxyCodeLine{00235\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ std::string\ lowest();}
+\DoxyCodeLine{00236\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ std::string\ highest();}
+\DoxyCodeLine{00237\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ std::string\ infinity();}
+\DoxyCodeLine{00238\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ std::string\ quiet\_NaN();}
+\DoxyCodeLine{00239\ \};}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \textcolor{comment}{//\ Empty\ specialization\ for\ void\ to\ allow\ template\ specialization\ based\ on\ NumTraits<T>::Real\ with\ T==void\ and\ SFINAE.}}
+\DoxyCodeLine{00242\ \textcolor{keyword}{template}<>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1_num_traits}{NumTraits}}<void>\ \{\};}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00245\ }
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_NUMTRAITS\_H}}
+
+\end{DoxyCode}

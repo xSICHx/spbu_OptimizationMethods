@@ -1,0 +1,117 @@
+\doxysection{Opt\+Method\+Random\+Search Class Reference}
+\hypertarget{class_opt_method_random_search}{}\label{class_opt_method_random_search}\index{OptMethodRandomSearch@{OptMethodRandomSearch}}
+
+
+A class that implements the Random Search optimization method.  
+
+
+
+
+{\ttfamily \#include $<$Opt\+Method\+Random\+Search.\+h$>$}
+
+Inheritance diagram for Opt\+Method\+Random\+Search\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_opt_method_random_search}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_opt_method_random_search_a55a6a0c4eb1c909d1070e52c4afa3521}{Opt\+Method\+Random\+Search}} (double \+\_\+p=0.\+5, double \+\_\+alpha=0.\+8)
+\begin{DoxyCompactList}\small\item\em Constructor for the \doxylink{class_opt_method_random_search}{Opt\+Method\+Random\+Search} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opt_method_random_search_a7cdfb899984734b36a5e7bdc98ef6176}{optimize}} (const \mbox{\hyperlink{class_area}{Area}} \&area, const \mbox{\hyperlink{class_function}{Function}} \&func, const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&crit) const override
+\begin{DoxyCompactList}\small\item\em Optimizes the given function within the specified area using the Random Search method. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_opt_method_random_search_a673a1d679013baf28054909117118d28}{optimize}} (const \mbox{\hyperlink{class_area}{Area}} \&area, const \mbox{\hyperlink{class_function}{Function}} \&func, const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&crit, const Vector\+Xd \&init\+Point) const override
+\begin{DoxyCompactList}\small\item\em Optimizes the given function within the specified area using the Random Search method, starting from an initial point. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+A class that implements the Random Search optimization method. 
+
+This class inherits from the \doxylink{class_opt_method}{Opt\+Method} base class and provides implementations for optimizing a given function within a specified area using the Random Search method.
+
+
+\begin{DoxyParams}{Parameters}
+{\em p} & Probability parameter for the random search. \\
+\hline
+{\em alpha} & Scaling factor for the search area. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_opt_method_random_search_a55a6a0c4eb1c909d1070e52c4afa3521}\index{OptMethodRandomSearch@{OptMethodRandomSearch}!OptMethodRandomSearch@{OptMethodRandomSearch}}
+\index{OptMethodRandomSearch@{OptMethodRandomSearch}!OptMethodRandomSearch@{OptMethodRandomSearch}}
+\doxysubsubsection{\texorpdfstring{OptMethodRandomSearch()}{OptMethodRandomSearch()}}
+{\footnotesize\ttfamily \label{class_opt_method_random_search_a55a6a0c4eb1c909d1070e52c4afa3521} 
+Opt\+Method\+Random\+Search\+::\+Opt\+Method\+Random\+Search (\begin{DoxyParamCaption}\item[{double}]{\+\_\+p}{ = {\ttfamily 0.5}, }\item[{double}]{\+\_\+alpha}{ = {\ttfamily 0.8}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Constructor for the \doxylink{class_opt_method_random_search}{Opt\+Method\+Random\+Search} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+p} & Probability parameter for the random search (default is 0.\+5). \\
+\hline
+{\em \+\_\+alpha} & Scaling factor for the search area (default is 0.\+8). \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_opt_method_random_search_a7cdfb899984734b36a5e7bdc98ef6176}\index{OptMethodRandomSearch@{OptMethodRandomSearch}!optimize@{optimize}}
+\index{optimize@{optimize}!OptMethodRandomSearch@{OptMethodRandomSearch}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \label{class_opt_method_random_search_a7cdfb899984734b36a5e7bdc98ef6176} 
+void Opt\+Method\+Random\+Search\+::optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_area}{Area}} \&}]{area}{, }\item[{const \mbox{\hyperlink{class_function}{Function}} \&}]{func}{, }\item[{const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&}]{crit}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Optimizes the given function within the specified area using the Random Search method. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em area} & The area within which to perform the optimization. \\
+\hline
+{\em func} & The function to be optimized. \\
+\hline
+{\em crit} & The stopping criterion for the optimization process. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_opt_method}{Opt\+Method}}.
+
+\Hypertarget{class_opt_method_random_search_a673a1d679013baf28054909117118d28}\index{OptMethodRandomSearch@{OptMethodRandomSearch}!optimize@{optimize}}
+\index{optimize@{optimize}!OptMethodRandomSearch@{OptMethodRandomSearch}}
+\doxysubsubsection{\texorpdfstring{optimize()}{optimize()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \label{class_opt_method_random_search_a673a1d679013baf28054909117118d28} 
+void Opt\+Method\+Random\+Search\+::optimize (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_area}{Area}} \&}]{area}{, }\item[{const \mbox{\hyperlink{class_function}{Function}} \&}]{func}{, }\item[{const \mbox{\hyperlink{class_stop_criterion}{Stop\+Criterion}} \&}]{crit}{, }\item[{const Vector\+Xd \&}]{init\+Point}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Optimizes the given function within the specified area using the Random Search method, starting from an initial point. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em area} & The area within which to perform the optimization. \\
+\hline
+{\em func} & The function to be optimized. \\
+\hline
+{\em crit} & The stopping criterion for the optimization process. \\
+\hline
+{\em init\+Point} & The initial point from which to start the optimization. \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{class_opt_method}{Opt\+Method}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Opt\+Method\+Random\+Search.\+h\item 
+Optimization\+Methods/Opt\+Method\+Random\+Search.\+cpp\end{DoxyCompactItemize}

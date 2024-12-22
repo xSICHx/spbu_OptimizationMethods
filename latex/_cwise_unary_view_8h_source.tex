@@ -1,0 +1,118 @@
+\doxysection{Cwise\+Unary\+View.\+h}
+\hypertarget{_cwise_unary_view_8h_source}{}\label{_cwise_unary_view_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/CwiseUnaryView.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/CwiseUnaryView.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2009-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_CWISE\_UNARY\_VIEW\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_CWISE\_UNARY\_VIEW\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ViewOp,\ \textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00017\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view}{CwiseUnaryView}}<ViewOp,\ MatrixType>\ >}
+\DoxyCodeLine{00018\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<MatrixType>}
+\DoxyCodeLine{00019\ \{}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1result__of}{result\_of}}<}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ViewOp(\textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<MatrixType>::Scalar}}\&)}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ >::type\ Scalar;}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Nested\ MatrixTypeNested;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_all<MatrixTypeNested>::type\ \_MatrixTypeNested;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ FlagsLvalueBit\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1is__lvalue}{is\_lvalue<MatrixType>::value}}\ ?\ \mbox{\hyperlink{group__flags_gae2c323957f20dfdc6cb8f44428eaec1a}{LvalueBit}}\ :\ 0,}
+\DoxyCodeLine{00027\ \ \ \ \ Flags\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<\_MatrixTypeNested>::Flags}}\ \&\ (\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}\ |\ FlagsLvalueBit\ |\ \mbox{\hyperlink{group__flags_gabf1e9d0516a933445a4c307ad8f14915}{DirectAccessBit}}),\ \textcolor{comment}{//\ FIXME\ DirectAccessBit\ should\ not\ be\ handled\ by\ expressions}}
+\DoxyCodeLine{00028\ \ \ \ \ MatrixTypeInnerStride\ =\ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1inner__stride__at__compile__time}{inner\_stride\_at\_compile\_time<MatrixType>::ret}},}
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{comment}{//\ need\ to\ cast\ the\ sizeof's\ from\ size\_t\ to\ int\ explicitly,\ otherwise:}}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{comment}{//\ "{}error:\ no\ integral\ type\ can\ represent\ all\ of\ the\ enumerator\ values}}
+\DoxyCodeLine{00031\ \ \ \ \ InnerStrideAtCompileTime\ =\ MatrixTypeInnerStride\ ==\ Dynamic}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ \textcolor{keywordtype}{int}(Dynamic)}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ int(MatrixTypeInnerStride)\ *\ int(\textcolor{keyword}{sizeof}(\textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<MatrixType>::Scalar}})\ /\ \textcolor{keyword}{sizeof}(Scalar)),}
+\DoxyCodeLine{00034\ \ \ \ \ OuterStrideAtCompileTime\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1outer__stride__at__compile__time}{outer\_stride\_at\_compile\_time<MatrixType>::ret}}\ ==\ Dynamic}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ?\ int(Dynamic)}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1outer__stride__at__compile__time}{outer\_stride\_at\_compile\_time<MatrixType>::ret}}\ *\ int(\textcolor{keyword}{sizeof}(\textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<MatrixType>::Scalar}})\ /\ \textcolor{keyword}{sizeof}(Scalar))}
+\DoxyCodeLine{00037\ \ \ \};}
+\DoxyCodeLine{00038\ \};}
+\DoxyCodeLine{00039\ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ViewOp,\ \textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ StorageKind>}
+\DoxyCodeLine{00042\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_impl}{CwiseUnaryViewImpl}};}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00057\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ViewOp,\ \textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00058\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view}{CwiseUnaryView}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_impl}{CwiseUnaryViewImpl}}<ViewOp,\ MatrixType,\ typename\ internal::traits<MatrixType>::StorageKind>}
+\DoxyCodeLine{00059\ \{}
+\DoxyCodeLine{00060\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_impl}{CwiseUnaryViewImpl<ViewOp,\ MatrixType,typename\ internal::traits<MatrixType>::StorageKind}}>::Base\ Base;}
+\DoxyCodeLine{00063\ \ \ \ \ EIGEN\_GENERIC\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view}{CwiseUnaryView}})}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{internal::ref\_selector<MatrixType>::non\_const\_type}}\ MatrixTypeNested;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::remove\_all<MatrixType>::type\ NestedExpression;}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view}{CwiseUnaryView}}(MatrixType\&\ mat,\ \textcolor{keyword}{const}\ ViewOp\&\ func\ =\ ViewOp())}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ :\ m\_matrix(mat),\ m\_functor(func)\ \{\}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(CwiseUnaryView)}
+\DoxyCodeLine{00071\ }
+\DoxyCodeLine{00072\ \ \ \ \ EIGEN\_STRONG\_INLINE\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.rows();\ \}}
+\DoxyCodeLine{00073\ \ \ \ \ EIGEN\_STRONG\_INLINE\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.cols();\ \}}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keyword}{const}\ ViewOp\&\ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_a1e4ebfe234c2dcec2b9491402103746c}{functor}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_functor;\ \}}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ internal::remove\_all<MatrixTypeNested>::type\&}
+\DoxyCodeLine{00080\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_aea1404a861a4394f038168f2a7bc2d8f}{nestedExpression}}()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix;\ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{typename}\ internal::remove\_reference<MatrixTypeNested>::type\&}
+\DoxyCodeLine{00084\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_a69ee8fadd0c57cce15f86b7f29ad07b1}{nestedExpression}}()\ \{\ \textcolor{keywordflow}{return}\ m\_matrix.const\_cast\_derived();\ \}}
+\DoxyCodeLine{00085\ }
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00087\ \ \ \ \ MatrixTypeNested\ m\_matrix;}
+\DoxyCodeLine{00088\ \ \ \ \ ViewOp\ m\_functor;}
+\DoxyCodeLine{00089\ \};}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \textcolor{comment}{//\ Generic\ API\ dispatcher}}
+\DoxyCodeLine{00092\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ViewOp,\ \textcolor{keyword}{typename}\ XprType,\ \textcolor{keyword}{typename}\ StorageKind>}
+\DoxyCodeLine{00093\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_impl}{CwiseUnaryViewImpl}}}
+\DoxyCodeLine{00094\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__xpr__base}{internal::generic\_xpr\_base}}<CwiseUnaryView<ViewOp,\ XprType>\ >::type}
+\DoxyCodeLine{00095\ \{}
+\DoxyCodeLine{00096\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00097\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1generic__xpr__base}{internal::generic\_xpr\_base<CwiseUnaryView<ViewOp,\ XprType>}}\ >::type\ Base;}
+\DoxyCodeLine{00098\ \};}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ViewOp,\ \textcolor{keyword}{typename}\ MatrixType>}
+\DoxyCodeLine{00101\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_impl}{CwiseUnaryViewImpl}}<ViewOp,MatrixType,\mbox{\hyperlink{struct_eigen_1_1_dense}{Dense}}>}
+\DoxyCodeLine{00102\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__xpr__base}{internal::dense\_xpr\_base}}<\ CwiseUnaryView<ViewOp,\ MatrixType>\ >::type}
+\DoxyCodeLine{00103\ \{}
+\DoxyCodeLine{00104\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view}{CwiseUnaryView<ViewOp,\ MatrixType>}}\ \mbox{\hyperlink{class_eigen_1_1_cwise_unary_view}{Derived}};}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__xpr__base}{internal::dense\_xpr\_base<\ CwiseUnaryView<ViewOp,\ MatrixType>}}\ >::type\ Base;}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view}{Derived}})}
+\DoxyCodeLine{00110\ \ \ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(\mbox{\hyperlink{class_eigen_1_1_cwise_unary_view_impl}{CwiseUnaryViewImpl}})}
+\DoxyCodeLine{00111\ \ \ \ \ }
+\DoxyCodeLine{00112\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Scalar*\ data()\ \{\ \textcolor{keywordflow}{return}\ \&(this-\/>coeffRef(0));\ \}}
+\DoxyCodeLine{00113\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Scalar*\ data()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ \&(this-\/>coeff(0));\ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ innerStride()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00116\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ derived().nestedExpression().innerStride()\ *\ \textcolor{keyword}{sizeof}(\textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<MatrixType>::Scalar}})\ /\ \textcolor{keyword}{sizeof}(Scalar);}
+\DoxyCodeLine{00118\ \ \ \ \ \}}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00120\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ outerStride()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00121\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ derived().nestedExpression().outerStride()\ *\ \textcolor{keyword}{sizeof}(\textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal::traits<MatrixType>::Scalar}})\ /\ \textcolor{keyword}{sizeof}(Scalar);}
+\DoxyCodeLine{00123\ \ \ \ \ \}}
+\DoxyCodeLine{00124\ \};}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00127\ }
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_CWISE\_UNARY\_VIEW\_H}}
+
+\end{DoxyCode}

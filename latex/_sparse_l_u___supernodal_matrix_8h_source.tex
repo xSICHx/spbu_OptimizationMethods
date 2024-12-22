@@ -1,0 +1,254 @@
+\doxysection{Sparse\+LU\+\_\+\+Supernodal\+Matrix.\+h}
+\hypertarget{_sparse_l_u___supernodal_matrix_8h_source}{}\label{_sparse_l_u___supernodal_matrix_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/SparseLU/SparseLU\_SupernodalMatrix.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/SparseLU/SparseLU\_SupernodalMatrix.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2012\ Désiré\ Nuentsa-\/Wakam\ <desire.nuentsa\_wakam@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2012\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_SPARSELU\_SUPERNODAL\_MATRIX\_H}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#define\ EIGEN\_SPARSELU\_SUPERNODAL\_MATRIX\_H}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00027\ \textcolor{comment}{/*\ TODO}}
+\DoxyCodeLine{00028\ \textcolor{comment}{\ *\ InnerIterator\ as\ for\ sparsematrix\ }}
+\DoxyCodeLine{00029\ \textcolor{comment}{\ *\ SuperInnerIterator\ to\ iterate\ through\ all\ supernodes\ }}
+\DoxyCodeLine{00030\ \textcolor{comment}{\ *\ Function\ for\ triangular\ solve}}
+\DoxyCodeLine{00031\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00032\ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keyword}{typename}\ \_StorageIndex>}
+\DoxyCodeLine{00033\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix}{MappedSuperNodalMatrix}}}
+\DoxyCodeLine{00034\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{typedef}\ \_Scalar\ Scalar;\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{typedef}\ \_StorageIndex\ StorageIndex;}
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<StorageIndex,Dynamic,1>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}};}
+\DoxyCodeLine{00039\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,Dynamic,1>}}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{ScalarVector}};}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00041\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix}{MappedSuperNodalMatrix}}()}
+\DoxyCodeLine{00042\ \ \ \ \ \{}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ }
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix}{MappedSuperNodalMatrix}}(Index\ m,\ Index\ n,\ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{ScalarVector}}\&\ nzval,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ nzval\_colptr,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ rowind,}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ rowind\_colptr,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ col\_to\_sup,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ sup\_to\_col\ )}
+\DoxyCodeLine{00047\ \ \ \ \ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_af1427486564e2c75b9da68f98bd04e63}{setInfos}}(m,\ n,\ nzval,\ nzval\_colptr,\ rowind,\ rowind\_colptr,\ col\_to\_sup,\ sup\_to\_col);}
+\DoxyCodeLine{00049\ \ \ \ \ \}}
+\DoxyCodeLine{00050\ \ \ \ \ }
+\DoxyCodeLine{00051\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix}{\string~MappedSuperNodalMatrix}}()}
+\DoxyCodeLine{00052\ \ \ \ \ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ }
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_af1427486564e2c75b9da68f98bd04e63}{setInfos}}(Index\ m,\ Index\ n,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{ScalarVector}}\&\ nzval,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ nzval\_colptr,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ rowind,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ rowind\_colptr,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ col\_to\_sup,\ \mbox{\hyperlink{class_eigen_1_1_matrix}{IndexVector}}\&\ sup\_to\_col\ )}
+\DoxyCodeLine{00063\ \ \ \ \ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ m\_row\ =\ m;}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ m\_col\ =\ n;\ }
+\DoxyCodeLine{00066\ \ \ \ \ \ \ m\_nzval\ =\ nzval.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}}();\ }
+\DoxyCodeLine{00067\ \ \ \ \ \ \ m\_nzval\_colptr\ =\ nzval\_colptr.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}}();\ }
+\DoxyCodeLine{00068\ \ \ \ \ \ \ m\_rowind\ =\ rowind.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}}();\ }
+\DoxyCodeLine{00069\ \ \ \ \ \ \ m\_rowind\_colptr\ =\ rowind\_colptr.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}}();\ }
+\DoxyCodeLine{00070\ \ \ \ \ \ \ m\_nsuper\ =\ col\_to\_sup(n);\ }
+\DoxyCodeLine{00071\ \ \ \ \ \ \ m\_col\_to\_sup\ =\ col\_to\_sup.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}}();\ }
+\DoxyCodeLine{00072\ \ \ \ \ \ \ m\_sup\_to\_col\ =\ sup\_to\_col.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}}();\ }
+\DoxyCodeLine{00073\ \ \ \ \ \}}
+\DoxyCodeLine{00074\ \ \ \ \ }
+\DoxyCodeLine{00078\ \ \ \ \ Index\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a5cc8f3887a09bd7d078a6744c158b5a0}{rows}}()\ \{\ \textcolor{keywordflow}{return}\ m\_row;\ \}}
+\DoxyCodeLine{00079\ \ \ \ \ }
+\DoxyCodeLine{00083\ \ \ \ \ Index\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a57b3811f03be2d94c0cdd105aba1b932}{cols}}()\ \{\ \textcolor{keywordflow}{return}\ m\_col;\ \}}
+\DoxyCodeLine{00084\ \ \ \ \ }
+\DoxyCodeLine{00090\ \ \ \ \ Scalar*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_acedbbc0412bd6041c9dae2d1a66c1649}{valuePtr}}()\ \{\ \ \textcolor{keywordflow}{return}\ m\_nzval;\ \}}
+\DoxyCodeLine{00091\ \ \ \ \ }
+\DoxyCodeLine{00092\ \ \ \ \ \textcolor{keyword}{const}\ Scalar*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_acedbbc0412bd6041c9dae2d1a66c1649}{valuePtr}}()\textcolor{keyword}{\ const\ }}
+\DoxyCodeLine{00093\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00094\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nzval;\ }
+\DoxyCodeLine{00095\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ \ \ \ \ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a92f3e6e6e2e802e37ca154a65d214d62}{colIndexPtr}}()}
+\DoxyCodeLine{00100\ \ \ \ \ \{}
+\DoxyCodeLine{00101\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nzval\_colptr;\ }
+\DoxyCodeLine{00102\ \ \ \ \ \}}
+\DoxyCodeLine{00103\ \ \ \ \ }
+\DoxyCodeLine{00104\ \ \ \ \ \textcolor{keyword}{const}\ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a92f3e6e6e2e802e37ca154a65d214d62}{colIndexPtr}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00105\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nzval\_colptr;\ }
+\DoxyCodeLine{00107\ \ \ \ \ \}}
+\DoxyCodeLine{00108\ \ \ \ \ }
+\DoxyCodeLine{00112\ \ \ \ \ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a14d09bea1322701d1b31d95b86003b99}{rowIndex}}()\ \ \{\ \textcolor{keywordflow}{return}\ m\_rowind;\ \}}
+\DoxyCodeLine{00113\ \ \ \ \ }
+\DoxyCodeLine{00114\ \ \ \ \ \textcolor{keyword}{const}\ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a14d09bea1322701d1b31d95b86003b99}{rowIndex}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00115\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00116\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_rowind;\ }
+\DoxyCodeLine{00117\ \ \ \ \ \}}
+\DoxyCodeLine{00118\ \ \ \ \ }
+\DoxyCodeLine{00122\ \ \ \ \ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a39231d87f2be968833e6d3d36e4d9d3e}{rowIndexPtr}}()\ \{\ \textcolor{keywordflow}{return}\ m\_rowind\_colptr;\ \}}
+\DoxyCodeLine{00123\ \ \ \ \ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keyword}{const}\ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a39231d87f2be968833e6d3d36e4d9d3e}{rowIndexPtr}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00125\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00126\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_rowind\_colptr;\ }
+\DoxyCodeLine{00127\ \ \ \ \ \}}
+\DoxyCodeLine{00128\ \ \ \ \ }
+\DoxyCodeLine{00132\ \ \ \ \ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a5a9233b2b9f63bd64697dec5cd4e3b83}{colToSup}}()\ \ \{\ \textcolor{keywordflow}{return}\ m\_col\_to\_sup;\ \}}
+\DoxyCodeLine{00133\ \ \ \ \ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keyword}{const}\ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a5a9233b2b9f63bd64697dec5cd4e3b83}{colToSup}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00135\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_col\_to\_sup;\ \ \ \ \ \ \ }
+\DoxyCodeLine{00137\ \ \ \ \ \}}
+\DoxyCodeLine{00141\ \ \ \ \ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a102ffc58d1d7fb3a710f05201b9b923c}{supToCol}}()\ \{\ \textcolor{keywordflow}{return}\ m\_sup\_to\_col;\ \}}
+\DoxyCodeLine{00142\ \ \ \ \ }
+\DoxyCodeLine{00143\ \ \ \ \ \textcolor{keyword}{const}\ StorageIndex*\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a102ffc58d1d7fb3a710f05201b9b923c}{supToCol}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00144\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_sup\_to\_col;}
+\DoxyCodeLine{00146\ \ \ \ \ \}}
+\DoxyCodeLine{00147\ \ \ \ \ }
+\DoxyCodeLine{00151\ \ \ \ \ Index\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a9c0b29102914a6ef9cfd6280fa016fa8}{nsuper}}()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00152\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_nsuper;\ }
+\DoxyCodeLine{00154\ \ \ \ \ \}}
+\DoxyCodeLine{00155\ \ \ \ \ }
+\DoxyCodeLine{00156\ \ \ \ \ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_inner_iterator}{InnerIterator}};\ }
+\DoxyCodeLine{00157\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00158\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_ab93581127fd87b6bc467b6f67fcf4eeb}{solveInPlace}}(\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Dest>}}\&X)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00159\ \ \ \ \ }
+\DoxyCodeLine{00160\ \ \ \ \ \ \ }
+\DoxyCodeLine{00161\ \ \ \ \ \ \ }
+\DoxyCodeLine{00162\ \ \ \ \ }
+\DoxyCodeLine{00163\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00164\ \ \ \ \ Index\ m\_row;\ \textcolor{comment}{//\ Number\ of\ rows}}
+\DoxyCodeLine{00165\ \ \ \ \ Index\ m\_col;\ \textcolor{comment}{//\ Number\ of\ columns}}
+\DoxyCodeLine{00166\ \ \ \ \ Index\ m\_nsuper;\ \textcolor{comment}{//\ Number\ of\ supernodes}}
+\DoxyCodeLine{00167\ \ \ \ \ Scalar*\ m\_nzval;\ \textcolor{comment}{//array\ of\ nonzero\ values\ packed\ by\ column}}
+\DoxyCodeLine{00168\ \ \ \ \ StorageIndex*\ m\_nzval\_colptr;\ \textcolor{comment}{//nzval\_colptr[j]\ Stores\ the\ location\ in\ nzval[]\ which\ starts\ column\ j}}
+\DoxyCodeLine{00169\ \ \ \ \ StorageIndex*\ m\_rowind;\ \textcolor{comment}{//\ Array\ of\ compressed\ row\ indices\ of\ rectangular\ supernodes}}
+\DoxyCodeLine{00170\ \ \ \ \ StorageIndex*\ m\_rowind\_colptr;\ \textcolor{comment}{//rowind\_colptr[j]\ stores\ the\ location\ in\ rowind[]\ which\ starts\ column\ j}}
+\DoxyCodeLine{00171\ \ \ \ \ StorageIndex*\ m\_col\_to\_sup;\ \textcolor{comment}{//\ col\_to\_sup[j]\ is\ the\ supernode\ number\ to\ which\ column\ j\ belongs}}
+\DoxyCodeLine{00172\ \ \ \ \ StorageIndex*\ m\_sup\_to\_col;\ \textcolor{comment}{//sup\_to\_col[s]\ points\ to\ the\ starting\ column\ of\ the\ s-\/th\ supernode}}
+\DoxyCodeLine{00173\ \ \ \ \ }
+\DoxyCodeLine{00174\ \ \ private\ :}
+\DoxyCodeLine{00175\ \};}
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00181\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ StorageIndex>}
+\DoxyCodeLine{00182\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix}{MappedSuperNodalMatrix}}<Scalar,StorageIndex>::\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_1_1_inner_iterator}{InnerIterator}}}
+\DoxyCodeLine{00183\ \{}
+\DoxyCodeLine{00184\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00185\ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_1_1_inner_iterator}{InnerIterator}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix}{MappedSuperNodalMatrix}}\&\ mat,\ Index\ outer)}
+\DoxyCodeLine{00186\ \ \ \ \ \ \ :\ m\_matrix(mat),}
+\DoxyCodeLine{00187\ \ \ \ \ \ \ \ \ m\_outer(outer),}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ \ \ m\_supno(mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a5a9233b2b9f63bd64697dec5cd4e3b83}{colToSup}}()[outer]),}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ m\_idval(mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a92f3e6e6e2e802e37ca154a65d214d62}{colIndexPtr}}()[outer]),}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ m\_startidval(m\_idval),}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ m\_endidval(mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a92f3e6e6e2e802e37ca154a65d214d62}{colIndexPtr}}()[outer+1]),}
+\DoxyCodeLine{00192\ \ \ \ \ \ \ \ \ m\_idrow(mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a39231d87f2be968833e6d3d36e4d9d3e}{rowIndexPtr}}()[mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a102ffc58d1d7fb3a710f05201b9b923c}{supToCol}}()[mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a5a9233b2b9f63bd64697dec5cd4e3b83}{colToSup}}()[outer]]]),}
+\DoxyCodeLine{00193\ \ \ \ \ \ \ \ \ m\_endidrow(mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a39231d87f2be968833e6d3d36e4d9d3e}{rowIndexPtr}}()[mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a102ffc58d1d7fb3a710f05201b9b923c}{supToCol}}()[mat.\mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_a5a9233b2b9f63bd64697dec5cd4e3b83}{colToSup}}()[outer]]+1])}
+\DoxyCodeLine{00194\ \ \ \ \ \{\}}
+\DoxyCodeLine{00195\ \ \ \ \ \textcolor{keyword}{inline}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_1_1_inner_iterator}{InnerIterator}}\&\ operator++()}
+\DoxyCodeLine{00196\ \ \ \ \ \{\ }
+\DoxyCodeLine{00197\ \ \ \ \ \ \ m\_idval++;\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ m\_idrow++;}
+\DoxyCodeLine{00199\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00200\ \ \ \ \ \}}
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{keyword}{inline}\ Scalar\ value()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.valuePtr()[m\_idval];\ \}}
+\DoxyCodeLine{00202\ \ \ \ \ }
+\DoxyCodeLine{00203\ \ \ \ \ \textcolor{keyword}{inline}\ Scalar\&\ valueRef()\ \{\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{const\_cast<}Scalar\&\textcolor{keyword}{>}(m\_matrix.valuePtr()[m\_idval]);\ \}}
+\DoxyCodeLine{00204\ \ \ \ \ }
+\DoxyCodeLine{00205\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ index()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.rowIndex()[m\_idrow];\ \}}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ row()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ index();\ \}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ col()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_outer;\ \}}
+\DoxyCodeLine{00208\ \ \ \ \ }
+\DoxyCodeLine{00209\ \ \ \ \ \textcolor{keyword}{inline}\ Index\ supIndex()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_supno;\ \}}
+\DoxyCodeLine{00210\ \ \ \ \ }
+\DoxyCodeLine{00211\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{operator}\ bool()\textcolor{keyword}{\ const\ }}
+\DoxyCodeLine{00212\ \textcolor{keyword}{\ \ \ \ }\{\ }
+\DoxyCodeLine{00213\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (\ (m\_idval\ <\ m\_endidval)\ \&\&\ (m\_idval\ >=\ m\_startidval)}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \&\&\ (m\_idrow\ <\ m\_endidrow)\ );}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00216\ \ \ \ \ }
+\DoxyCodeLine{00217\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00218\ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix}{MappedSuperNodalMatrix}}\&\ m\_matrix;\ \textcolor{comment}{//\ Supernodal\ lower\ triangular\ matrix\ }}
+\DoxyCodeLine{00219\ \ \ \ \ \textcolor{keyword}{const}\ Index\ m\_outer;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Current\ column\ }}
+\DoxyCodeLine{00220\ \ \ \ \ \textcolor{keyword}{const}\ Index\ m\_supno;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Current\ SuperNode\ number}}
+\DoxyCodeLine{00221\ \ \ \ \ Index\ m\_idval;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Index\ to\ browse\ the\ values\ in\ the\ current\ column}}
+\DoxyCodeLine{00222\ \ \ \ \ \textcolor{keyword}{const}\ Index\ m\_startidval;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Start\ of\ the\ column\ value}}
+\DoxyCodeLine{00223\ \ \ \ \ \textcolor{keyword}{const}\ Index\ m\_endidval;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ End\ of\ the\ column\ value}}
+\DoxyCodeLine{00224\ \ \ \ \ Index\ m\_idrow;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Index\ to\ browse\ the\ row\ indices\ }}
+\DoxyCodeLine{00225\ \ \ \ \ Index\ m\_endidrow;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ End\ index\ of\ row\ indices\ of\ the\ current\ column}}
+\DoxyCodeLine{00226\ \};}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00232\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Scalar,\ \textcolor{keyword}{typename}\ Index\_>}
+\DoxyCodeLine{00233\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Dest>}
+\DoxyCodeLine{00234\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_ab93581127fd87b6bc467b6f67fcf4eeb}{MappedSuperNodalMatrix<Scalar,Index\_>::solveInPlace}}(\ \mbox{\hyperlink{class_eigen_1_1_matrix_base}{MatrixBase<Dest>}}\&X)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00235\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{comment}{/*\ Explicit\ type\ conversion\ as\ the\ Index\ type\ of\ MatrixBase<Dest>\ may\ be\ wider\ than\ Index\ */}}
+\DoxyCodeLine{00237\ \textcolor{comment}{//\ \ \ \ eigen\_assert(X.rows()\ <=\ NumTraits<Index>::highest());}}
+\DoxyCodeLine{00238\ \textcolor{comment}{//\ \ \ \ eigen\_assert(X.cols()\ <=\ NumTraits<Index>::highest());}}
+\DoxyCodeLine{00239\ \ \ \ \ Index\ n\ \ \ \ =\ int(X.rows());}
+\DoxyCodeLine{00240\ \ \ \ \ Index\ nrhs\ =\ Index(X.cols());}
+\DoxyCodeLine{00241\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ *\ Lval\ =\ valuePtr();\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Nonzero\ values\ }}
+\DoxyCodeLine{00242\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,Dynamic,Dest::ColsAtCompileTime,\ ColMajor>}}\ work(n,\ nrhs);\ \ \ \ \ \textcolor{comment}{//\ working\ vector}}
+\DoxyCodeLine{00243\ \ \ \ \ work.\mbox{\hyperlink{class_eigen_1_1_plain_object_base_ab8b732ae4d45271b2532978ee13210d1}{setZero}}();}
+\DoxyCodeLine{00244\ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ k\ =\ 0;\ k\ <=\ nsuper();\ k\ ++)}
+\DoxyCodeLine{00245\ \ \ \ \ \{}
+\DoxyCodeLine{00246\ \ \ \ \ \ \ Index\ fsupc\ =\ supToCol()[k];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ First\ column\ of\ the\ current\ supernode\ }}
+\DoxyCodeLine{00247\ \ \ \ \ \ \ Index\ istart\ =\ rowIndexPtr()[fsupc];\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Pointer\ index\ to\ the\ subscript\ of\ the\ current\ column}}
+\DoxyCodeLine{00248\ \ \ \ \ \ \ Index\ nsupr\ =\ rowIndexPtr()[fsupc+1]\ -\/\ istart;\ \ \textcolor{comment}{//\ Number\ of\ rows\ in\ the\ current\ supernode}}
+\DoxyCodeLine{00249\ \ \ \ \ \ \ Index\ nsupc\ =\ supToCol()[k+1]\ -\/\ fsupc;\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Number\ of\ columns\ in\ the\ current\ supernode}}
+\DoxyCodeLine{00250\ \ \ \ \ \ \ Index\ nrow\ =\ nsupr\ -\/\ nsupc;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Number\ of\ rows\ in\ the\ non-\/diagonal\ part\ of\ the\ supernode}}
+\DoxyCodeLine{00251\ \ \ \ \ \ \ Index\ irow;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//Current\ index\ row}}
+\DoxyCodeLine{00252\ \ \ \ \ \ \ }
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (nsupc\ ==\ 1\ )}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ j\ =\ 0;\ j\ <\ nrhs;\ j++)}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1_mapped_super_nodal_matrix_1_1_inner_iterator}{InnerIterator}}\ it(*\textcolor{keyword}{this},\ fsupc);}
+\DoxyCodeLine{00258\ \ \ \ \ \ \ \ \ \ \ ++it;\ \textcolor{comment}{//\ Skip\ the\ diagonal\ element}}
+\DoxyCodeLine{00259\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (;\ it;\ ++it)}
+\DoxyCodeLine{00260\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00261\ \ \ \ \ \ \ \ \ \ \ \ \ irow\ =\ it.row();}
+\DoxyCodeLine{00262\ \ \ \ \ \ \ \ \ \ \ \ \ X(irow,\ j)\ -\/=\ X(fsupc,\ j)\ *\ it.value();}
+\DoxyCodeLine{00263\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ The\ supernode\ has\ more\ than\ one\ column\ }}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ Index\ luptr\ =\ colIndexPtr()[fsupc];\ }
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ Index\ lda\ =\ colIndexPtr()[fsupc+1]\ -\/\ luptr;}
+\DoxyCodeLine{00271\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00272\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Triangular\ solve\ }}
+\DoxyCodeLine{00273\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map<const\ Matrix<Scalar,Dynamic,Dynamic,\ ColMajor>}},\ 0,\ \mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride<>}}\ >\ A(\ \&(Lval[luptr]),\ nsupc,\ nsupc,\ \mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride<>}}(lda)\ );}
+\DoxyCodeLine{00274\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_map}{Map<\ Matrix<Scalar,Dynamic,Dest::ColsAtCompileTime,\ ColMajor>}},\ 0,\ \mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride<>}}\ >\ U\ (\&(X(fsupc,0)),\ nsupc,\ nrhs,\ \mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride<>}}(n)\ );}
+\DoxyCodeLine{00275\ \ \ \ \ \ \ \ \ U\ =\ A.template\ triangularView<UnitLower>().solve(U);\ }
+\DoxyCodeLine{00276\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00277\ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ Matrix-\/vector\ product\ }}
+\DoxyCodeLine{00278\ \ \ \ \ \ \ \ \ \textcolor{keyword}{new}\ (\&A)\ \mbox{\hyperlink{class_eigen_1_1_map}{Map}}<\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix<Scalar,Dynamic,Dynamic,\ ColMajor>}},\ 0,\ \mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride<>}}\ >\ (\ \&(Lval[luptr+nsupc]),\ nrow,\ nsupc,\ \mbox{\hyperlink{class_eigen_1_1_outer_stride}{OuterStride<>}}(lda)\ );}
+\DoxyCodeLine{00279\ \ \ \ \ \ \ \ \ work.topRows(nrow).noalias()\ =\ A\ *\ U;}
+\DoxyCodeLine{00280\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00281\ \ \ \ \ \ \ \ \ \textcolor{comment}{//Begin\ Scatter\ }}
+\DoxyCodeLine{00282\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ j\ =\ 0;\ j\ <\ nrhs;\ j++)}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ \ \ Index\ iptr\ =\ istart\ +\ nsupc;\ }
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (Index\ i\ =\ 0;\ i\ <\ nrow;\ i++)}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ irow\ =\ rowIndex()[iptr];\ }
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ X(irow,\ j)\ -\/=\ work(i,\ j);\ \textcolor{comment}{//\ Scatter\ operation}}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \ \ \ \ work(i,\ j)\ =\ Scalar(0);\ }
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ \ \ \ \ iptr++;}
+\DoxyCodeLine{00291\ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00292\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00293\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00294\ \ \ \ \ \}\ }
+\DoxyCodeLine{00295\ \}}
+\DoxyCodeLine{00296\ }
+\DoxyCodeLine{00297\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00298\ }
+\DoxyCodeLine{00299\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00300\ }
+\DoxyCodeLine{00301\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_SPARSELU\_MATRIX\_H}}
+
+\end{DoxyCode}

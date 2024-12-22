@@ -1,0 +1,242 @@
+\doxysection{Array.\+h}
+\hypertarget{_array_8h_source}{}\label{_array_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Array.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Array.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_ARRAY\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_ARRAY\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ \_Rows,\ \textcolor{keywordtype}{int}\ \_Cols,\ \textcolor{keywordtype}{int}\ \_Options,\ \textcolor{keywordtype}{int}\ \_MaxRows,\ \textcolor{keywordtype}{int}\ \_MaxCols>}
+\DoxyCodeLine{00017\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_array}{Array}}<\_Scalar,\ \_Rows,\ \_Cols,\ \_Options,\ \_MaxRows,\ \_MaxCols>\ >\ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<Matrix<\_Scalar,\ \_Rows,\ \_Cols,\ \_Options,\ \_MaxRows,\ \_MaxCols>\ >}
+\DoxyCodeLine{00018\ \{}
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_array_xpr}{ArrayXpr}}\ \mbox{\hyperlink{struct_eigen_1_1_array_xpr}{XprKind}};}
+\DoxyCodeLine{00020\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_array_base}{ArrayBase<Array<\_Scalar,\ \_Rows,\ \_Cols,\ \_Options,\ \_MaxRows,\ \_MaxCols>}}\ >\ \mbox{\hyperlink{class_eigen_1_1_array_base}{XprBase}};}
+\DoxyCodeLine{00021\ \};}
+\DoxyCodeLine{00022\ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00044\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ \_Scalar,\ \textcolor{keywordtype}{int}\ \_Rows,\ \textcolor{keywordtype}{int}\ \_Cols,\ \textcolor{keywordtype}{int}\ \_Options,\ \textcolor{keywordtype}{int}\ \_MaxRows,\ \textcolor{keywordtype}{int}\ \_MaxCols>}
+\DoxyCodeLine{00045\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_array}{Array}}}
+\DoxyCodeLine{00046\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base}{PlainObjectBase}}<Array<\_Scalar,\ \_Rows,\ \_Cols,\ \_Options,\ \_MaxRows,\ \_MaxCols>\ >}
+\DoxyCodeLine{00047\ \{}
+\DoxyCodeLine{00048\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base}{PlainObjectBase<Array>}}\ Base;}
+\DoxyCodeLine{00051\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_array}{Array}})}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00053\ \ \ \ \ \textcolor{keyword}{enum}\ \{\ Options\ =\ \_Options\ \};}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ Base::PlainObject\ PlainObject;}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{typename}\ Derived,\ \textcolor{keyword}{typename}\ OtherDerived,\ \textcolor{keywordtype}{bool}\ IsVector>}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }internal::conservative\_resize\_like\_impl;}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{using\ }Base::m\_storage;}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keyword}{using\ }Base::base;}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{class_eigen_1_1_plain_object_base_aa5a84a35bf7dc5c42abf4a3e9fde222c}{Base::coeff}};}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{using\ }\mbox{\hyperlink{class_eigen_1_1_plain_object_base_ad6ab241435124b11a3921df752d28daf}{Base::coeffRef}};}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00075\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00076\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array}{Array}}\&\ \mbox{\hyperlink{class_eigen_1_1_array_a141aa836385af5bd17b49eda1510cbf2}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<OtherDerived>}}\ \&other)}
+\DoxyCodeLine{00077\ \ \ \ \ \{}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_a8b9fead6af283323206409388ae6f0ff}{Base::operator=}}(other);}
+\DoxyCodeLine{00079\ \ \ \ \ \}}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{comment}{/*\ This\ overload\ is\ needed\ because\ the\ usage\ of}}
+\DoxyCodeLine{00085\ \textcolor{comment}{\ \ \ \ \ \ *\ \ \ using\ Base::operator=;}}
+\DoxyCodeLine{00086\ \textcolor{comment}{\ \ \ \ \ \ *\ fails\ on\ MSVC.\ Since\ the\ code\ below\ is\ working\ with\ GCC\ and\ MSVC,\ we\ skipped}}
+\DoxyCodeLine{00087\ \textcolor{comment}{\ \ \ \ \ \ *\ the\ usage\ of\ 'using'.\ This\ should\ be\ done\ only\ for\ operator=.}}
+\DoxyCodeLine{00088\ \textcolor{comment}{\ \ \ \ \ \ */}}
+\DoxyCodeLine{00089\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00090\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array}{Array}}\&\ \mbox{\hyperlink{class_eigen_1_1_array_a6c1ab1cec484ed9ef2dbfcebf95f4fc1}{operator=}}(\textcolor{keyword}{const}\ Scalar\ \&value)}
+\DoxyCodeLine{00091\ \ \ \ \ \{}
+\DoxyCodeLine{00092\ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_a1c05835c33b159f170ec5d30e3d44d88}{Base::setConstant}}(value);}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00105\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00106\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00107\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array}{Array}}\&\ \mbox{\hyperlink{class_eigen_1_1_array_a4315b21797cd7daadfd84b95253714b1}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<OtherDerived>}}\&\ other)}
+\DoxyCodeLine{00108\ \ \ \ \ \{}
+\DoxyCodeLine{00109\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_ae6ea682fcdd15f8d93913c7b8b88557a}{Base::\_set}}(other);}
+\DoxyCodeLine{00110\ \ \ \ \ \}}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00115\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00116\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array}{Array}}\&\ \mbox{\hyperlink{class_eigen_1_1_array_ae66feb02ee3f49be402f5ca6f11def82}{operator=}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array}{Array}}\&\ other)}
+\DoxyCodeLine{00117\ \ \ \ \ \{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base_ae6ea682fcdd15f8d93913c7b8b88557a}{Base::\_set}}(other);}
+\DoxyCodeLine{00119\ \ \ \ \ \}}
+\DoxyCodeLine{00120\ \ \ \ \ }
+\DoxyCodeLine{00131\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00132\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}()\ :\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base}{Base}}()}
+\DoxyCodeLine{00133\ \ \ \ \ \{}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ Base::\_check\_template\_params();}
+\DoxyCodeLine{00135\ \ \ \ \ \ \ EIGEN\_INITIALIZE\_COEFFS\_IF\_THAT\_OPTION\_IS\_ENABLED}
+\DoxyCodeLine{00136\ \ \ \ \ \}}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00139\ \ \ \ \ \textcolor{comment}{//\ FIXME\ is\ it\ still\ needed\ ??}}
+\DoxyCodeLine{00141\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00142\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(\mbox{\hyperlink{struct_eigen_1_1internal_1_1constructor__without__unaligned__array__assert}{internal::constructor\_without\_unaligned\_array\_assert}})}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ :\ Base(internal::constructor\_without\_unaligned\_array\_assert())}
+\DoxyCodeLine{00144\ \ \ \ \ \{}
+\DoxyCodeLine{00145\ \ \ \ \ \ \ Base::\_check\_template\_params();}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ EIGEN\_INITIALIZE\_COEFFS\_IF\_THAT\_OPTION\_IS\_ENABLED}
+\DoxyCodeLine{00147\ \ \ \ \ \}}
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#if\ EIGEN\_HAS\_RVALUE\_REFERENCES}}
+\DoxyCodeLine{00151\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00152\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(\mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}\&\&\ other)\ EIGEN\_NOEXCEPT\_IF(std::is\_nothrow\_move\_constructible<Scalar>::value)}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ :\ Base(std::move(other))}
+\DoxyCodeLine{00154\ \ \ \ \ \{}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ Base::\_check\_template\_params();}
+\DoxyCodeLine{00156\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (RowsAtCompileTime!=Dynamic\ \&\&\ ColsAtCompileTime!=Dynamic)}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ Base::\_set\_noalias(other);}
+\DoxyCodeLine{00158\ \ \ \ \ \}}
+\DoxyCodeLine{00159\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00160\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}\&\ \mbox{\hyperlink{class_eigen_1_1_array_a141aa836385af5bd17b49eda1510cbf2}{operator=}}(\mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}\&\&\ other)\ EIGEN\_NOEXCEPT\_IF(std::is\_nothrow\_move\_assignable<Scalar>::value)}
+\DoxyCodeLine{00161\ \ \ \ \ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \ \ other.swap(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00163\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ *\textcolor{keyword}{this};}
+\DoxyCodeLine{00164\ \ \ \ \ \}}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{preprocessor}{\ \ \ \ \#ifndef\ EIGEN\_PARSED\_BY\_DOXYGEN}}
+\DoxyCodeLine{00168\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00169\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00170\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(\textcolor{keyword}{const}\ T\&\ x)}
+\DoxyCodeLine{00171\ \ \ \ \ \{}
+\DoxyCodeLine{00172\ \ \ \ \ \ \ Base::\_check\_template\_params();}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ Base::template\ \_init1<T>(x);}
+\DoxyCodeLine{00174\ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T0,\ \textcolor{keyword}{typename}\ T1>}
+\DoxyCodeLine{00177\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00178\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(\textcolor{keyword}{const}\ T0\&\ val0,\ \textcolor{keyword}{const}\ T1\&\ val1)}
+\DoxyCodeLine{00179\ \ \ \ \ \{}
+\DoxyCodeLine{00180\ \ \ \ \ \ \ Base::\_check\_template\_params();}
+\DoxyCodeLine{00181\ \ \ \ \ \ \ this-\/>\textcolor{keyword}{template}\ \_init2<T0,T1>(val0,\ val1);}
+\DoxyCodeLine{00182\ \ \ \ \ \}}
+\DoxyCodeLine{00183\ \textcolor{preprocessor}{\ \ \ \ \#else}}
+\DoxyCodeLine{00185\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(\textcolor{keyword}{const}\ Scalar\ *\mbox{\hyperlink{class_eigen_1_1_plain_object_base_a322d4d48cc285b60e0dff100db522342}{data}});}
+\DoxyCodeLine{00192\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00193\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(Index\ dim);}
+\DoxyCodeLine{00195\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(\textcolor{keyword}{const}\ Scalar\&\ value);}
+\DoxyCodeLine{00201\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(Index\ rows,\ Index\ cols);}
+\DoxyCodeLine{00203\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_array_a715524a79accfdc70dbc8cab1d7086ae}{Array}}(\textcolor{keyword}{const}\ Scalar\&\ val0,\ \textcolor{keyword}{const}\ Scalar\&\ val1);}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00207\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00208\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array_adefff5a86babb44c362bd799c1cda965}{Array}}(\textcolor{keyword}{const}\ Scalar\&\ val0,\ \textcolor{keyword}{const}\ Scalar\&\ val1,\ \textcolor{keyword}{const}\ Scalar\&\ val2)}
+\DoxyCodeLine{00209\ \ \ \ \ \{}
+\DoxyCodeLine{00210\ \ \ \ \ \ \ Base::\_check\_template\_params();}
+\DoxyCodeLine{00211\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_SPECIFIC\_SIZE(\mbox{\hyperlink{class_eigen_1_1_array}{Array}},\ 3)}
+\DoxyCodeLine{00212\ \ \ \ \ \ \ m\_storage.data()[0]\ =\ val0;}
+\DoxyCodeLine{00213\ \ \ \ \ \ \ m\_storage.data()[1]\ =\ val1;}
+\DoxyCodeLine{00214\ \ \ \ \ \ \ m\_storage.data()[2]\ =\ val2;}
+\DoxyCodeLine{00215\ \ \ \ \ \}}
+\DoxyCodeLine{00217\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00218\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array_ad4d80ab64904b4b4e8e59d8a96f659b4}{Array}}(\textcolor{keyword}{const}\ Scalar\&\ val0,\ \textcolor{keyword}{const}\ Scalar\&\ val1,\ \textcolor{keyword}{const}\ Scalar\&\ val2,\ \textcolor{keyword}{const}\ Scalar\&\ val3)}
+\DoxyCodeLine{00219\ \ \ \ \ \{}
+\DoxyCodeLine{00220\ \ \ \ \ \ \ Base::\_check\_template\_params();}
+\DoxyCodeLine{00221\ \ \ \ \ \ \ EIGEN\_STATIC\_ASSERT\_VECTOR\_SPECIFIC\_SIZE(\mbox{\hyperlink{class_eigen_1_1_array}{Array}},\ 4)}
+\DoxyCodeLine{00222\ \ \ \ \ \ \ m\_storage.data()[0]\ =\ val0;}
+\DoxyCodeLine{00223\ \ \ \ \ \ \ m\_storage.data()[1]\ =\ val1;}
+\DoxyCodeLine{00224\ \ \ \ \ \ \ m\_storage.data()[2]\ =\ val2;}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ m\_storage.data()[3]\ =\ val3;}
+\DoxyCodeLine{00226\ \ \ \ \ \}}
+\DoxyCodeLine{00227\ }
+\DoxyCodeLine{00229\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00230\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array_a085268ca25404d706e7b8f4d33f15513}{Array}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_array}{Array}}\&\ other)}
+\DoxyCodeLine{00231\ \ \ \ \ \ \ \ \ \ \ \ \ :\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base}{Base}}(other)}
+\DoxyCodeLine{00232\ \ \ \ \ \{\ \}}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ OtherDerived>}
+\DoxyCodeLine{00236\ \ \ \ \ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00237\ \ \ \ \ EIGEN\_STRONG\_INLINE\ \mbox{\hyperlink{class_eigen_1_1_array_a0c86d3675410320f8645d47971d257d2}{Array}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{EigenBase<OtherDerived>}}\ \&other)}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ :\ \mbox{\hyperlink{class_eigen_1_1_plain_object_base}{Base}}(other.derived())}
+\DoxyCodeLine{00239\ \ \ \ \ \{\ \}}
+\DoxyCodeLine{00240\ }
+\DoxyCodeLine{00241\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ innerStride()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ 1;\ \}}
+\DoxyCodeLine{00242\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ outerStride()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ this-\/>innerSize();\ \}}
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\ \ \ \ \#ifdef\ EIGEN\_ARRAY\_PLUGIN}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\ \ \ \ \#include\ EIGEN\_ARRAY\_PLUGIN}}
+\DoxyCodeLine{00246\ \textcolor{preprocessor}{\ \ \ \ \#endif}}
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keyword}{typename}\ OtherDerived,\ \textcolor{keywordtype}{bool}\ SwapPo\textcolor{keywordtype}{int}ers>}
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{struct\ }internal::matrix\_swap\_impl;}
+\DoxyCodeLine{00252\ \};}
+\DoxyCodeLine{00253\ }
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#define\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS(Type,\ TypeSuffix,\ Size,\ SizeSuffix)\ \ \ \(\backslash\)}}
+\DoxyCodeLine{00274\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{typedef\ Array<Type,\ Size,\ Size>\ Array\#\#SizeSuffix\#\#SizeSuffix\#\#TypeSuffix;\ \ \(\backslash\)}}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{typedef\ Array<Type,\ Size,\ 1>\ \ \ \ Array\#\#SizeSuffix\#\#TypeSuffix;}}
+\DoxyCodeLine{00278\ }
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\#define\ EIGEN\_MAKE\_ARRAY\_FIXED\_TYPEDEFS(Type,\ TypeSuffix,\ Size)\ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00280\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00281\ \textcolor{preprocessor}{typedef\ Array<Type,\ Size,\ Dynamic>\ Array\#\#Size\#\#X\#\#TypeSuffix;\ \ \(\backslash\)}}
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00283\ \textcolor{preprocessor}{typedef\ Array<Type,\ Dynamic,\ Size>\ Array\#\#X\#\#Size\#\#TypeSuffix;}}
+\DoxyCodeLine{00284\ }
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#define\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_ALL\_SIZES(Type,\ TypeSuffix)\ \(\backslash\)}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{EIGEN\_MAKE\_ARRAY\_TYPEDEFS(Type,\ TypeSuffix,\ 2,\ 2)\ \(\backslash\)}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{EIGEN\_MAKE\_ARRAY\_TYPEDEFS(Type,\ TypeSuffix,\ 3,\ 3)\ \(\backslash\)}}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{EIGEN\_MAKE\_ARRAY\_TYPEDEFS(Type,\ TypeSuffix,\ 4,\ 4)\ \(\backslash\)}}
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{EIGEN\_MAKE\_ARRAY\_TYPEDEFS(Type,\ TypeSuffix,\ Dynamic,\ X)\ \(\backslash\)}}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{EIGEN\_MAKE\_ARRAY\_FIXED\_TYPEDEFS(Type,\ TypeSuffix,\ 2)\ \(\backslash\)}}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{EIGEN\_MAKE\_ARRAY\_FIXED\_TYPEDEFS(Type,\ TypeSuffix,\ 3)\ \(\backslash\)}}
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{EIGEN\_MAKE\_ARRAY\_FIXED\_TYPEDEFS(Type,\ TypeSuffix,\ 4)}}
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00294\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_ALL\_SIZES(\textcolor{keywordtype}{int},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ i)}
+\DoxyCodeLine{00295\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_ALL\_SIZES(\textcolor{keywordtype}{float},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f)}
+\DoxyCodeLine{00296\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_ALL\_SIZES(\textcolor{keywordtype}{double},\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ d)}
+\DoxyCodeLine{00297\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_ALL\_SIZES(std::complex<float>,\ \ cf)}
+\DoxyCodeLine{00298\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_ALL\_SIZES(std::complex<double>,\ cd)}
+\DoxyCodeLine{00299\ }
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#undef\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_ALL\_SIZES}}
+\DoxyCodeLine{00301\ \textcolor{preprocessor}{\#undef\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS}}
+\DoxyCodeLine{00302\ }
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#undef\ EIGEN\_MAKE\_ARRAY\_TYPEDEFS\_LARGE}}
+\DoxyCodeLine{00304\ }
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#define\ EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE\_AND\_SIZE(TypeSuffix,\ SizeSuffix)\ \(\backslash\)}}
+\DoxyCodeLine{00306\ \textcolor{preprocessor}{using\ Eigen::Matrix\#\#SizeSuffix\#\#TypeSuffix;\ \(\backslash\)}}
+\DoxyCodeLine{00307\ \textcolor{preprocessor}{using\ Eigen::Vector\#\#SizeSuffix\#\#TypeSuffix;\ \(\backslash\)}}
+\DoxyCodeLine{00308\ \textcolor{preprocessor}{using\ Eigen::RowVector\#\#SizeSuffix\#\#TypeSuffix;}}
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00310\ \textcolor{preprocessor}{\#define\ EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE(TypeSuffix)\ \(\backslash\)}}
+\DoxyCodeLine{00311\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE\_AND\_SIZE(TypeSuffix,\ 2)\ \(\backslash\)}}
+\DoxyCodeLine{00312\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE\_AND\_SIZE(TypeSuffix,\ 3)\ \(\backslash\)}}
+\DoxyCodeLine{00313\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE\_AND\_SIZE(TypeSuffix,\ 4)\ \(\backslash\)}}
+\DoxyCodeLine{00314\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE\_AND\_SIZE(TypeSuffix,\ X)\ \(\backslash\)}}
+\DoxyCodeLine{00315\ \textcolor{preprocessor}{}}
+\DoxyCodeLine{00316\ \textcolor{preprocessor}{\#define\ EIGEN\_USING\_ARRAY\_TYPEDEFS\ \(\backslash\)}}
+\DoxyCodeLine{00317\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE(i)\ \(\backslash\)}}
+\DoxyCodeLine{00318\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE(f)\ \(\backslash\)}}
+\DoxyCodeLine{00319\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE(d)\ \(\backslash\)}}
+\DoxyCodeLine{00320\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE(cf)\ \(\backslash\)}}
+\DoxyCodeLine{00321\ \textcolor{preprocessor}{EIGEN\_USING\_ARRAY\_TYPEDEFS\_FOR\_TYPE(cd)}}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00324\ }
+\DoxyCodeLine{00325\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_ARRAY\_H}}
+
+\end{DoxyCode}

@@ -1,0 +1,135 @@
+\doxysection{Select.\+h}
+\hypertarget{_select_8h_source}{}\label{_select_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Select.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Select.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2008-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_SELECT\_H}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ EIGEN\_SELECT\_H}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00030\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00031\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ConditionMatrixType,\ \textcolor{keyword}{typename}\ ThenMatrixType,\ \textcolor{keyword}{typename}\ ElseMatrixType>}
+\DoxyCodeLine{00032\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_select}{Select}}<ConditionMatrixType,\ ThenMatrixType,\ ElseMatrixType>\ >}
+\DoxyCodeLine{00033\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<ThenMatrixType>}
+\DoxyCodeLine{00034\ \{}
+\DoxyCodeLine{00035\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<ThenMatrixType>::Scalar}}\ Scalar;}
+\DoxyCodeLine{00036\ \ \ \textcolor{keyword}{typedef}\ \mbox{\hyperlink{struct_eigen_1_1_dense}{Dense}}\ \mbox{\hyperlink{struct_eigen_1_1_dense}{StorageKind}};}
+\DoxyCodeLine{00037\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<ThenMatrixType>::XprKind}}\ XprKind;}
+\DoxyCodeLine{00038\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ ConditionMatrixType::Nested\ ConditionMatrixNested;}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ ThenMatrixType::Nested\ ThenMatrixNested;}
+\DoxyCodeLine{00040\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ ElseMatrixType::Nested\ ElseMatrixNested;}
+\DoxyCodeLine{00041\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ RowsAtCompileTime\ =\ ConditionMatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00043\ \ \ \ \ ColsAtCompileTime\ =\ ConditionMatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00044\ \ \ \ \ MaxRowsAtCompileTime\ =\ ConditionMatrixType::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00045\ \ \ \ \ MaxColsAtCompileTime\ =\ ConditionMatrixType::MaxColsAtCompileTime,}
+\DoxyCodeLine{00046\ \ \ \ \ Flags\ =\ (\textcolor{keywordtype}{unsigned}\ int)ThenMatrixType::Flags\ \&\ ElseMatrixType::Flags\ \&\ \mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}}
+\DoxyCodeLine{00047\ \ \ \};}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ \}}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00051\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ConditionMatrixType,\ \textcolor{keyword}{typename}\ ThenMatrixType,\ \textcolor{keyword}{typename}\ ElseMatrixType>}
+\DoxyCodeLine{00052\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_select}{Select}}\ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__xpr__base}{internal::dense\_xpr\_base}}<\ Select<ConditionMatrixType,\ ThenMatrixType,\ ElseMatrixType>\ >::type,}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1internal_1_1no__assignment__operator}{internal::no\_assignment\_operator}}}
+\DoxyCodeLine{00054\ \{}
+\DoxyCodeLine{00055\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::dense\_xpr\_base<Select>::type\ Base;}
+\DoxyCodeLine{00058\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_select}{Select}})}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00061\ \ \ \ \ \mbox{\hyperlink{class_eigen_1_1_select}{Select}}(\textcolor{keyword}{const}\ ConditionMatrixType\&\ a\_conditionMatrix,}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ ThenMatrixType\&\ a\_thenMatrix,}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ ElseMatrixType\&\ a\_elseMatrix)}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ :\ m\_condition(a\_conditionMatrix),\ m\_then(a\_thenMatrix),\ m\_else(a\_elseMatrix)}
+\DoxyCodeLine{00065\ \ \ \ \ \{}
+\DoxyCodeLine{00066\ \ \ \ \ \ \ eigen\_assert(m\_condition.rows()\ ==\ m\_then.rows()\ \&\&\ m\_condition.rows()\ ==\ m\_else.rows());}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ eigen\_assert(m\_condition.cols()\ ==\ m\_then.cols()\ \&\&\ m\_condition.cols()\ ==\ m\_else.cols());}
+\DoxyCodeLine{00068\ \ \ \ \ \}}
+\DoxyCodeLine{00069\ }
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_condition.rows();\ \}}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_condition.cols();\ \}}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ coeff(Index\ i,\ Index\ j)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00075\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_condition.coeff(i,j))}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_then.coeff(i,j);}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_else.coeff(i,j);}
+\DoxyCodeLine{00080\ \ \ \ \ \}}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC}
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keyword}{const}\ Scalar\ coeff(Index\ i)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00084\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00085\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (m\_condition.coeff(i))}
+\DoxyCodeLine{00086\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_then.coeff(i);}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_else.coeff(i);}
+\DoxyCodeLine{00089\ \ \ \ \ \}}
+\DoxyCodeLine{00090\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{const}\ ConditionMatrixType\&\ conditionMatrix()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00092\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_condition;}
+\DoxyCodeLine{00094\ \ \ \ \ \}}
+\DoxyCodeLine{00095\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{const}\ ThenMatrixType\&\ thenMatrix()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00097\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_then;}
+\DoxyCodeLine{00099\ \ \ \ \ \}}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ \ \ \ \ \textcolor{keyword}{inline}\ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{const}\ ElseMatrixType\&\ elseMatrix()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00102\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_else;}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{typename}\ ConditionMatrixType::Nested\ m\_condition;}
+\DoxyCodeLine{00108\ \ \ \ \ \textcolor{keyword}{typename}\ ThenMatrixType::Nested\ m\_then;}
+\DoxyCodeLine{00109\ \ \ \ \ \textcolor{keyword}{typename}\ ElseMatrixType::Nested\ m\_else;}
+\DoxyCodeLine{00110\ \};}
+\DoxyCodeLine{00111\ }
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00121\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00122\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ThenDerived,\textcolor{keyword}{typename}\ ElseDerived>}
+\DoxyCodeLine{00123\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ Select<Derived,ThenDerived,ElseDerived>}
+\DoxyCodeLine{00124\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a65e78cfcbc9852e6923bebff4323ddca}{DenseBase<Derived>::select}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<ThenDerived>}}\&\ thenMatrix,}
+\DoxyCodeLine{00125\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<ElseDerived>}}\&\ elseMatrix)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00126\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00127\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_select}{Select<Derived,ThenDerived,ElseDerived>}}(derived(),\ thenMatrix.derived(),\ elseMatrix.derived());}
+\DoxyCodeLine{00128\ \}}
+\DoxyCodeLine{00129\ }
+\DoxyCodeLine{00135\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00136\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ThenDerived>}
+\DoxyCodeLine{00137\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_select}{Select<Derived,ThenDerived,\ typename\ ThenDerived::ConstantReturnType>}}}
+\DoxyCodeLine{00138\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a65e78cfcbc9852e6923bebff4323ddca}{DenseBase<Derived>::select}}(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<ThenDerived>}}\&\ thenMatrix,}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ThenDerived::Scalar\&\ elseScalar)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00140\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_select}{Select<Derived,ThenDerived,typename\ ThenDerived::ConstantReturnType>}}(}
+\DoxyCodeLine{00142\ \ \ \ \ derived(),\ thenMatrix.derived(),\ ThenDerived::Constant(rows(),cols(),elseScalar));}
+\DoxyCodeLine{00143\ \}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00150\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00151\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ElseDerived>}
+\DoxyCodeLine{00152\ \textcolor{keyword}{inline}\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_select}{Select<Derived,\ typename\ ElseDerived::ConstantReturnType,\ ElseDerived\ >}}}
+\DoxyCodeLine{00153\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a65e78cfcbc9852e6923bebff4323ddca}{DenseBase<Derived>::select}}(\textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ ElseDerived::Scalar\&\ thenScalar,}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_eigen_1_1_dense_base}{DenseBase<ElseDerived>}}\&\ elseMatrix)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00155\ \textcolor{keyword}{}\{}
+\DoxyCodeLine{00156\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_select}{Select<Derived,typename\ ElseDerived::ConstantReturnType,ElseDerived>}}(}
+\DoxyCodeLine{00157\ \ \ \ \ derived(),\ ElseDerived::Constant(rows(),cols(),thenScalar),\ elseMatrix.derived());}
+\DoxyCodeLine{00158\ \}}
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00160\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_SELECT\_H}}
+
+\end{DoxyCode}

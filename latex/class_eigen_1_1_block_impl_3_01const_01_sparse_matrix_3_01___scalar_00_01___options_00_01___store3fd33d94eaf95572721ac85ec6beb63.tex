@@ -1,0 +1,391 @@
+\doxysection{Eigen\+::Block\+Impl\texorpdfstring{$<$}{<} const Sparse\+Matrix\texorpdfstring{$<$}{<} \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index \texorpdfstring{$>$}{>}, Block\+Rows, Block\+Cols, true, Sparse \texorpdfstring{$>$}{>} Class Template Reference}
+\hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63}{}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63}\index{Eigen::BlockImpl$<$ const SparseMatrix$<$ \_Scalar, \_Options, \_StorageIndex $>$, BlockRows, BlockCols, true, Sparse $>$@{Eigen::BlockImpl$<$ const SparseMatrix$<$ \_Scalar, \_Options, \_StorageIndex $>$, BlockRows, BlockCols, true, Sparse $>$}}
+Inheritance diagram for Eigen\+::Block\+Impl\texorpdfstring{$<$}{<} const Sparse\+Matrix\texorpdfstring{$<$}{<} \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index \texorpdfstring{$>$}{>}, Block\+Rows, Block\+Cols, true, Sparse \texorpdfstring{$>$}{>}\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.645833cm]{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a9bdf06d54c99f56f497f622cebf1e865}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a9bdf06d54c99f56f497f622cebf1e865} 
+typedef \+\_\+\+Storage\+Index {\bfseries Storage\+Index}
+\item 
+\Hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_aa28cb9135bd83ed430af3e1d905df1cd}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_aa28cb9135bd83ed430af3e1d905df1cd} 
+typedef const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$ {\bfseries Sparse\+Matrix\+Type}
+\item 
+\Hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a5cc4672b2331279180c9af148ebfdfea}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a5cc4672b2331279180c9af148ebfdfea} 
+typedef \mbox{\hyperlink{class_eigen_1_1internal_1_1sparse__matrix__block__impl}{internal\+::sparse\+\_\+matrix\+\_\+block\+\_\+impl}}$<$ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix\+Type}}, Block\+Rows, Block\+Cols $>$ {\bfseries Base}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{class_eigen_1_1internal_1_1sparse__matrix__block__impl}{Eigen\+::internal\+::sparse\+\_\+matrix\+\_\+block\+\_\+impl$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1internal_1_1sparse__matrix__block__impl_a9e1fe1ce78ebfe7a9bb3eabd4ed9a90b}\label{class_eigen_1_1internal_1_1sparse__matrix__block__impl_a9e1fe1ce78ebfe7a9bb3eabd4ed9a90b} 
+enum 
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base}{Eigen\+::\+Sparse\+Compressed\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$ {\bfseries Base}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Eigen\+::\+Sparse\+Matrix\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33f}\label{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33f} 
+enum 
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::\+Scalar {\bfseries Scalar}
+\item 
+typedef Scalar \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac254d3b61718ebc2136d27bac043dcb7}{value\+\_\+type}}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{internal\+::packet\+\_\+traits}}$<$ Scalar $>$\+::type {\bfseries Packet\+Scalar}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::\+Storage\+Kind {\bfseries Storage\+Kind}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::\+Storage\+Index \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1add__const__on__value__type__if__arithmetic}{internal\+::add\+\_\+const\+\_\+on\+\_\+value\+\_\+type\+\_\+if\+\_\+arithmetic}}$<$ typenameinternal\+::packet\+\_\+traits$<$ Scalar $>$\+::type $>$\+::type {\bfseries Packet\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}} {\bfseries Storage\+Base\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}$<$ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}}, Dynamic, 1 $>$ {\bfseries Index\+Vector}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}$<$ Scalar, Dynamic, 1 $>$ {\bfseries Scalar\+Vector}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal\+::conditional}}$<$ \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::\+Is\+Complex, \mbox{\hyperlink{class_eigen_1_1_cwise_unary_op}{Cwise\+Unary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__conjugate__op}{internal\+::scalar\+\_\+conjugate\+\_\+op}}$<$ Scalar $>$, \mbox{\hyperlink{class_eigen_1_1_transpose}{Eigen\+::\+Transpose}}$<$ const\+Derived $>$ $>$, \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}$<$ const\+Derived $>$ $>$\+::type {\bfseries Adjoint\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$ {\bfseries Transpose\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1add__const}{internal\+::add\+\_\+const}}$<$ \mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose}}$<$ const\+Derived $>$ $>$\+::type {\bfseries Const\+Transpose\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ Scalar, \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33fa2af043b36fe9e08df0107cf6de496165}{Flags}} \&\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{Row\+Major\+Bit}} ? \mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a77c993a8d9f6efe5c1159fb2ab07dd4f}{Row\+Major}} \+:\mbox{\hyperlink{group__enums_ggaacded1a18ae58b0f554751f6cdf9eb13a0103672ae41005ab03b4176c765afd62}{Col\+Major}}, \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} $>$ {\bfseries Plain\+Object}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::\+Real \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aaec8ace6efb785c81d442931c3248d88}{Real\+Scalar}}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1conditional}{internal\+::conditional}}$<$ \+\_\+\+Has\+Direct\+Access, const\+Scalar \&, Scalar $>$\+::type {\bfseries Coeff\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_cwise_nullary_op}{Cwise\+Nullary\+Op}}$<$ \mbox{\hyperlink{struct_eigen_1_1internal_1_1scalar__constant__op}{internal\+::scalar\+\_\+constant\+\_\+op}}$<$ Scalar $>$, \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}$<$ Scalar, Dynamic, Dynamic $>$ $>$ {\bfseries Constant\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}$<$ Scalar, \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33fa456cda7b9d938e57194036a41d634604}{Rows\+At\+Compile\+Time}}, \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33fa27ba349f075d026c1f51d1ec69aa5b14}{Cols\+At\+Compile\+Time}} $>$ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_acca1ed7c478dbd2b36b7ef14cb781cff}{Dense\+Matrix\+Type}}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Matrix}}$<$ Scalar, EIGEN\+\_\+\+SIZE\+\_\+\+MAX(\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33fa456cda7b9d938e57194036a41d634604}{Rows\+At\+Compile\+Time}}, \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33fa27ba349f075d026c1f51d1ec69aa5b14}{Cols\+At\+Compile\+Time}}), EIGEN\+\_\+\+SIZE\+\_\+\+MAX(\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33fa456cda7b9d938e57194036a41d634604}{Rows\+At\+Compile\+Time}}, \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac6cda8abf5fc4d1e28ad8bba97f9c33fa27ba349f075d026c1f51d1ec69aa5b14}{Cols\+At\+Compile\+Time}})$>$ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aa61bc39f66a93bc46173f3044dacc932}{Square\+Matrix\+Type}}
+\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$ {\bfseries Base}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Is\+Row\+Major?1\+:Dynamic, Is\+Row\+Major?Dynamic\+:1, true $>$ {\bfseries Inner\+Vector\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Is\+Row\+Major?1\+:Dynamic, Is\+Row\+Major?Dynamic\+:1, true $>$ {\bfseries Const\+Inner\+Vector\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Dynamic, Dynamic, true $>$ {\bfseries Inner\+Vectors\+Return\+Type}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Dynamic, Dynamic, true $>$ {\bfseries Const\+Inner\+Vectors\+Return\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Types inherited from \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef Eigen\+::\+Index \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}
+\begin{DoxyCompactList}\small\item\em The interface type of indices. \end{DoxyCompactList}\item 
+typedef \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::\+Storage\+Kind {\bfseries Storage\+Kind}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a6833f7d6ee32796f27e0f91269621e33}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a6833f7d6ee32796f27e0f91269621e33} 
+{\bfseries Block\+Impl} (\mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix\+Type}} \&xpr, Index i)
+\item 
+\Hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a88649cbc3eef2dc78ccfd3ee2be679bf}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a88649cbc3eef2dc78ccfd3ee2be679bf} 
+{\bfseries Block\+Impl} (\mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix\+Type}} \&xpr, Index start\+Row, Index start\+Col, Index block\+Rows, Index block\+Cols)
+\item 
+\Hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a349e44b304ec8ba59e2a31f16762a9ad}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a349e44b304ec8ba59e2a31f16762a9ad} 
+{\footnotesize template$<$typename Other\+Derived $>$ }\\\mbox{\hyperlink{class_eigen_1_1_block}{Block\+Type}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\Hypertarget{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a4884cfcfe00ab81e5b51c17ead2c0c87}\label{class_eigen_1_1_block_impl_3_01const_01_sparse_matrix_3_01___scalar_00_01___options_00_01___store3fd33d94eaf95572721ac85ec6beb63_a4884cfcfe00ab81e5b51c17ead2c0c87} 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block\+Type}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_block}{Block\+Type}} \&other)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1internal_1_1sparse__matrix__block__impl}{Eigen\+::internal\+::sparse\+\_\+matrix\+\_\+block\+\_\+impl$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+{\bfseries sparse\+\_\+matrix\+\_\+block\+\_\+impl} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$ \&xpr, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} i)
+\item 
+{\bfseries sparse\+\_\+matrix\+\_\+block\+\_\+impl} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$ \&xpr, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} start\+Row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} start\+Col, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} block\+Rows, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} block\+Cols)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block\+Type}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block\+Type}} \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_block}{Block\+Type}} \&other)
+\item 
+const Scalar \texorpdfstring{$\ast$}{*} {\bfseries value\+Ptr} () const
+\item 
+Scalar \texorpdfstring{$\ast$}{*} {\bfseries value\+Ptr} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} {\bfseries inner\+Index\+Ptr} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} {\bfseries inner\+Index\+Ptr} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} {\bfseries outer\+Index\+Ptr} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} {\bfseries outer\+Index\+Ptr} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} {\bfseries inner\+Non\+Zero\+Ptr} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} {\bfseries inner\+Non\+Zero\+Ptr} ()
+\item 
+bool {\bfseries is\+Compressed} () const
+\item 
+Scalar \& {\bfseries coeff\+Ref} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col)
+\item 
+const Scalar {\bfseries coeff} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} row, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} col) const
+\item 
+const Scalar {\bfseries coeff} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} index) const
+\item 
+const Scalar \& {\bfseries last\+Coeff} () const
+\item 
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries rows} () const
+\item 
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries cols} () const
+\item 
+const const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$ \& {\bfseries nested\+Expression} () const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$ \& {\bfseries nested\+Expression} ()
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries start\+Row} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries start\+Col} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries block\+Rows} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries block\+Cols} () const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base}{Eigen\+::\+Sparse\+Compressed\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+Index \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_a03de8b3da2c142ce8698a76123b3e7d3}{non\+Zeros}} () const
+\item 
+const Scalar \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_a6373c1dab09c6d3db8fe5e4eea060a86}{value\+Ptr}} () const
+\item 
+Scalar \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_aa99f79283d649526977b6058caead4cc}{value\+Ptr}} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_a29104d325f0d4928fa159257183b2f53}{inner\+Index\+Ptr}} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_a3e88baeeffa067c76bcabd7793352895}{inner\+Index\+Ptr}} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_a90208df76cc1c9b8d6ada53fea913de9}{outer\+Index\+Ptr}} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_acc894ad59034a6233048338732747afe}{outer\+Index\+Ptr}} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_ab8b0aebe77ad28609e715f84d50b0fb6}{inner\+Non\+Zero\+Ptr}} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} \texorpdfstring{$\ast$}{*} \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_a0368c7130d15fbdc1837d6141e1c89e3}{inner\+Non\+Zero\+Ptr}} ()
+\item 
+bool \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_a837934b33a80fe996ff20500373d3a61}{is\+Compressed}} () const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_map}{Map}}$<$ const \mbox{\hyperlink{class_eigen_1_1_array}{Array}}$<$ Scalar, Dynamic, 1 $>$ $>$ \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_adcefacdb594bc96e016eb66f74f93aad}{coeffs}} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_map}{Map}}$<$ \mbox{\hyperlink{class_eigen_1_1_array}{Array}}$<$ Scalar, Dynamic, 1 $>$ $>$ \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_ab3aab863f97c48455bdf12b7d6b14b83}{coeffs}} ()
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_return_by_value}{Return\+By\+Value}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \&other)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Eigen\+::\+Sparse\+Matrix\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_return_by_value}{Return\+By\+Value}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator=} (const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \&other)
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries derived} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries derived} ()
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries const\+\_\+cast\+\_\+derived} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a1944e9fa9ce7937bfc3a87b2cb94371f}{rows}} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aca7ce296424ef6e478ab0fb19547a7ee}{cols}} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a124bc57921775eb9aa2dfd9727e23472}{size}} () const
+\item 
+bool \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a7eedffa867031f649fd0fb9cc23ce4be}{is\+Vector}} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac86cc88a4cfef21db6b64ec0ab4c8f0a}{outer\+Size}} () const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a180fcba1ccf3cdf3252a263bc1de7a1d}{inner\+Size}} () const
+\item 
+bool {\bfseries is\+RValue} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries mark\+As\+RValue} ()
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator+=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator+=} (const \mbox{\hyperlink{class_eigen_1_1_diagonal_base}{Diagonal\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator+=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator+=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator-\/=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator-\/=} (const \mbox{\hyperlink{class_eigen_1_1_diagonal_base}{Diagonal\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator-\/=} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator-\/=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (const Scalar \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator\texorpdfstring{$\ast$}{*}=} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other)
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries operator/=} (const Scalar \&other)
+\item 
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE const Cwise\+Product\+Dense\+Return\+Type$<$ Other\+Derived $>$\+::\+Type {\bfseries cwise\+Product} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+EIGEN\+\_\+\+STRONG\+\_\+\+INLINE const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::template Cwise\+Product\+Dense\+Return\+Type$<$ Other\+Derived $>$\+::\+Type {\bfseries cwise\+Product} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_product}{Product}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Other\+Derived $>$ {\bfseries operator\texorpdfstring{$\ast$}{*}} (const \mbox{\hyperlink{class_eigen_1_1_diagonal_base}{Diagonal\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_product}{Product}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Other\+Derived, Alias\+Free\+Product $>$ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a9d4d71b3f34389e6fc01f2b86e43f7a4}{operator\texorpdfstring{$\ast$}{*}}} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_product}{Product}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Other\+Derived $>$ {\bfseries operator\texorpdfstring{$\ast$}{*}} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_symmetric_permutation_product}{Sparse\+Symmetric\+Permutation\+Product}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, \mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdafca2ccebb604f171656deb53e8c083c1}{Upper}}\texorpdfstring{$\vert$}{|}\mbox{\hyperlink{group__enums_gga39e3366ff5554d731e7dc8bb642f83cdaf581029282d421eee5aae14238c6f749}{Lower}} $>$ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ad244a709f56230a8030b078a7ee889c6}{twisted\+By}} (const \mbox{\hyperlink{class_eigen_1_1_permutation_matrix}{Permutation\+Matrix}}$<$ Dynamic, Dynamic, \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} $>$ \&perm) const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_triangular_view}{Triangular\+View}}$<$ const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$, Mode $>$ {\bfseries triangular\+View} () const
+\item 
+Const\+Self\+Adjoint\+View\+Return\+Type$<$ Up\+Lo $>$\+::\+Type {\bfseries selfadjoint\+View} () const
+\item 
+Self\+Adjoint\+View\+Return\+Type$<$ Up\+Lo $>$\+::\+Type {\bfseries selfadjoint\+View} ()
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::template Const\+Self\+Adjoint\+View\+Return\+Type$<$ Up\+Lo $>$\+::\+Type {\bfseries selfadjoint\+View} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::template Self\+Adjoint\+View\+Return\+Type$<$ Up\+Lo $>$\+::\+Type {\bfseries selfadjoint\+View} ()
+\item 
+Scalar {\bfseries dot} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+Scalar {\bfseries dot} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::\+Scalar {\bfseries dot} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{internal\+::traits}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::\+Scalar {\bfseries dot} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other) const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aaec8ace6efb785c81d442931c3248d88}{Real\+Scalar}} {\bfseries squared\+Norm} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aaec8ace6efb785c81d442931c3248d88}{Real\+Scalar}} {\bfseries norm} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aaec8ace6efb785c81d442931c3248d88}{Real\+Scalar}} {\bfseries blue\+Norm} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_transpose}{Transpose\+Return\+Type}} {\bfseries transpose} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_diagonal}{Const\+Transpose\+Return\+Type}} {\bfseries transpose} () const
+\item 
+const \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{Adjoint\+Return\+Type}} {\bfseries adjoint} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Inner\+Vector\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a65aaf3b50d205011e2bfa0de24756cce}{inner\+Vector}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer)
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_block}{Const\+Inner\+Vector\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a1050a842569fcdadf8d936250301e72d}{inner\+Vector}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer) const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Inner\+Vectors\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a3c51bf5a7eb18eab9a85949d03aed14a}{inner\+Vectors}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer\+Start, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac86cc88a4cfef21db6b64ec0ab4c8f0a}{outer\+Size}})
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_block}{Const\+Inner\+Vectors\+Return\+Type}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ae6585c991d04c139f2486ab81f56ad1a}{inner\+Vectors}} (\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} outer\+Start, \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac86cc88a4cfef21db6b64ec0ab4c8f0a}{outer\+Size}}) const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_acca1ed7c478dbd2b36b7ef14cb781cff}{Dense\+Matrix\+Type}} {\bfseries to\+Dense} () const
+\item 
+bool {\bfseries is\+Approx} (const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Sparse\+Matrix\+Base}}$<$ Other\+Derived $>$ \&other, const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aaec8ace6efb785c81d442931c3248d88}{Real\+Scalar}} \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::dummy\+\_\+precision()) const
+\item 
+bool {\bfseries is\+Approx} (const \mbox{\hyperlink{class_eigen_1_1_matrix_base}{Matrix\+Base}}$<$ Other\+Derived $>$ \&other, const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aaec8ace6efb785c81d442931c3248d88}{Real\+Scalar}} \&prec=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::dummy\+\_\+precision()) const
+\item 
+const \mbox{\hyperlink{struct_eigen_1_1internal_1_1eval}{internal\+::eval}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$\+::type \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_adef28adeb655eacfc605255b25db0282}{eval}} () const
+\item 
+Scalar {\bfseries sum} () const
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_sparse_view}{Sparse\+View}}$<$ \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$ \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_ac8d0414b56d9d620ce9a698c1b281e5d}{pruned}} (const Scalar \&reference=Scalar(0), const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_aaec8ace6efb785c81d442931c3248d88}{Real\+Scalar}} \&epsilon=\mbox{\hyperlink{struct_eigen_1_1_num_traits}{Num\+Traits}}$<$ Scalar $>$\+::dummy\+\_\+precision()) const
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{struct_eigen_1_1_eigen_base}{Eigen\+::\+Eigen\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& \mbox{\hyperlink{struct_eigen_1_1_eigen_base_ab4cf3e6bb046a94a46b69b857bd3dbc9}{derived}} ()
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a80808d9477b4dddab2613a5d8764d79e}{derived}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries const\+\_\+cast\+\_\+derived} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC const \mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries const\+\_\+derived} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a8141320ba8df384426c298b32b000d8e}{rows}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a7b0b45c7351847696c911ce8aa2abbdb}{cols}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} \mbox{\hyperlink{struct_eigen_1_1_eigen_base_ac2c9348df3bb9c0044dbae6c278a8977}{size}} () const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries eval\+To} (Dest \&dst) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries add\+To} (Dest \&dst) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries sub\+To} (Dest \&dst) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries apply\+This\+On\+The\+Right} (Dest \&dst) const
+\item 
+EIGEN\+\_\+\+DEVICE\+\_\+\+FUNC void {\bfseries apply\+This\+On\+The\+Left} (Dest \&dst) const
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Types inherited from \mbox{\hyperlink{class_eigen_1_1internal_1_1sparse__matrix__block__impl}{Eigen\+::internal\+::sparse\+\_\+matrix\+\_\+block\+\_\+impl$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_eigen_1_1internal_1_1sparse__matrix__block__impl_a085e864b6d71491ace71f99803424a9a}\label{class_eigen_1_1internal_1_1sparse__matrix__block__impl_a085e864b6d71491ace71f99803424a9a} 
+enum 
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Base\+::\+Index\+Vector}} {\bfseries Index\+Vector}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Types inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base}{Eigen\+::\+Sparse\+Compressed\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+typedef \mbox{\hyperlink{class_eigen_1_1_matrix}{Base\+::\+Index\+Vector}} {\bfseries Index\+Vector}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base}{Eigen\+::\+Sparse\+Compressed\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_eigen_1_1_map}{Eigen\+::\+Map}}$<$ \mbox{\hyperlink{class_eigen_1_1_matrix}{Index\+Vector}} $>$ {\bfseries inner\+Non\+Zeros} ()
+\item 
+const \mbox{\hyperlink{class_eigen_1_1_map}{Eigen\+::\+Map}}$<$ const \mbox{\hyperlink{class_eigen_1_1_matrix}{Index\+Vector}} $>$ {\bfseries inner\+Non\+Zeros} () const
+\item 
+\mbox{\hyperlink{class_eigen_1_1_sparse_compressed_base_af79f020db965367d97eb954fc68d8f99}{Sparse\+Compressed\+Base}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Eigen\+::\+Sparse\+Matrix\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_eigen_1_1_block}{Block}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ \& {\bfseries assign} (const Other\+Derived \&other)
+\item 
+void {\bfseries assign\+Generic} (const Other\+Derived \&other)
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Member Functions inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Eigen\+::\+Sparse\+Matrix\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base_a0b540ba724726ebe953f8c0df06081ed}{Storage\+Index}} {\bfseries convert\+\_\+index} (const \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} idx)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_eigen_1_1internal_1_1sparse__matrix__block__impl}{Eigen\+::internal\+::sparse\+\_\+matrix\+\_\+block\+\_\+impl$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_eigen_1_1internal_1_1ref__selector}{internal\+::ref\+\_\+selector}}$<$ const \mbox{\hyperlink{class_eigen_1_1_sparse_matrix}{Sparse\+Matrix}}$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$ $>$\+::non\+\_\+const\+\_\+type {\bfseries m\+\_\+matrix}
+\item 
+\mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}} {\bfseries m\+\_\+outer\+Start}
+\item 
+const \mbox{\hyperlink{class_eigen_1_1internal_1_1variable__if__dynamic}{internal\+::variable\+\_\+if\+\_\+dynamic}}$<$ \mbox{\hyperlink{struct_eigen_1_1_eigen_base_a554f30542cc2316add4b1ea0a492ff02}{Index}}, Outer\+Size $>$ {\bfseries m\+\_\+outer\+Size}
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_eigen_1_1_sparse_matrix_base}{Eigen\+::\+Sparse\+Matrix\+Base$<$ Block$<$ const Sparse\+Matrix$<$ \+\_\+\+Scalar, \+\_\+\+Options, \+\_\+\+Storage\+Index $>$, Block\+Rows, Block\+Cols, true $>$ $>$}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries m\+\_\+is\+RValue}
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+packages/\+Eigen.\+3.\+3.\+3/build/native/include/\+Eigen/src/\+Sparse\+Core/Sparse\+Block.\+h\end{DoxyCompactItemize}

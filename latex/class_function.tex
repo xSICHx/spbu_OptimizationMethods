@@ -1,0 +1,46 @@
+\doxysection{Function Class Reference}
+\hypertarget{class_function}{}\label{class_function}\index{Function@{Function}}
+
+
+Abstract base class representing a mathematical function.  
+
+
+
+
+{\ttfamily \#include $<$Function.\+h$>$}
+
+Inheritance diagram for Function\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=1.372549cm]{class_function}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_function_a1f34856ad3fdfc43c9d4452ca562b3ff}\label{class_function_a1f34856ad3fdfc43c9d4452ca562b3ff} 
+virtual size\+\_\+t {\bfseries get\+Dim} () const =0
+\item 
+\Hypertarget{class_function_a37a4ac4c75932651151166f2ae01f1cc}\label{class_function_a37a4ac4c75932651151166f2ae01f1cc} 
+virtual string {\bfseries get\+Name} () const =0
+\item 
+\Hypertarget{class_function_a4a07175cc1848129e5d83a2121f977f5}\label{class_function_a4a07175cc1848129e5d83a2121f977f5} 
+virtual point\+\_\+type {\bfseries operator()} (const Vector\+Xd \&point) const =0
+\item 
+\Hypertarget{class_function_abbed10dcf2175084d013ffa0db861d9c}\label{class_function_abbed10dcf2175084d013ffa0db861d9c} 
+Vector\+Xd {\bfseries get\+Gradient} (const Vector\+Xd \&point) const
+\item 
+\Hypertarget{class_function_ad529a36be738422dd00c052ff3ff0294}\label{class_function_ad529a36be738422dd00c052ff3ff0294} 
+Matrix\+Xd {\bfseries get\+Hessian\+Matrix} (const Vector\+Xd \&point) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Abstract base class representing a mathematical function. 
+
+This class provides an interface for mathematical functions, including methods to get the function\textquotesingle{}s dimension, name, gradient, and Hessian matrix. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Function.\+h\item 
+Optimization\+Methods/Function.\+cpp\end{DoxyCompactItemize}

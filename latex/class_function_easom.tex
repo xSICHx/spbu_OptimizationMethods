@@ -1,0 +1,74 @@
+\doxysection{Function\+Easom Class Reference}
+\hypertarget{class_function_easom}{}\label{class_function_easom}\index{FunctionEasom@{FunctionEasom}}
+
+
+-\/cos(x1) \texorpdfstring{$\ast$}{*} cos(x2) \texorpdfstring{$\ast$}{*} cos(x3) \texorpdfstring{$\ast$}{*} cos(x4) \texorpdfstring{$\ast$}{*} exp(-\/((x1 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2 + (x2 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2 + (x3 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2 + (x4 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2) / 16) Global min in x = (PI, PI, PI, PI)  
+
+
+
+
+{\ttfamily \#include $<$Function\+Easom.\+h$>$}
+
+Inheritance diagram for Function\+Easom\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_function_easom}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+size\+\_\+t \mbox{\hyperlink{class_function_easom_a2fccef925c3e82f9d71dc061f4631d2b}{get\+Dim}} () const override
+\item 
+string \mbox{\hyperlink{class_function_easom_a4254dd31e6d7a527696d66248161c74d}{get\+Name}} () const override
+\item 
+point\+\_\+type \mbox{\hyperlink{class_function_easom_ac22f572a51b39e93e71c56072acd1c5a}{operator()}} (const Vector\+Xd \&x) const override
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_function}{Function}}}
+\begin{DoxyCompactItemize}
+\item 
+Vector\+Xd {\bfseries get\+Gradient} (const Vector\+Xd \&point) const
+\item 
+Matrix\+Xd {\bfseries get\+Hessian\+Matrix} (const Vector\+Xd \&point) const
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+-\/cos(x1) \texorpdfstring{$\ast$}{*} cos(x2) \texorpdfstring{$\ast$}{*} cos(x3) \texorpdfstring{$\ast$}{*} cos(x4) \texorpdfstring{$\ast$}{*} exp(-\/((x1 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2 + (x2 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2 + (x3 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2 + (x4 -\/ pi)\texorpdfstring{$^\wedge$}{\string^}2) / 16) Global min in x = (PI, PI, PI, PI) 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_function_easom_a2fccef925c3e82f9d71dc061f4631d2b}\index{FunctionEasom@{FunctionEasom}!getDim@{getDim}}
+\index{getDim@{getDim}!FunctionEasom@{FunctionEasom}}
+\doxysubsubsection{\texorpdfstring{getDim()}{getDim()}}
+{\footnotesize\ttfamily \label{class_function_easom_a2fccef925c3e82f9d71dc061f4631d2b} 
+size\+\_\+t Function\+Easom\+::get\+Dim (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+\Hypertarget{class_function_easom_a4254dd31e6d7a527696d66248161c74d}\index{FunctionEasom@{FunctionEasom}!getName@{getName}}
+\index{getName@{getName}!FunctionEasom@{FunctionEasom}}
+\doxysubsubsection{\texorpdfstring{getName()}{getName()}}
+{\footnotesize\ttfamily \label{class_function_easom_a4254dd31e6d7a527696d66248161c74d} 
+string Function\+Easom\+::get\+Name (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+\Hypertarget{class_function_easom_ac22f572a51b39e93e71c56072acd1c5a}\index{FunctionEasom@{FunctionEasom}!operator()@{operator()}}
+\index{operator()@{operator()}!FunctionEasom@{FunctionEasom}}
+\doxysubsubsection{\texorpdfstring{operator()()}{operator()()}}
+{\footnotesize\ttfamily \label{class_function_easom_ac22f572a51b39e93e71c56072acd1c5a} 
+point\+\_\+type Function\+Easom\+::operator() (\begin{DoxyParamCaption}\item[{const Vector\+Xd \&}]{x}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{class_function}{Function}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Function\+Easom.\+h\end{DoxyCompactItemize}

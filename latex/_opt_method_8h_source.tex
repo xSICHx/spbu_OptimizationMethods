@@ -1,0 +1,25 @@
+\doxysection{Opt\+Method.\+h}
+\hypertarget{_opt_method_8h_source}{}\label{_opt_method_8h_source}\index{OptimizationMethods/OptMethod.h@{OptimizationMethods/OptMethod.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Area.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Function.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}StopCriterion.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_opt_method}{OptMethod}}}
+\DoxyCodeLine{00015\ \{}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ }
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_opt_method}{\string~OptMethod}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ optimize(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ area,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_function}{Function}}\&\ func,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}\&\ crit)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ optimize(\textcolor{keyword}{const}\ \mbox{\hyperlink{class_area}{Area}}\&\ area,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_function}{Function}}\&\ func,\ \textcolor{keyword}{const}\ \mbox{\hyperlink{class_stop_criterion}{StopCriterion}}\&\ crit,}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ VectorXd\&\ initPoint)\ \textcolor{keyword}{const}\ =\ 0;}
+\DoxyCodeLine{00023\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00024\ \ \ \ \ }
+\DoxyCodeLine{00025\ \};}
+\DoxyCodeLine{00026\ }
+
+\end{DoxyCode}

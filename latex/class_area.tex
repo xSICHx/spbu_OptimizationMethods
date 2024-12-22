@@ -1,0 +1,78 @@
+\doxysection{Area Class Reference}
+\hypertarget{class_area}{}\label{class_area}\index{Area@{Area}}
+
+
+Represents a multidimensional cubes with bounds.  
+
+
+
+
+{\ttfamily \#include $<$Area.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_area_a36c55739ca051c9e668d5d8ee26a5b54}\label{class_area_a36c55739ca051c9e668d5d8ee26a5b54} 
+{\bfseries Area} (const Matrix\+Xd \&\+\_\+bounds)
+\item 
+\Hypertarget{class_area_ace642f73b8d1b60b011360231929478a}\label{class_area_ace642f73b8d1b60b011360231929478a} 
+{\bfseries Area} (const Vector\+Xd \&point, const double delta)
+\item 
+\Hypertarget{class_area_ae4f57a71729762c93db50f57b20e9d35}\label{class_area_ae4f57a71729762c93db50f57b20e9d35} 
+Matrix\+Xd {\bfseries Get\+Bounds} () const
+\item 
+\Hypertarget{class_area_a77e2fba9a345ef9bf90a7f885b5e9fb0}\label{class_area_a77e2fba9a345ef9bf90a7f885b5e9fb0} 
+double {\bfseries get\+ILeft\+Bound} (const size\+\_\+t i) const
+\item 
+\Hypertarget{class_area_a7aedbb2366f5bf26450fb8d5d4545c72}\label{class_area_a7aedbb2366f5bf26450fb8d5d4545c72} 
+double {\bfseries get\+IRight\+Bound} (const size\+\_\+t i) const
+\item 
+\Hypertarget{class_area_abba3b13490f605764e3475b58af1b049}\label{class_area_abba3b13490f605764e3475b58af1b049} 
+int {\bfseries get\+Area\+Dim} () const
+\item 
+\Hypertarget{class_area_adbb050e2cb8cd3bc5b2d859efbc28d53}\label{class_area_adbb050e2cb8cd3bc5b2d859efbc28d53} 
+bool {\bfseries check\+Point\+In\+Area} (const Vector\+Xd \&point) const
+\begin{DoxyCompactList}\small\item\em True if point in area. \end{DoxyCompactList}\item 
+\Hypertarget{class_area_a4e0cfc8a737a283db96a1a9c5cbc309f}\label{class_area_a4e0cfc8a737a283db96a1a9c5cbc309f} 
+Vector\+Xd {\bfseries get\+Middle\+Area\+Point} () const
+\item 
+\Hypertarget{class_area_a96520d684e9470e734037086942c3ba3}\label{class_area_a96520d684e9470e734037086942c3ba3} 
+Vector\+Xd {\bfseries get\+Random\+Area\+Point} () const
+\item 
+\Hypertarget{class_area_a119489abf58853756b0e328097209f6b}\label{class_area_a119489abf58853756b0e328097209f6b} 
+double {\bfseries get\+Min\+Bound\+Len} () const
+\item 
+\mbox{\hyperlink{class_area}{Area}} \mbox{\hyperlink{class_area_a081795061929df35c5b73738458f36d6}{intersection}} (const \mbox{\hyperlink{class_area}{Area}} \&another) const
+\begin{DoxyCompactList}\small\item\em Default intersection of two areas. \end{DoxyCompactList}\item 
+\Hypertarget{class_area_a59ad6039dca3a0b0f4f14e09f5384231}\label{class_area_a59ad6039dca3a0b0f4f14e09f5384231} 
+void {\bfseries set\+Cube} (const Vector\+Xd \&point, const double delta)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents a multidimensional cubes with bounds. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_area_a081795061929df35c5b73738458f36d6}\index{Area@{Area}!intersection@{intersection}}
+\index{intersection@{intersection}!Area@{Area}}
+\doxysubsubsection{\texorpdfstring{intersection()}{intersection()}}
+{\footnotesize\ttfamily \label{class_area_a081795061929df35c5b73738458f36d6} 
+\mbox{\hyperlink{class_area}{Area}} Area\+::intersection (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{class_area}{Area}} \&}]{another}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Default intersection of two areas. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em another} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Optimization\+Methods/Area.\+h\end{DoxyCompactItemize}

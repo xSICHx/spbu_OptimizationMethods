@@ -1,0 +1,174 @@
+\doxysection{Reverse.\+h}
+\hypertarget{_reverse_8h_source}{}\label{_reverse_8h_source}\index{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Reverse.h@{packages/Eigen.3.3.3/build/native/include/Eigen/src/Core/Reverse.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{comment}{//\ This\ file\ is\ part\ of\ Eigen,\ a\ lightweight\ C++\ template\ library}}
+\DoxyCodeLine{00002\ \textcolor{comment}{//\ for\ linear\ algebra.}}
+\DoxyCodeLine{00003\ \textcolor{comment}{//}}
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ Copyright\ (C)\ 2006-\/2008\ Benoit\ Jacob\ <jacob.benoit.1@gmail.com>}}
+\DoxyCodeLine{00005\ \textcolor{comment}{//\ Copyright\ (C)\ 2009\ Ricard\ Marxer\ <email@ricardmarxer.com>}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ Copyright\ (C)\ 2009-\/2010\ Gael\ Guennebaud\ <gael.guennebaud@inria.fr>}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ This\ Source\ Code\ Form\ is\ subject\ to\ the\ terms\ of\ the\ Mozilla}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ Public\ License\ v.\ 2.0.\ If\ a\ copy\ of\ the\ MPL\ was\ not\ distributed}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ with\ this\ file,\ You\ can\ obtain\ one\ at\ http://mozilla.org/MPL/2.0/.}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#ifndef\ EIGEN\_REVERSE\_H}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ EIGEN\_REVERSE\_H}}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{namespace\ }Eigen\ \{\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00020\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<\mbox{\hyperlink{class_eigen_1_1_reverse}{Reverse}}<MatrixType,\ Direction>\ >}
+\DoxyCodeLine{00021\ \ :\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits}}<MatrixType>}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ MatrixType::Scalar\ Scalar;}
+\DoxyCodeLine{00024\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<MatrixType>::StorageKind}}\ StorageKind;}
+\DoxyCodeLine{00025\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1traits}{traits<MatrixType>::XprKind}}\ XprKind;}
+\DoxyCodeLine{00026\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{ref\_selector<MatrixType>::type}}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1true__type}{MatrixTypeNested}};}
+\DoxyCodeLine{00027\ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ remove\_reference<MatrixTypeNested>::type\ \_MatrixTypeNested;}
+\DoxyCodeLine{00028\ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ RowsAtCompileTime\ =\ MatrixType::RowsAtCompileTime,}
+\DoxyCodeLine{00030\ \ \ \ \ ColsAtCompileTime\ =\ MatrixType::ColsAtCompileTime,}
+\DoxyCodeLine{00031\ \ \ \ \ MaxRowsAtCompileTime\ =\ MatrixType::MaxRowsAtCompileTime,}
+\DoxyCodeLine{00032\ \ \ \ \ MaxColsAtCompileTime\ =\ MatrixType::MaxColsAtCompileTime,}
+\DoxyCodeLine{00033\ \ \ \ \ Flags\ =\ \_MatrixTypeNested::Flags\ \&\ (\mbox{\hyperlink{group__flags_gae4f56c2a60bbe4bd2e44c5b19cbe8762}{RowMajorBit}}\ |\ \mbox{\hyperlink{group__flags_gae2c323957f20dfdc6cb8f44428eaec1a}{LvalueBit}})}
+\DoxyCodeLine{00034\ \ \ \};}
+\DoxyCodeLine{00035\ \};}
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00037\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ PacketType,\ \textcolor{keywordtype}{bool}\ ReversePacket>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1reverse__packet__cond}{reverse\_packet\_cond}}}
+\DoxyCodeLine{00038\ \{}
+\DoxyCodeLine{00039\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ PacketType\ run(\textcolor{keyword}{const}\ PacketType\&\ x)\ \{\ \textcolor{keywordflow}{return}\ preverse(x);\ \}}
+\DoxyCodeLine{00040\ \};}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ PacketType>\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1reverse__packet__cond}{reverse\_packet\_cond}}<PacketType,false>}
+\DoxyCodeLine{00043\ \{}
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{inline}\ PacketType\ run(\textcolor{keyword}{const}\ PacketType\&\ x)\ \{\ \textcolor{keywordflow}{return}\ x;\ \}}
+\DoxyCodeLine{00045\ \};}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \}\ \textcolor{comment}{//\ end\ namespace\ internal\ }}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00063\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ MatrixType,\ \textcolor{keywordtype}{int}\ Direction>\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_eigen_1_1_reverse}{Reverse}}}
+\DoxyCodeLine{00064\ \ \ :\ \textcolor{keyword}{public}\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1dense__xpr__base}{internal::dense\_xpr\_base}}<\ Reverse<MatrixType,\ Direction>\ >::type}
+\DoxyCodeLine{00065\ \{}
+\DoxyCodeLine{00066\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::dense\_xpr\_base<Reverse>::type\ Base;}
+\DoxyCodeLine{00069\ \ \ \ \ EIGEN\_DENSE\_PUBLIC\_INTERFACE(\mbox{\hyperlink{class_eigen_1_1_reverse}{Reverse}})}
+\DoxyCodeLine{00070\ \ \ \ \ \textcolor{keyword}{typedef}\ \textcolor{keyword}{typename}\ internal::remove\_all<MatrixType>::type\ NestedExpression;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keyword}{using\ }Base::IsRowMajor;}
+\DoxyCodeLine{00072\ }
+\DoxyCodeLine{00073\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{enum}\ \{}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ PacketSize\ =\ \mbox{\hyperlink{struct_eigen_1_1internal_1_1packet__traits}{internal::packet\_traits<Scalar>::size}},}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ IsColMajor\ =\ !IsRowMajor,}
+\DoxyCodeLine{00077\ \ \ \ \ \ \ ReverseRow\ =\ (Direction\ ==\ \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}})\ \ \ ||\ (Direction\ ==\ \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a04fefd61992e941d509a57bc44c59794}{BothDirections}}),}
+\DoxyCodeLine{00078\ \ \ \ \ \ \ ReverseCol\ =\ (Direction\ ==\ \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}})\ ||\ (Direction\ ==\ \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a04fefd61992e941d509a57bc44c59794}{BothDirections}}),}
+\DoxyCodeLine{00079\ \ \ \ \ \ \ OffsetRow\ \ =\ ReverseRow\ \&\&\ IsColMajor\ ?\ PacketSize\ :\ 1,}
+\DoxyCodeLine{00080\ \ \ \ \ \ \ OffsetCol\ \ =\ ReverseCol\ \&\&\ IsRowMajor\ ?\ PacketSize\ :\ 1,}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ ReversePacket\ =\ (Direction\ ==\ \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a04fefd61992e941d509a57bc44c59794}{BothDirections}})}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ ((Direction\ ==\ \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}})\ \ \ \&\&\ IsColMajor)}
+\DoxyCodeLine{00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ||\ ((Direction\ ==\ \mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}})\ \&\&\ IsRowMajor)}
+\DoxyCodeLine{00084\ \ \ \ \ \};}
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{typedef}\ internal::reverse\_packet\_cond<PacketScalar,ReversePacket>\ reverse\_packet;}
+\DoxyCodeLine{00086\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{explicit}\ \textcolor{keyword}{inline}\ Reverse(\textcolor{keyword}{const}\ MatrixType\&\ matrix)\ :\ m\_matrix(matrix)\ \{\ \}}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ EIGEN\_INHERIT\_ASSIGNMENT\_OPERATORS(Reverse)}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00092\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ rows()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.rows();\ \}}
+\DoxyCodeLine{00093\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ cols()\textcolor{keyword}{\ const\ }\{\ \textcolor{keywordflow}{return}\ m\_matrix.cols();\ \}}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{inline}\ Index\ innerStride()\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00096\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ -\/m\_matrix.innerStride();}
+\DoxyCodeLine{00098\ \ \ \ \ \}}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ \ \ \ \ EIGEN\_DEVICE\_FUNC\ \textcolor{keyword}{const}\ \textcolor{keyword}{typename}\ internal::remove\_all<typename\ MatrixType::Nested>::type\&}
+\DoxyCodeLine{00101\ \ \ \ \ nestedExpression()\textcolor{keyword}{\ const\ }}
+\DoxyCodeLine{00102\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_matrix;}
+\DoxyCodeLine{00104\ \ \ \ \ \}}
+\DoxyCodeLine{00105\ }
+\DoxyCodeLine{00106\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00107\ \ \ \ \ \textcolor{keyword}{typename}\ MatrixType::Nested\ m\_matrix;}
+\DoxyCodeLine{00108\ \};}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00116\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00117\ \textcolor{keyword}{inline}\ \textcolor{keyword}{typename}\ DenseBase<Derived>::ReverseReturnType}
+\DoxyCodeLine{00118\ \mbox{\hyperlink{class_eigen_1_1_dense_base_a38ea394036d8b096abf322469c80198f}{DenseBase<Derived>::reverse}}()}
+\DoxyCodeLine{00119\ \{}
+\DoxyCodeLine{00120\ \ \ \textcolor{keywordflow}{return}\ \mbox{\hyperlink{class_eigen_1_1_reverse}{ReverseReturnType}}(derived());}
+\DoxyCodeLine{00121\ \}}
+\DoxyCodeLine{00122\ }
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \textcolor{comment}{//reverse\ const\ overload\ moved\ DenseBase.h\ due\ to\ a\ CUDA\ compiler\ bug}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00138\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Derived>}
+\DoxyCodeLine{00139\ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_dense_base_adb8045155ea45f7961fc2a5170e1d921}{DenseBase<Derived>::reverseInPlace}}()}
+\DoxyCodeLine{00140\ \{}
+\DoxyCodeLine{00141\ \ \ \textcolor{keywordflow}{if}(cols()>rows())}
+\DoxyCodeLine{00142\ \ \ \{}
+\DoxyCodeLine{00143\ \ \ \ \ Index\ \mbox{\hyperlink{struct_eigen_1_1half}{half}}\ =\ cols()/2;}
+\DoxyCodeLine{00144\ \ \ \ \ leftCols(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).swap(rightCols(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).reverse());}
+\DoxyCodeLine{00145\ \ \ \ \ \textcolor{keywordflow}{if}((cols()\%2)==1)}
+\DoxyCodeLine{00146\ \ \ \ \ \{}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ Index\ half2\ =\ rows()/2;}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ col(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).head(half2).swap(col(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).tail(half2).reverse());}
+\DoxyCodeLine{00149\ \ \ \ \ \}}
+\DoxyCodeLine{00150\ \ \ \}}
+\DoxyCodeLine{00151\ \ \ \textcolor{keywordflow}{else}}
+\DoxyCodeLine{00152\ \ \ \{}
+\DoxyCodeLine{00153\ \ \ \ \ Index\ \mbox{\hyperlink{struct_eigen_1_1half}{half}}\ =\ rows()/2;}
+\DoxyCodeLine{00154\ \ \ \ \ topRows(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).swap(bottomRows(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).reverse());}
+\DoxyCodeLine{00155\ \ \ \ \ \textcolor{keywordflow}{if}((rows()\%2)==1)}
+\DoxyCodeLine{00156\ \ \ \ \ \{}
+\DoxyCodeLine{00157\ \ \ \ \ \ \ Index\ half2\ =\ cols()/2;}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ row(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).head(half2).swap(row(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).tail(half2).reverse());}
+\DoxyCodeLine{00159\ \ \ \ \ \}}
+\DoxyCodeLine{00160\ \ \ \}}
+\DoxyCodeLine{00161\ \}}
+\DoxyCodeLine{00162\ }
+\DoxyCodeLine{00163\ \textcolor{keyword}{namespace\ }internal\ \{}
+\DoxyCodeLine{00164\ \ \ }
+\DoxyCodeLine{00165\ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00166\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1vectorwise__reverse__inplace__impl}{vectorwise\_reverse\_inplace\_impl}};}
+\DoxyCodeLine{00167\ }
+\DoxyCodeLine{00168\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00169\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1vectorwise__reverse__inplace__impl}{vectorwise\_reverse\_inplace\_impl}}<\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7ae2efac6e74ecab5e3b0b1561c5ddf83e}{Vertical}}>}
+\DoxyCodeLine{00170\ \{}
+\DoxyCodeLine{00171\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ExpressionType>}
+\DoxyCodeLine{00172\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(ExpressionType\ \&xpr)}
+\DoxyCodeLine{00173\ \ \ \{}
+\DoxyCodeLine{00174\ \ \ \ \ Index\ \mbox{\hyperlink{struct_eigen_1_1half}{half}}\ =\ xpr.rows()/2;}
+\DoxyCodeLine{00175\ \ \ \ \ xpr.topRows(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).swap(xpr.bottomRows(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).colwise().reverse());}
+\DoxyCodeLine{00176\ \ \ \}}
+\DoxyCodeLine{00177\ \};}
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ \textcolor{keyword}{template}<>}
+\DoxyCodeLine{00180\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct_eigen_1_1internal_1_1vectorwise__reverse__inplace__impl}{vectorwise\_reverse\_inplace\_impl}}<\mbox{\hyperlink{group__enums_ggad49a7b3738e273eb00932271b36127f7a961c62410157b64033839488f4d7f7e4}{Horizontal}}>}
+\DoxyCodeLine{00181\ \{}
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ExpressionType>}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{static}\ \textcolor{keywordtype}{void}\ run(ExpressionType\ \&xpr)}
+\DoxyCodeLine{00184\ \ \ \{}
+\DoxyCodeLine{00185\ \ \ \ \ Index\ \mbox{\hyperlink{struct_eigen_1_1half}{half}}\ =\ xpr.cols()/2;}
+\DoxyCodeLine{00186\ \ \ \ \ xpr.leftCols(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).swap(xpr.rightCols(\mbox{\hyperlink{struct_eigen_1_1half}{half}}).rowwise().reverse());}
+\DoxyCodeLine{00187\ \ \ \}}
+\DoxyCodeLine{00188\ \};}
+\DoxyCodeLine{00189\ }
+\DoxyCodeLine{00190\ \}\ \textcolor{comment}{//\ end\ namespace\ internal}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00203\ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ ExpressionType,\ \textcolor{keywordtype}{int}\ Direction>}
+\DoxyCodeLine{00204\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_eigen_1_1_vectorwise_op_ab9dd7c273eb2ba8defaab2d55156936b}{VectorwiseOp<ExpressionType,Direction>::reverseInPlace}}()}
+\DoxyCodeLine{00205\ \{}
+\DoxyCodeLine{00206\ \ \ \mbox{\hyperlink{struct_eigen_1_1internal_1_1vectorwise__reverse__inplace__impl}{internal::vectorwise\_reverse\_inplace\_impl<Direction>::run}}(\_expression().const\_cast\_derived());}
+\DoxyCodeLine{00207\ \}}
+\DoxyCodeLine{00208\ }
+\DoxyCodeLine{00209\ \}\ \textcolor{comment}{//\ end\ namespace\ Eigen}}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//\ EIGEN\_REVERSE\_H}}
+
+\end{DoxyCode}
