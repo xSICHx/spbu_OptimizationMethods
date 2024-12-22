@@ -1,7 +1,9 @@
 #pragma once
 #include "Function.h"
 
-
+/// <summary>
+/// |x+y|+3*|y-x|
+/// </summary>
 class FunctionAbs :
     public Function
 {

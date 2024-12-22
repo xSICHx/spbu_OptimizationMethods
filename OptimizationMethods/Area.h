@@ -2,6 +2,11 @@
 #include "config.h"
 
 
+/**
+ * @class Area
+ * @brief Represents a multidimensional cubes with bounds.
+ * 
+ */
 class Area
 {
 private:
@@ -14,7 +19,7 @@ public:
 	}
 	// creates cube with bounds point +- delta
 	Area(const VectorXd& point, const double delta) : bounds(point.size(), 2) {
-		for (size_t i = 0; i < point.size(); ++i)
+		for (int i = 0; i < point.size(); ++i)
 		{
 			bounds(i, 0) = point[i] - delta;
 			bounds(i, 1) = point[i] + delta;
@@ -34,18 +39,21 @@ public:
 	int getAreaDim() const {
 		return bounds.rows();
 	}
-	// true if in area
+
+	/// <summary>
+	/// True if point in area
+	/// </summary>
 	bool checkPointInArea(const VectorXd& point) const{
 		bool flag = 1;
-		for (size_t i = 0; i < getAreaDim(); ++i) {
-			flag *= bounds(i, 0) < point[i] && point[i] < bounds(i, 1);
+		for (int i = 0; i < getAreaDim(); ++i) {
+			flag = flag && bounds(i, 0) < point[i] && point[i] < bounds(i, 1);
 		}
 		return flag;
 	}
 
 	VectorXd getMiddleAreaPoint() const {
 		VectorXd res_point(getAreaDim());
-		for (size_t i = 0; i < res_point.size(); ++i)
+		for (int i = 0; i < res_point.size(); ++i)
 		{
 			res_point[i] = (getILeftBound(i) + getIRightBound(i)) / 2;
 		}
@@ -54,7 +62,7 @@ public:
 
 	VectorXd getRandomAreaPoint() const {
 		VectorXd res_point(getAreaDim());
-		for (size_t i = 0; i < res_point.size(); ++i)
+		for (int i = 0; i < res_point.size(); ++i)
 		{
 			std::uniform_real_distribution<> dis(getILeftBound(i), getIRightBound(i));
 			res_point[i] = dis(gen);
@@ -64,17 +72,21 @@ public:
 
 	double getMinBoundLen() const {
 		double res = (getIRightBound(0) - getILeftBound(0));
-		for (size_t i = 0; i < getAreaDim(); ++i)
+		for (int i = 0; i < getAreaDim(); ++i)
 		{
 			res = min( (getIRightBound(i) - getILeftBound(i)), res );
 		}
 		return res;
 	}
 
-	// TODO: сделать проверку на пустое
-	Area interseption(const Area& another) const {
+	/// <summary>
+	/// Default intersection of two areas
+	/// </summary>
+	/// <param name="another"></param>
+	/// <returns></returns>
+	Area intersection(const Area& another) const {
 		MatrixXd inter_bounds(getAreaDim(), 2);
-		for (size_t i = 0; i < getAreaDim(); ++i)
+		for (int i = 0; i < getAreaDim(); ++i)
 		{
 			inter_bounds(i, 0) = max(getILeftBound(i), another.getILeftBound(i));
 			inter_bounds(i, 1) = min(getIRightBound(i), another.getIRightBound(i));
@@ -85,7 +97,7 @@ public:
 
 	// set up cube area with bounds point[i] +- delta
 	void setCube(const VectorXd& point, const double delta) {
-		for (size_t i = 0; i < point.size(); ++i)
+		for (int i = 0; i < point.size(); ++i)
 		{
 			bounds(i, 0) = point[i] - delta;
 			bounds(i, 1) = point[i] + delta;

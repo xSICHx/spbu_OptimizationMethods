@@ -153,6 +153,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="FunctionAbs.h" />
     <ClInclude Include="FunctionDefault.h" />
+    <ClInclude Include="FunctionEasom.h" />
     <ClInclude Include="FunctionHarmonic.h" />
     <ClInclude Include="FunctionRosenbrock.h" />
     <ClInclude Include="OptMethodNewton.h" />

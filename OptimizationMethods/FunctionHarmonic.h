@@ -2,7 +2,9 @@
 #include "Function.h"
 
 
-
+/// <summary>
+/// sin(x)*cos(2y)*sin(3z+pi/6)
+/// </summary>
 class FunctionHarmonic :
     public Function
 {

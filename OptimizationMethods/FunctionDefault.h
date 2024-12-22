@@ -2,6 +2,9 @@
 #include "Function.h"
 
 
+/// <summary>
+/// 5*x^2 - 6*x*y + 5*y^2
+/// </summary>
 class FunctionDefault :
     public Function
 {

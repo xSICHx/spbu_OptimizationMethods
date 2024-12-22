@@ -2,6 +2,13 @@
 #include "StopCriterion.h"
 
 
+/**
+ * @class StopCriterionEps
+ * @brief A class that represents a stopping criterion based on epsilon value.
+ * 
+ * This class inherits from the StopCriterion class and adds an epsilon value
+ * as an additional stopping criterion.
+ */
 class StopCriterionEps :
     public virtual StopCriterion //virtual для предотвращения постоянной инициализации n_max
 {

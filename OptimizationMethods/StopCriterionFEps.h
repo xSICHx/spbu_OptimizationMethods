@@ -3,6 +3,14 @@
 #include "StopCriterionArea.h"
 
 
+/**
+ * @class StopCriterionFEps
+ * @brief A class that defines a stopping criterion based on the relative change in function values.
+ * 
+ * This class inherits from StopCriterionEps and StopCriterionArea and combines their stopping criteria
+ * with an additional criterion based on the relative change in function values.
+ * 
+ */
 class StopCriterionFEps :
     public StopCriterionEps,
     public StopCriterionArea

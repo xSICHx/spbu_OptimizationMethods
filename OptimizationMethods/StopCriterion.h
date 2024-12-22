@@ -3,6 +3,14 @@
 #include "TransferData.h"
 
 
+/**
+ * @class StopCriterion
+ * @brief A class to define a stopping criterion based on the maximum number of iterations.
+ *
+ * This class provides a mechanism to determine whether an iterative process should stop
+ * based on a predefined maximum number of iterations.
+ *
+ */
 class StopCriterion
 {
 protected:

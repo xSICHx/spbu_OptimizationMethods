@@ -3,6 +3,15 @@
 #include "StopCriterionArea.h"
 
 
+/**
+ * @class StopCriterionFEpsUnnormalized
+ * @brief A class that represents a stopping criterion based on the unnormalized difference between function values.
+ * 
+ * This class inherits from StopCriterionEps and StopCriterionArea and provides a stopping criterion
+ * that checks if the absolute difference between the current and previous function values is greater
+ * than or equal to a specified epsilon value.
+ * 
+ */
 class StopCriterionFEpsUnnormalized :
     public StopCriterionEps,
     public StopCriterionArea

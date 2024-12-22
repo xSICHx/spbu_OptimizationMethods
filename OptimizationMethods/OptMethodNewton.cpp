@@ -26,6 +26,31 @@ void OptMethodNewton::setupData(TransferData& data, const Area& area, const Func
 
 }
 
+void OptMethodNewton::setupData(TransferData& data, const Area& area, const Function& func, const VectorXd& initPoint) const {
+	data.setAlpha(alpha);
+
+	size_t curr_iter = 0;
+	data.setCurrIter(curr_iter);
+
+	VectorXd curr_point = initPoint;
+	data.setCurrPoint(curr_point);
+
+	VectorXd prev_point = curr_point;
+	data.setPrevPoint(prev_point);
+
+	double f_val = func(curr_point); // for begin
+	double f_prev = f_val;
+	data.setCurrFVal(f_val);
+	data.setPrevFVal(f_prev);
+
+	VectorXd grad(area.getAreaDim());
+	data.setCurrGradient(grad);
+
+	bool flag_in_bounds = true;
+	data.setFlagInBound(flag_in_bounds);
+
+}
+
 
 double backtrackingAlpha(
 	const Function& func,
@@ -33,13 +58,15 @@ double backtrackingAlpha(
 	VectorXd& dir,
 	std::shared_ptr<double> curr_f_val,
 	const Area& area
-	) {
+	) 
+{
 	double alpha_tmp = 1;
 	VectorXd x_prev = *prev_point;
 	VectorXd x_new = *prev_point + alpha_tmp * dir;
 	double f_prev = *curr_f_val, f_new = func(x_new);
+	//cout << dir << endl;
 	//while (f_prev < f_new) {
-	while (true){
+	while (alpha_tmp != 0){
 		alpha_tmp /= 2;
 		x_new = x_prev + alpha_tmp * dir;
 		f_new = func(x_new);
@@ -51,7 +78,25 @@ double backtrackingAlpha(
 		else
 			break;
 	}
-	return alpha_tmp;
+
+	double alpha_tmp2 = -1;
+	VectorXd x_prev2 = *prev_point;
+	VectorXd x_new2 = *prev_point + alpha_tmp2 * dir;
+	double f_prev2 = *curr_f_val, f_new2 = func(x_new2);
+	while (alpha_tmp2 != 0) {
+		alpha_tmp2 /= 2;
+		x_new2 = x_prev2 + alpha_tmp2 * dir;
+		f_new2 = func(x_new2);
+		if (!area.checkPointInArea(x_new2))
+			continue;
+		if (f_prev2 < f_new2) {
+			continue;
+		}
+		else
+			break;
+	}
+
+	return f_new2 > f_new ? alpha_tmp: alpha_tmp2;
 }
 
 
@@ -71,27 +116,24 @@ void OptMethodNewton::doStep(
 	shared_ptr<bool> flag_in_bounds = data.getFlagInBound();
 
 	
-	*curr_grad = func.getGradient(*prev_point);
+	*curr_grad = func.getGradient(*curr_point);
 
-	// TMP: найти, как решать систему линейных уравнений (выполнено)
-	MatrixXd mat = func.getGoesseMatrix(*prev_point);
-	//MatrixXd mat_inv = mat.inverse();
-	//
-	//VectorXd dir = -(func.getGoesseMatrix(*prev_point).inverse() * (*curr_grad));
+	
+	MatrixXd mat = func.getHessianMatrix(*curr_point);
 	VectorXd dir;
-	/*cout << mat.determinant() << endl;*/
+	//cout << abs(mat.determinant()) << endl;
 	if (-1e-3 <= abs(mat.determinant()) && abs(mat.determinant()) <= 1e-3) {
 		dir = -(*curr_grad);
 		//cout << dir << endl << endl;
 	}
 	else
 		dir = -(mat.colPivHouseholderQr().solve(*curr_grad));
-		//dir = -(*curr_grad);
-	
+	//dir = -(*curr_grad);
+	//dir = -*curr_grad;
 
 	*prev_point = *curr_point;
 	// TMP: backtracking тут, можно было бы переписать отдельной функцией
-	*alpha = backtrackingAlpha(func, prev_point, dir, curr_f_val, area);
+	*alpha = backtrackingAlpha(func, prev_point, dir, curr_f_val, area)/2;
 	//*alpha = 1e-2;
 	*curr_point = *prev_point + *alpha * dir;
 
@@ -102,7 +144,7 @@ void OptMethodNewton::doStep(
 			max((area.getILeftBound(0) - (*prev_point)[0])/dir[0],
 				(area.getIRightBound(0) - (*prev_point)[0]) / dir[0]);
 		double alpha_min = alpha_curr;
-		for (size_t i = 1; i < area.getAreaDim(); ++i)
+		for (int i = 1; i < area.getAreaDim(); ++i)
 		{
 			alpha_curr = 
 				max((area.getILeftBound(i) - (*prev_point)[i]) / dir[i],
@@ -127,6 +169,25 @@ void OptMethodNewton::optimize(const Area& area, const Function& func, const Sto
 	data.printData();
 	
 	while (crit.check(data)) {
+		doStep(area, func, crit, data);
+	}
+	data.printData();
+
+	/*VectorXd res_x = *data.getCurrPoint();
+	for (int i = 0; i < res_x.size(); ++i)
+		cout << res_x[i] << " ";
+	cout << endl;*/
+}
+
+void OptMethodNewton::optimize(const Area& area, const Function& func, const StopCriterion& crit, const VectorXd& initPoint) const {
+	TransferData data;
+	setupData(data, area, func, initPoint);
+
+	doStep(area, func, crit, data); // init step
+	data.printData();
+
+	while (crit.check(data)) {
+		//data.printData();
 		doStep(area, func, crit, data);
 	}
 	data.printData();

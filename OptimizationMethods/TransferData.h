@@ -2,6 +2,14 @@
 #include "config.h"
 
 
+/**
+ * @class TransferData
+ * @brief A class to manage and transfer optimization data points, gradients, and other related information.
+ *
+ * This class encapsulates various data points and parameters used in optimization methods, providing
+ * getter and setter methods for each data member. It also includes utility functions to print the data.
+ *
+ */
 class TransferData
 {
 private:

@@ -2,6 +2,9 @@
 #include "Function.h"
 
 
+/// <summary>
+/// (1-x)^2 + 100*(y-x^2)^2
+/// </summary>
 class FunctionRosenbrock :
     public Function
 {

@@ -5,6 +5,7 @@
 #include "FunctionDefault.h"
 #include "FunctionHarmonic.h"
 #include "FunctionRosenbrock.h"
+#include "FunctionEasom.h"
 #include "Area.h"
 #include "StopCriterionFEps.h"
 #include "StopCriterionFEpsUnnormalized.h"
@@ -22,7 +23,7 @@ void testFunctionGreatConditionsNewton() {
 	cout << "Newton test with great conditions" << endl;
 
 	cout << "Function: x^2 + y^4" << endl;
-	FucntionTest f1;
+	FunctionTest f1;
 
 	VectorXd point(2);
 	point[0] = 2; point[1] = 1;
@@ -33,19 +34,19 @@ void testFunctionGreatConditionsNewton() {
 
 	VectorXd f1_grad = f1.getGradient(point);
 	cout << "Gradient in point: ";
-	for (size_t i = 0; i < f1_grad.size(); i++)
+	for (int i = 0; i < f1_grad.size(); i++)
 	{
 		cout << f1_grad[i] << " ";
 	}
 	cout << endl;
 
-	MatrixXd f1_goesse = f1.getGoesseMatrix(point);
-	cout << "Goesse in point: " << endl;
-	for (size_t i = 0; i < f1_goesse.rows(); i++)
+	MatrixXd f1_hessian = f1.getHessianMatrix(point);
+	cout << "Hessian in point: " << endl;
+	for (int i = 0; i < f1_hessian.rows(); i++)
 	{
-		for (size_t j = 0; j < f1_goesse.cols(); j++)
+		for (int j = 0; j < f1_hessian.cols(); j++)
 		{
-			cout << f1_goesse(i, j) << " ";
+			cout << f1_hessian(i, j) << " ";
 		}
 		cout << endl;
 	}
@@ -54,7 +55,7 @@ void testFunctionGreatConditionsNewton() {
 	MatrixXd ar(2, 2);
 	ar(0, 0) = -3; ar(0, 1) = 6; ar(1, 0) = -5; ar(1, 1) = 8;
 	Area area(ar);
-	FucntionTest f;
+	FunctionTest f;
 
 	StopCriterionFEps stop(10000, 1e-5);
 	OptMethodNewton opt;
@@ -68,7 +69,7 @@ void testFunctionOptNotInAreaNewton() {
 	cout << "Newton test not in area" << endl;
 
 	cout << "Function: x^2 + y^4" << endl;
-	FucntionTest f1;
+	FunctionTest f1;
 
 	VectorXd point(2);
 	point[0] = 2; point[1] = 1;
@@ -79,19 +80,19 @@ void testFunctionOptNotInAreaNewton() {
 
 	VectorXd f1_grad = f1.getGradient(point);
 	cout << "Gradient in point: ";
-	for (size_t i = 0; i < f1_grad.size(); i++)
+	for (int i = 0; i < f1_grad.size(); i++)
 	{
 		cout << f1_grad[i] << " ";
 	}
 	cout << endl;
 
-	MatrixXd f1_goesse = f1.getGoesseMatrix(point);
-	cout << "Goesse in point: " << endl;
-	for (size_t i = 0; i < f1_goesse.rows(); i++)
+	MatrixXd f1_hessian = f1.getHessianMatrix(point);
+	cout << "Hessian in point: " << endl;
+	for (int i = 0; i < f1_hessian.rows(); i++)
 	{
-		for (size_t j = 0; j < f1_goesse.cols(); j++)
+		for (int j = 0; j < f1_hessian.cols(); j++)
 		{
-			cout << f1_goesse(i, j) << " ";
+			cout << f1_hessian(i, j) << " ";
 		}
 		cout << endl;
 	}
@@ -100,7 +101,7 @@ void testFunctionOptNotInAreaNewton() {
 	MatrixXd ar(2, 2);
 	ar(0, 0) = -3; ar(0, 1) = -1; ar(1, 0) = -5; ar(1, 1) = 8;
 	Area area(ar);
-	FucntionTest f;
+	FunctionTest f;
 
 	StopCriterionFEps stop(10000, 1e-5);
 	OptMethodNewton opt(1e-2);
@@ -114,7 +115,7 @@ void testFunctionRandomSearch() {
 	cout << "Random search test" << endl;
 
 	cout << "Function: x^2 + y^4" << endl;
-	FucntionTest f1;
+	FunctionTest f1;
 
 	VectorXd point(2);
 	point[0] = 2; point[1] = 1;
@@ -127,7 +128,7 @@ void testFunctionRandomSearch() {
 	MatrixXd ar(2, 2);
 	ar(0, 0) = -3; ar(0, 1) = 2; ar(1, 0) = -5; ar(1, 1) = 8;
 	Area area(ar);
-	FucntionTest f;
+	FunctionTest f;
 
 	StopCriterionFEpsUnnormalized stop(10000, 1e-5);
 	OptMethodRandomSearch opt(0.5, 0.8);
@@ -172,6 +173,24 @@ double getValidDouble(const string& prompt) {
 	return value;
 }
 
+double getValidDouble(const string& prompt, double min, double max) {
+	double value;
+	while (true) {
+		cout << prompt;
+		cin >> value;
+		if (cin.fail() || value < min || value > max) {
+			cin.clear();
+			cin.ignore(numeric_limits<streamsize>::max(), '\n');
+			cout << "Invalid input. Please enter a valid number.\n";
+		}
+		else {
+			break;
+		}
+	}
+	return value;
+}
+
+
 // Функция для заполнения строки матрицы
 void getValidRow(VectorXd& row, int rowIndex) {
 	while (true) {
@@ -189,6 +208,15 @@ void getValidRow(VectorXd& row, int rowIndex) {
 	}
 }
 
+
+void getValidInitPoint(VectorXd& initPoint, const Area& area) {
+	for (int i = 0; i < area.getAreaDim(); i++) {
+		initPoint[i] = getValidDouble("Enter point for " + to_string(i) + " dimension :",
+			area.getILeftBound(i), area.getIRightBound(i));
+	}
+}
+
+
 void consoleInput() {
 	// Храним функции для каждой размерности
 	vector<vector<shared_ptr<Function>>> functions(5);
@@ -201,12 +229,15 @@ void consoleInput() {
 
 	functions[3].emplace_back(make_shared<FunctionHarmonic>());
 
+	functions[4].emplace_back(make_shared<FunctionEasom>());
+
 
 	int dimension;
 	shared_ptr<Function> func;
 	shared_ptr<Area> area;
 	shared_ptr<StopCriterion> crit;
 	shared_ptr<OptMethod> opt;
+	VectorXd startPoint;
 	while (true) {
 		// Request the dimension
 		dimension = getValidInput(1, 4, "Enter the dimension of the space (from 1 to 4): ");
@@ -243,6 +274,13 @@ void consoleInput() {
 		cout << "You have entered the following n-dimensional cube:\n" << ar << endl;
 		area = make_shared<Area>(ar);
 
+		// Ввод начальной точки 
+		cout << "Enter initial point: \n";
+		VectorXd initPoint = VectorXd::Zero(dimension);
+		getValidInitPoint(initPoint, *area);
+		startPoint = initPoint;
+
+
 		// Display available crits
 		int max_iter = getValidInput(10, 100000, "Enter the maximum of iterations: ");
 		double eps = getValidDouble("Enter eps:");
@@ -278,7 +316,7 @@ void consoleInput() {
 	}
 	cout << "------------------------------" << endl << endl;
 
-	opt->optimize(*area, *func, *crit);
+	opt->optimize(*area, *func, *crit, startPoint);
 
 	cout << "------------------------------" << endl << endl;
 
@@ -287,79 +325,141 @@ void consoleInput() {
 
 
 /*** 
-Newton Rosenbrock
+*** ПРИМЕРЫ ***
+Newton Rosenbrock (1-x)^2 + 100*(y-x^2)^2 минимум в области
 2
 2
--10
-15
--10
-15
-10000
-0.000000000001
-1
-0
-
-Random Search Rosenbrock
-2
-2
--10
-15
--10
-15
-10000
-0.000000000001
-1
-1
-
-Newton 5*x^2 - 6*x*y + 5*y^2 
-2
-0
--15
+-5
+3
+-3
 5
--15
-5
+-1.35
+2
 10000
-0.00001
+0.0001
+2
+0
+
+Newton Rosenbrock (1-x)^2 + 100*(y-x^2)^2 минимум вне области
+2
+2
+-5
+3
+-3
+-1
+-2
+-1.25
+10000
+0.0001
+2
+0
+
+Newton 5*x^2 - 6*x*y + 5*y^2 минимум в области
+2
+0
+-10
+15
+-10
+15
+-7
+9
+10000
+0.0001
+2
+0
+
+
+Newton 5*x^2 - 6*x*y + 5*y^2 минимум вне области
+2
+0
+-10
+15
+-10
+-1
+-7
+-9
+10000
+0.00000001
 1
 0
 
-Newton |x+y|+3*|y-x|
+
+ 
+Random Search Rosenbrock (1-x)^2 + 100*(y-x^2)^2 минимум в области
+2
+2
+-5
+3
+-3
+5
+-1.35
+2
+10000
+0.001
+2
+1
+
+Random Search Rosenbrock (1-x)^2 + 100*(y-x^2)^2 минимум вне области
+2
+2
+-5
+3
+-3
+-1
+-2
+-1.25
+10000
+0.0001
+2
+1
+
+
+Newton |x+y|+3*|y-x| минимум в области
 2
 1
 -15
 5
 -15
 6
+3.7
+-1
 100000
 0.00001
 2
 0
 
-Random Search 5*x^2 - 6*x*y + 5*y^2
+
+Newton |x+y|+3*|y-x| минимум вне области
+2
+1
+-15
+5
+1
+6
+3.7
+1
+100000
+0.00001
 2
 0
--15
-5
--15
-5
-100000
-0.00001
-1
-1
 
-Random Search |x+y|+3*|y-x|
+
+Random Search |x+y|+3*|y-x| минимум в области
 2
 1
 -15
 5
 -15
-5
+6
+3.7
+-1
 100000
 0.00001
-1
+2
 1
 
-Newton good sin(x)*cos(2y)*sin(3z+pi/6)
+
+Newton sin(x)*cos(2y)*sin(3z+pi/6) минимум в области
 3
 0
 0
@@ -368,38 +468,60 @@ Newton good sin(x)*cos(2y)*sin(3z+pi/6)
 0.7
 -0.9
 -0.175
+0.1
+0.3
+-0.4
 10000
 0.00001
 2
 0
 
-sin(x)*cos(2y)*sin(3z+pi/6)
-3
-0
--17
-3
--23.7
-1.7
--3.9
--0.0175
-10000
-0.00001
-2
-0
 
-Random Search sin(x)*cos(2y)*sin(3z+pi/6)
-3
+Newton 
+-cos(x1) * cos(x2) * cos(x3) * cos(x4) * exp(-((x1 - pi)^2 + (x2 - pi)^2 + (x3 - pi)^2 + (x4 - pi)^2) / 16)
+минимум в области
+4
 0
--17
-3
--23.7
-1.7
--3.9
--0.0175
-10000
-0.00001
+-3
+5
+-2
+10
+-7
+8
+-10
+10
+-1
+0
+4
 2
+10000
+0.000001
 1
+0
+
+
+Random Search
+-cos(x1) * cos(x2) * cos(x3) * cos(x4) * exp(-((x1 - pi)^2 + (x2 - pi)^2 + (x3 - pi)^2 + (x4 - pi)^2) / 16)
+минимум в области
+4
+0
+-3
+5
+-2
+10
+-7
+8
+-10
+10
+-1
+0
+4
+2
+10000
+0.000001
+1
+1
+
 ***/
 
 

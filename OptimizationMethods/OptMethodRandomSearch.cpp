@@ -19,14 +19,33 @@ void OptMethodRandomSearch::setupData(TransferData& data, const Area& area, cons
 	
 }
 
+void OptMethodRandomSearch::setupData(TransferData& data, const Area& area, const Function& func, const VectorXd& initPoint) const {
+
+	size_t curr_iter = 0;
+	data.setCurrIter(curr_iter);
+
+	VectorXd prev_point = area.getRandomAreaPoint();
+	data.setPrevPoint(prev_point);
+
+	VectorXd curr_point = initPoint;
+	data.setCurrPoint(curr_point);
+
+
+	double f_val = func(curr_point);
+	double f_prev = func(prev_point);
+	data.setCurrFVal(f_val);
+	data.setPrevFVal(f_prev);
+
+}
+
 VectorXd OptMethodRandomSearch::getRandomNewPoint(const Area& area, const Area& ball) const {
 	std::uniform_real_distribution<> dis(0, 1);
 	double choice = dis(gen);
 	if (choice > p)
 		return area.getRandomAreaPoint();
 	
-	Area interseption = area.interseption(ball);
-	return interseption.getRandomAreaPoint();
+	Area intersection = area.intersection(ball);
+	return intersection.getRandomAreaPoint();
 	
 }
 
@@ -67,6 +86,25 @@ void OptMethodRandomSearch::optimize(const Area& area, const Function& func, con
 	// init ball will be twice as low as area
 	double delta = area.getMinBoundLen() / 2;
 	Area ball(*data.getCurrPoint(), delta); 
+
+	doStep(area, func, crit, data, ball, delta); // init step
+	data.printData();
+
+	while (crit.check(data)) {
+		doStep(area, func, crit, data, ball, delta);
+	}
+	data.printData();
+
+}
+
+void OptMethodRandomSearch::optimize(const Area& area, const Function& func, const StopCriterion& crit,
+	const VectorXd& initPoint) const {
+	TransferData data;
+	setupData(data, area, func, initPoint);
+
+	// init ball will be twice as low as area
+	double delta = area.getMinBoundLen() / 2;
+	Area ball(*data.getCurrPoint(), delta);
 
 	doStep(area, func, crit, data, ball, delta); // init step
 	data.printData();

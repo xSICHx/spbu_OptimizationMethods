@@ -17,7 +17,7 @@ VectorXd Function::getGradient(const VectorXd& point) const {
 }
 
 
-MatrixXd Function::getGoesseMatrix(const VectorXd& point) const {
+MatrixXd Function::getHessianMatrix(const VectorXd& point) const {
 	MatrixXd res_mat(getDim(), getDim());
 
 	VectorXd point_temp = point;
