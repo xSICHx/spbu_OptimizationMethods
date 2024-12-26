@@ -102,16 +102,20 @@ void OptMethodRandomSearch::optimize(const Area& area, const Function& func, con
 	TransferData data;
 	setupData(data, area, func, initPoint);
 
+	data.clearFile();
 	// init ball will be twice as low as area
 	double delta = area.getMinBoundLen() / 2;
 	Area ball(*data.getCurrPoint(), delta);
 
 	doStep(area, func, crit, data, ball, delta); // init step
 	data.printData();
+	data.savePointToFile();
 
 	while (crit.check(data)) {
 		doStep(area, func, crit, data, ball, delta);
+		data.savePointToFile();
 	}
 	data.printData();
+	data.savePointToFile();
 
 }

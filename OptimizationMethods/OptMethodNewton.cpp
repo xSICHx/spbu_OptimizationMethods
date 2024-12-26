@@ -183,15 +183,19 @@ void OptMethodNewton::optimize(const Area& area, const Function& func, const Sto
 	TransferData data;
 	setupData(data, area, func, initPoint);
 
+	data.clearFile();
 	doStep(area, func, crit, data); // init step
 	data.printData();
+	data.savePointToFile();
 
 	while (crit.check(data)) {
 		//data.printData();
 		doStep(area, func, crit, data);
+		data.savePointToFile();
 	}
 	data.printData();
-
+	
+	data.savePointToFile();
 	/*VectorXd res_x = *data.getCurrPoint();
 	for (int i = 0; i < res_x.size(); ++i)
 		cout << res_x[i] << " ";

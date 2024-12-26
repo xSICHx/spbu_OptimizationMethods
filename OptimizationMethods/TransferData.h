@@ -1,5 +1,7 @@
 #pragma once
 #include "config.h"
+#include <fstream>
+#include <iostream>
 
 
 /**
@@ -109,6 +111,27 @@ public:
         }
 
         cout << endl;
+    }
+
+    void savePointToFile() {
+        std::ofstream file("currOpt.txt", std::ios_base::app);
+        // Проверяем, открылся ли файл
+        if (file.is_open()) {
+            file << (*curr_point)[0] << " " << (*curr_point)[1] << std::endl;
+
+            // Закрываем файл
+            file.close();
+        }
+    }
+
+    void clearFile() {
+        // Открываем файл в режиме записи, что удаляет его содержимое
+        std::ofstream file("currOpt.txt", std::ios_base::trunc); // std::ios_base::trunc очищает файл
+
+        // Проверяем, открылся ли файл
+        if (file.is_open()) {
+            file.close();
+        }
     }
 
 

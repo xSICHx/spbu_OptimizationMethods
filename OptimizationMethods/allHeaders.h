@@ -1,0 +1,16 @@
+#pragma once
+#include "config.h"
+#include "Area.h"
+#include "Function.h"
+#include "FunctionDefault.h"
+#include "FunctionAbs.h"
+#include "FunctionRosenbrock.h"
+#include "FunctionHarmonic.h"
+#include "FunctionEasom.h"
+#include "StopCriterion.h"
+#include "StopCriterionFEps.h"
+#include "StopCriterionFEpsUnnormalized.h"
+#include "OptMethod.h"
+#include "OptMethodNewton.h"
+#include "OptMethodRandomSearch.h"
+
