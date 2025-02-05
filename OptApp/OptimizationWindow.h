@@ -99,44 +99,61 @@ public:
         // Создаем правую панель
         rightPanel = new QWidget();
         QVBoxLayout *rightLayout = new QVBoxLayout(rightPanel);
-        rightLayout->addWidget(optimizeButton);
+
+        // Создаем виджет для кнопки и графика
+        QWidget *optimizationControlsWidget = new QWidget();
+        QVBoxLayout *optimizationControlsLayout = new QVBoxLayout(optimizationControlsWidget);
+
+        // Добавляем кнопку оптимизации
+        optimizationControlsLayout->addWidget(optimizeButton);
         connect(optimizeButton, &QPushButton::clicked, this, &OptimizationWindow::onOptimizeButtonClicked);
 
-        // Create QCustomPlot instance
-        customPlot = new QCustomPlot(rightPanel);
+        // Создаем QCustomPlot для графика
+        customPlot = new QCustomPlot(optimizationControlsWidget);
+        optimizationControlsLayout->addWidget(customPlot);
 
-        // Modify rightLayout to include the plot
-        rightLayout->addWidget(customPlot); // Add the plot widget
+        // Подключаем обработчик событий мыши к QCustomPlot
+        connect(customPlot, &QCustomPlot::mousePress, this, &OptimizationWindow::onMouseClickOnPlot);
 
-        // ...
+        // Создаем виджет для текстового вывода
+        QWidget *consoleOutputWidget = new QWidget();
+        QVBoxLayout *consoleOutputLayout = new QVBoxLayout(consoleOutputWidget);
 
+        // Создаем текстовое поле для вывода
+        consoleOutput = new QPlainTextEdit(this);
+        consoleOutput->setReadOnly(true);
+        consoleOutput->setWordWrapMode(QTextOption::NoWrap);
+        consoleOutputLayout->addWidget(consoleOutput);
 
+        // Создаем горизонтальный разделитель для правой панели
+        QSplitter *rightSplitter = new QSplitter(Qt::Vertical);
+        rightSplitter->addWidget(optimizationControlsWidget);
+        rightSplitter->addWidget(consoleOutputWidget);
 
+        // Устанавливаем размеры для разделителя
+        rightSplitter->setSizes(QList<int>() << 800 << 200);
 
-
-        rightPanel->setLayout(rightLayout);
-
+        // Добавляем разделитель в правую панель
+        rightLayout->addWidget(rightSplitter);
 
         // Создаем вертикальную линию
         QFrame *verticalLine = new QFrame();
-        verticalLine->setFrameShape(QFrame::VLine);  // Устанавливаем вертикальную линию
-        verticalLine->setFrameShadow(QFrame::Sunken);  // Добавляем эффект "утопленности"
-        verticalLine->setLineWidth(2);  // Устанавливаем толщину линии
+        verticalLine->setFrameShape(QFrame::VLine);
+        verticalLine->setFrameShadow(QFrame::Sunken);
+        verticalLine->setLineWidth(2);
 
-        // Создаем основной layout
-        QSplitter *splitter = new QSplitter(Qt::Horizontal);
+        // Создаем основной разделитель для левой и правой панелей
+        QSplitter *mainSplitter = new QSplitter(Qt::Horizontal);
+        mainSplitter->addWidget(leftPanel);
+        mainSplitter->addWidget(verticalLine);
+        mainSplitter->addWidget(rightPanel);
 
-        // Добавляем левую и правую панели в splitter
-        splitter->addWidget(leftPanel);
-        splitter->addWidget(verticalLine);
-        splitter->addWidget(rightPanel);
-
-        // Устанавливаем размеры для каждой панели
-        splitter->setSizes(QList<int>() << 198 << 2 << 800);  // Левая панель 200px, правая — 800px
+        // Устанавливаем размеры для основного разделителя
+        mainSplitter->setSizes(QList<int>() << 200 << 2 << 800);
 
         // Устанавливаем основной layout
         QHBoxLayout *mainLayout = new QHBoxLayout(this);
-        mainLayout->addWidget(splitter);
+        mainLayout->addWidget(mainSplitter);
         setLayout(mainLayout);
 
         // Устанавливаем минимальные размеры окна
@@ -159,6 +176,25 @@ public:
     }
 
 private slots:
+    // Обработчик клика мыши на графике
+    void onMouseClickOnPlot(QMouseEvent *event) {
+        int dimension = dimensionSelector->getBounds().length();
+        if (dimension != 2) {
+            return; // Только для двумерного случая
+        }
+
+        // Получаем координаты клика в системе координат графика
+        double x = customPlot->xAxis->pixelToCoord(event->pos().x());
+        double y = customPlot->yAxis->pixelToCoord(event->pos().y());
+
+        // Обновляем значения в QDoubleSpinBox для начальной точки
+        if (initialPointSpinboxes.size() >= 2) {
+            initialPointSpinboxes[0]->setValue(x);
+            initialPointSpinboxes[1]->setValue(y);
+        }
+    }
+
+
     void updateFunctionSelection(int dimension) {
         functionComboBox->clear();
         if (!functions[dimension].empty()) {
@@ -353,7 +389,30 @@ private slots:
         // Replot
         customPlot->replot();
 
+
+        QFile file("lastIter.txt");
+
+        // Открываем файл для чтения
+        if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            QTextStream in(&file);
+
+            // Читаем файл построчно
+            while (!in.atEnd()) {
+                QString line = in.readLine(); // Читаем строку
+                appendToConsole(line);
+            }
+
+            file.close(); // Закрываем файл
+        } else {
+            qWarning() << "Не удалось открыть файл для чтения:" << file.errorString();
+        }
+
         QMessageBox::information(this, "Оптимизация завершена", "Оптимизация выполнена.");
+    }
+
+    void appendToConsole(const QString &text) {
+        consoleOutput->appendPlainText(text);
+        consoleOutput->verticalScrollBar()->setValue(consoleOutput->verticalScrollBar()->maximum());
     }
 
 private:
@@ -361,6 +420,7 @@ private:
     QWidget *leftPanel;
     QWidget *rightPanel;
     DimensionSelector *dimensionSelector;
+    QPlainTextEdit *consoleOutput;
     QSpinBox* maxIterationsSpinBox;
     QDoubleSpinBox* epsilonSpinBox;
     QComboBox* functionComboBox;

@@ -1,0 +1,3 @@
+Last_point: -1.99986 -1 
+Iter: 28
+Curr F: 2508.44

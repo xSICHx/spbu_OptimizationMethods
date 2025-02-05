@@ -96,6 +96,8 @@ public:
     }
 
     void printData() {
+
+
         cout << endl;
         
         cout << "Curr_point: "; print_vec(*curr_point);
@@ -121,6 +123,21 @@ public:
 
             // Закрываем файл
             file.close();
+        }
+
+        std::ofstream lastfile("lastIter.txt");
+
+
+        if (lastfile.is_open()) {
+            lastfile << "Last_point: ";
+            for (int i = 0; i < (*curr_point).size(); ++i)
+                lastfile << (*curr_point)[i] << " ";
+            lastfile << endl;
+            lastfile << "Iter: " << *curr_iter << endl;
+            lastfile << "Curr F: " << *curr_f_val << endl;
+
+
+            lastfile.close(); // Закрываем файл
         }
     }
 
